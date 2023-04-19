@@ -8,17 +8,20 @@ import androidx.room.ForeignKey
 @Entity(tableName = "reservation" )
 data class Reservation(
     @PrimaryKey(autoGenerate = true)
-    var res_id : Int,
+    var resId : Int?,
 
     @ColumnInfo(name = "court_id")
-    var court_id:Int, // id of pg subtable
+    var courtId:Int, // id of pg subtable
 
     @ColumnInfo(name = "user_id")
-    var user_id:Int,
+    var userId:Int,
 
     @ColumnInfo(name = "status")
     var status:Int, // 0: normal reservation.  1: canceled reservation
 
     @ColumnInfo(name = "date")
-    var date: Long
+    var date: String,//dd/mm/yyyy
+
+    @ColumnInfo(name = "description")
+    var description: String
 )

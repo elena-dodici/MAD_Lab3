@@ -4,10 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "playground")
-data class Playground(
+@Entity(tableName = "court")
+data class Court(
     @PrimaryKey(autoGenerate = true)
-    var pg_id:Int,
+    var courId:Int,
 
     @ColumnInfo(name = "name")
     var name:String,
@@ -18,3 +18,4 @@ data class Playground(
     @ColumnInfo(name = "sport")
     var sport:String
 )
+
