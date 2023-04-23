@@ -9,12 +9,12 @@ data class CourtTime(
     @PrimaryKey(autoGenerate = true)
     val id : Long = 0L,
 
-    @ColumnInfo(name = "court_id")
+    @ColumnInfo(name = "courtId")
     val courtId:Int = 0,
 
-    @ColumnInfo(name = "start_time")
+    @ColumnInfo(name = "startTime")
     var startTime:String,
 
-    @ColumnInfo(name = "end_time")
+    @ColumnInfo(name = "endTime")
     var endTime:String
 )

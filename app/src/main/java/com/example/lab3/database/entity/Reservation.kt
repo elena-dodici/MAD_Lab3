@@ -11,10 +11,10 @@ data class Reservation(
     @PrimaryKey(autoGenerate = true)
     var resId : Int?,
 
-    @ColumnInfo(name = "court_id")
+    @ColumnInfo(name = "courtId")
     var courtId:Int, // id of pg subtable
 
-    @ColumnInfo(name = "user_id")
+    @ColumnInfo(name = "userId")
     var userId:Int,
 
     @ColumnInfo(name = "status")
