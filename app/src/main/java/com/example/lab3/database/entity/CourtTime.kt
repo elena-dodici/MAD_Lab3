@@ -7,11 +7,14 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "courtTime")
 data class CourtTime(
     @PrimaryKey(autoGenerate = true)
+    val id : Long = 0L,
+
+    @ColumnInfo(name = "court_id")
     val courtId:Int = 0,
 
-    @ColumnInfo(name = "startTime")
-    var startTime:Long,
+    @ColumnInfo(name = "start_time")
+    var startTime:String,
 
-    @ColumnInfo(name = "endTime")
-    var endTime:Long
+    @ColumnInfo(name = "end_time")
+    var endTime:String
 )

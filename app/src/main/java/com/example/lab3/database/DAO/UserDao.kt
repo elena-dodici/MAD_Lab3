@@ -11,12 +11,12 @@ import com.example.lab3.database.entity.User
 @Dao
 interface UserDao {
     @Query("SELECT * FROM user")
-    fun getAll(): LiveData<List<User>>
+    fun getAllUsers(): LiveData<List<User>>
 
     @Query("SELECT * FROM user WHERE userId=:id")
     fun getUserById(id:Int):User?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(user:User)
+    fun addUser(user:User)
 
 }

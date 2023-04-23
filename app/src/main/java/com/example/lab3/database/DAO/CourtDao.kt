@@ -6,23 +6,30 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.lab3.database.entity.Court
+import com.example.lab3.database.entity.Reservation
 
 
 @Dao
 interface CourtDao {
-    //write all query
     @Query("SELECT * FROM court")
-    fun getAll(): LiveData<List<Court>>
+    fun getAllCourts(): LiveData<List<Court>>
 
-    @Query("SELECT * FROM court WHERE courId=:id")
-    fun getUserById(id:Int): Court?
+    // This function is only for testing purposes ( comment or ignore if not needed)
+    @Query("SELECT * FROM court")
+    fun getAllCourtsTest(): List<Court>
+    // -------------------------------------------------------------------------- //
+
+    @Query("SELECT * FROM court WHERE courtId=:id")
+    fun getCourtById(id:Int): Court?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(Court: Court)
+    fun addCourt(court: Court)
 
     @Delete
-    fun delete(Court:Court)
+    fun deleteCourt(court:Court)
 
-
+    @Update
+    fun update(court:Court)
 }

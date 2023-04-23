@@ -4,6 +4,7 @@ import androidx.room.PrimaryKey
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import java.util.Date
 
 @Entity(tableName = "reservation" )
 data class Reservation(

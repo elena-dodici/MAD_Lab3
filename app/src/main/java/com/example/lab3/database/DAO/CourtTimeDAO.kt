@@ -2,19 +2,23 @@ package com.example.lab3.database.DAO
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.lab3.database.entity.Court
 import com.example.lab3.database.entity.CourtTime
 @Dao
 interface CourtTimeDAO {
-    //write all query
-    @Query("SELECT * FROM courtTime")
-    fun getAll(): LiveData<List<CourtTime>>
+    @Query("SELECT * FROM courtTime WHERE court_id=:id")
+    fun getAllTCourtTimesByCourtId(id: Int): LiveData<List<CourtTime>>
 
-    @Query("SELECT * FROM courtTime WHERE courtId=:id")
-    fun getUserById(id:Int): CourtTime?
-
+    // This function is only for testing purposes ( comment or ignore if not needed)
+    @Query("SELECT * FROM courtTime WHERE court_id=:id")
+    fun getAllTCourtTimesByCourtIdTest(id: Int): List<CourtTime>
+    // -------------------------------------------------------------------------- //
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(CourtTime: CourtTime)
+    fun addCourtTime(courtTime: CourtTime)
 
     @Delete
-    fun delete(CourtTime: CourtTime)
+    fun deleteCourtTime(courtTime: CourtTime)
+
+    @Update
+    fun update(courtTime: CourtTime)
 }

@@ -8,6 +8,7 @@ import com.example.lab3.database.entity.Court
 import com.example.lab3.database.entity.Reservation
 import com.example.lab3.database.entity.User
 import com.example.lab3.database.DAO.CourtDao
+import com.example.lab3.database.DAO.CourtTimeDAO
 import com.example.lab3.database.DAO.ReservationDAO
 
 @Database(entities = [CourtTime::class, Court::class, Reservation::class, User::class], version = 1, exportSchema = false)
@@ -17,8 +18,9 @@ abstract class AppDatabase:RoomDatabase() {
 //    abstract fun CourtDao():CourtDao
 //    abstract fun ReservationDao():ReservationDao
     abstract fun userDao():UserDao
-    abstract fun CourtDao():CourtDao
-    abstract fun ReservationDao():ReservationDAO
+    abstract fun courtDao():CourtDao
+    abstract fun reservationDao():ReservationDAO
+    abstract fun courtTimeDao():CourtTimeDAO
     companion object{
         @Volatile
         private var INSTANCE:AppDatabase? = null
