@@ -4,10 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "playground")
-data class Playground(
-    @PrimaryKey(autoGenerate = true)
-    var pg_id:Int,
+@Entity(tableName = "court")
+data class Court(
+
 
     @ColumnInfo(name = "name")
     var name:String,
@@ -17,4 +16,8 @@ data class Playground(
 
     @ColumnInfo(name = "sport")
     var sport:String
-)
+){
+    @PrimaryKey(autoGenerate = true)
+    var courtId:Int = 0
+}
+
