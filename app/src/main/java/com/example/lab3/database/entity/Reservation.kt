@@ -8,8 +8,7 @@ import java.util.Date
 
 @Entity(tableName = "reservation" )
 data class Reservation(
-    @PrimaryKey(autoGenerate = true)
-    var resId : Int?,
+
 
     @ColumnInfo(name = "courtId")
     var courtId:Int, // id of pg subtable
@@ -25,4 +24,7 @@ data class Reservation(
 
     @ColumnInfo(name = "description")
     var description: String
-)
+){
+    @PrimaryKey(autoGenerate = true)
+    var resId : Int = 0
+}

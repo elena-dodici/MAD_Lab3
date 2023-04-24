@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         //initialize db
         db = AppDatabase.getDatabase(application)
 //        db.userDao().getAll()
-        val u = User(1,"abc","bcd","1234")
+        val u = User("abc","bcd","1234")
         db.userDao().addUser(u)
         //db.userDao().getUserById(1)
 
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         val court_id = binding.editCourtId.text.toString()
         if(timeSlot.isNotEmpty() && description.isNotEmpty()){
             val newReservation = Reservation(
-                1,court_id.toInt(),1,0,"25/11/2021","This is test description")
+                court_id.toInt(),1,0,"25/11/2021","This is test description")
                  db.reservationDao().addReservation(newReservation)
 //                 db.ReservationDao().getUserById(1)
             Toast.makeText(this@MainActivity,"Save successfully",Toast.LENGTH_SHORT).show()

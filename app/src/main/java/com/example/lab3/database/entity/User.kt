@@ -6,8 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "user")
 data class User(
-    @PrimaryKey(autoGenerate = true)
-    var userId:Int,
+
 
     @ColumnInfo(name = "name")
     var name:String,
@@ -18,4 +17,7 @@ data class User(
     @ColumnInfo(name = "tel")
     var tel:String?
 
-)
+){
+    @PrimaryKey(autoGenerate = true)
+    var userId:Int = 0;
+}

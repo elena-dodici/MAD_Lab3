@@ -6,8 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "courtTime")
 data class CourtTime(
-    @PrimaryKey(autoGenerate = true)
-    val id : Long = 0L,
+
 
     @ColumnInfo(name = "courtId")
     val courtId:Int = 0,
@@ -17,4 +16,7 @@ data class CourtTime(
 
     @ColumnInfo(name = "endTime")
     var endTime:String
-)
+){
+    @PrimaryKey(autoGenerate = true)
+    var id : Long = 0L
+}

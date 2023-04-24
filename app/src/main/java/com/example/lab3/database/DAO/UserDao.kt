@@ -11,7 +11,7 @@ import com.example.lab3.database.entity.User
 @Dao
 interface UserDao {
     @Query("SELECT * FROM user")
-    fun getAllUsers(): LiveData<List<User>>
+    fun getAllUsers(): List<User>
 
     @Query("SELECT * FROM user WHERE userId=:id")
     fun getUserById(id:Int):User?
