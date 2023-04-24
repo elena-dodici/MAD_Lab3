@@ -48,4 +48,5 @@ dependencies {
     kapt "androidx.room:room-compiler:2.5.0"
     androidTestImplementation "androidx.room:room-testing:2.5.0"
 
+    implementation 'com.github.npanigrahy:Custom-Calendar-View:v1.1'
 }
