@@ -29,4 +29,6 @@
     <color name="example_5_toolbar_color">#282828</color>
     <color name="example_5_text_grey">#DCDCDC</color>
     <color name="example_5_text_grey_light">#616161</color>
+    <color name="example_1_white">#D9FFFFFF</color>
+
 </resources>
