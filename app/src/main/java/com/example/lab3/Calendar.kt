@@ -64,7 +64,15 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
         val endMonth = currentMonth.plusMonths(100) // 2031-08
         val daysOfWeek = daysOfWeek(firstDayOfWeek = DayOfWeek.MONDAY)
         configureBinders(daysOfWeek)
-        binding.calendarView.setup(startMonth, endMonth, daysOfWeek.first())
+//    static header: Mon|Tue|Wed|Thu|Fri|Sat|Sun
+        binding.legendLayout.root.children
+            .map { it as TextView }
+            .forEachIndexed { index, textView ->
+                textView.text = daysOfWeek[index].displayText()
+                textView.setTextColorRes(R.color.example_1_white)
+            }
+
+    binding.calendarView.setup(startMonth, endMonth, daysOfWeek.first())
         binding.calendarView.scrollToMonth(currentMonth)
         weekCalendarView.setup(startMonth.atStartOfMonth(), endMonth.atEndOfMonth(), daysOfWeek.first())
         weekCalendarView.scrollToWeek(currentMonth.atStartOfMonth())
@@ -96,14 +104,10 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
 
     private val weekModeToggled = object :CompoundButton.OnCheckedChangeListener{
         override fun onCheckedChanged(buttonView: CompoundButton, monthToWeek: Boolean) {
-            // We want the first visible day to remain visible after the
-            // change so we scroll to the position on the target calendar.
             if (monthToWeek) {
                 val targetDate = monthCalendarView.findFirstVisibleDay()?.date ?: return
                 weekCalendarView.scrollToWeek(targetDate)
             } else {
-                // It is possible to have two months in the visible week (30 | 31 | 1 | 2 | 3 | 4 | 5)
-                // We always choose the second one. Please use what works best for your use case.
                 val targetMonth = weekCalendarView.findLastVisibleDay()?.date?.yearMonth ?: return
                 monthCalendarView.scrollToMonth(targetMonth)
             }
@@ -147,7 +151,7 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
                         ViewGroup.LayoutParams.WRAP_CONTENT
                     }
                 }
-                updateTitle()
+                updateMonthTitle()
             }
             animator.duration = 250
             animator.start()
@@ -189,7 +193,7 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
             }
         }
         // 显示当前月 update title
-        monthCalendarView.monthScrollListener = {updateTitle()}
+        monthCalendarView.monthScrollListener = {updateMonthTitle()}
 //        binding.calendarView.monthScrollListener = { month->
 //            binding.monthYearText.text = month.yearMonth.displayText()
 //        }
@@ -218,40 +222,40 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
                 textView.setTextSize(18F)
             }
         }
-        weekCalendarView.weekScrollListener = { updateTitle() }
+        weekCalendarView.weekScrollListener = { updateMonthTitle() }
 
 
 
 
-        class MonthViewContainer(view: View) : ViewContainer(view) {
-//            val legendLayout = CalendarDayTitlesContainerBinding.bind(view).root
-            val titlesContainer = view.findViewById<ViewGroup>(R.id.titlesContainer)
-        }
-        // header: Mon|Tue|Wed|Thu|Fri|Sat|Sun
-        binding.calendarView.monthHeaderBinder =
-            object : MonthHeaderFooterBinder<MonthViewContainer>{
-
-                override fun create(view: View) = MonthViewContainer(view)
-                override fun bind(container: MonthViewContainer, data: CalendarMonth) {
-                    // Setup each header day text if we have not done that already.
-                    if (container.titlesContainer.tag == null) {
-
-                        container.titlesContainer.tag = data.yearMonth // 当前月
-                        container.titlesContainer.children.map { it as TextView }
-                            .forEachIndexed { index, tv ->
-                                val dayOfWeek = daysOfWeek[index]
-                                val title = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
-                                tv.text = title
-                                tv.setTextColorRes(R.color.white)
-
-                            }
-                    }
-                }
-
-            }
+//        class MonthViewContainer(view: View) : ViewContainer(view) {
+////            val legendLayout = CalendarDayTitlesContainerBinding.bind(view).root
+//            val titlesContainer = view.findViewById<ViewGroup>(R.id.titlesContainer)
+//        }
+//        // header: Mon|Tue|Wed|Thu|Fri|Sat|Sun
+//        binding.calendarView.monthHeaderBinder =
+//            object : MonthHeaderFooterBinder<MonthViewContainer>{
+//
+//                override fun create(view: View) = MonthViewContainer(view)
+//                override fun bind(container: MonthViewContainer, data: CalendarMonth) {
+//                    // Setup each header day text if we have not done that already.
+//                    if (container.titlesContainer.tag == null) {
+//
+//                        container.titlesContainer.tag = data.yearMonth // 当前月
+//                        container.titlesContainer.children.map { it as TextView }
+//                            .forEachIndexed { index, tv ->
+//                                val dayOfWeek = daysOfWeek[index]
+//                                val title = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+//                                tv.text = title
+//                                tv.setTextColorRes(R.color.white)
+//
+//                            }
+//                    }
+//                }
+//
+//            }
 
     }
-    private fun updateTitle() { // 更新月份
+    private fun updateMonthTitle() { // 更新月份
         val isMonthMode = !binding.weekModeCheckBox.isChecked
         if (isMonthMode) {
             val month = monthCalendarView.findFirstVisibleMonth()?.yearMonth ?: return

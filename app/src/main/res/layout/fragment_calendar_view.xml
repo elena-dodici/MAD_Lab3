@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
                 android:textColor="@color/white"
-                android:textSize="32sp"
+                android:textSize="26sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/yearText"
                 app:layout_constraintStart_toEndOf="@+id/previousMonthImage"
@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="26sp"
+                android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/nextMonthImage"
                 app:layout_constraintStart_toEndOf="@+id/monthText"
@@ -72,7 +72,13 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+        <include
+            android:id="@+id/legendLayout"
+            layout="@layout/calendar_day_titles_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
     </com.google.android.material.appbar.AppBarLayout>
     <FrameLayout
         android:layout_width="match_parent"
@@ -85,9 +91,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cv_dayViewResource="@layout/calendar_day_layout"
-            app:cv_monthHeaderResource="@layout/calendar_day_titles_container"
             app:cv_outDateStyle="endOfGrid"
         />
+<!--            app:cv_monthHeaderResource="@layout/calendar_day_titles_container"-->
         <com.kizitonwose.calendar.view.WeekCalendarView
             android:id="@+id/weekCalendar"
             android:layout_width="match_parent"
