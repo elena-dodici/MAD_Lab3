@@ -16,7 +16,7 @@ class MyReservationActivity : AppCompatActivity() {
         println("MyReservationActivity")
         if(savedInstanceState == null){
             supportFragmentManager.beginTransaction()
-            .add(R.id.fragmentContainerView,Calender(),Calender.javaClass.simpleName)
+            .add(R.id.fragmentContainerView,Calendar(),Calendar.javaClass.simpleName)
 //                .replace(R.id.fragmentContainerView,Calender(),Calender.javaClass.simpleName )
                 .commit()
         }

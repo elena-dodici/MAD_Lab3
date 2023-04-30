@@ -2,6 +2,6 @@ package com.example.lab3
 
 import androidx.lifecycle.ViewModel
 
-class CalenderViewModel : ViewModel() {
+class CalendarViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 }
