@@ -8,7 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
+import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.core.view.children
@@ -21,6 +24,7 @@ import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.CalendarMonth
 import com.kizitonwose.calendar.core.DayPosition
 import com.kizitonwose.calendar.core.WeekDay
+import com.kizitonwose.calendar.core.WeekDayPosition
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.core.nextMonth
@@ -33,27 +37,22 @@ import com.kizitonwose.calendar.view.CalendarView
 import com.kizitonwose.calendar.view.WeekCalendarView
 import com.kizitonwose.calendar.view.WeekDayBinder
 import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.*
 
 class Calendar : Fragment(R.layout.fragment_calendar_view) {
-    private lateinit var binding: FragmentCalendarViewBinding
-    private val monthCalendarView: CalendarView get() = binding.calendarView
-    private val weekCalendarView: WeekCalendarView get() = binding.weekCalendar
-
+//    override val toolbar: Toolbar?
+//        get() = null
     companion object {
         fun newInstance() = Calendar()
     }
-
     private lateinit var viewModel: CalendarViewModel
-
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        return inflater.inflate(R.layout.fragment_calender_view, container, false)
-//    }
+    private lateinit var binding: FragmentCalendarViewBinding
+    private val monthCalendarView: CalendarView get() = binding.calendarView
+    private val weekCalendarView: WeekCalendarView get() = binding.weekCalendar
+    private var selectedDate:LocalDate? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCalendarViewBinding.bind(view)
@@ -72,7 +71,7 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
                 textView.setTextColorRes(R.color.example_1_white)
             }
 
-    binding.calendarView.setup(startMonth, endMonth, daysOfWeek.first())
+        binding.calendarView.setup(startMonth, endMonth, daysOfWeek.first())
         binding.calendarView.scrollToMonth(currentMonth)
         weekCalendarView.setup(startMonth.atStartOfMonth(), endMonth.atEndOfMonth(), daysOfWeek.first())
         weekCalendarView.scrollToWeek(currentMonth.atStartOfMonth())
@@ -157,7 +156,11 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
             animator.start()
         }
     }
-
+    private fun updateAdapterForDate(date: LocalDate?) {
+//        flightsAdapter.flights.clear()
+//        flightsAdapter.flights.addAll(flights[date].orEmpty())
+//        flightsAdapter.notifyDataSetChanged()
+    }
     private fun configureBinders(daysOfWeek: List<DayOfWeek>) {
         // set up month calender
         class DayViewContainer(view: View): ViewContainer(view) {
@@ -166,8 +169,10 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
 
 //            val textView = view.findViewById<TextView>(R.id.exFiveDayText)
             init {
-                view.setOnClickListener{
-                    println("Click!")
+                view.setOnClickListener{ // click one day
+                    if(day.position == DayPosition.MonthDate){ // 当前月的才能选
+                        dateClicked(date = day.date)
+                    }
                 }
             }
         }
@@ -181,19 +186,19 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
                 val context = container.binding.root.context
                 val textView = container.binding.dayText
                 val layout = container.binding.dayLayout
-                textView.text = data.date.dayOfMonth.toString()
+                bindDate(data.date, textView, layout, data.position == DayPosition.MonthDate)
+//                textView.text = data.date.dayOfMonth.toString()
                 if (data.position == DayPosition.MonthDate) {
                     textView.setTextColor(Color.WHITE)
-                    textView.setTextSize(18F)
+                    textView.setTextSize(18f)
                 } else {
                     textView.setTextColor(Color.GRAY)
-                    textView.setTextSize(15F)
-
+                    textView.setTextSize(16f)
                 }
             }
         }
         // 显示当前月 update title
-        monthCalendarView.monthScrollListener = {updateMonthTitle()}
+        monthCalendarView.monthScrollListener = {updateMonthTitle();clearBackground()}
 //        binding.calendarView.monthScrollListener = { month->
 //            binding.monthYearText.text = month.yearMonth.displayText()
 //        }
@@ -201,8 +206,11 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
             lateinit var day:WeekDay
             val binding = CalendarDayLayoutBinding.bind(view)
             init {
-                view.setOnClickListener{
-                    println("Click!")
+                view.setOnClickListener{ // click one day
+                    if (day.position == WeekDayPosition.RangeDate){
+                        dateClicked(date = day.date)
+                    }
+
                 }
             }
         }
@@ -217,15 +225,13 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
                 val context = container.binding.root.context
                 val textView = container.binding.dayText
                 val layout = container.binding.dayLayout
-                textView.text = data.date.dayOfMonth.toString()
+                bindDate(data.date, textView, layout, data.position == WeekDayPosition.RangeDate)
+//                textView.text = data.date.dayOfMonth.toString()
                 textView.setTextColor(Color.WHITE)
-                textView.setTextSize(18F)
+                textView.setTextSize(18f)
             }
         }
-        weekCalendarView.weekScrollListener = { updateMonthTitle() }
-
-
-
+        weekCalendarView.weekScrollListener = { updateMonthTitle();clearBackground() }
 
 //        class MonthViewContainer(view: View) : ViewContainer(view) {
 ////            val legendLayout = CalendarDayTitlesContainerBinding.bind(view).root
@@ -255,7 +261,52 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
 //            }
 
     }
+    private fun bindDate(date:LocalDate, textView: TextView, layout:ConstraintLayout, isSelectable:Boolean){
+        textView.text = date.dayOfMonth.toString()
+        if (isSelectable){
+//                layout.setBackgroundResource(
+//                    if (selectedDate == date){
+//                        R.drawable.selected_bg
+//                    }
+//                    else 0
+//                )
+            if (selectedDate == date){
+                layout.setBackgroundResource(R.drawable.selected_bg)
+            }
+            else{
+                layout.background = null
+            }
+        }else{
+            layout.background = null
+        }
+
+    }
+    private fun dateClicked(date: LocalDate) {
+            if(selectedDate != date){
+                val oldDate = selectedDate
+                selectedDate = date
+//                        println(day.date) // day.date就是点击的日期
+
+                monthCalendarView.notifyDateChanged(date)
+                weekCalendarView.notifyDateChanged(date)
+                oldDate?.let {
+                    monthCalendarView.notifyDateChanged(it)
+                    weekCalendarView.notifyDateChanged(it)
+
+                }
+                updateAdapterForDate(date)
+            }
+//        if (selectedDates.contains(date)) {
+//            selectedDates.remove(date)
+//        } else {
+//            selectedDates.add(date)
+//        }
+//        // Refresh both calendar views..
+//        monthCalendarView.notifyDateChanged(date)
+//        weekCalendarView.notifyDateChanged(date)
+    }
     private fun updateMonthTitle() { // 更新月份
+
         val isMonthMode = !binding.weekModeCheckBox.isChecked
         if (isMonthMode) {
             val month = monthCalendarView.findFirstVisibleMonth()?.yearMonth ?: return
@@ -282,4 +333,15 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
             }
         }
     }
+    private fun clearBackground(){
+            selectedDate?.let {//切换mode的时候也会调用，但这时候不应该清除
+            // clear selection if we scroll to a new month/week
+            selectedDate = null
+            monthCalendarView.notifyDateChanged(it)
+            weekCalendarView.notifyDateChanged(it)
+            updateAdapterForDate(null)
+        }
+    }
 }
+
+
