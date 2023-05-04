@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 //            startActivity(intent)
             if(savedInstanceState == null){
                 supportFragmentManager.beginTransaction()
-                    .add(R.id.fragmentContainerView,Calendar(),Calendar.javaClass.simpleName)
+                    .replace(R.id.fragmentContainerView,Calendar(),Calendar.javaClass.simpleName)
 //                .replace(R.id.fragmentContainerView,Calender(),Calender.javaClass.simpleName )
                     .addToBackStack(Calendar.javaClass.simpleName)
                     .commit()
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         b2.setOnClickListener{
             if(savedInstanceState == null){
                 supportFragmentManager.beginTransaction()
-                    .add(R.id.fragmentContainerView,SearchFragment(),SearchFragment.javaClass.simpleName)
+                    .replace(R.id.fragmentContainerView,SearchFragment(),SearchFragment.javaClass.simpleName)
 //                .replace(R.id.fragmentContainerView,Calender(),Calender.javaClass.simpleName )
                     .addToBackStack(Calendar.javaClass.simpleName)
                     .commit()
