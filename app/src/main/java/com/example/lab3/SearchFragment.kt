@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 
 
-class SearchFragment(override val titleRes: Int?) : BaseFragment(R.layout.fragment_search) {
+class SearchFragment() : BaseFragment(R.layout.fragment_search) {
     // TODO: Rename and change types of parameters
 
 
@@ -16,6 +16,8 @@ class SearchFragment(override val titleRes: Int?) : BaseFragment(R.layout.fragme
 
     }
 
-
+    companion object {
+        fun newInstance() = SearchFragment()
+    }
 
 }
