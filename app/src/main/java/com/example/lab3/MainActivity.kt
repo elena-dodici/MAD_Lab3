@@ -44,8 +44,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
         b2.setOnClickListener{
-            val intent = Intent(this, SearchActivity::class.java)
-            startActivity(intent)
+            if(savedInstanceState == null){
+                supportFragmentManager.beginTransaction()
+                    .add(R.id.fragmentContainerView,SearchFragment(),SearchFragment.javaClass.simpleName)
+//                .replace(R.id.fragmentContainerView,Calender(),Calender.javaClass.simpleName )
+                    .addToBackStack(Calendar.javaClass.simpleName)
+                    .commit()
+            }
         }
     }
 

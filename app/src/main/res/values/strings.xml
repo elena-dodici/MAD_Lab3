@@ -2,5 +2,7 @@
     <string name="app_name">Lab3</string>
     <string name="week_mode">Week mode</string>
     <string name="activity_title_view">Calendar View</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">This is search fragment</string>
 
 </resources>
