@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,9 @@ import androidx.core.view.children
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.lab3.databinding.CalendarDayLayoutBinding
 import com.example.lab3.databinding.FragmentCalendarViewBinding
 import com.kizitonwose.calendar.core.CalendarDay
@@ -42,9 +46,67 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.*
 
-class Calendar : Fragment(R.layout.fragment_calendar_view) {
-//    override val toolbar: Toolbar?
-//        get() = null
+
+// textView根据有多少个ViewHolder自动被创建
+class MyViewHolder(v: View):RecyclerView.ViewHolder(v){
+    private val tv = v.findViewById<TextView>(R.id.item_text)
+    fun bind(s:String, pos:Int, onTap:(Int)->Unit){
+        tv.text = s
+        super.itemView.setOnClickListener{onTap(pos)}
+    }
+    fun unbind(){
+        super.itemView.setOnClickListener(null)
+    }
+}
+
+class MyAdapter(val l:List<String>):RecyclerView.Adapter<MyViewHolder>(){
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        // 被RecyclerView自动调用
+        val v = LayoutInflater.from(parent.context)
+            .inflate(viewType, parent, false)
+        return MyViewHolder(v)
+
+    }
+
+    override fun getItemCount(): Int { // how many elements in the list
+        return l.size
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.bind(l[position], position){
+            print(l[position])
+            println("$position")
+        }
+    }
+
+    override fun onViewRecycled(holder: MyViewHolder) {
+        holder.unbind()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+//        if (l[position].startsWith("Beta")) return R.layout.item2_layout
+//        else return R.layout.item_layout
+        return R.layout.item_layout
+    }
+
+}
+
+class Calendar : Fragment(R.layout.fragment_calendar_view), HasToolbar {
+
+    val l = listOf<String>(
+        "Alpha", "Beta", "Gamma", "Delta",
+        "Alpha2", "Beta2", "Gamma2", "Delta2",
+        "Alpha3", "Beta3", "Gamma3", "Delta3",
+        "Alpha4", "Beta4", "Gamma4", "Delta4",
+        "Alpha5", "Beta5", "Gamma5", "Delta5",
+        "Alpha6", "Beta6", "Gamma6", "Delta6",
+        "Alpha7", "Beta7", "Gamma7", "Delta7",
+        "Alpha8", "Beta8", "Gamma8", "Delta8",
+        "Alpha9", "Beta9", "Gamma9", "Delta9",
+    )
+
+    override val toolbar: Toolbar?
+        get() = null
     companion object {
         fun newInstance() = Calendar()
     }
@@ -57,12 +119,15 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCalendarViewBinding.bind(view)
 
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.adapter = MyAdapter(l)
+        recyclerView.layoutManager =  LinearLayoutManager(this.context, RecyclerView.VERTICAL,false )
 
         val currentMonth = YearMonth.now() // 2023-04
         val startMonth = currentMonth.minusMonths(100) //2014-12
         val endMonth = currentMonth.plusMonths(100) // 2031-08
-        val daysOfWeek = daysOfWeek(firstDayOfWeek = DayOfWeek.MONDAY)
-        configureBinders(daysOfWeek)
+        val daysOfWeek = daysOfWeek(firstDayOfWeek = DayOfWeek.SUNDAY)
+        configureBinders()
 //    static header: Mon|Tue|Wed|Thu|Fri|Sat|Sun
         binding.legendLayout.root.children
             .map { it as TextView }
@@ -161,7 +226,7 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
 //        flightsAdapter.flights.addAll(flights[date].orEmpty())
 //        flightsAdapter.notifyDataSetChanged()
     }
-    private fun configureBinders(daysOfWeek: List<DayOfWeek>) {
+    private fun configureBinders() {
         // set up month calender
         class DayViewContainer(view: View): ViewContainer(view) {
             lateinit var day :CalendarDay
@@ -190,10 +255,10 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
 //                textView.text = data.date.dayOfMonth.toString()
                 if (data.position == DayPosition.MonthDate) {
                     textView.setTextColor(Color.WHITE)
-                    textView.setTextSize(18f)
+//                    textView.setTextSize(16f)
                 } else {
                     textView.setTextColor(Color.GRAY)
-                    textView.setTextSize(16f)
+//                    textView.setTextSize(16f)
                 }
             }
         }
@@ -228,48 +293,17 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
                 bindDate(data.date, textView, layout, data.position == WeekDayPosition.RangeDate)
 //                textView.text = data.date.dayOfMonth.toString()
                 textView.setTextColor(Color.WHITE)
-                textView.setTextSize(18f)
+//                textView.setTextSize(16f)
             }
         }
         weekCalendarView.weekScrollListener = { updateMonthTitle();clearBackground() }
 
-//        class MonthViewContainer(view: View) : ViewContainer(view) {
-////            val legendLayout = CalendarDayTitlesContainerBinding.bind(view).root
-//            val titlesContainer = view.findViewById<ViewGroup>(R.id.titlesContainer)
-//        }
-//        // header: Mon|Tue|Wed|Thu|Fri|Sat|Sun
-//        binding.calendarView.monthHeaderBinder =
-//            object : MonthHeaderFooterBinder<MonthViewContainer>{
-//
-//                override fun create(view: View) = MonthViewContainer(view)
-//                override fun bind(container: MonthViewContainer, data: CalendarMonth) {
-//                    // Setup each header day text if we have not done that already.
-//                    if (container.titlesContainer.tag == null) {
-//
-//                        container.titlesContainer.tag = data.yearMonth // 当前月
-//                        container.titlesContainer.children.map { it as TextView }
-//                            .forEachIndexed { index, tv ->
-//                                val dayOfWeek = daysOfWeek[index]
-//                                val title = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
-//                                tv.text = title
-//                                tv.setTextColorRes(R.color.white)
-//
-//                            }
-//                    }
-//                }
-//
-//            }
 
     }
     private fun bindDate(date:LocalDate, textView: TextView, layout:ConstraintLayout, isSelectable:Boolean){
         textView.text = date.dayOfMonth.toString()
         if (isSelectable){
-//                layout.setBackgroundResource(
-//                    if (selectedDate == date){
-//                        R.drawable.selected_bg
-//                    }
-//                    else 0
-//                )
+
             if (selectedDate == date){
                 layout.setBackgroundResource(R.drawable.selected_bg)
             }
@@ -286,7 +320,7 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
                 val oldDate = selectedDate
                 selectedDate = date
 //                        println(day.date) // day.date就是点击的日期
-
+//        Refresh both calendar views..
                 monthCalendarView.notifyDateChanged(date)
                 weekCalendarView.notifyDateChanged(date)
                 oldDate?.let {
@@ -296,14 +330,7 @@ class Calendar : Fragment(R.layout.fragment_calendar_view) {
                 }
                 updateAdapterForDate(date)
             }
-//        if (selectedDates.contains(date)) {
-//            selectedDates.remove(date)
-//        } else {
-//            selectedDates.add(date)
-//        }
-//        // Refresh both calendar views..
-//        monthCalendarView.notifyDateChanged(date)
-//        weekCalendarView.notifyDateChanged(date)
+
     }
     private fun updateMonthTitle() { // 更新月份
 

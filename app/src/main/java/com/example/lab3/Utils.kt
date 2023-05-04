@@ -1,6 +1,7 @@
 package com.example.lab3
 
 import android.content.Context
+import android.view.View
 import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
@@ -10,6 +11,17 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 
+fun View.makeVisible() {
+    visibility = View.VISIBLE
+}
+
+fun View.makeInVisible() {
+    visibility = View.INVISIBLE
+}
+
+fun View.makeGone() {
+    visibility = View.GONE
+}
 fun YearMonth.displayText(short: Boolean = false): String {
     return "${this.month.displayText(short = short)} ${this.year}"
 }

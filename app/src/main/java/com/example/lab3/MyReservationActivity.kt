@@ -3,6 +3,7 @@ package com.example.lab3
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.fragment.NavHostFragment
+import com.example.lab3.databinding.ActivityMyReservationBinding
 
 class MyReservationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,13 +14,12 @@ class MyReservationActivity : AppCompatActivity() {
 //            .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
 //                ).navController
 //        navController.navigate(id)
-        println("MyReservationActivity")
-        if(savedInstanceState == null){
-            supportFragmentManager.beginTransaction()
-            .add(R.id.fragmentContainerView,Calendar(),Calendar.javaClass.simpleName)
-//                .replace(R.id.fragmentContainerView,Calender(),Calender.javaClass.simpleName )
-                .commit()
-        }
+
+//        if(savedInstanceState == null){
+//            supportFragmentManager.beginTransaction()
+//            .add(R.id.fragmentContainerView,Calendar(),Calendar.javaClass.simpleName)
+//                .commit()
+//        }
 
     }
 }

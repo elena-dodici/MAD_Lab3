@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Lab3</string>
     <string name="week_mode">Week mode</string>
+    <string name="activity_title_view">Calendar View</string>
+
 </resources>
