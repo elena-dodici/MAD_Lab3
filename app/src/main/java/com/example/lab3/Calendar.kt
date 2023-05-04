@@ -107,7 +107,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
     override val toolbar: Toolbar?
         get() = null
-    override val titleRes: Int? = null
+//    override val titleRes: Int? = null
     companion object {
         fun newInstance() = Calendar()
     }

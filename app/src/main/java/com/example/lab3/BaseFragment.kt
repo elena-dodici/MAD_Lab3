@@ -14,7 +14,7 @@ interface HasBackButton
 
 abstract class BaseFragment(@LayoutRes layoutRes: Int) : Fragment(layoutRes) {
 
-    abstract val titleRes: Int?
+//    abstract val titleRes: Int?
 
     val activityToolbar: Toolbar
         get() = (requireActivity() as MainActivity).binding.activityToolbar
@@ -28,7 +28,7 @@ abstract class BaseFragment(@LayoutRes layoutRes: Int) : Fragment(layoutRes) {
 
         val actionBar = (requireActivity() as AppCompatActivity).supportActionBar
         if (this is HasBackButton) {
-            actionBar?.title = if (titleRes != null) context?.getString(titleRes!!) else ""
+//            actionBar?.title = if (titleRes != null) context?.getString(titleRes!!) else ""
             actionBar?.setDisplayHomeAsUpEnabled(true)
         } else {
             actionBar?.setDisplayHomeAsUpEnabled(false)
