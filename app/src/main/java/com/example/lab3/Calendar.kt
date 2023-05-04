@@ -91,7 +91,7 @@ class MyAdapter(val l:List<String>):RecyclerView.Adapter<MyViewHolder>(){
 
 }
 
-class Calendar : Fragment(R.layout.fragment_calendar_view), HasToolbar {
+class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
     val l = listOf<String>(
         "Alpha", "Beta", "Gamma", "Delta",
@@ -107,6 +107,7 @@ class Calendar : Fragment(R.layout.fragment_calendar_view), HasToolbar {
 
     override val toolbar: Toolbar?
         get() = null
+    override val titleRes: Int? = null
     companion object {
         fun newInstance() = Calendar()
     }
