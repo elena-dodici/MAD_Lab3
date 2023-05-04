@@ -1,6 +1,7 @@
 package com.example.lab3
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.ColorRes
@@ -22,6 +23,8 @@ fun View.makeInVisible() {
 fun View.makeGone() {
     visibility = View.GONE
 }
+internal val Context.layoutInflater: LayoutInflater
+    get() = LayoutInflater.from(this)
 fun YearMonth.displayText(short: Boolean = false): String {
     return "${this.month.displayText(short = short)} ${this.year}"
 }

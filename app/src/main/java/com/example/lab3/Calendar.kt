@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab3.databinding.CalendarDayLayoutBinding
 import com.example.lab3.databinding.FragmentCalendarViewBinding
+import com.example.lab3.databinding.ItemLayoutBinding
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.CalendarMonth
 import com.kizitonwose.calendar.core.DayPosition
@@ -46,50 +47,79 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.*
 
+data class Event(val id: String, val text: String, val date: LocalDate)
+// 调用Adapter的时候传进去一个点击的回调函数
+class MyAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
+    inner class MyViewHolder(private val binding:ItemLayoutBinding):RecyclerView.ViewHolder(binding.root){
+        init {
+            itemView.setOnClickListener {
+                onClick(events[bindingAdapterPosition])
+                println(bindingAdapterPosition)
+            }
+        }
+        fun bind(event: Event){
+            binding.itemText.text = event.text
+        }
 
-// textView根据有多少个ViewHolder自动被创建
-class MyViewHolder(v: View):RecyclerView.ViewHolder(v){
-    private val tv = v.findViewById<TextView>(R.id.item_text)
-    fun bind(s:String, pos:Int, onTap:(Int)->Unit){
-        tv.text = s
-        super.itemView.setOnClickListener{onTap(pos)}
     }
-    fun unbind(){
-        super.itemView.setOnClickListener(null)
-    }
-}
-
-class MyAdapter(val l:List<String>):RecyclerView.Adapter<MyViewHolder>(){
+    val events = mutableListOf<Event>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        // 被RecyclerView自动调用
-        val v = LayoutInflater.from(parent.context)
-            .inflate(viewType, parent, false)
-        return MyViewHolder(v)
-
+        val b = ItemLayoutBinding.inflate(parent.context.layoutInflater, parent, false)
+        return MyViewHolder(b)
     }
 
-    override fun getItemCount(): Int { // how many elements in the list
-        return l.size
+    override fun getItemCount(): Int {
+        return events.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(l[position], position){
-            print(l[position])
-            println("$position")
-        }
+        holder.bind(events[position])
     }
-
-    override fun onViewRecycled(holder: MyViewHolder) {
-        holder.unbind()
-    }
-
-    override fun getItemViewType(position: Int): Int {
-//        if (l[position].startsWith("Beta")) return R.layout.item2_layout
-//        else return R.layout.item_layout
-        return R.layout.item_layout
-    }
-
 }
+
+// textView根据有多少个ViewHolder自动被创建
+//class MyViewHolder(v: View):RecyclerView.ViewHolder(v){
+//    private val tv = v.findViewById<TextView>(R.id.item_text)
+//    fun bind(s:String, pos:Int, onTap:(Int)->Unit){
+//        tv.text = s
+//        super.itemView.setOnClickListener{onTap(pos)}
+//    }
+//    fun unbind(){
+//        super.itemView.setOnClickListener(null)
+//    }
+//}
+
+//class MyAdapter(val l:List<String>):RecyclerView.Adapter<MyViewHolder>(){
+//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+//        // 被RecyclerView自动调用
+//        val v = LayoutInflater.from(parent.context)
+//            .inflate(viewType, parent, false)
+//        return MyViewHolder(v)
+//
+//    }
+//
+//    override fun getItemCount(): Int { // how many elements in the list
+//        return l.size
+//    }
+//
+//    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+//        holder.bind(l[position], position){
+//            print(l[position])
+//            println("$position")
+//        }
+//    }
+//
+//    override fun onViewRecycled(holder: MyViewHolder) {
+//        holder.unbind()
+//    }
+//
+//    override fun getItemViewType(position: Int): Int {
+////        if (l[position].startsWith("Beta")) return R.layout.item2_layout
+////        else return R.layout.item_layout
+//        return R.layout.item_layout
+//    }
+//
+//}
 
 class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
@@ -104,6 +134,12 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         "Alpha8", "Beta8", "Gamma8", "Delta8",
         "Alpha9", "Beta9", "Gamma9", "Delta9",
     )
+    private val events = mutableMapOf<LocalDate, List<Event>>()
+
+    val eventsAdapter = MyAdapter{
+        // 点击下面recyclerView调用的事件
+        println(it.text)
+    }
 
     override val toolbar: Toolbar?
         get() = null
@@ -116,12 +152,26 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     private val monthCalendarView: CalendarView get() = binding.calendarView
     private val weekCalendarView: WeekCalendarView get() = binding.weekCalendar
     private var selectedDate:LocalDate? = null
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // 在某个日期下面 初始化 几个reservation
+        val may1 = LocalDate.of(2023,5,1)
+        val may2 = LocalDate.of(2023,5,2)
+        events[may1] = events[may1].orEmpty().plus(Event(UUID.randomUUID().toString(), "ahahah", may1))
+        events[may2] = events[may2].orEmpty().plus(Event(UUID.randomUUID().toString(), "啦啦啦", may2))
+        updateAdapterForDate(may1)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCalendarViewBinding.bind(view)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.adapter = MyAdapter(l)
+//        recyclerView.adapter = MyAdapter(l)
+        recyclerView.adapter = eventsAdapter
         recyclerView.layoutManager =  LinearLayoutManager(this.context, RecyclerView.VERTICAL,false )
 
         val currentMonth = YearMonth.now() // 2023-04
@@ -226,6 +276,12 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 //        flightsAdapter.flights.clear()
 //        flightsAdapter.flights.addAll(flights[date].orEmpty())
 //        flightsAdapter.notifyDataSetChanged()
+        eventsAdapter.apply {
+            events.clear()
+            events.addAll(this@Calendar.events[date].orEmpty())
+            notifyDataSetChanged()
+        }
+
     }
     private fun configureBinders() {
         // set up month calender
