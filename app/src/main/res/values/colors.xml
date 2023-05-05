@@ -34,4 +34,10 @@
     <color name="example_5_text_grey_light">#616161</color>
     <color name="example_1_white">#D9FFFFFF</color>
 
+    <color name="bottom_nav_background">#FEDBD0</color>
+    <color name="bottom_nav_item">#8C706D</color>
+    <color name="bottom_nav_selected_item">#220006</color>
+    <color name="fragment_bg_color">#FDF8F4</color>
+
+
 </resources>
