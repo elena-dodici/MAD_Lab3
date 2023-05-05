@@ -8,36 +8,41 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="1dp"
-        android:background="@color/example_5_item_view_bg_color">
+        android:layout_margin="2dp"
+        >
 
         <TextView
             android:id="@+id/dayText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
             android:gravity="center"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="16sp"
             tools:text="24" />
-
         <View
-            android:id="@+id/exFiveDayFlightTop"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="18dp"
-            android:background="@color/blue_grey_700" />
+            android:id="@+id/DotView"
+            android:layout_width="4.5dp"
+            android:layout_height="4.5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@drawable/bluedot" />
+<!--        <View-->
+<!--            android:id="@+id/exFiveDayFlightTop"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="5dp"-->
+<!--            android:layout_gravity="bottom"-->
+<!--            android:layout_marginBottom="18dp"-->
+<!--            android:background="@color/blue_grey_700" />-->
 
-        <View
-            android:id="@+id/exFiveDayFlightBottom"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="8dp"
-            android:background="@color/brown_700" />
+<!--        <View-->
+<!--            android:id="@+id/exFiveDayFlightBottom"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="5dp"-->
+<!--            android:layout_gravity="bottom"-->
+<!--            android:layout_marginBottom="8dp"-->
+<!--            android:background="@color/brown_700" />-->
 
     </FrameLayout>
 

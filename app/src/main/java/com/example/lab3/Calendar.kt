@@ -52,9 +52,9 @@ data class Event(val id: String, val text: String, val date: LocalDate)
 class MyAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
     inner class MyViewHolder(private val binding:ItemLayoutBinding):RecyclerView.ViewHolder(binding.root){
         init {
-            itemView.setOnClickListener {
+            itemView.setOnClickListener { // 点击具体某个reservation时调用
                 onClick(events[bindingAdapterPosition])
-                println(bindingAdapterPosition)
+//                println(bindingAdapterPosition)
             }
         }
         fun bind(event: Event){
@@ -123,17 +123,7 @@ class MyAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<MyAdapter.MyV
 
 class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
-    val l = listOf<String>(
-        "Alpha", "Beta", "Gamma", "Delta",
-        "Alpha2", "Beta2", "Gamma2", "Delta2",
-        "Alpha3", "Beta3", "Gamma3", "Delta3",
-        "Alpha4", "Beta4", "Gamma4", "Delta4",
-        "Alpha5", "Beta5", "Gamma5", "Delta5",
-        "Alpha6", "Beta6", "Gamma6", "Delta6",
-        "Alpha7", "Beta7", "Gamma7", "Delta7",
-        "Alpha8", "Beta8", "Gamma8", "Delta8",
-        "Alpha9", "Beta9", "Gamma9", "Delta9",
-    )
+
     private val events = mutableMapOf<LocalDate, List<Event>>()
 
     val eventsAdapter = MyAdapter{
@@ -311,7 +301,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                 bindDate(data.date, textView, layout, data.position == DayPosition.MonthDate)
 //                textView.text = data.date.dayOfMonth.toString()
                 if (data.position == DayPosition.MonthDate) {
-                    textView.setTextColor(Color.WHITE)
+                    textView.setTextColor(Color.BLACK)
 //                    textView.setTextSize(16f)
                 } else {
                     textView.setTextColor(Color.GRAY)

@@ -10,12 +10,12 @@
         android:id="@+id/item_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:text="text"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E91E63" />
+        android:background="@color/teal_700" />
 </LinearLayout>

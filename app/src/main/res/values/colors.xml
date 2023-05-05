@@ -9,7 +9,8 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="colorAccent">#FF4081</color>
-
+    <color name="toolbar_color">#607D8B</color>
+    <color name="deeper_toolbar_color">#5A7481</color>
     <color name="red">#f00</color>
     <color name="blue">#009de0</color>
     <color name="off_white">#f1f5f7</color>
