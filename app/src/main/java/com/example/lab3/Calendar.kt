@@ -148,11 +148,11 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         savedInstanceState: Bundle?
     ): View? {
         // 在某个日期下面 初始化 几个reservation
-        val may1 = LocalDate.of(2023,5,1)
+        val may6 = LocalDate.of(2023,5,6)
         val may2 = LocalDate.of(2023,5,2)
-        events[may1] = events[may1].orEmpty().plus(Event(UUID.randomUUID().toString(), "ahahah", may1))
+        events[may6] = events[may6].orEmpty().plus(Event(UUID.randomUUID().toString(), "ahahah", may6))
         events[may2] = events[may2].orEmpty().plus(Event(UUID.randomUUID().toString(), "啦啦啦", may2))
-        updateAdapterForDate(may1)
+//        updateAdapterForDate(may6)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -298,7 +298,8 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                 val context = container.binding.root.context
                 val textView = container.binding.dayText
                 val layout = container.binding.dayLayout
-                bindDate(data.date, textView, layout, data.position == DayPosition.MonthDate)
+                val dotView = container.binding.DotView
+                bindDate(data.date, textView, dotView, layout, data.position == DayPosition.MonthDate)
 //                textView.text = data.date.dayOfMonth.toString()
                 if (data.position == DayPosition.MonthDate) {
                     textView.setTextColor(Color.BLACK)
@@ -337,9 +338,10 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                 val context = container.binding.root.context
                 val textView = container.binding.dayText
                 val layout = container.binding.dayLayout
-                bindDate(data.date, textView, layout, data.position == WeekDayPosition.RangeDate)
+                val dotView = container.binding.DotView
+                bindDate(data.date, textView, dotView, layout, data.position == WeekDayPosition.RangeDate)
 //                textView.text = data.date.dayOfMonth.toString()
-                textView.setTextColor(Color.WHITE)
+                textView.setTextColor(Color.BLACK)
 //                textView.setTextSize(16f)
             }
         }
@@ -347,18 +349,27 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
 
     }
-    private fun bindDate(date:LocalDate, textView: TextView, layout:ConstraintLayout, isSelectable:Boolean){
+    private fun bindDate(date:LocalDate, textView: TextView, dotView:View, layout:ConstraintLayout, isSelectable:Boolean){
         textView.text = date.dayOfMonth.toString()
         if (isSelectable){
 
-            if (selectedDate == date){
-                layout.setBackgroundResource(R.drawable.selected_bg)
+            if (selectedDate == date){ // 选择的日期
+                textView.setTextColorRes(R.color.blue)
+                textView.setBackgroundResource(R.drawable.selected_bg)
+                dotView.makeInVisible()
+//                layout.setBackgroundResource(R.drawable.selected_bg)
             }
             else{
-                layout.background = null
+                textView.setTextColorRes(R.color.black)
+
+                textView.background = null
+                dotView.isVisible = events[date].orEmpty().isNotEmpty()
+
             }
         }else{
-            layout.background = null
+            textView.background = null
+            dotView.makeInVisible()
+
         }
 
     }
