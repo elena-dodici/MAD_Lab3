@@ -5,15 +5,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.example.lab3.database.AppDatabase
+import com.example.lab3.database.entity.Court
+import com.example.lab3.database.entity.CourtTime
+import com.example.lab3.database.entity.Reservation
 import com.example.lab3.database.entity.User
 import com.example.lab3.databinding.ActivityMainBinding
 import com.example.lab3.databinding.ActivityMyReservationBinding
+import java.sql.Date
+import java.sql.Time
+import java.time.LocalDate
 
 class MainActivity : AppCompatActivity() {
     internal lateinit var binding: ActivityMainBinding
 
     lateinit var db:AppDatabase
 //    lateinit var adapter:MainAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,12 +29,14 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.activityToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-//        db = AppDatabase.getDatabase(application)
-//        val u = User(1,"abc","bcd","1234")
-//        db.userDao().save(u)
+        db = AppDatabase.getDatabase(application)
+//        initDatabase(db) // add some initial data
 //        val a = db.userDao().getUserById(1)
-//        val a = db.userDao().getAll()
-//        println(">>>>>>>>>> ${a.value}")
+//        val a = db.userDao().getAllUsers()
+//        val a = db.courtTimeDao().getAllTCourtTimesByCourtIdTest(1)
+//        val a = db.reservationDao().getReservationById(1)
+//        println(">>>>>>>>>> ${a} <<<<<<<<<")
+
 
         val b1 = findViewById<Button>(R.id.button1)
         val b2 = findViewById<Button>(R.id.button2)
@@ -53,5 +62,102 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+    private fun initDatabase(db:AppDatabase){
+//        var db = AppDatabase.getDatabase(application)
+//        build data
+        val users = listOf<User>(
+            User("aaa","aaa","222222"),
+            User("bbb","bbb","222222"),
+            User("ccc","ccc","222222"),
+        )
+        val courts = listOf<Court>(
+            Court("Court_1","qaz","basketball"),
+            Court("Court_2","wsx","running"),
+            Court("Court_3","edc","swimming"),
+            Court("Court_4","rfv","pingpong"),
+            Court("Court_5","rrv","tennis"),
+        )
+        val ct = listOf<CourtTime>(
+            CourtTime(1, Time(9,0,0),Time(10,0,0)),
+            CourtTime(1, Time(10,0,0),Time(11,0,0)),
+            CourtTime(1, Time(11,0,0),Time(12,0,0)),
+            CourtTime(1, Time(12,0,0),Time(13,0,0)),
+            CourtTime(1, Time(13,0,0),Time(14,0,0)),
+            CourtTime(1, Time(14,0,0),Time(15,0,0)),
+            CourtTime(1, Time(15,0,0),Time(16,0,0)),
+            CourtTime(1, Time(16,0,0),Time(17,0,0)),
+            CourtTime(1, Time(17,0,0),Time(18,0,0)),
+            CourtTime(1, Time(18,0,0),Time(19,0,0)),
 
+            CourtTime(2, Time(9,0,0),Time(10,0,0)),
+            CourtTime(2, Time(10,0,0),Time(11,0,0)),
+            CourtTime(2, Time(11,0,0),Time(12,0,0)),
+            CourtTime(2, Time(12,0,0),Time(13,0,0)),
+            CourtTime(2, Time(13,0,0),Time(14,0,0)),
+            CourtTime(2, Time(14,0,0),Time(15,0,0)),
+            CourtTime(2, Time(15,0,0),Time(16,0,0)),
+            CourtTime(2, Time(16,0,0),Time(17,0,0)),
+            CourtTime(2, Time(17,0,0),Time(18,0,0)),
+            CourtTime(2, Time(18,0,0),Time(19,0,0)),
+
+            CourtTime(3, Time(9,0,0),Time(10,0,0)),
+            CourtTime(3, Time(10,0,0),Time(11,0,0)),
+            CourtTime(3, Time(11,0,0),Time(12,0,0)),
+            CourtTime(3, Time(12,0,0),Time(13,0,0)),
+            CourtTime(3, Time(13,0,0),Time(14,0,0)),
+            CourtTime(3, Time(14,0,0),Time(15,0,0)),
+            CourtTime(3, Time(15,0,0),Time(16,0,0)),
+            CourtTime(3, Time(16,0,0),Time(17,0,0)),
+            CourtTime(3, Time(17,0,0),Time(18,0,0)),
+            CourtTime(3, Time(18,0,0),Time(19,0,0)),
+
+            CourtTime(4, Time(9,0,0),Time(10,0,0)),
+            CourtTime(4, Time(10,0,0),Time(11,0,0)),
+            CourtTime(4, Time(11,0,0),Time(12,0,0)),
+            CourtTime(4, Time(12,0,0),Time(13,0,0)),
+            CourtTime(4, Time(13,0,0),Time(14,0,0)),
+            CourtTime(4, Time(14,0,0),Time(15,0,0)),
+            CourtTime(4, Time(15,0,0),Time(16,0,0)),
+            CourtTime(4, Time(16,0,0),Time(17,0,0)),
+            CourtTime(4, Time(17,0,0),Time(18,0,0)),
+            CourtTime(4, Time(18,0,0),Time(19,0,0)),
+
+            CourtTime(5, Time(9,0,0),Time(10,0,0)),
+            CourtTime(5, Time(10,0,0),Time(11,0,0)),
+            CourtTime(5, Time(11,0,0),Time(12,0,0)),
+            CourtTime(5, Time(12,0,0),Time(13,0,0)),
+            CourtTime(5, Time(13,0,0),Time(14,0,0)),
+            CourtTime(5, Time(14,0,0),Time(15,0,0)),
+            CourtTime(5, Time(15,0,0),Time(16,0,0)),
+            CourtTime(5, Time(16,0,0),Time(17,0,0)),
+            CourtTime(5, Time(17,0,0),Time(18,0,0)),
+            CourtTime(5, Time(18,0,0),Time(19,0,0)),
+        )
+
+        val reservations = listOf<Reservation>(
+            Reservation(1, 1, 0, LocalDate.of(2023,5,1),"aaa"),
+            Reservation(2, 1, 0, LocalDate.of(2023,5,4),"aaa"),
+            Reservation(3, 1, 0, LocalDate.of(2023,5,1),"aaa"),
+            Reservation(11, 1, 0, LocalDate.of(2023,5,1),"aaa"),
+            Reservation(12, 1, 0, LocalDate.of(2023,5,6),"aaa"),
+            Reservation(13, 1, 0, LocalDate.of(2023,5,1),"aaa"),
+            Reservation(21, 1, 0, LocalDate.of(2023,4,23),"aaa"),
+            Reservation(22, 1, 0, LocalDate.of(2023,5,1),"aaa"),
+            Reservation(23, 1, 0, LocalDate.of(2023,5,4),"aaa"),
+        )
+
+//        insert data
+        for ( u in users){
+            db.userDao().addUser(u)
+        }
+        for ( c in courts){
+            db.courtDao().addCourt(c)
+        }
+        for (c in ct){
+            db.courtTimeDao().addCourtTime(c)
+        }
+        for (r in reservations){
+            db.reservationDao().addReservation(r)
+        }
+    }
 }

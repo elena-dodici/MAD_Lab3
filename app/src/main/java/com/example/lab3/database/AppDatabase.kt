@@ -14,9 +14,6 @@ import com.example.lab3.database.DAO.ReservationDAO
 @Database(entities = [CourtTime::class, Court::class, Reservation::class, User::class], version = 1, exportSchema = false)
 @TypeConverters(Converter::class)
 abstract class AppDatabase:RoomDatabase() {
-//    abstract fun CTDao():CTDao
-//    abstract fun CourtDao():CourtDao
-//    abstract fun ReservationDao():ReservationDao
     abstract fun userDao():UserDao
     abstract fun courtDao():CourtDao
     abstract fun reservationDao():ReservationDAO

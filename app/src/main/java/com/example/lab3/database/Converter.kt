@@ -1,17 +1,24 @@
 package com.example.lab3.database
 
 import androidx.room.TypeConverter
-import java.sql.Date
 import java.sql.Time
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+
 
 class Converter {
     @TypeConverter
-    fun Long2Date(value:Long?):Date?{
-        return value?.let{Date(it)}
+    fun Long2LocalDate(value:Long?):LocalDate?{
+        val zone = ZoneId.systemDefault()
+        return value?.let{
+            Instant.ofEpochSecond(it).atZone(zone).toLocalDate();
+        }
     }
     @TypeConverter
-    fun Date2Long(date:Date?):Long?{
-        return date?.time?.toLong()
+    fun LocalDate2Long(date:LocalDate?):Long?{
+        val zoneId: ZoneId = ZoneId.systemDefault()
+	    return date?.atStartOfDay(zoneId)?.toEpochSecond()
     }
 
     @TypeConverter
