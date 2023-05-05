@@ -13,6 +13,7 @@
     <color name="deeper_toolbar_color">#5A7481</color>
     <color name="red">#f00</color>
     <color name="blue">#009de0</color>
+    <color name="blue_light">#D2E3FC</color>
     <color name="off_white">#f1f5f7</color>
     <color name="blue_selector">#00aeea</color>
     <color name="red_negative_progress">#ff3333</color>
