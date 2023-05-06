@@ -46,30 +46,6 @@ class MainActivity : AppCompatActivity() {
 //        val a = db.reservationDao().getReservationById(1)
 //        println(">>>>>>>>>> ${a} <<<<<<<<<")
 
-
-//        val b1 = findViewById<Button>(R.id.button1)
-//        val b2 = findViewById<Button>(R.id.button2)
-//
-//        b1.setOnClickListener{
-////            val intent = Intent(this, MyReservationActivity::class.java)
-////            startActivity(intent)
-//            if(savedInstanceState == null){
-//                supportFragmentManager.beginTransaction()
-//                    .add(R.id.fragmentContainerView,Calendar(),Calendar.javaClass.simpleName)
-////                .replace(R.id.fragmentContainerView,Calender(),Calender.javaClass.simpleName )
-//                    .addToBackStack(Calendar.javaClass.simpleName)
-//                    .commit()
-//            }
-//        }
-//        b2.setOnClickListener{
-//            if(savedInstanceState == null){
-//                supportFragmentManager.beginTransaction()
-//                    .add(R.id.fragmentContainerView,SearchFragment(),SearchFragment.javaClass.simpleName)
-////                .replace(R.id.fragmentContainerView,Calender(),Calender.javaClass.simpleName )
-//                    .addToBackStack(Calendar.javaClass.simpleName)
-//                    .commit()
-//            }
-//        }
     }
     fun BottomNavigationView.uncheckAllItems() {
         menu.setGroupCheckable(0, true, false)

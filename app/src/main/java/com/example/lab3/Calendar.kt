@@ -19,6 +19,7 @@ import androidx.core.view.children
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -123,13 +124,7 @@ class MyAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<MyAdapter.MyV
 
 class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
-
-    private val events = mutableMapOf<LocalDate, List<Event>>()
-
-    val eventsAdapter = MyAdapter{
-        // 点击下面recyclerView调用的事件
-        println(it.text)
-    }
+    val vm by viewModels<CalendarViewModel>()
 
     override val toolbar: Toolbar?
         get() = null
@@ -137,11 +132,17 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     companion object {
         fun newInstance() = Calendar()
     }
-    private lateinit var viewModel: CalendarViewModel
     private lateinit var binding: FragmentCalendarViewBinding
     private val monthCalendarView: CalendarView get() = binding.calendarView
     private val weekCalendarView: WeekCalendarView get() = binding.weekCalendar
     private var selectedDate:LocalDate? = null
+
+    private val events = mutableMapOf<LocalDate, List<Event>>()
+
+    val eventsAdapter = MyAdapter{
+        // 点击下面recyclerView调用的事件
+        println(it.text)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -153,6 +154,18 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         events[may6] = events[may6].orEmpty().plus(Event(UUID.randomUUID().toString(), "ahahah", may6))
         events[may2] = events[may2].orEmpty().plus(Event(UUID.randomUUID().toString(), "啦啦啦", may2))
 //        updateAdapterForDate(may6)
+//        db =AppDatabase.getDatabase(this.requireActivity().application) // I DONT KNOW HOW TO GET DB FROM MAIN ACTIVITY DIRECTLY, SO I RECREATE A DB
+//        val a = db.reservationDao().getReservationById(1)
+//        println(">>>>>>>>>> ${a} <<<<<<<<<")
+//        val res = db.reservationDao().getReservationByUserId(1)
+//        应该在viewmodel里获取数据
+        // 将res放入event数组即可！
+        vm.getAllRes(this.requireActivity().application)
+        vm.reservations.observe(viewLifecycleOwner){
+            // 从viewmodel获取数据（viewmodel从数据库拿到数据）
+            println(it)
+        }
+
         return super.onCreateView(inflater, container, savedInstanceState)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -201,11 +214,6 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     }
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
     private val weekModeToggled = object :CompoundButton.OnCheckedChangeListener{
         override fun onCheckedChanged(buttonView: CompoundButton, monthToWeek: Boolean) {
@@ -262,10 +270,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
             animator.start()
         }
     }
-    private fun updateAdapterForDate(date: LocalDate?) {
-//        flightsAdapter.flights.clear()
-//        flightsAdapter.flights.addAll(flights[date].orEmpty())
-//        flightsAdapter.notifyDataSetChanged()
+    private fun updateAdapterForDate(date: LocalDate?) { // 在列表中将某个date的events显示出来
         eventsAdapter.apply {
             events.clear()
             events.addAll(this@Calendar.events[date].orEmpty())
@@ -386,7 +391,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                     weekCalendarView.notifyDateChanged(it)
 
                 }
-                updateAdapterForDate(date)
+                updateAdapterForDate(date) // 将当前date的events的内容显示在下面列表
             }
 
     }
