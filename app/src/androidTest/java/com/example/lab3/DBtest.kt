@@ -1,6 +1,7 @@
 package com.example.lab3
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -20,7 +21,12 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
+import java.sql.Time
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.temporal.TemporalQueries.localTime
 
+@Suppress("DEPRECATION")
 @RunWith(AndroidJUnit4::class)
 class DBtest {
     private lateinit var db: AppDatabase
@@ -150,7 +156,7 @@ class DBtest {
     @Test
     @Throws(Exception::class)
     fun addingNewCourtTime() {
-        val ct = CourtTime(1,"15:00","17:30");
+        val ct = CourtTime(1, Time(15,0,0),Time(17,30,0));
         courtTimeDAO.addCourtTime(ct);
         val ct1 = courtTimeDAO.getAllTCourtTimesByCourtIdTest(1);
         println(">>>>> ${ct1}")
@@ -160,9 +166,9 @@ class DBtest {
     @Test
     @Throws(Exception::class)
     fun addingMultipleNewCourtTimes() {
-        val ct1 = CourtTime( courtId = 1, startTime = "15:00", endTime = "17:30");
-        val ct2 = CourtTime( courtId = 1,startTime = "17:30",endTime ="18:30");
-        val ct3 = CourtTime( courtId = 1,startTime = "19:00",endTime = "21:30");
+        val ct1 = CourtTime( courtId = 1, startTime = Time(15,0,0), endTime = Time(17,30,0));
+        val ct2 = CourtTime( courtId = 1,startTime = Time(17,30,0),endTime =Time(18,30,0));
+        val ct3 = CourtTime( courtId = 1,startTime = Time(19,0,0),endTime = Time(21,30,0));
         val expectedList = listOf<CourtTime>(ct1,ct2,ct3);
         courtTimeDAO.addCourtTime(ct1);
         courtTimeDAO.addCourtTime(ct2);
@@ -175,7 +181,7 @@ class DBtest {
     @Test
     @Throws(Exception::class)
     fun deletingSingleCourtTime() {
-        val ct1 = CourtTime( courtId = 1, startTime = "15:00", endTime = "17:30");
+        val ct1 = CourtTime( courtId = 1, startTime = Time(15,0,0), endTime = Time(17,30,0));
         courtTimeDAO.addCourtTime(ct1);
         val ctToBeDeleted = courtTimeDAO.getAllTCourtTimesByCourtIdTest(1);
         courtTimeDAO.deleteCourtTime(ctToBeDeleted[0])
@@ -187,9 +193,9 @@ class DBtest {
     @Test
     @Throws(Exception::class)
     fun deletingMultipleCourtTimes() {
-        val ct1 = CourtTime( courtId = 1, startTime = "15:00", endTime = "17:30");
-        val ct2 = CourtTime( courtId = 1,startTime = "17:30",endTime ="18:30");
-        val ct3 = CourtTime( courtId = 1,startTime = "19:00",endTime = "21:30");
+        val ct1 = CourtTime( courtId = 1, startTime = Time(15,0,0), endTime = Time(17,30,0));
+        val ct2 = CourtTime( courtId = 1,startTime = Time(17,30,0),endTime =Time(18,30,0));
+        val ct3 = CourtTime( courtId = 1,startTime = Time(19,0,0),endTime = Time(21,30,0));
         courtTimeDAO.addCourtTime(ct1);
         courtTimeDAO.addCourtTime(ct2);
         courtTimeDAO.addCourtTime(ct3);
@@ -204,23 +210,65 @@ class DBtest {
 
     @Test
     @Throws(Exception::class)
+    fun gettingAllFreeCourtTimesOfCourt() {
+        // CREATE COURT 1 AND ADD ALL ITS SLOTS ( COURT TIMES)  //
+        courtDao.addCourt(Court("Court_1","qaz","basketball"))
+        val ct = listOf<CourtTime>(
+            CourtTime(1, Time(9,0,0),Time(10,0,0)),
+            CourtTime(1, Time(10,0,0),Time(11,0,0)),
+            CourtTime(1, Time(11,0,0),Time(12,0,0)),
+            CourtTime(1, Time(12,0,0),Time(13,0,0)),
+            CourtTime(1, Time(13,0,0),Time(14,0,0)),
+            CourtTime(1, Time(14,0,0),Time(15,0,0)),
+            CourtTime(1, Time(15,0,0),Time(16,0,0)),
+            CourtTime(1, Time(16,0,0),Time(17,0,0)),
+            CourtTime(1, Time(17,0,0),Time(18,0,0)),
+            CourtTime(1, Time(18,0,0),Time(19,0,0))
+        )
+        for (c in ct){
+            courtTimeDAO.addCourtTime(c)
+        }
+        // ADD SOME RESERVATIONS ON COURT1 (AND 2)//
+        val reservations = listOf<Reservation>(
+            Reservation(1, 1, 0, LocalDate.of(2023,5,1),"aaa"),
+            Reservation(2, 1, 0, LocalDate.of(2023,5,4),"aaa"),
+            Reservation(3, 1, 0, LocalDate.of(2023,5,1),"aaa"),
+
+            Reservation(11, 1, 0, LocalDate.of(2023,5,1),"aaa"),
+            Reservation(12, 1, 0, LocalDate.of(2023,5,6),"aaa"),
+            Reservation(13, 1, 0, LocalDate.of(2023,5,1),"aaa"),
+
+            )
+        for (r in reservations){
+            reservationDAO.addReservation(r)
+        }
+        // GET ALL FREE SLOTS OF COURT with ID = 1//
+        val freeSlots = courtDao.getAllCourtFreeSlotsByCourtIdTest(1)
+        println("free courtTimes : ${freeSlots}")
+        // 3 CourtTimes are used out of 10 - WE EXPECT freeCts TO CONTAIN 7 ELEMENTS //
+        println(">>>>> ${freeSlots.size}")
+        Assert.assertEquals(freeSlots.size , 7)
+    }
+
+    @Test
+    @Throws(Exception::class)
     fun updatingCourtTime() {
-        val ct1 = CourtTime( courtId = 1, startTime = "15:00", endTime = "17:30");
+        val ct1 = CourtTime( courtId = 1, startTime = Time(15,0,0), endTime = Time(17,30,0));
         courtTimeDAO.addCourtTime(ct1);
         val ctToBeUpdated = courtTimeDAO.getAllTCourtTimesByCourtIdTest(1);
-        ctToBeUpdated[0].startTime = "19:00"
-        ctToBeUpdated[0].endTime = "21:00"
+        ctToBeUpdated[0].startTime = Time(19,0,0)
+        ctToBeUpdated[0].endTime = Time(21,0,0)
         courtTimeDAO.update(ctToBeUpdated[0]);
         val updatedCt = courtTimeDAO.getAllTCourtTimesByCourtIdTest(1);
         println(">>>>> ${updatedCt}")
-        Assert.assertEquals(updatedCt[0].startTime , "19:00")
-        Assert.assertEquals(updatedCt[0].endTime , "21:00")
+        Assert.assertEquals(updatedCt[0].startTime , Time(19,0,0))
+        Assert.assertEquals(updatedCt[0].endTime , Time(21,0,0))
     }
 
     @Test
     @Throws(Exception::class)
     fun addingNewReservation() {
-        val r = Reservation(1,1,0,"04-07-2023","Description")
+        val r = Reservation(1,1,0, LocalDate.of(2023,4,7),"Description")
         reservationDAO.addReservation(r)
         val r1 = reservationDAO.getReservationById(1)
         println(">>>>> ${r1}")
@@ -230,9 +278,9 @@ class DBtest {
     @Test
     @Throws(Exception::class)
     fun addingMultipleNewReservation() {
-        val r1 = Reservation(1,1,0,"04-07-2023","Description1")
-        val r2 = Reservation(1,1,0,"04-07-2023","Description2")
-        val r3 = Reservation(1,1,0,"04-07-2023","Description3")
+        val r1 = Reservation(1,1,0,LocalDate.of(2023,4,7),"Description1")
+        val r2 = Reservation(1,1,0,LocalDate.of(2023,4,7),"Description2")
+        val r3 = Reservation(1,1,0,LocalDate.of(2023,4,7),"Description3")
         val expectedList = listOf<Reservation>(r1,r2,r3)
         reservationDAO.addReservation(r1)
         reservationDAO.addReservation(r2)
@@ -244,49 +292,120 @@ class DBtest {
 
     @Test
     @Throws(Exception::class)
+    fun gettingAllReservationsOfCourt() {
+        // CREATE COURT 1 AND ADD ALL ITS SLOTS ( COURT TIMES)  //
+        courtDao.addCourt(Court("Court_1","qaz","basketball"))
+        courtDao.addCourt(Court("Court_2","qaz","football"))
+        courtDao.addCourt(Court("Court_3","qaz","tennis"))
+        val ct = listOf<CourtTime>(
+            CourtTime(1, Time(9,0,0),Time(10,0,0)),
+            CourtTime(1, Time(10,0,0),Time(11,0,0)),
+            CourtTime(1, Time(11,0,0),Time(12,0,0)),
+            CourtTime(1, Time(12,0,0),Time(13,0,0)),
+            CourtTime(1, Time(13,0,0),Time(14,0,0)),
+            CourtTime(1, Time(14,0,0),Time(15,0,0)),
+            CourtTime(1, Time(15,0,0),Time(16,0,0)),
+            CourtTime(1, Time(16,0,0),Time(17,0,0)),
+            CourtTime(1, Time(17,0,0),Time(18,0,0)),
+            CourtTime(1, Time(18,0,0),Time(19,0,0)),
+
+            CourtTime(2, Time(9,0,0),Time(10,0,0)),
+            CourtTime(2, Time(10,0,0),Time(11,0,0)),
+            CourtTime(2, Time(11,0,0),Time(12,0,0)),
+            CourtTime(2, Time(12,0,0),Time(13,0,0)),
+            CourtTime(2, Time(13,0,0),Time(14,0,0)),
+            CourtTime(2, Time(14,0,0),Time(15,0,0)),
+            CourtTime(2, Time(15,0,0),Time(16,0,0)),
+            CourtTime(2, Time(16,0,0),Time(17,0,0)),
+            CourtTime(2, Time(17,0,0),Time(18,0,0)),
+            CourtTime(2, Time(18,0,0),Time(19,0,0)),
+
+            CourtTime(3, Time(9,0,0),Time(10,0,0)),
+            CourtTime(3, Time(10,0,0),Time(11,0,0)),
+            CourtTime(3, Time(11,0,0),Time(12,0,0)),
+            CourtTime(3, Time(12,0,0),Time(13,0,0)),
+            CourtTime(3, Time(13,0,0),Time(14,0,0)),
+            CourtTime(3, Time(14,0,0),Time(15,0,0)),
+            CourtTime(3, Time(15,0,0),Time(16,0,0)),
+            CourtTime(3, Time(16,0,0),Time(17,0,0)),
+            CourtTime(3, Time(17,0,0),Time(18,0,0)),
+            CourtTime(3, Time(18,0,0),Time(19,0,0)),
+        )
+        for (c in ct){
+            courtTimeDAO.addCourtTime(c)
+        }
+        // ADD SOME RESERVATIONS ON COURT1 (AND 2)//
+        val reservations = listOf<Reservation>(
+            Reservation(1, 1, 0, LocalDate.of(2023,5,1),"aaa"),
+            Reservation(2, 1, 0, LocalDate.of(2023,5,4),"aaa"),
+            Reservation(3, 1, 0, LocalDate.of(2023,5,1),"aaa"),
+
+            Reservation(11, 1, 0, LocalDate.of(2023,5,1),"aaa"),
+            Reservation(12, 1, 0, LocalDate.of(2023,5,6),"aaa"),
+            Reservation(13, 1, 0, LocalDate.of(2023,5,1),"aaa"),
+
+            )
+        for (r in reservations){
+            reservationDAO.addReservation(r)
+        }
+        // GET ALL RESERVATIONS OF COURT with ID = 1 AND ID = 2//
+        val r1 = reservationDAO.getReservationsByCourtIdTest(1)
+        val r2 = reservationDAO.getReservationsByCourtIdTest(2)
+        val r3 = reservationDAO.getReservationsByCourtIdTest(3) // SHOULD RETURN EMPTY
+        println("r1 : ${r1}")
+        println("r1 : ${r2}")
+        println("r3 : ${r3}")
+        // EXPECTED VALUES R1 -> 3 RESERVATIONS , R2 -> 3 RESERVATIONS, R3 -> 0 RESERVATIONS //
+        Assert.assertEquals(r1.size, 3)
+        Assert.assertEquals(r2.size, 3)
+        Assert.assertEquals(r3.size, 0)
+    }
+
+    @Test
+    @Throws(Exception::class)
     fun deletingReservation() {
-        val r = Reservation(1,1,0,"04-07-2023","Description")
+        val r = Reservation(1,1,0,LocalDate.of(2023,4,7),"Description")
         reservationDAO.addReservation(r)
         val reservationToBeDeleted = reservationDAO.getReservationById(1)
-        reservationDAO.deleteReservation(reservationToBeDeleted!!)
+        reservationDAO.deleteReservation(reservationToBeDeleted?.resId!!)
         val result = reservationDAO.getReservationById(1)
         println(">>>>> ${result}")
-        Assert.assertEquals(result , null)
+        Assert.assertEquals(result?.status , 1)
     }
 
     @Test
     @Throws(Exception::class)
     fun deletingMultipleReservations() {
-        val r1 = Reservation(1,1,0,"04-07-2023","Description1")
-        val r2 = Reservation(1,1,0,"04-07-2023","Description2")
-        val r3 = Reservation(1,1,0,"04-07-2023","Description3")
+        val r1 = Reservation(1,1,0,LocalDate.of(2023,4,7),"Description1")
+        val r2 = Reservation(1,1,0,LocalDate.of(2023,4,7),"Description2")
+        val r3 = Reservation(1,1,0,LocalDate.of(2023,4,7),"Description3")
         reservationDAO.addReservation(r1)
         reservationDAO.addReservation(r2)
         reservationDAO.addReservation(r3)
         var reservationsList = reservationDAO.getAllReservationsTest()
         for(r in reservationsList){
-            reservationDAO.deleteReservation(r)
+            reservationDAO.deleteReservation(r?.resId!!)
         }
         reservationsList = reservationDAO.getAllReservationsTest();
         println(">>>>> ${reservationsList}")
-        Assert.assertEquals(reservationsList , emptyList<Reservation>())
+        Assert.assertEquals(reservationsList[0].status , 1)
+        Assert.assertEquals(reservationsList[1].status , 1)
+        Assert.assertEquals(reservationsList[2].status , 1)
     }
 
     @Test
     @Throws(Exception::class)
     fun updatingReservation() {
-        val r = Reservation(1,1,0,"04-07-2023","Description")
+        val r = Reservation(0,1,0,LocalDate.of(2023,4,7),"Description")
         reservationDAO.addReservation(r)
         val reservationToBeUpdated = reservationDAO.getReservationById(1)
-        reservationToBeUpdated?.courtId = 2
         reservationToBeUpdated?.description = "UpdatedDescription"
-        reservationToBeUpdated?.date = "05-07-2023"
+        reservationToBeUpdated?.date = LocalDate.of(2023,5,7)
         reservationDAO.update(reservationToBeUpdated!!)
         val updatedReservation = reservationDAO.getReservationById(1)
         println(">>>>> ${updatedReservation}")
-        Assert.assertEquals(updatedReservation?.courtId ,  2)
         Assert.assertEquals(updatedReservation?.description, "UpdatedDescription")
-        Assert.assertEquals(updatedReservation?.date  , "05-07-2023")
+        Assert.assertEquals(updatedReservation?.date  , LocalDate.of(2023,5,7))
     }
 
 
