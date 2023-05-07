@@ -11,6 +11,7 @@ import java.time.LocalDate
 
 
 data class MyReservation(
+    var resId:Int,
     var name:String,
     var address:String,
     var sport:String,

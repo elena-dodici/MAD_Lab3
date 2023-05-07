@@ -49,7 +49,7 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.*
 
-data class Event(val id: String, val courtName:String, val sportName:String, val startTime: Time, val date: LocalDate)
+data class Event(val resId: Int, val id: String, val courtName:String, val sportName:String, val startTime: Time, val date: LocalDate)
 // 调用Adapter的时候传进去一个点击的回调函数
 class MyAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
     inner class MyViewHolder(private val binding:ItemLayoutBinding):RecyclerView.ViewHolder(binding.root){
@@ -142,7 +142,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
     val eventsAdapter = MyAdapter{
         // 点击下面recyclerView调用的事件
-        println(it.id)
+        println(it.resId)
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -166,7 +166,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
             for (res in it){
 //                println(">>>>> $res")
-                events[res.date] = events[res.date].orEmpty().plus(Event(UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
+                events[res.date] = events[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
             }
 
         }

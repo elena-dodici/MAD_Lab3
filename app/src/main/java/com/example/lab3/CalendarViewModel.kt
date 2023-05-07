@@ -18,6 +18,7 @@ class CalendarViewModel() : ViewModel( ) {
     fun getAllRes(application: Application){
         db = AppDatabase.getDatabase(application)
         _reservations.value = db.reservationDao().getReservationByUserId(1)
+
     }
     fun clear(){
         _reservations.value = null
