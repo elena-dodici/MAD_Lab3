@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -19,7 +20,9 @@ import androidx.core.view.children
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -125,7 +128,8 @@ class MyAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<MyAdapter.MyV
 
 class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
-    val vm by viewModels<CalendarViewModel>()
+//    val vm by viewModels<CalendarViewModel>()
+    private val sharedvm : CalendarViewModel by activityViewModels()
 
     override val toolbar: Toolbar?
         get() = null
@@ -143,6 +147,12 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     val eventsAdapter = MyAdapter{
         // 点击下面recyclerView调用的事件
         println(it.resId)
+        gotoDetailFrag(it.resId)
+    }
+
+    private fun gotoDetailFrag(resId: Int){
+        sharedvm.setSelectedResByResId(resId)
+        findNavController().navigate(R.id.action_calendar_to_detailFragment)
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -161,15 +171,17 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 //        val res = db.reservationDao().getReservationByUserId(1)
 //        应该在viewmodel里获取数据
         // 将res放入event数组即可！
-        vm.getAllRes(this.requireActivity().application)
-        vm.reservations.observe(viewLifecycleOwner){
+        sharedvm.getAllRes(this.requireActivity().application)
+        sharedvm.reservations.observe(viewLifecycleOwner){
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
             for (res in it){
 //                println(">>>>> $res")
                 events[res.date] = events[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
+
             }
 
         }
+        display()
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -436,6 +448,14 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
             weekCalendarView.notifyDateChanged(it)
             updateAdapterForDate(null)
         }
+    }
+
+    private fun display(){
+        sharedvm.reservations.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+             i ->
+                Log.i("MY", i.toString())
+
+        })
     }
 }
 

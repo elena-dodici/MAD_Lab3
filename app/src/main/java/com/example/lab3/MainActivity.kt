@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         db = AppDatabase.getDatabase(application)
-        initDatabase(db) // add some initial data
+       // initDatabase(db) // add some initial data
 //        val a = db.userDao().getUserById(1)
 //        val a = db.userDao().getAllUsers()
 //        val a = db.courtTimeDao().getAllTCourtTimesByCourtIdTest(1)
@@ -127,15 +127,15 @@ class MainActivity : AppCompatActivity() {
         )
 
         val reservations = listOf<Reservation>(
-            Reservation(1, 1, 0, LocalDate.of(2023,5,1),"aaa"),
-            Reservation(2, 1, 0, LocalDate.of(2023,5,4),"aaa"),
-            Reservation(3, 1, 0, LocalDate.of(2023,5,1),"aaa"),
-            Reservation(11, 1, 0, LocalDate.of(2023,5,1),"aaa"),
-            Reservation(12, 1, 0, LocalDate.of(2023,5,6),"aaa"),
-            Reservation(13, 1, 0, LocalDate.of(2023,5,1),"aaa"),
-            Reservation(21, 1, 0, LocalDate.of(2023,4,23),"aaa"),
-            Reservation(22, 1, 0, LocalDate.of(2023,5,1),"aaa"),
-            Reservation(23, 1, 0, LocalDate.of(2023,5,4),"aaa"),
+            Reservation(1, 1, 0, LocalDate.of(2023,5,1),"res1"),
+            Reservation(2, 1, 0, LocalDate.of(2023,5,4),"res2"),
+            Reservation(3, 1, 0, LocalDate.of(2023,5,1),"res3"),
+            Reservation(11, 1, 0, LocalDate.of(2023,5,1),"res4"),
+            Reservation(12, 1, 0, LocalDate.of(2023,5,6),"res5"),
+            Reservation(13, 1, 0, LocalDate.of(2023,5,1),"res6"),
+            Reservation(21, 1, 0, LocalDate.of(2023,4,23),"res7"),
+            Reservation(22, 1, 0, LocalDate.of(2023,5,1),"res8"),
+            Reservation(23, 1, 0, LocalDate.of(2023,5,4),"res9"),
         )
 
 //        insert data
@@ -152,4 +152,6 @@ class MainActivity : AppCompatActivity() {
             db.reservationDao().addReservation(r)
         }
     }
+
+
 }
