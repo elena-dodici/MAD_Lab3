@@ -42,13 +42,14 @@ import com.kizitonwose.calendar.view.ViewContainer
 import com.kizitonwose.calendar.view.CalendarView
 import com.kizitonwose.calendar.view.WeekCalendarView
 import com.kizitonwose.calendar.view.WeekDayBinder
+import java.sql.Time
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.*
 
-data class Event(val id: String, val text: String, val date: LocalDate)
+data class Event(val id: String, val courtName:String, val sportName:String, val startTime: Time, val date: LocalDate)
 // 调用Adapter的时候传进去一个点击的回调函数
 class MyAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
     inner class MyViewHolder(private val binding:ItemLayoutBinding):RecyclerView.ViewHolder(binding.root){
@@ -59,7 +60,7 @@ class MyAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<MyAdapter.MyV
             }
         }
         fun bind(event: Event){
-            binding.itemText.text = event.text
+            binding.itemText.text = "${event.courtName}  ${event.sportName}  ${event.startTime}  ${event.date}"
         }
 
     }
@@ -141,7 +142,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
     val eventsAdapter = MyAdapter{
         // 点击下面recyclerView调用的事件
-        println(it.text)
+        println(it.id)
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -149,10 +150,10 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         savedInstanceState: Bundle?
     ): View? {
         // 在某个日期下面 初始化 几个reservation
-        val may6 = LocalDate.of(2023,5,6)
-        val may2 = LocalDate.of(2023,5,2)
-        events[may6] = events[may6].orEmpty().plus(Event(UUID.randomUUID().toString(), "ahahah", may6))
-        events[may2] = events[may2].orEmpty().plus(Event(UUID.randomUUID().toString(), "啦啦啦", may2))
+//        val may6 = LocalDate.of(2023,5,6)
+//        val may2 = LocalDate.of(2023,5,2)
+//        events[may6] = events[may6].orEmpty().plus(Event(UUID.randomUUID().toString(), "ahahah", may6))
+//        events[may2] = events[may2].orEmpty().plus(Event(UUID.randomUUID().toString(), "啦啦啦", may2))
 //        updateAdapterForDate(may6)
 //        db =AppDatabase.getDatabase(this.requireActivity().application) // I DONT KNOW HOW TO GET DB FROM MAIN ACTIVITY DIRECTLY, SO I RECREATE A DB
 //        val a = db.reservationDao().getReservationById(1)
@@ -163,7 +164,11 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         vm.getAllRes(this.requireActivity().application)
         vm.reservations.observe(viewLifecycleOwner){
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
-            println(it)
+            for (res in it){
+//                println(">>>>> $res")
+                events[res.date] = events[res.date].orEmpty().plus(Event(UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
+            }
+
         }
 
         return super.onCreateView(inflater, container, savedInstanceState)

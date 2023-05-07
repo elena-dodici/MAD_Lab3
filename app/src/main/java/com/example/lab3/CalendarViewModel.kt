@@ -5,13 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.lab3.database.AppDatabase
+import com.example.lab3.database.entity.MyReservation
 import com.example.lab3.database.entity.Reservation
 import org.jetbrains.annotations.NotNull
 
 class CalendarViewModel() : ViewModel( ) {
 
-    private var _reservations = MutableLiveData<List<Reservation>>().also { it.value = listOf() }
-    val reservations:LiveData<List<Reservation>> = _reservations
+    private var _reservations = MutableLiveData<List<MyReservation>>().also { it.value = listOf() }
+    val reservations:LiveData<List<MyReservation>> = _reservations
     lateinit var db: AppDatabase
 
     fun getAllRes(application: Application){

@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.activityToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        db = AppDatabase.getDatabase(application)
+//        db = AppDatabase.getDatabase(application)
 //        initDatabase(db) // add some initial data
 //        val a = db.userDao().getUserById(1)
 //        val a = db.userDao().getAllUsers()
