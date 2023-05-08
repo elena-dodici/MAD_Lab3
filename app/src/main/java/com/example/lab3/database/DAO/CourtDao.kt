@@ -10,6 +10,7 @@ import androidx.room.Update
 import com.example.lab3.database.entity.Court
 import com.example.lab3.database.entity.CourtTime
 import com.example.lab3.database.entity.Reservation
+import java.time.LocalDate
 
 
 @Dao
@@ -26,6 +27,14 @@ interface CourtDao {
 //            "WHERE courtId=:id)")
     @Query("SELECT * FROM courtTime where id  NOT IN (SELECT courtTimeId from reservation ) AND courtId  = :id ")
     fun getAllCourtFreeSlotsByCourtId(id:Int) : List<CourtTime>
+
+    @Query("SELECT * FROM courtTime where id NOT IN  (\n" +
+            "SELECT id\n" +
+            "FROM courtTime \n" +
+            "LEFT JOIN reservation ON courtTime.id = reservation.courtTimeId WHERE courtId=1 AND reservation.date = :date\n" +
+            " AND reservation.status = :status \n" +
+            ") AND  courtId= :id")
+    fun getAllFreeSLotByCourtIdandDate(id: Int, date:LocalDate, status: Int): List<CourtTime>
 
     @Query("SELECT * FROM court WHERE courtId=:id")
     fun getCourtById(id:Int): Court?

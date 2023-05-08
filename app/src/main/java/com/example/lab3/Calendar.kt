@@ -174,6 +174,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         sharedvm.getAllRes(this.requireActivity().application)
         sharedvm.reservations.observe(viewLifecycleOwner){
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
+            events.clear()
             for (res in it){
 //                println(">>>>> $res")
                 events[res.date] = events[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))

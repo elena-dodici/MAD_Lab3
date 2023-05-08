@@ -46,7 +46,8 @@ class CalendarViewModel() : ViewModel( ) ,Observable{
                 _selectedRes.value = r
                 _resIdvm.value = resId
                 _selCourtId.value = r.courtId
-                _freeCourtTimes.value = AppDatabase.getDatabase(application).courtDao().getAllCourtFreeSlotsByCourtId(r.courtId)
+                _freeCourtTimes.value = AppDatabase.getDatabase(application).courtDao().getAllFreeSLotByCourtIdandDate(r.courtId, r.date,0)
+
             }
         }
     }

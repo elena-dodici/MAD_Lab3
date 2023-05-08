@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         db = AppDatabase.getDatabase(application)
-//        initDatabase(db) // add some initial data
+ //       initDatabase(db) // add some initial data
 //        val a = db.userDao().getUserById(1)
 //        val a = db.userDao().getAllUsers()
 //        val a = db.courtTimeDao().getAllTCourtTimesByCourtIdTest(1)
@@ -63,11 +63,11 @@ class MainActivity : AppCompatActivity() {
             User("ccc","ccc","222222"),
         )
         val courts = listOf<Court>(
-            Court("Court_1","qaz","basketball"),
-            Court("Court_2","wsx","running"),
-            Court("Court_3","edc","swimming"),
-            Court("Court_4","rfv","pingpong"),
-            Court("Court_5","rrv","tennis"),
+            Court("Court_1BB","qaz","basketball"),
+            Court("Court_2RUN","wsx","running"),
+            Court("Court_3SWIM","edc","swimming"),
+            Court("Court_4PP","rfv","pingpong"),
+            Court("Court_5T","rrv","tennis"),
         )
         val ct = listOf<CourtTime>(
             CourtTime(1, Time(9,0,0),Time(10,0,0)),
