@@ -17,12 +17,12 @@ interface ReservationDAO {
 
 //    @Query("SELECT * FROM reservation WHERE userId=:id")
 //    fun getReservationsByUserIdTest(id:Int): List<Reservation>
-
-    @Query("SELECT *" +
-            "FROM reservation WHERE courtTimeId IN" +
-            "(SELECT courtTimeId FROM courtTime JOIN reservation ON courtTime.id = reservation.courtTimeId WHERE courtId=:id)")
-    fun getReservationsByCourtIdTest(id:Int): List<Reservation>
-    // -------------------------------------------------------------------------- //
+//
+//    @Query("SELECT *" +
+//            "FROM reservation WHERE courtTimeId IN" +
+//            "(SELECT courtTimeId FROM courtTime JOIN reservation ON courtTime.id = reservation.courtTimeId WHERE courtId=:id)")
+//    fun getReservationsByCourtIdTest(id:Int): List<Reservation>
+//    // -------------------------------------------------------------------------- //
 
     @Query("SELECT * FROM reservation,(SELECT * FROM courtTime WHERE courtId=:id) AS cts " +
             "WHERE reservation.courtTimeId = cts.id")

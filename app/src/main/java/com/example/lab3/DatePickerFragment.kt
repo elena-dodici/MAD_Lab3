@@ -25,7 +25,6 @@ class DatePickerFragment(val max: () -> Unit) : DialogFragment(), DatePickerDial
     private val sharedvm : CalendarViewModel by activityViewModels()
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             // Use the current time as the default values for the picker
-
             val year = sharedvm.selectedRes.value!!.date.year
             val month = sharedvm.selectedRes.value!!.date.getMonthValue()
             val day = sharedvm.selectedRes.value!!.date.dayOfMonth

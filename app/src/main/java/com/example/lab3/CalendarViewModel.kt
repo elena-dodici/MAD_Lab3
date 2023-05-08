@@ -49,6 +49,11 @@ class CalendarViewModel() : ViewModel( ) ,Observable{
 
 
     fun addOrUpdateRes(application: Application){
+        //find courtTImdId
+        val newCourtTime =  AppDatabase.getDatabase(application).courtTimeDao().getCourtTimeId(_selectedRes.value!!.startTime,_selectedRes.value!!.endTime)
+        if (newCourtTime != null) {
+            _selectedRes.value!!.courtTimeId = newCourtTime.id
+        }
 
         val updateRes = Reservation(_selectedRes.value!!.courtTimeId, 1, 0,  _selectedRes.value!!.date,_selectedRes.value!!.description)
         updateRes.resId = _selectedRes.value!!.resId

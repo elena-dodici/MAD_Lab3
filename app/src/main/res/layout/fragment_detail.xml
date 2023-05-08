@@ -61,6 +61,14 @@
             android:textColor="@color/black"
             android:textSize="20sp" />
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:text="@{vm.selectedRes.startTime.toString()}"
+            android:textSize="20sp" />
+
 
         <Spinner
             android:id="@+id/startTime_spinner"
@@ -81,6 +89,13 @@
             android:layout_weight="1"
             android:text="EndTime:"
             android:textColor="@color/black"
+            android:textSize="20sp" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:text="@{vm.selectedRes.endTime.toString()}"
             android:textSize="20sp" />
 
         <Spinner
