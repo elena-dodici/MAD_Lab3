@@ -18,6 +18,7 @@ data class MyReservation(
     var startTime: Time,
     var endTime: Time,
     var date: LocalDate,//dd/mm/yyyy
-    var description: String
+    var description: String,
+    var courtTimeId: Int
 
     )
