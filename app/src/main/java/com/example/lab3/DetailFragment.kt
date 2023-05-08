@@ -1,14 +1,23 @@
 package com.example.lab3
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
+import android.text.format.DateFormat.is24HourFormat
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
+import android.widget.EditText
+import android.widget.TimePicker
 import android.widget.Toast
+import androidx.databinding.InverseMethod
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.lab3.databinding.FragmentDetailBinding
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 
 /**
  * A simple [Fragment] subclass.
@@ -21,7 +30,6 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
     private var binding: FragmentDetailBinding? = null
     private val sharedvm : CalendarViewModel by activityViewModels()
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,11 +38,10 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
         binding = fragmentBinding
 
         sharedvm.selectedRes.observe(viewLifecycleOwner, { newRes ->
-            print("-------obser------")
-            println(newRes.date)
+
             binding!!.editStartTime.setText(newRes.startTime.toString())
             binding!!.editEndTime.setText(newRes.endTime.toString())
-            binding!!.editDate.setText(newRes.date.toString())
+            binding!!.showDate.setText(newRes.date.toString())
 
         })
 
@@ -48,11 +55,10 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
 //           // Toast.makeText(context, "Add successfully", Toast.LENGTH_LONG).show()
 //        }
         binding!!.saveBtn.setOnClickListener {
-            print("-------btn------")
-            print(sharedvm.selectedRes.value!!.date)
             sharedvm.addOrUpdateRes(this.requireActivity().application)
             findNavController().navigate(R.id.action_detailFragment_to_calendar)
             Toast.makeText(context, "Update successfully", Toast.LENGTH_LONG).show()
+
 
         }
 
@@ -71,14 +77,32 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
             vm = sharedvm
             // Assign the view model to a property in the binding class
 
+            btnTimePicker.setOnClickListener{
 
+                //findNavController().navigate(R.id.action_detailFragment_to_timePickerFragment)
+                //openTimePicker()
+
+
+                val datePickerFragment = DatePickerFragment()
+                val supportFragmentManager = requireActivity().supportFragmentManager
+
+                // we have to implement setFragmentResultListener
+                // show
+                datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
+
+
+
+            }
 
         }
     }
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        binding = null
-//    }
+
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 
 //    companion object {
 //        /**

@@ -37,12 +37,12 @@
             android:id="@+id/action_detailFragment_to_calendar"
             app:destination="@id/calendar" />
         <action
-            android:id="@+id/action_detailFragment_to_addFragment"
-            app:destination="@id/addFragment" />
+            android:id="@+id/action_detailFragment_to_timePickerFragment"
+            app:destination="@id/timePickerFragment" />
     </fragment>
     <fragment
-        android:id="@+id/addFragment"
-        android:name="com.example.lab3.AddFragment"
-        android:label="fragment_add"
-        tools:layout="@layout/fragment_add" />
+        android:id="@+id/timePickerFragment"
+        android:name="com.example.lab3.DatePickerFragment"
+        android:label="fragment_time_picker"
+        tools:layout="@layout/fragment_time_picker" />
 </navigation>

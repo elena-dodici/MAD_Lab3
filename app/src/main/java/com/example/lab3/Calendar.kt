@@ -128,12 +128,12 @@ class MyAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<MyAdapter.MyV
 
 class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
-//    val vm by viewModels<CalendarViewModel>()
+    //    val vm by viewModels<CalendarViewModel>()
     private val sharedvm : CalendarViewModel by activityViewModels()
 
     override val toolbar: Toolbar?
         get() = null
-//    override val titleRes: Int? = null
+    //    override val titleRes: Int? = null
     companion object {
         fun newInstance() = Calendar()
     }
@@ -301,7 +301,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
             lateinit var day :CalendarDay
             val binding = CalendarDayLayoutBinding.bind(view)
 
-//            val textView = view.findViewById<TextView>(R.id.exFiveDayText)
+            //            val textView = view.findViewById<TextView>(R.id.exFiveDayText)
             init {
                 view.setOnClickListener{ // click one day
                     if(day.position == DayPosition.MonthDate){ // 当前月的才能选
@@ -334,7 +334,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         }
         // 显示当前月 update title
         monthCalendarView.monthScrollListener = {updateMonthTitle();clearBackground()}
-//        binding.calendarView.monthScrollListener = { month->
+        //        binding.calendarView.monthScrollListener = { month->
 //            binding.monthYearText.text = month.yearMonth.displayText()
 //        }
         class WeekDayViewContainer(view:View):ViewContainer(view) {
@@ -396,20 +396,20 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
     }
     private fun dateClicked(date: LocalDate) {
-            if(selectedDate != date){
-                val oldDate = selectedDate
-                selectedDate = date
+        if(selectedDate != date){
+            val oldDate = selectedDate
+            selectedDate = date
 //                        println(day.date) // day.date就是点击的日期
 //        Refresh both calendar views..
-                monthCalendarView.notifyDateChanged(date)
-                weekCalendarView.notifyDateChanged(date)
-                oldDate?.let {
-                    monthCalendarView.notifyDateChanged(it)
-                    weekCalendarView.notifyDateChanged(it)
+            monthCalendarView.notifyDateChanged(date)
+            weekCalendarView.notifyDateChanged(date)
+            oldDate?.let {
+                monthCalendarView.notifyDateChanged(it)
+                weekCalendarView.notifyDateChanged(it)
 
-                }
-                updateAdapterForDate(date) // 将当前date的events的内容显示在下面列表
             }
+            updateAdapterForDate(date) // 将当前date的events的内容显示在下面列表
+        }
 
     }
     private fun updateMonthTitle() { // 更新月份
@@ -441,7 +441,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         }
     }
     private fun clearBackground(){
-            selectedDate?.let {//切换mode的时候也会调用，但这时候不应该清除
+        selectedDate?.let {//切换mode的时候也会调用，但这时候不应该清除
             // clear selection if we scroll to a new month/week
             selectedDate = null
             monthCalendarView.notifyDateChanged(it)
@@ -452,11 +452,10 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
     private fun display(){
         sharedvm.reservations.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-             i ->
-                Log.i("MY", i.toString())
+                i ->
+            Log.i("MY", i.toString())
 
         })
     }
 }
-
 

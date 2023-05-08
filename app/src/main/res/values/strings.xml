@@ -4,5 +4,6 @@
     <string name="activity_title_view">Calendar View</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">This is search fragment</string>
+    <string name="pick_time">Pick</string>
 
 </resources>

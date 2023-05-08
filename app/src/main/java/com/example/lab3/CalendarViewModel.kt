@@ -1,7 +1,10 @@
 package com.example.lab3
 
 import android.app.Application
+import android.widget.EditText
 import androidx.databinding.Bindable
+import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseMethod
 import androidx.databinding.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +13,7 @@ import com.example.lab3.database.AppDatabase
 import com.example.lab3.database.entity.MyReservation
 import com.example.lab3.database.entity.Reservation
 import org.jetbrains.annotations.NotNull
+import java.sql.Date
 import java.time.LocalDate
 
 class CalendarViewModel() : ViewModel( ) ,Observable{
@@ -31,7 +35,6 @@ class CalendarViewModel() : ViewModel( ) ,Observable{
     private val _selectedRes = MutableLiveData<MyReservation>()
     val selectedRes: LiveData<MyReservation> = _selectedRes
     fun setSelectedResByResId(resId:Int){
-
         for (r in _reservations.value!! ){
             if (r.resId == resId)  _selectedRes.value = r
             _resIdvm.value = resId
@@ -40,16 +43,9 @@ class CalendarViewModel() : ViewModel( ) ,Observable{
     }
 
 
-//    fun addRes(application: Application){
-//
-//        val newRes = Reservation(1, 1, 0,  newRes.date,newRes.description)
-//        AppDatabase.getDatabase(application).reservationDao().addReservation(newRes)
-//
-//    }
-
     fun addOrUpdateRes(application: Application){
-
-
+        println("let me check whether save success ------")
+        println(_selectedRes.value!!.date)
         val updateRes = Reservation(_selectedRes.value!!.courtTimeId, 1, 0,  _selectedRes.value!!.date,_selectedRes.value!!.description)
         updateRes.resId = _selectedRes.value!!.resId
 
