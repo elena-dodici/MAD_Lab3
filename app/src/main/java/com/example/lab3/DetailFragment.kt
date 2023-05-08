@@ -56,8 +56,12 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
             sharedvm.addOrUpdateRes(this.requireActivity().application)
             findNavController().navigate(R.id.action_detailFragment_to_calendar)
             Toast.makeText(context, "Update successfully", Toast.LENGTH_LONG).show()
+        }
 
+        binding!!.calBtn.setOnClickListener {
 
+            findNavController().navigate(R.id.action_detailFragment_to_calendar)
+            Toast.makeText(context, "Unsaved information", Toast.LENGTH_LONG).show()
         }
 
         var freeSlotStartList = ArrayList<Time>()
