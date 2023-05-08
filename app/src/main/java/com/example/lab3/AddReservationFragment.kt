@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.Fragment
@@ -21,8 +22,9 @@ import com.example.lab3.database.entity.CourtTime
 import java.sql.Time
 
 
-class AddReservationFragment : Fragment() {
-
+class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),HasToolbar {
+    override val toolbar: Toolbar?
+        get() = null
     companion object {
         fun newInstance() = AddReservationFragment()
     }
@@ -33,15 +35,15 @@ class AddReservationFragment : Fragment() {
 
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-       return inflater.inflate(R.layout.fragment_add_reservation, container, false)
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//    }
+//    override fun onCreateView(
+//        inflater: LayoutInflater, container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+//       return inflater.inflate(R.layout.fragment_add_reservation, container, false)
+//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -66,12 +68,12 @@ class AddReservationFragment : Fragment() {
         }
 
     }
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(AddReservationViewModel::class.java)
-        // TODO: Use the ViewModel
-
-    }
+//    override fun onActivityCreated(savedInstanceState: Bundle?) {
+//        super.onActivityCreated(savedInstanceState)
+//        viewModel = ViewModelProvider(this).get(AddReservationViewModel::class.java)
+//        // TODO: Use the ViewModel
+//
+//    }
 
 }
 
