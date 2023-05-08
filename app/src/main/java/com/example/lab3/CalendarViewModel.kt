@@ -23,6 +23,10 @@ class CalendarViewModel() : ViewModel( ) ,Observable{
         _reservations.value = db.reservationDao().getReservationByUserId(1,1)
 
     }
+    fun getResBySport(application: Application,sport:String){
+        db = AppDatabase.getDatabase(application)
+        _reservations.value = db.reservationDao().getReservationBySport(sport)
+    }
 
     private var _resIdvm = MutableLiveData<Int>()
     val resIdvm : LiveData<Int> = _resIdvm
