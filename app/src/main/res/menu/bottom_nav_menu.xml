@@ -4,7 +4,7 @@
     <item android:title="My Reservation"
         android:icon="@drawable/baseline_star_24"
         android:id="@+id/calendar"/>
-    <item android:title="Search"
+    <item android:title="Search Availability"
         android:icon="@drawable/baseline_search_24"
         android:id="@+id/searchFragment"/>
 </menu>
