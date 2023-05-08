@@ -14,10 +14,30 @@
         android:id="@+id/searchFragment"
         android:name="com.example.lab3.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_addReservationFragment"
+            app:destination="@id/addReservationFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mainFragment2"
         android:name="com.example.lab3.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment2_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_mainFragment2_to_calendar"
+            app:destination="@id/calendar" />
+    </fragment>
+    <fragment
+        android:id="@+id/addReservationFragment"
+        android:name="com.example.lab3.AddReservationFragment"
+        android:label="fragment_add_reservation"
+        tools:layout="@layout/fragment_add_reservation" >
+        <action
+            android:id="@+id/action_addReservationFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
 </navigation>
