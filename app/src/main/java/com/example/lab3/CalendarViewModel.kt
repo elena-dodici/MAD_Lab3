@@ -35,6 +35,10 @@ class CalendarViewModel() : ViewModel( ) ,Observable{
         db = AppDatabase.getDatabase(application)
         _reservations.value = db.reservationDao().getReservationByUserId(1,1)
     }
+    fun getResBySport(application: Application,sport:String){
+        db = AppDatabase.getDatabase(application)
+        _reservations.value = db.reservationDao().getReservationBySport(sport)
+    }
 
     fun setSelectedResByResId(resId:Int, application:Application){
         for (r in _reservations.value!! ){
