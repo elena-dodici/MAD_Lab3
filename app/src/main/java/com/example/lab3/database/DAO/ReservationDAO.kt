@@ -34,7 +34,7 @@ interface ReservationDAO {
     @Query("SELECT * FROM reservation WHERE resId=:id")
     fun getReservationById(id:Int): Reservation?
 
-    @Query("SELECT r.resId, name, address, sport, startTime, endTime, date, description,ct.id as courtTimeId\n" +
+    @Query("SELECT r.resId, name, address, sport, startTime, endTime, date, description,ct.id as courtTimeId,c.courtId\n" +
             "FROM reservation as r, court as c, courtTime as ct\n" +
             "WHERE r.courtTimeId=ct.id and r.status != :status and ct.courtId=c.courtId and userId=:id ")
     fun getReservationByUserId(status:Int, id:Int): List<MyReservation>?

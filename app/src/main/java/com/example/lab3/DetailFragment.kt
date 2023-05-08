@@ -8,16 +8,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.EditText
-import android.widget.TimePicker
-import android.widget.Toast
+import android.widget.*
+import android.widget.AdapterView.*
 import androidx.databinding.InverseMethod
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.lab3.database.entity.CourtTime
 import com.example.lab3.databinding.FragmentDetailBinding
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import java.sql.Time
+import java.time.LocalDate
 
 /**
  * A simple [Fragment] subclass.
@@ -36,24 +39,19 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
     ): View? {
         val fragmentBinding = FragmentDetailBinding.inflate(inflater, container, false)
         binding = fragmentBinding
-
-        sharedvm.selectedRes.observe(viewLifecycleOwner, { newRes ->
-
-            binding!!.editStartTime.setText(newRes.startTime.toString())
-            binding!!.editEndTime.setText(newRes.endTime.toString())
-            binding!!.showDate.setText(newRes.date.toString())
-
-        })
+//
+//        sharedvm.selectedRes.observe(viewLifecycleOwner, { newRes ->
+////            binding!!.editStartTime.setText(newRes.startTime.toString())
+////            binding!!.editEndTime.setText(newRes.endTime.toString())
+//            binding!!.showDate.setText(newRes.date.toString())
+//            binding!!.editDate.setText(newRes.date.toString())
+//        })
 
         binding!!.delBtn.setOnClickListener {
             sharedvm.deleteRes(sharedvm.resIdvm.value!!,this.requireActivity().application)
             findNavController().navigate(R.id.action_detailFragment_to_calendar)
             Toast.makeText(context, "Delete successfully", Toast.LENGTH_LONG).show()
         }
-//        binding!!.AddBtn.setOnClickListener {
-//            findNavController().navigate(R.id.action_detailFragment_to_addFragment)
-//           // Toast.makeText(context, "Add successfully", Toast.LENGTH_LONG).show()
-//        }
         binding!!.saveBtn.setOnClickListener {
             sharedvm.addOrUpdateRes(this.requireActivity().application)
             findNavController().navigate(R.id.action_detailFragment_to_calendar)
@@ -61,6 +59,46 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
 
 
         }
+
+        var freeSlotStartList = ArrayList<Time>()
+        for (i in sharedvm.freeCourtTimes.value!!){
+            freeSlotStartList.add(i.startTime)
+        }
+
+        var freeSlotEndList = ArrayList<Time>()
+        for (i in sharedvm.freeCourtTimes.value!!){
+            freeSlotEndList.add(i.endTime)
+        }
+        val startSpinner = binding!!.startTimeSpinner
+        val arrayAdapter1 = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, freeSlotStartList)
+        startSpinner.adapter = arrayAdapter1
+        startSpinner.onItemSelectedListener = object : OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+//                binding!!.editStartTime.setText(freeSlotList[position].toString())
+                sharedvm.selectedRes.value!!.startTime = freeSlotStartList[position]
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
+        }
+
+        val endSpinner = binding!!.endTimeSpinner
+        val arrayAdapter2 = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, freeSlotEndList)
+        endSpinner.adapter = arrayAdapter2
+        endSpinner.onItemSelectedListener = object : OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+//                binding!!.editStartTime.setText(freeSlotList[position].toString())
+                sharedvm.selectedRes.value!!.endTime = freeSlotEndList[position]
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
+        }
+
 
 
         return fragmentBinding.root
@@ -71,30 +109,23 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
+
+
         binding?.apply {
-            // Specify the fragment as the lifecycle owner
-//            lifecycleOwner = viewLifecycleOwner
-            vm = sharedvm
-            // Assign the view model to a property in the binding class
-
-            btnTimePicker.setOnClickListener{
-
-                //findNavController().navigate(R.id.action_detailFragment_to_timePickerFragment)
-                //openTimePicker()
-
-
-                val datePickerFragment = DatePickerFragment()
-                val supportFragmentManager = requireActivity().supportFragmentManager
-
-                // we have to implement setFragmentResultListener
-                // show
-                datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
-
-
-
+            fun max(){
+                vm = sharedvm
             }
-
+            max()
+            btnTimePicker.setOnClickListener{
+                val datePickerFragment = DatePickerFragment(::max)
+                val supportFragmentManager = requireActivity().supportFragmentManager
+                datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
+            }
         }
+
+
     }
 
 

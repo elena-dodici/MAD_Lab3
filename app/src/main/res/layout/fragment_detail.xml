@@ -32,19 +32,13 @@
             android:textColor="@color/black"
             android:textSize="20sp" />
 
-<!--        <EditText-->
-<!--            android:id="@+id/editDate"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_weight="2"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="Date"-->
-<!--            android:text="@{vm.selectedRes.date.toString()}"-->
-<!--            android:textSize="20sp" />-->
+
         <TextView
             android:id="@+id/showDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:text="@{vm.selectedRes.date.toString()}"
             android:textSize="20sp"/>
 
         <Button
@@ -67,14 +61,14 @@
             android:textColor="@color/black"
             android:textSize="20sp" />
 
-            <EditText
-                android:id="@+id/editStartTime"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:hint="StartTime"
 
-                android:textSize="20sp" />
+        <Spinner
+            android:id="@+id/startTime_spinner"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -89,14 +83,13 @@
             android:textColor="@color/black"
             android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/editEndTime"
+        <Spinner
+            android:id="@+id/endTime_spinner"
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="wrap_content"
-            android:hint="EndTime"
-            android:text="@{vm.selectedRes.endTime.toString()}"
-            android:textSize="20sp" />
+            android:textSize="20sp"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -104,6 +97,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
+
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

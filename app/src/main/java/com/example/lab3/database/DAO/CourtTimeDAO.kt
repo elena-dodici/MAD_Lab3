@@ -7,7 +7,7 @@ import com.example.lab3.database.entity.CourtTime
 @Dao
 interface CourtTimeDAO {
     @Query("SELECT * FROM courtTime WHERE courtId=:id")
-    fun getAllTCourtTimesByCourtId(id: Int): LiveData<List<CourtTime>>
+    fun getAllTCourtTimesByCourtId(id: Int): List<CourtTime>
 
     @Query("SELECT * FROM courtTime WHERE id=:id")
     fun getCourtTimeById(id:Int): CourtTime?
