@@ -7,12 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.TextView
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
+import com.example.lab3.database.entity.Court
 import com.example.lab3.database.entity.CourtTime
 import java.sql.Time
 
@@ -26,6 +30,8 @@ class AddReservationFragment : Fragment() {
     private var layoutManager : RecyclerView.LayoutManager ?= null
     private var  adapter : MyAdapter1 ?= null
     private lateinit var viewModel: AddReservationViewModel
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +59,7 @@ class AddReservationFragment : Fragment() {
             CourtTime(1, Time(17,0,0), Time(18,0,0)),
             CourtTime(1, Time(18,0,0), Time(19,0,0))
         )
+
         recyclerView.apply {
             recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = MyAdapter1(ct)
@@ -87,6 +94,7 @@ class MyAdapter1(val l: List<CourtTime>) : RecyclerView.Adapter<MyAdapter1.MyVie
         init {
             tv.setOnClickListener {
                 setSingleSelection(adapterPosition)
+                println(l[adapterPosition].startTime.toString())
             }
         }
     }
@@ -101,7 +109,7 @@ class MyAdapter1(val l: List<CourtTime>) : RecyclerView.Adapter<MyAdapter1.MyVie
     }
 
     override fun onBindViewHolder(holder: MyViewHolder1, position: Int){
-        holder.tv.text = "${l[position].startTime.toString()}" + " - " + "${ l[position].endTime.toString()}"
+       holder.tv.text = "${l[position].startTime.toString()}" + " - " + "${ l[position].endTime.toString()}"
         if(singleItemSelectionPosition == position){
             holder.tv.setBackgroundColor(holder.tv.resources.getColor(R.color.blue))
         } else {
