@@ -27,8 +27,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lab3.database.entity.CourtTime
 import com.example.lab3.databinding.CalendarDayLayoutBinding
 import com.example.lab3.databinding.FragmentCalendarViewBinding
+import com.example.lab3.databinding.ItemLayoutBinding
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.DayPosition
 import com.kizitonwose.calendar.core.WeekDay
@@ -43,15 +45,48 @@ import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.ViewContainer
 import com.kizitonwose.calendar.view.WeekCalendarView
 import com.kizitonwose.calendar.view.WeekDayBinder
+import java.sql.Time
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.util.UUID
 
+data class FreeCourt(var name:String,
+                     var address:String,
+                     var sport:String,
+                     var startTime: Time,
+                     var endTime: Time,
+                     var courtTimeId: Int,
+                     var courtId: Int)
+class CourtAdapter(val onClick: (FreeCourt)-> Unit): RecyclerView.Adapter<CourtAdapter.CourtViewHolder>(){
+    inner class CourtViewHolder(private val binding:ItemLayoutBinding):RecyclerView.ViewHolder(binding.root){
+        init {
+
+        }
+        fun bind(event: FreeCourt){
+            binding.itemText.text = "${event.name}  ${event.sport}  ${event.startTime}--${event.endTime}"
+        }
+
+    }
+    val events = mutableListOf<FreeCourt>()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourtViewHolder {
+        val b = ItemLayoutBinding.inflate(parent.context.layoutInflater, parent, false)
+        return CourtViewHolder(b)
+    }
+
+    override fun getItemCount(): Int {
+        return events.size
+    }
+
+    override fun onBindViewHolder(holder: CourtAdapter.CourtViewHolder, position: Int) {
+        holder.bind(events[position])
+//        println("event"+events)
+    }
+}
 
 class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
 
-    val sports = listOf("running", "basketball", "swimming")
+    val sports = listOf("running", "basketball", "swimming","pingpong","tennis")
     val vm by viewModels<CalendarViewModel>()
 
      override val toolbar: Toolbar?
@@ -62,13 +97,16 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
     private val monthCalendarView: CalendarView get() = binding.calendarView
     private val weekCalendarView: WeekCalendarView get() = binding.weekCalendar
     private var selectedDate:LocalDate? = null
-
+    private var sportSelected : String ="running"
     private val events = mutableMapOf<LocalDate, List<Event>>()
+    private val FreeCourts = mutableMapOf<LocalDate, List<FreeCourt>>()
 
-    val eventsAdapter = MyAdapter{
-        // 点击下面recyclerView调用的事件
-        println(it.resId)
+    val adapterC = CourtAdapter{
+        println(it.sport)
     }
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -85,6 +123,25 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
             }
 
         }
+        vm.getAllCourtTime(this.requireActivity().application,sportSelected)
+        //get all courtTime
+
+//        vm.F.observe(viewLifecycleOwner){
+//            // 从viewmodel获取数据（viewmodel从数据库拿到数据）
+//            for (res in it){
+////                println(">>>>> $res")
+//                FreeCourts[res.sport]= FreeCourts[res.sport].orEmpty().plus(FreeCourt(res.name,res.address,res.sport,res.startTime,res.endTime,res.courtTimeId,res.courtId)) as List<FreeCourt>
+//            }
+//        }
+
+//        vm.getCourtBySport(this.requireActivity().application,"running")
+//        vm.Courts.observe(viewLifecycleOwner){
+//            // 从viewmodel获取数据（viewmodel从数据库拿到数据）
+//            for (res in it){
+//                println(">>>>> $res")
+//
+//            }
+//        }
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -106,11 +163,14 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
                 val selectedSport = parent.getItemAtPosition(position).toString()
                 updateCalendar(selectedSport)
                 updateAdapterForDate(selectedDate)
+//                println(sportSelected)
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        recyclerView.adapter = eventsAdapter
+
+        recyclerView.adapter = adapterC
+
         recyclerView.layoutManager =  LinearLayoutManager(this.context, RecyclerView.VERTICAL,false )
 
         val currentMonth = YearMonth.now() // 2023-04
@@ -208,14 +268,22 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
         }
     }
     private fun updateAdapterForDate(date: LocalDate?) { // 在列表中将某个date的events显示出来
-        eventsAdapter.apply {
+//        eventsAdapter.apply {
+//            events.clear()
+//            events.addAll(this@SearchFragment.events[date].orEmpty())
+//            notifyDataSetChanged()
+//        }
+//        println(FreeCourts)
+        adapterC.apply {
             events.clear()
-            events.addAll(this@SearchFragment.events[date].orEmpty())
+            events.addAll(this@SearchFragment.FreeCourts[date]?.distinct().orEmpty())
             notifyDataSetChanged()
+
         }
 
     }
     private fun configureBinders() {
+
         // set up month calender
         class DayViewContainer(view: View): ViewContainer(view) {
             lateinit var day :CalendarDay
@@ -301,12 +369,91 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
                 dotView.makeInVisible()
 
             }
-            else{
+            else {
                 textView.setTextColorRes(R.color.black)
 
                 textView.background = null
-                dotView.isVisible = events[date].orEmpty().isNotEmpty()
+                dotView.isVisible = !events[date].orEmpty().isNotEmpty()
 
+            }
+            if (!events[date].orEmpty().isNotEmpty()) {//对应sport当天没有任何预约
+                if (FreeCourts[date] == null){
+
+                    vm.F.observe(viewLifecycleOwner) {
+                        // 从viewmodel获取数据（viewmodel从数据库拿到数据）
+                        for (res in it) {
+                            //it代表从数据库取出的某一个运动的所有时间段
+                            //res为其中的一个时间段
+//                            if(FreeCourts[date]?.get(0)?.sport!=sportSelected){  FreeCourts.clear()}
+                            FreeCourts[date]?.forEach() {i->
+                                if (i.sport != sportSelected) {
+                                    FreeCourts.clear()
+                                }
+                            }
+
+                            FreeCourts[date] = FreeCourts[date].orEmpty().plus(
+                                FreeCourt(
+                                    res.name,
+                                    res.address,
+                                    res.sport,
+                                    res.startTime,
+                                    res.endTime,
+                                    res.courtTimeId,
+                                    res.courtId
+                                )
+                            ) as List<FreeCourt>
+                        }
+                    }
+//                    println(FreeCourts[date])
+                }
+            }
+            else {//无小蓝点，表示当天有预约
+                val T = events[date]?.map { it.startTime }//T包含了在date这天所有对应sport预约的startTime
+//                println(T!=null)
+//                println(events[date])
+                if (FreeCourts[date] == null){
+                    vm.F.observe(viewLifecycleOwner) {
+                        // 从viewmodel获取数据（viewmodel从数据库拿到数据）
+                        for (res in it) {
+                            if (T != null) {
+                                if (T.contains(res.startTime)) {//对应时间段有预约
+
+                                } else {//对应时间段没有预约
+                                    FreeCourts[date]?.forEach() { it ->
+                                        if (it.sport != sportSelected) {
+                                            FreeCourts.clear()
+                                        }
+                                    }
+//                      println("res="+res.sport)
+                                    FreeCourts[date] = FreeCourts[date].orEmpty().plus(
+                                        FreeCourt(
+                                            res.name,
+                                            res.address,
+                                            res.sport,
+                                            res.startTime,
+                                            res.endTime,
+                                            res.courtTimeId,
+                                            res.courtId
+                                        )
+                                    )
+                                }
+                            }
+
+//                        if(events[date]!=null){
+//                            print(date)
+////                            println(events[date]!=null)
+//                        events[date]?.forEach(){e->
+//                            FreeCourts[date]?.filter {
+//                                it.startTime==e.startTime
+//                            }
+//
+//                        }
+//                    }
+                        }
+//                    println("fc"+FreeCourts)
+//                    println(events[date])
+                    }
+            }
             }
         }else{
             textView.background = null
@@ -374,6 +521,8 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
 
     }
     private fun updateCalendar(selectedSport: String) {
+        sportSelected=selectedSport
+        vm.getAllCourtTime(this.requireActivity().application,sportSelected)
         vm.getResBySport(this.requireActivity().application,selectedSport)
         vm.reservations.observe(viewLifecycleOwner){
             val oldDate=events.keys
@@ -387,12 +536,14 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
                 weekCalendarView.notifyDateChanged(it)
             }
 
+
             for (res in it){
-                println(res)
+  //              println(res)
                 events[res.date] = events[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
                 monthCalendarView.notifyDateChanged(res.date)
                 weekCalendarView.notifyDateChanged(res.date)
             }
+
 
 
         }

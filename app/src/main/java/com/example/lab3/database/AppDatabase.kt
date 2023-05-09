@@ -28,7 +28,7 @@ abstract class AppDatabase:RoomDatabase() {
                                                         AppDatabase::class.java,
                                                         "AppDatabase")
                     .allowMainThreadQueries()
-//                    .fallbackToDestructiveMigration()
+//                   .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = i
                 INSTANCE

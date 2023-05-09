@@ -10,9 +10,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.lab3.database.AppDatabase
+
+import com.example.lab3.database.DAO.CourtTimeDAO
 import com.example.lab3.database.entity.Court
 import com.example.lab3.database.entity.CourtTime
 import com.example.lab3.database.entity.MyReservation
+import com.example.lab3.database.entity.FreeCourt
 import com.example.lab3.database.entity.Reservation
 import org.jetbrains.annotations.NotNull
 import java.sql.Date
@@ -51,6 +54,29 @@ class CalendarViewModel() : ViewModel( ) ,Observable{
         db = AppDatabase.getDatabase(application)
         _reservations.value = db.reservationDao().getReservationBySport(sport)
     }
+
+
+
+//    private var _Courts = MutableLiveData<List<Court>>().also { it.value = listOf() }
+//    val Courts:LiveData<List<Court>> = _Courts
+//    fun getCourtBySport(application: Application,sport:String){
+//        db = AppDatabase.getDatabase(application)
+//        _Courts.value =db.courtDao().getCourtsBySport(sport)
+//    }
+
+    private var _F = MutableLiveData<List<FreeCourt>>().also { it.value = listOf() }
+    val F:LiveData<List<FreeCourt>> = _F
+
+    fun getAllCourtTime(application: Application,sport:String){
+        db = AppDatabase.getDatabase(application)
+        _F.value =db.courtTimeDao().getAllTCourtTimes(sport)
+    }
+
+
+
+
+
+
     fun setSelectedResByResId(resId:Int, application:Application){
         for (r in _reservations.value!! ){
             if (r.resId == resId) {

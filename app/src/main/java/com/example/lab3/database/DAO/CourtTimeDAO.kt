@@ -4,7 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.lab3.database.entity.Court
 import com.example.lab3.database.entity.CourtTime
+
 import java.sql.Time
+
+import com.example.lab3.database.entity.FreeCourt
+
 
 @Dao
 interface CourtTimeDAO {
@@ -15,8 +19,18 @@ interface CourtTimeDAO {
     fun getCourtTimeById(id:Int): CourtTime?
 
     // This function is only for testing purposes ( comment or ignore if not needed)
+
     @Query("SELECT * FROM courtTime WHERE startTime = :startTime AND endTime = :endTime")
     fun getCourtTimeId(startTime: Time, endTime:Time): CourtTime?
+
+
+//    @Query("SELECT * FROM courtTime")
+//    fun getAllTCourtTimes(): List<CourtTime>
+    @Query("SELECT name,address,sport,startTime,endTime,courtTime.id as courtTimeId,court.courtId as courtId FROM courtTime,court WHERE courtTime.courtId=court.courtId AND sport=:sport")
+    fun getAllTCourtTimes(sport:String): List<FreeCourt>
+    // -------------------------------------------------------------------------- //
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addCourtTime(courtTime: CourtTime)
 

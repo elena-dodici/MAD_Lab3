@@ -31,7 +31,7 @@ interface ReservationDAO {
 
     @Query("SELECT r.resId, name, address, sport, startTime, endTime, date, description,ct.id as courtTimeId,c.courtId\n" +
             "FROM reservation as r, court as c, courtTime as ct\n" +
-            "WHERE r.courtTimeId=ct.id  and ct.courtId=c.courtId and sport=:sport ")
+            "WHERE r.courtTimeId=ct.id  and ct.courtId=c.courtId and sport=:sport and r.status!=1")
     fun getReservationBySport(sport:String): List<MyReservation>?
 //    @Query("SELECT * FROM reservation WHERE userId=:id ")
 //    fun getReservationByUserId(id:Int): List<Reservation>?

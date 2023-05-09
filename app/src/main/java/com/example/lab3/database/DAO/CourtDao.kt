@@ -41,7 +41,8 @@ interface CourtDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addCourt(court: Court)
-
+    @Query("SELECT * FROM court WHERE sport=:sport")
+    fun getCourtsBySport(sport:String): List<Court>
     @Delete
     fun deleteCourt(court:Court)
 
