@@ -22,7 +22,7 @@ import java.sql.Date
 import java.sql.Time
 import java.time.LocalDate
 
-class CalendarViewModel() : ViewModel( ) ,Observable{
+class  CalendarViewModel() : ViewModel( ) ,Observable{
 
     private var _reservations = MutableLiveData<List<MyReservation>>().also { it.value = listOf() }
     val reservations:LiveData<List<MyReservation>> = _reservations

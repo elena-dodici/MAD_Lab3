@@ -40,7 +40,9 @@ class MainActivity : AppCompatActivity() {
 
         db = AppDatabase.getDatabase(application)
 
-        //initDatabase(db) // add some initial data
+
+
+      //  initDatabase(db) // add some initial data
 
 //        val a = db.userDao().getUserById(1)
 //        val a = db.userDao().getAllUsers()
