@@ -26,13 +26,7 @@ abstract class BaseFragment(@LayoutRes layoutRes: Int) : Fragment(layoutRes) {
             (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
         }
 
-//        val actionBar = (requireActivity() as AppCompatActivity).supportActionBar
-//        if (this is HasBackButton) {
-////            actionBar?.title = if (titleRes != null) context?.getString(titleRes!!) else ""
-//            actionBar?.setDisplayHomeAsUpEnabled(true)
-//        } else {
-//            actionBar?.setDisplayHomeAsUpEnabled(false)
-//        }
+
     }
 
     override fun onStop() {
@@ -42,10 +36,5 @@ abstract class BaseFragment(@LayoutRes layoutRes: Int) : Fragment(layoutRes) {
             (requireActivity() as AppCompatActivity).setSupportActionBar(activityToolbar)
         }
 
-//        val actionBar = (requireActivity() as AppCompatActivity).supportActionBar
-//        if (this is HasBackButton) {
-//            actionBar?.title = context?.getString(R.string.activity_title_view)
-//        }
-//        actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 }

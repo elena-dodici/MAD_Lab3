@@ -39,7 +39,7 @@ class DatePickerFragment(val max: () -> Unit) : DialogFragment(), DatePickerDial
         val newDate = LocalDate.of(year,month+1,day)
         sharedvm.selectedRes.value!!.date = newDate
         sharedvm.getAllFreeSLotByCourtIdAndDate(sharedvm.selectedRes.value!!.courtId, newDate,0,this.requireActivity().application)
-        println("enterdatepickercheck---------")
+
 
         max()
 

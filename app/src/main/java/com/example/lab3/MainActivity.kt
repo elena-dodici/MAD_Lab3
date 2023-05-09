@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     internal lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     lateinit var db:AppDatabase
-//    lateinit var adapter:MainAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,13 +42,8 @@ class MainActivity : AppCompatActivity() {
 
 
 
-      //  initDatabase(db) // add some initial data
+      // initDatabase(db) // add some initial data
 
-//        val a = db.userDao().getUserById(1)
-//        val a = db.userDao().getAllUsers()
-//        val a = db.courtTimeDao().getAllTCourtTimesByCourtIdTest(1)
-//        val a = db.reservationDao().getReservationById(1)
-//        println(">>>>>>>>>> ${a} <<<<<<<<<")
 
     }
     fun BottomNavigationView.uncheckAllItems() {

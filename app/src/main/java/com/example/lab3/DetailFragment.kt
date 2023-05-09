@@ -59,10 +59,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
         }
 
 
-//        var freeSlotEndList = ArrayList<Time>()
-//        for (i in sharedvm.freeEndTimes.value!!){
-//            freeSlotEndList.add(i)
-//        }
+
 
         val startTSpinner = binding!!.startTimeSpinner
         sharedvm.freeStartTimes.observe(viewLifecycleOwner) { newST ->
@@ -161,7 +158,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                 sharedvm.selectedRes.value!!.sport = sharedvm.sportList[position]
                 sharedvm.selectedRes.value!!.courtId = courtSportIdMap[sharedvm.sportList[position]]!!
-              //  sharedvm.getAllFreeSLotByCourtIdAndDate(sharedvm.selectedRes.value!!.courtId, sharedvm.selectedRes.value!!.date,0, application = activity!!.application)
+
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {

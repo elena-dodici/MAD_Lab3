@@ -26,14 +26,6 @@ class AddReservationViewModel : ViewModel() {
         //println(timeSlots.value?.size)
     }
 
-    /*fun getTimeSlots(application: Application, sport : String, date : LocalDate) : List<CourtTime> {
-        db = AppDatabase.getDatabase(application)
-        val courtId = db.courtDao().getCourtIdBySport(sport)
-        println("Getting all free slots of [ CourtId : " + courtId +" - Date : " + date)
-        println(db.courtDao().getFreeSlotsOfSpecificDateByCourtId(courtId,date).size)
-        return db.courtDao().getFreeSlotsOfSpecificDateByCourtId(courtId,date)
-
-    }*/
 
     fun addNewReservation(application: Application, reservation: Reservation){
         try {

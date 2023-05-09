@@ -88,7 +88,8 @@ class CourtAdapter(val onClick: (FreeCourt)-> Unit): RecyclerView.Adapter<CourtA
 class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
 
     val sports = listOf("running", "basketball", "swimming","pingpong","tennis")
-    val vm by viewModels<CalendarViewModel>()
+    val vm : CalendarViewModel by activityViewModels()
+
 
      override val toolbar: Toolbar?
         get() = null
@@ -125,6 +126,7 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
 
         }
         vm.getAllCourtTime(this.requireActivity().application,sportSelected)
+        FreeCourts.clear()
         //get all courtTime
 
 //        vm.F.observe(viewLifecycleOwner){
@@ -146,6 +148,8 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCalendarViewBinding.bind(view)
@@ -283,12 +287,6 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
         }
     }
     private fun updateAdapterForDate(date: LocalDate?) { // 在列表中将某个date的events显示出来
-//        eventsAdapter.apply {
-//            events.clear()
-//            events.addAll(this@SearchFragment.events[date].orEmpty())
-//            notifyDataSetChanged()
-//        }
-//        println(FreeCourts)
         adapterC.apply {
             events.clear()
             events.addAll(this@SearchFragment.FreeCourts[date]?.distinct().orEmpty())
@@ -422,7 +420,8 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
                 val T = events[date]?.map { it.startTime }//T包含了在date这天所有对应sport预约的startTime
 //                println(T!=null)
 //                println(events[date])
-                、
+                  FreeCourts[date] = listOf<FreeCourt>()
+
                     vm.F.observe(viewLifecycleOwner) {
                         // 从viewmodel获取数据（viewmodel从数据库拿到数据）
                         for (res in it) {
@@ -430,8 +429,11 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
                                 if (T.contains(res.startTime)) {//对应时间段有预约
 
                                 } else {//对应时间段没有预约
-                                   
+
+
+
 //                      println("res="+res.sport)
+
                                     FreeCourts[date] = FreeCourts[date].orEmpty().plus(
                                         FreeCourt(
                                             res.name,
@@ -443,22 +445,13 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
                                             res.courtId
                                         )
                                     )
+
+
                                 }
                             }
 
-//                        if(events[date]!=null){
-//                            print(date)
-////                            println(events[date]!=null)
-//                        events[date]?.forEach(){e->
-//                            FreeCourts[date]?.filter {
-//                                it.startTime==e.startTime
-//                            }
-//
-//                        }
-//                    }
                         }
-//                    println("fc"+FreeCourts)
-//                    println(events[date])
+
                     }
             
             }
@@ -487,18 +480,7 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
 
     }
 
-   /* private fun addReservation(text: String) {
-        if (text.isBlank()) {
-            Toast.makeText(requireContext(), "Text is empty", Toast.LENGTH_LONG)
-                .show()
-        } else {
-            selectedDate?.let {
-                events[it] =
-                    events[it].orEmpty().plus(Event(UUID.randomUUID().toString(), text, it))
-//                updateAdapterForDate(it)
-            }
-        }
-    }*/
+
 
     private fun updateMonthTitle() { // 更新月份
 
@@ -547,10 +529,7 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
         vm.getResBySport(this.requireActivity().application,selectedSport)
         vm.reservations.observe(viewLifecycleOwner){
             val oldDate=events.keys
-//            events.forEach(){
-//                monthCalendarView.notifyDateChanged(it.key)
-//                weekCalendarView.notifyDateChanged(it.key)
-//            }
+
             events.clear()
             oldDate.forEach(){
                 monthCalendarView.notifyDateChanged(it)
@@ -559,7 +538,6 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
 
 
             for (res in it){
-  //              println(res)
                 events[res.date] = events[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
                 monthCalendarView.notifyDateChanged(res.date)
                 weekCalendarView.notifyDateChanged(res.date)

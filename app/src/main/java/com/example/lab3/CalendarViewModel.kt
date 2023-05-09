@@ -57,12 +57,6 @@ class  CalendarViewModel() : ViewModel( ) ,Observable{
 
 
 
-//    private var _Courts = MutableLiveData<List<Court>>().also { it.value = listOf() }
-//    val Courts:LiveData<List<Court>> = _Courts
-//    fun getCourtBySport(application: Application,sport:String){
-//        db = AppDatabase.getDatabase(application)
-//        _Courts.value =db.courtDao().getCourtsBySport(sport)
-//    }
 
     private var _F = MutableLiveData<List<FreeCourt>>().also { it.value = listOf() }
     val F:LiveData<List<FreeCourt>> = _F

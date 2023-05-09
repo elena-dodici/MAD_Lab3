@@ -160,15 +160,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         savedInstanceState: Bundle?
     ): View? {
         // 在某个日期下面 初始化 几个reservation
-//        val may6 = LocalDate.of(2023,5,6)
-//        val may2 = LocalDate.of(2023,5,2)
-//        events[may6] = events[may6].orEmpty().plus(Event(UUID.randomUUID().toString(), "ahahah", may6))
-//        events[may2] = events[may2].orEmpty().plus(Event(UUID.randomUUID().toString(), "啦啦啦", may2))
-//        updateAdapterForDate(may6)
-//        db =AppDatabase.getDatabase(this.requireActivity().application) // I DONT KNOW HOW TO GET DB FROM MAIN ACTIVITY DIRECTLY, SO I RECREATE A DB
-//        val a = db.reservationDao().getReservationById(1)
-//        println(">>>>>>>>>> ${a} <<<<<<<<<")
-//        val res = db.reservationDao().getReservationByUserId(1)
+
 //        应该在viewmodel里获取数据
         // 将res放入event数组即可！
         sharedvm.getAllRes(this.requireActivity().application)
@@ -176,7 +168,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
             events.clear()
             for (res in it){
-//                println(">>>>> $res")
+
                 events[res.date] = events[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
 
             }
@@ -335,9 +327,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         }
         // 显示当前月 update title
         monthCalendarView.monthScrollListener = {updateMonthTitle();clearBackground()}
-        //        binding.calendarView.monthScrollListener = { month->
-//            binding.monthYearText.text = month.yearMonth.displayText()
-//        }
+
         class WeekDayViewContainer(view:View):ViewContainer(view) {
             lateinit var day:WeekDay
             val binding = CalendarDayLayoutBinding.bind(view)
