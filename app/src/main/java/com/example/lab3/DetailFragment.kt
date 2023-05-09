@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.lab3.database.entity.Court
 import com.example.lab3.database.entity.CourtTime
 import com.example.lab3.databinding.FragmentDetailBinding
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -39,13 +40,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
     ): View? {
         val fragmentBinding = FragmentDetailBinding.inflate(inflater, container, false)
         binding = fragmentBinding
-//
-//        sharedvm.selectedRes.observe(viewLifecycleOwner, { newRes ->
-////            binding!!.editStartTime.setText(newRes.startTime.toString())
-////            binding!!.editEndTime.setText(newRes.endTime.toString())
-//            binding!!.showDate.setText(newRes.date.toString())
-//            binding!!.editDate.setText(newRes.date.toString())
-//        })
+
 
         binding!!.delBtn.setOnClickListener {
             sharedvm.deleteRes(sharedvm.resIdvm.value!!,this.requireActivity().application)
@@ -57,66 +52,141 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
             findNavController().navigate(R.id.action_detailFragment_to_calendar)
             Toast.makeText(context, "Update successfully", Toast.LENGTH_LONG).show()
         }
-
         binding!!.calBtn.setOnClickListener {
 
             findNavController().navigate(R.id.action_detailFragment_to_calendar)
             Toast.makeText(context, "Unsaved information", Toast.LENGTH_LONG).show()
         }
 
-        var freeSlotStartList = ArrayList<Time>()
-        for (i in sharedvm.freeCourtTimes.value!!){
-            freeSlotStartList.add(i.startTime)
-        }
 
         var freeSlotEndList = ArrayList<Time>()
-        for (i in sharedvm.freeCourtTimes.value!!){
-            freeSlotEndList.add(i.endTime)
+        for (i in sharedvm.freeEndTimes.value!!){
+            freeSlotEndList.add(i)
         }
-        val startSpinner = binding!!.startTimeSpinner
-        val arrayAdapter1 = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, freeSlotStartList)
-        startSpinner.adapter = arrayAdapter1
-        startSpinner.onItemSelectedListener = object : OnItemSelectedListener{
+
+        val startTSpinner = binding!!.startTimeSpinner
+        sharedvm.freeStartTimes.observe(viewLifecycleOwner) { newST ->
+            val arrayAdapterST =
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, newST)
+            startTSpinner.adapter = arrayAdapterST
+
+            println(sharedvm.selectedRes.value!!.startTime)
+            val startTimeDefault =
+                arrayAdapterST.getPosition(sharedvm.selectedRes.value!!.startTime)
+            startTSpinner.setSelection(startTimeDefault)
+
+            startTSpinner.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(
+                    p0: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    p3: Long
+                ) {
+                    sharedvm.selectedRes.value!!.startTime = newST[position]
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    TODO("Not yet implemented")
+                }
+
+            }
+        }
+
+//        arrayAdapterST.notifyDataSetChanged()
+
+
+
+
+
+        val endTSpinner = binding!!.endTimeSpinner
+        sharedvm.freeStartTimes.observe(viewLifecycleOwner) { newET ->
+            val arrayAdapterET =
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, newET)
+            endTSpinner.adapter = arrayAdapterET
+
+
+            val endTimeDefault =
+                arrayAdapterET.getPosition(sharedvm.selectedRes.value!!.endTime)
+            startTSpinner.setSelection(endTimeDefault)
+
+            endTSpinner.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(
+                    p0: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    p3: Long
+                ) {
+                    sharedvm.selectedRes.value!!.endTime = newET[position]
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    TODO("Not yet implemented")
+                }
+
+            }
+        }
+        
+
+
+        var courtNameIdMap =  mutableMapOf<String,Int>()
+        for (i in sharedvm.courts.value!!){
+            courtNameIdMap[i.name] = i.courtId
+        }
+        val courtNameSpinner = binding!!.courtNameSpinner
+        val courtNameList = courtNameIdMap.keys.toTypedArray()
+        val arrayAdapterCourtName = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item,courtNameList )
+        courtNameSpinner.adapter = arrayAdapterCourtName
+        val courtNameDefault = arrayAdapterCourtName.getPosition(sharedvm.selectedRes.value!!.name)
+        courtNameSpinner.setSelection(courtNameDefault)
+        courtNameSpinner.onItemSelectedListener = object : OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-//                binding!!.editStartTime.setText(freeSlotList[position].toString())
-                sharedvm.selectedRes.value!!.startTime = freeSlotStartList[position]
+                println(courtNameIdMap[courtNameList[position]])
+                sharedvm.selectedRes.value!!.courtId = courtNameIdMap[courtNameList[position]]!!
+                sharedvm.getAllFreeSLotByCourtIdAndDate(sharedvm.selectedRes.value!!.courtId, sharedvm.selectedRes.value!!.date,0, application = activity!!.application )
+
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
                 TODO("Not yet implemented")
             }
-
         }
 
-        val endSpinner = binding!!.endTimeSpinner
-        val arrayAdapter2 = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, freeSlotEndList)
-        endSpinner.adapter = arrayAdapter2
-        endSpinner.onItemSelectedListener = object : OnItemSelectedListener{
+
+        var courtSportIdMap =  mutableMapOf<String,Int>()
+        for (i in sharedvm.courts.value!!){
+            courtSportIdMap[i.sport] = i.courtId
+
+        }
+        val sportTypeSpinner = binding!!.sportTypeSpinner
+        val arrayAdapterSportType = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item,sharedvm.sportList )
+        sportTypeSpinner.adapter = arrayAdapterSportType
+        val sportTypeDefault = arrayAdapterSportType.getPosition(sharedvm.selectedRes.value!!.sport)
+        sportTypeSpinner.setSelection(sportTypeDefault)
+        sportTypeSpinner.onItemSelectedListener = object : OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-//                binding!!.editStartTime.setText(freeSlotList[position].toString())
-                sharedvm.selectedRes.value!!.endTime = freeSlotEndList[position]
+                sharedvm.selectedRes.value!!.sport = sharedvm.sportList[position]
+                sharedvm.selectedRes.value!!.courtId = courtSportIdMap[sharedvm.sportList[position]]!!
+                sharedvm.getAllFreeSLotByCourtIdAndDate(sharedvm.selectedRes.value!!.courtId, sharedvm.selectedRes.value!!.date,0, application = activity!!.application)
+                for(i in sharedvm.freeStartTimes.value!! ){
+                    println(i)
+                }
+
+
+
+
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
                 TODO("Not yet implemented")
             }
-
         }
-
-
 
         return fragmentBinding.root
-        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_detail, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-
-
-
         binding?.apply {
             fun max(){
                 vm = sharedvm
@@ -126,8 +196,16 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
                 val datePickerFragment = DatePickerFragment(::max)
                 val supportFragmentManager = requireActivity().supportFragmentManager
                 datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
+
             }
+
+
         }
+
+            sharedvm.selectedRes.observe(viewLifecycleOwner, { newRes ->
+                binding!!.editDescription.setText(newRes.date.toString())
+            })
+
 
 
     }

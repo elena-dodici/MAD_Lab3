@@ -38,7 +38,11 @@ class DatePickerFragment(val max: () -> Unit) : DialogFragment(), DatePickerDial
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
         val newDate = LocalDate.of(year,month+1,day)
         sharedvm.selectedRes.value!!.date = newDate
+        sharedvm.getAllFreeSLotByCourtIdAndDate(sharedvm.selectedRes.value!!.courtId, newDate,0,this.requireActivity().application)
+        println("enterdatepickercheck---------")
+
         max()
+
     }
 
 

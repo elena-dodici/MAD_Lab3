@@ -16,7 +16,7 @@ import java.time.LocalDate
 @Dao
 interface CourtDao {
     @Query("SELECT * FROM court")
-    fun getAllCourts(): LiveData<List<Court>>
+    fun getAllCourts():List<Court>
 
     // These functions are only for testing purposes ( comment or ignore if not needed)
     @Query("SELECT * FROM court")
@@ -34,7 +34,7 @@ interface CourtDao {
             "LEFT JOIN reservation ON courtTime.id = reservation.courtTimeId WHERE courtId=1 AND reservation.date = :date\n" +
             " AND reservation.status = :status \n" +
             ") AND  courtId= :id")
-    fun getAllFreeSLotByCourtIdandDate(id: Int, date:LocalDate, status: Int): List<CourtTime>
+    fun getAllFreeSLotByCourtIdAndDate(id: Int, date:LocalDate, status: Int): List<CourtTime>
 
     @Query("SELECT * FROM court WHERE courtId=:id")
     fun getCourtById(id:Int): Court?
