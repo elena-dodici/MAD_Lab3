@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.lab3.database.entity.Court
 import com.example.lab3.database.entity.CourtTime
+import java.sql.Time
+import java.time.LocalDate
+
 @Dao
 interface CourtTimeDAO {
     @Query("SELECT * FROM courtTime WHERE courtId=:id")
@@ -11,6 +14,9 @@ interface CourtTimeDAO {
 
     @Query("SELECT * FROM courtTime WHERE id=:id")
     fun getCourtTimeById(id:Int): CourtTime?
+
+    @Query("SELECT id FROM courtTime WHERE courtId=:courtId AND startTime=:startTime")
+    fun getCourtTimeIdByCourtIdAndStartTime(courtId: Int, startTime: Time) : Int
 
     // This function is only for testing purposes ( comment or ignore if not needed)
     @Query("SELECT * FROM courtTime WHERE courtId=:id")

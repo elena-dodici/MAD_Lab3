@@ -10,6 +10,7 @@ import androidx.room.Update
 import com.example.lab3.database.entity.Court
 import com.example.lab3.database.entity.CourtTime
 import com.example.lab3.database.entity.Reservation
+import java.time.LocalDate
 
 
 @Dao
@@ -20,6 +21,13 @@ interface CourtDao {
     // These functions are only for testing purposes ( comment or ignore if not needed)
     @Query("SELECT * FROM court")
     fun getAllCourtsTest(): List<Court>
+
+    @Query("SELECT courtId FROM court WHERE sport=:sport")
+    fun getCourtIdBySport(sport: String) : Int
+
+    @Query("SELECT * FROM courtTime WHERE id NOT IN (SELECT id FROM courtTime JOIN reservation ON courtTime.id = reservation.courtTimeId " +
+            "WHERE courtId=:courtId AND date=:date) AND courtId=:courtId")
+    fun getFreeSlotsOfSpecificDateByCourtId(courtId : Int, date : LocalDate) : List<CourtTime>
 
     @Query("SELECT * FROM courtTime WHERE id NOT IN (SELECT id FROM courtTime JOIN reservation ON courtTime.id = reservation.courtTimeId " +
             "WHERE courtId=:id)")

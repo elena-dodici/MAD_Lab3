@@ -6,19 +6,20 @@
     android:layout_height="wrap_content"
     android:padding="8dp">
 
-    <TextView
-        android:id="@+id/item_time_slot"
-        android:layout_width="411dp"
-        android:layout_height="47dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        tools:text="text">
-
-    </TextView>
-
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     </com.google.android.material.divider.MaterialDivider>
+
+    <TextView
+        android:id="@+id/item_time_slot"
+        android:layout_width="411dp"
+        android:layout_height="47dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:gravity="center"
+        tools:text="text">
+
+    </TextView>
 
 </LinearLayout>

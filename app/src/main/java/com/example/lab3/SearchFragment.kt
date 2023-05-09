@@ -8,15 +8,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.CompoundButton
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
+import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.core.view.get
 import androidx.core.view.isInvisible
@@ -29,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab3.databinding.CalendarDayLayoutBinding
 import com.example.lab3.databinding.FragmentCalendarViewBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.DayPosition
 import com.kizitonwose.calendar.core.WeekDay
@@ -94,6 +92,7 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         val spinnerSports = view.findViewById<Spinner>(R.id.sportSpinner)
+        lateinit var sportSelectedForAddReservation : String
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sports)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
@@ -104,6 +103,7 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 // 获取当前选中的字符串
                 val selectedSport = parent.getItemAtPosition(position).toString()
+                sportSelectedForAddReservation = selectedSport
                 updateCalendar(selectedSport)
                 updateAdapterForDate(selectedDate)
             }
@@ -148,6 +148,17 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
         monthCalendarView.isInvisible = binding.weekModeCheckBox.isChecked
         weekCalendarView.isInvisible = !binding.weekModeCheckBox.isChecked
         binding.weekModeCheckBox.setOnCheckedChangeListener(weekModeToggled)
+
+        val floatingButton = view.findViewById<FloatingActionButton>(R.id.floatingAddButton)
+        floatingButton.setOnClickListener {
+            var sD : String? = null
+            if(selectedDate != null){
+                sD = selectedDate.toString()
+            } else sD = LocalDate.now().toString()
+            var bundle = bundleOf("date" to sD, "sport" to sportSelectedForAddReservation)
+            findNavController().navigate(R.id.action_searchFragment_to_addReservationFragment,bundle)
+        }
+
     }
 
 
@@ -332,6 +343,20 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
         }
 
     }
+
+   /* private fun addReservation(text: String) {
+        if (text.isBlank()) {
+            Toast.makeText(requireContext(), "Text is empty", Toast.LENGTH_LONG)
+                .show()
+        } else {
+            selectedDate?.let {
+                events[it] =
+                    events[it].orEmpty().plus(Event(UUID.randomUUID().toString(), text, it))
+//                updateAdapterForDate(it)
+            }
+        }
+    }*/
+
     private fun updateMonthTitle() { // 更新月份
 
         val isMonthMode = !binding.weekModeCheckBox.isChecked
