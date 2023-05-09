@@ -161,6 +161,7 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
 
         spinnerSports.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+              FreeCourts.clear()
                 // 获取当前选中的字符串
                 val selectedSport = parent.getItemAtPosition(position).toString()
                 sportSelectedForAddReservation = selectedSport
@@ -399,11 +400,7 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
                             //it代表从数据库取出的某一个运动的所有时间段
                             //res为其中的一个时间段
 //                            if(FreeCourts[date]?.get(0)?.sport!=sportSelected){  FreeCourts.clear()}
-                            FreeCourts[date]?.forEach() {i->
-                                if (i.sport != sportSelected) {
-                                    FreeCourts.clear()
-                                }
-                            }
+                            
 
                             FreeCourts[date] = FreeCourts[date].orEmpty().plus(
                                 FreeCourt(
@@ -425,7 +422,7 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
                 val T = events[date]?.map { it.startTime }//T包含了在date这天所有对应sport预约的startTime
 //                println(T!=null)
 //                println(events[date])
-                if (FreeCourts[date] == null){
+                、
                     vm.F.observe(viewLifecycleOwner) {
                         // 从viewmodel获取数据（viewmodel从数据库拿到数据）
                         for (res in it) {
@@ -433,11 +430,7 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
                                 if (T.contains(res.startTime)) {//对应时间段有预约
 
                                 } else {//对应时间段没有预约
-                                    FreeCourts[date]?.forEach() { it ->
-                                        if (it.sport != sportSelected) {
-                                            FreeCourts.clear()
-                                        }
-                                    }
+                                   
 //                      println("res="+res.sport)
                                     FreeCourts[date] = FreeCourts[date].orEmpty().plus(
                                         FreeCourt(
@@ -467,7 +460,7 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search),HasToolbar {
 //                    println("fc"+FreeCourts)
 //                    println(events[date])
                     }
-            }
+            
             }
         }else{
             textView.background = null
