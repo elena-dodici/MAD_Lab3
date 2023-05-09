@@ -59,10 +59,10 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
         }
 
 
-        var freeSlotEndList = ArrayList<Time>()
-        for (i in sharedvm.freeEndTimes.value!!){
-            freeSlotEndList.add(i)
-        }
+//        var freeSlotEndList = ArrayList<Time>()
+//        for (i in sharedvm.freeEndTimes.value!!){
+//            freeSlotEndList.add(i)
+//        }
 
         val startTSpinner = binding!!.startTimeSpinner
         sharedvm.freeStartTimes.observe(viewLifecycleOwner) { newST ->
@@ -70,7 +70,6 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
                 ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, newST)
             startTSpinner.adapter = arrayAdapterST
 
-            println(sharedvm.selectedRes.value!!.startTime)
             val startTimeDefault =
                 arrayAdapterST.getPosition(sharedvm.selectedRes.value!!.startTime)
             startTSpinner.setSelection(startTimeDefault)
@@ -95,19 +94,16 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
 //        arrayAdapterST.notifyDataSetChanged()
 
 
-
-
-
         val endTSpinner = binding!!.endTimeSpinner
-        sharedvm.freeStartTimes.observe(viewLifecycleOwner) { newET ->
+        sharedvm.freeEndTimes.observe(viewLifecycleOwner) { newET ->
             val arrayAdapterET =
                 ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, newET)
             endTSpinner.adapter = arrayAdapterET
 
-
+     
             val endTimeDefault =
                 arrayAdapterET.getPosition(sharedvm.selectedRes.value!!.endTime)
-            startTSpinner.setSelection(endTimeDefault)
+            endTSpinner.setSelection(endTimeDefault)
 
             endTSpinner.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(
@@ -125,7 +121,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
 
             }
         }
-        
+
 
 
         var courtNameIdMap =  mutableMapOf<String,Int>()
@@ -140,7 +136,6 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
         courtNameSpinner.setSelection(courtNameDefault)
         courtNameSpinner.onItemSelectedListener = object : OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
-                println(courtNameIdMap[courtNameList[position]])
                 sharedvm.selectedRes.value!!.courtId = courtNameIdMap[courtNameList[position]]!!
                 sharedvm.getAllFreeSLotByCourtIdAndDate(sharedvm.selectedRes.value!!.courtId, sharedvm.selectedRes.value!!.date,0, application = activity!!.application )
 
@@ -166,14 +161,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                 sharedvm.selectedRes.value!!.sport = sharedvm.sportList[position]
                 sharedvm.selectedRes.value!!.courtId = courtSportIdMap[sharedvm.sportList[position]]!!
-                sharedvm.getAllFreeSLotByCourtIdAndDate(sharedvm.selectedRes.value!!.courtId, sharedvm.selectedRes.value!!.date,0, application = activity!!.application)
-                for(i in sharedvm.freeStartTimes.value!! ){
-                    println(i)
-                }
-
-
-
-
+              //  sharedvm.getAllFreeSLotByCourtIdAndDate(sharedvm.selectedRes.value!!.courtId, sharedvm.selectedRes.value!!.date,0, application = activity!!.application)
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -202,10 +190,9 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
 
         }
 
-            sharedvm.selectedRes.observe(viewLifecycleOwner, { newRes ->
+            sharedvm.selectedRes.observe(viewLifecycleOwner) { newRes ->
                 binding!!.editDescription.setText(newRes.date.toString())
-            })
-
+            }
 
 
     }

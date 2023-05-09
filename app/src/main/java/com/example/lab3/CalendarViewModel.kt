@@ -32,20 +32,17 @@ class CalendarViewModel() : ViewModel( ) ,Observable{
     val selCourtId : LiveData<Int> = _selCourtId
     private var _selectedRes = MutableLiveData<MyReservation>()
     val selectedRes: LiveData<MyReservation> = _selectedRes
-    private var _freeEndTimes = MutableLiveData<List<Time>>()
+    private var _freeEndTimes = MutableLiveData<List<Time>>().also { it.value = listOf() }
     val freeEndTimes: LiveData<List<Time>> = _freeEndTimes
     private var _freeStartTimes = MutableLiveData<List<Time>>().also { it.value = listOf() }
     val freeStartTimes:LiveData<List<Time>> = _freeStartTimes
-
     private var _sportList = listOf("running", "basketball", "swimming","tennis")
     val sportList = _sportList
     fun getAllRes(application: Application){
         db = AppDatabase.getDatabase(application)
         _reservations.value = db.reservationDao().getReservationByUserId(1,1)
         getCourts(application)
-
     }
-
     fun getCourts(application: Application){
         db = AppDatabase.getDatabase(application)
         _courts.value = db.courtDao().getAllCourts()
@@ -54,28 +51,39 @@ class CalendarViewModel() : ViewModel( ) ,Observable{
         db = AppDatabase.getDatabase(application)
         _reservations.value = db.reservationDao().getReservationBySport(sport)
     }
-
     fun setSelectedResByResId(resId:Int, application:Application){
         for (r in _reservations.value!! ){
             if (r.resId == resId) {
                 _selectedRes.value = r
+
                 _resIdvm.value = resId
                 _selCourtId.value = r.courtId
-                getAllFreeSLotByCourtIdAndDate(r.courtId, r.date,0,application)
+                //getAllFreeSLotByCourtIdAndDate(r.courtId, r.date,0,application)
+                val freeCourtTime = AppDatabase.getDatabase(application).courtDao().getAllFreeSlotByCourtIdAndDate(r.courtId, r.date,0)
+                val freeEndTimeList = mutableListOf<Time>()
+                val freStartTimeList = mutableListOf<Time>()
+                for (i in freeCourtTime){
+                    freeEndTimeList.add(i.endTime)
+                    freStartTimeList.add(i.startTime)
+                }
 
-
+                freeEndTimeList.add(_selectedRes.value!!.endTime)
+                freStartTimeList.add(_selectedRes.value!!.startTime)
+                _freeEndTimes.value  = freeEndTimeList
+                _freeStartTimes.value = freStartTimeList
             }
         }
     }
 
      fun getAllFreeSLotByCourtIdAndDate(courtId : Int, date:LocalDate, status:Int, application:Application){
-       val freeCourtTime = AppDatabase.getDatabase(application).courtDao().getAllFreeSLotByCourtIdAndDate(courtId, date,status)
+       val freeCourtTime = AppDatabase.getDatabase(application).courtDao().getAllFreeSlotByCourtIdAndDate(courtId, date,status)
          val freeEndTimeList = mutableListOf<Time>()
          val freStartTimeList = mutableListOf<Time>()
          for (i in freeCourtTime){
              freeEndTimeList.add(i.endTime)
              freStartTimeList.add(i.startTime)
          }
+
          freeEndTimeList.add(_selectedRes.value!!.endTime)
          freStartTimeList.add(_selectedRes.value!!.startTime)
          _freeEndTimes.value  = freeEndTimeList

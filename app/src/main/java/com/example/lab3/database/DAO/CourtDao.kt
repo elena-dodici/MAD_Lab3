@@ -31,10 +31,10 @@ interface CourtDao {
     @Query("SELECT * FROM courtTime where id NOT IN  (\n" +
             "SELECT id\n" +
             "FROM courtTime \n" +
-            "LEFT JOIN reservation ON courtTime.id = reservation.courtTimeId WHERE courtId=1 AND reservation.date = :date\n" +
+            "LEFT JOIN reservation ON courtTime.id = reservation.courtTimeId WHERE courtId=:id AND reservation.date = :date\n" +
             " AND reservation.status = :status \n" +
             ") AND  courtId= :id")
-    fun getAllFreeSLotByCourtIdAndDate(id: Int, date:LocalDate, status: Int): List<CourtTime>
+    fun getAllFreeSlotByCourtIdAndDate(id: Int, date:LocalDate, status: Int): List<CourtTime>
 
     @Query("SELECT * FROM court WHERE courtId=:id")
     fun getCourtById(id:Int): Court?
