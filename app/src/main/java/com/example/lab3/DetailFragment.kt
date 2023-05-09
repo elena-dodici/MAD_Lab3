@@ -100,7 +100,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
                 ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, newET)
             endTSpinner.adapter = arrayAdapterET
 
-     
+
             val endTimeDefault =
                 arrayAdapterET.getPosition(sharedvm.selectedRes.value!!.endTime)
             endTSpinner.setSelection(endTimeDefault)

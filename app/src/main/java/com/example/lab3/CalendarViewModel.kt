@@ -36,7 +36,7 @@ class CalendarViewModel() : ViewModel( ) ,Observable{
     val freeEndTimes: LiveData<List<Time>> = _freeEndTimes
     private var _freeStartTimes = MutableLiveData<List<Time>>().also { it.value = listOf() }
     val freeStartTimes:LiveData<List<Time>> = _freeStartTimes
-    private var _sportList = listOf("running", "basketball", "swimming","tennis")
+    private var _sportList = listOf("running", "basketball", "swimming","tennis","pingpong")
     val sportList = _sportList
     fun getAllRes(application: Application){
         db = AppDatabase.getDatabase(application)
