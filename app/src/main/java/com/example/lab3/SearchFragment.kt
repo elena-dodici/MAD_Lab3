@@ -80,6 +80,7 @@ class CourtAdapter(): RecyclerView.Adapter<CourtAdapter.CourtViewHolder>(){
 class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 
     val sports = listOf("running", "basketball", "swimming","pingpong","tennis")
+    val allStartTime = mutableListOf<Time>()
     val vm : CalendarViewModel by activityViewModels()
 
 
@@ -104,8 +105,9 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // init
         vm.getResBySport(this.requireActivity().application,selectedSport) // 当前运动所有预定信息
-        vm.reservations.observe(viewLifecycleOwner){
+        vm.reservations.observe(viewLifecycleOwner){// 为啥被调用2次？？？
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
             for (res in it){
                 reservations[res.date] = reservations[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
@@ -113,7 +115,13 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 
         }
         vm.getAllCourtTime(this.requireActivity().application,selectedSport)
-        freeCourts.clear()
+        vm.F.observe(viewLifecycleOwner){ // 为啥被调用2次？？？
+            allStartTime.clear()
+            for (slot in it){
+                allStartTime.add(slot.startTime)
+            }
+        }
+//        freeCourts.clear()
         //get all courtTime
 
 
@@ -140,13 +148,9 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 freeCourts.clear()
                 // 获取当前选中的字符串
-//                val selectedSportName = parent.getItemAtPosition(position).toString()
                 selectedSport = parent.getItemAtPosition(position).toString()
-//                sportSelectedForAddReservation = selectedSportName
-//                selectedSport = selectedSportName
                 updateCalendar()
                 updateAdapterForDate(selectedDate)
-//                println(sportSelected)
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
