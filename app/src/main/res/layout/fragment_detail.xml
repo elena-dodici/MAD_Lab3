@@ -90,7 +90,7 @@
                 android:id="@+id/startTime_spinner"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:textSize="20sp"/>
         </LinearLayout>
 
@@ -115,7 +115,7 @@
                 android:id="@+id/endTime_spinner"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:textSize="20dp"/>
         </LinearLayout>
 
@@ -139,7 +139,7 @@
             <Spinner
                 android:id="@+id/courtName_spinner"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_weight="1"
                 android:textSize="20dp" />
         </LinearLayout>
@@ -184,7 +184,7 @@
                 android:id="@+id/sportType_spinner"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:textSize="20dp"/>
         </LinearLayout>
 

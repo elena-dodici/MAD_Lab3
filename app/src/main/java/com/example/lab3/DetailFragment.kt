@@ -1,58 +1,43 @@
 package com.example.lab3
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.os.Bundle
-import android.text.format.DateFormat.is24HourFormat
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import android.widget.AdapterView.*
-import androidx.databinding.InverseMethod
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.lab3.database.entity.Court
-import com.example.lab3.database.entity.CourtTime
 import com.example.lab3.databinding.FragmentDetailBinding
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
-import java.sql.Time
-import java.time.LocalDate
+
 
 /**
  * A simple [Fragment] subclass.
  * Use the [DetailFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
-    // TODO: Rename and change types of parameters
+class DetailFragment : BaseFragment(R.layout.fragment_detail) {
 
-    private var binding: FragmentDetailBinding? = null
+    private lateinit var binding: FragmentDetailBinding
     private val sharedvm : CalendarViewModel by activityViewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val fragmentBinding = FragmentDetailBinding.inflate(inflater, container, false)
-        binding = fragmentBinding
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+//        val fragmentBinding = FragmentDetailBinding.inflate(inflater, container, false)
+//        binding = fragmentBinding
+        binding = FragmentDetailBinding.bind(view, savedInstanceState)
 
-        binding!!.delBtn.setOnClickListener {
+        binding.delBtn.setOnClickListener {
             sharedvm.deleteRes(sharedvm.resIdvm.value!!,this.requireActivity().application)
             findNavController().navigate(R.id.action_detailFragment_to_calendar)
             Toast.makeText(context, "Delete successfully", Toast.LENGTH_LONG).show()
         }
-        binding!!.saveBtn.setOnClickListener {
+        binding.saveBtn.setOnClickListener {
             sharedvm.addOrUpdateRes(this.requireActivity().application)
             findNavController().navigate(R.id.action_detailFragment_to_calendar)
             Toast.makeText(context, "Update successfully", Toast.LENGTH_LONG).show()
         }
-        binding!!.calBtn.setOnClickListener {
+        binding.calBtn.setOnClickListener {
 
             findNavController().navigate(R.id.action_detailFragment_to_calendar)
             Toast.makeText(context, "Unsaved information", Toast.LENGTH_LONG).show()
@@ -61,7 +46,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
 
 
 
-        val startTSpinner = binding!!.startTimeSpinner
+        val startTSpinner = binding.startTimeSpinner
         sharedvm.freeStartTimes.observe(viewLifecycleOwner) { newST ->
             val arrayAdapterST =
                 ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, newST)
@@ -82,7 +67,6 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
-                    TODO("Not yet implemented")
                 }
 
             }
@@ -91,7 +75,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
 //        arrayAdapterST.notifyDataSetChanged()
 
 
-        val endTSpinner = binding!!.endTimeSpinner
+        val endTSpinner = binding.endTimeSpinner
         sharedvm.freeEndTimes.observe(viewLifecycleOwner) { newET ->
             val arrayAdapterET =
                 ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, newET)
@@ -113,7 +97,6 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
-                    TODO("Not yet implemented")
                 }
 
             }
@@ -121,11 +104,11 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
 
 
 
-        var courtNameIdMap =  mutableMapOf<String,Int>()
+        val courtNameIdMap =  mutableMapOf<String,Int>()
         for (i in sharedvm.courts.value!!){
             courtNameIdMap[i.name] = i.courtId
         }
-        val courtNameSpinner = binding!!.courtNameSpinner
+        val courtNameSpinner = binding.courtNameSpinner
         val courtNameList = courtNameIdMap.keys.toTypedArray()
         val arrayAdapterCourtName = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item,courtNameList )
         courtNameSpinner.adapter = arrayAdapterCourtName
@@ -139,17 +122,16 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO("Not yet implemented")
             }
         }
 
 
-        var courtSportIdMap =  mutableMapOf<String,Int>()
+        val courtSportIdMap =  mutableMapOf<String,Int>()
         for (i in sharedvm.courts.value!!){
             courtSportIdMap[i.sport] = i.courtId
 
         }
-        val sportTypeSpinner = binding!!.sportTypeSpinner
+        val sportTypeSpinner = binding.sportTypeSpinner
         val arrayAdapterSportType = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item,sharedvm.sportList )
         sportTypeSpinner.adapter = arrayAdapterSportType
         val sportTypeDefault = arrayAdapterSportType.getPosition(sharedvm.selectedRes.value!!.sport)
@@ -162,17 +144,10 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO("Not yet implemented")
             }
         }
 
-        return fragmentBinding.root
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding?.apply {
+        binding.apply {
             fun max(){
                 vm = sharedvm
             }
@@ -188,18 +163,12 @@ class DetailFragment : BaseFragment(R.layout.fragment_calendar_view) {
         }
 
             sharedvm.selectedRes.observe(viewLifecycleOwner) { newRes ->
-                binding!!.editDescription.setText(newRes.date.toString())
+                binding.editDescription.setText(newRes.date.toString())
             }
 
 
     }
 
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
-    }
 
 
 }

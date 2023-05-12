@@ -10,7 +10,7 @@ import java.sql.Time
 import java.time.LocalDate
 
 
-data class FreeCourt(
+data class FreeCourt( // 一个空余的时间段
     var name:String,
     var address:String,
     var sport:String,

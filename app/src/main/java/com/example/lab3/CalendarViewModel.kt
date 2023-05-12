@@ -1,28 +1,18 @@
 package com.example.lab3
 
 import android.app.Application
-import android.widget.EditText
-import androidx.databinding.Bindable
-import androidx.databinding.BindingAdapter
-import androidx.databinding.InverseMethod
-import androidx.databinding.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.lab3.database.AppDatabase
-
-import com.example.lab3.database.DAO.CourtTimeDAO
 import com.example.lab3.database.entity.Court
-import com.example.lab3.database.entity.CourtTime
 import com.example.lab3.database.entity.MyReservation
 import com.example.lab3.database.entity.FreeCourt
 import com.example.lab3.database.entity.Reservation
-import org.jetbrains.annotations.NotNull
-import java.sql.Date
 import java.sql.Time
 import java.time.LocalDate
 
-class  CalendarViewModel() : ViewModel( ) ,Observable{
+class  CalendarViewModel() : ViewModel( ) {
 
     private var _reservations = MutableLiveData<List<MyReservation>>().also { it.value = listOf() }
     val reservations:LiveData<List<MyReservation>> = _reservations
@@ -131,9 +121,5 @@ class  CalendarViewModel() : ViewModel( ) ,Observable{
         _reservations.value = null
     }
 
-    override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-    }
 
-    override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-    }
 }

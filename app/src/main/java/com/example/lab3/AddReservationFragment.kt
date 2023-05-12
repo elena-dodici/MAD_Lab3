@@ -1,32 +1,20 @@
 package com.example.lab3
 
-import android.content.Context
-import android.icu.util.LocaleData
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.ui.graphics.Color
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
-import com.example.lab3.database.entity.Court
 import com.example.lab3.database.entity.CourtTime
 import com.example.lab3.database.entity.Reservation
 import com.google.android.material.textfield.TextInputLayout
-import org.w3c.dom.Text
 import java.sql.Time
 import java.time.LocalDate
 
@@ -41,7 +29,6 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
     private var layoutManager : RecyclerView.LayoutManager ?= null
     private var  adapter : MyAdapter1 ?= null
     private lateinit var viewModel: AddReservationViewModel
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 

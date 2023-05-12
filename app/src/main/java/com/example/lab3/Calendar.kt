@@ -2,15 +2,11 @@ package com.example.lab3
 
 import android.animation.ValueAnimator
 import android.graphics.Color
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
-import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -21,16 +17,13 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab3.databinding.CalendarDayLayoutBinding
 import com.example.lab3.databinding.FragmentCalendarViewBinding
 import com.example.lab3.databinding.ItemLayoutBinding
 import com.kizitonwose.calendar.core.CalendarDay
-import com.kizitonwose.calendar.core.CalendarMonth
 import com.kizitonwose.calendar.core.DayPosition
 import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.WeekDayPosition
@@ -40,7 +33,6 @@ import com.kizitonwose.calendar.core.nextMonth
 import com.kizitonwose.calendar.core.previousMonth
 import com.kizitonwose.calendar.core.yearMonth
 import com.kizitonwose.calendar.view.MonthDayBinder
-import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
 import com.kizitonwose.calendar.view.ViewContainer
 import com.kizitonwose.calendar.view.CalendarView
 import com.kizitonwose.calendar.view.WeekCalendarView
@@ -49,7 +41,6 @@ import java.sql.Time
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
-import java.time.format.TextStyle
 import java.util.*
 
 data class Event(val resId: Int, val id: String, val courtName:String, val sportName:String, val startTime: Time, val date: LocalDate)
@@ -82,50 +73,6 @@ class MyAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<MyAdapter.MyV
     }
 }
 
-// textView根据有多少个ViewHolder自动被创建
-//class MyViewHolder(v: View):RecyclerView.ViewHolder(v){
-//    private val tv = v.findViewById<TextView>(R.id.item_text)
-//    fun bind(s:String, pos:Int, onTap:(Int)->Unit){
-//        tv.text = s
-//        super.itemView.setOnClickListener{onTap(pos)}
-//    }
-//    fun unbind(){
-//        super.itemView.setOnClickListener(null)
-//    }
-//}
-
-//class MyAdapter(val l:List<String>):RecyclerView.Adapter<MyViewHolder>(){
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-//        // 被RecyclerView自动调用
-//        val v = LayoutInflater.from(parent.context)
-//            .inflate(viewType, parent, false)
-//        return MyViewHolder(v)
-//
-//    }
-//
-//    override fun getItemCount(): Int { // how many elements in the list
-//        return l.size
-//    }
-//
-//    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-//        holder.bind(l[position], position){
-//            print(l[position])
-//            println("$position")
-//        }
-//    }
-//
-//    override fun onViewRecycled(holder: MyViewHolder) {
-//        holder.unbind()
-//    }
-//
-//    override fun getItemViewType(position: Int): Int {
-////        if (l[position].startsWith("Beta")) return R.layout.item2_layout
-////        else return R.layout.item_layout
-//        return R.layout.item_layout
-//    }
-//
-//}
-
 class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
     //    val vm by viewModels<CalendarViewModel>()
@@ -146,7 +93,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
     val eventsAdapter = MyAdapter{
         // 点击下面recyclerView调用的事件
-        println(it.resId)
+//        println(it.resId)
         gotoDetailFrag(it.resId)
     }
 
@@ -174,7 +121,6 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
             }
 
         }
-        display()
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -280,7 +226,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
             animator.start()
         }
     }
-    private fun updateAdapterForDate(date: LocalDate?) { // 在列表中将某个date的events显示出来
+    private fun updateAdapterForDate(date: LocalDate?) { // 填充会被展示在recyclerview的events数组
         eventsAdapter.apply {
             events.clear()
             events.addAll(this@Calendar.events[date].orEmpty())
@@ -315,13 +261,10 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                 val layout = container.binding.dayLayout
                 val dotView = container.binding.DotView
                 bindDate(data.date, textView, dotView, layout, data.position == DayPosition.MonthDate)
-//                textView.text = data.date.dayOfMonth.toString()
                 if (data.position == DayPosition.MonthDate) {
                     textView.setTextColor(Color.BLACK)
-//                    textView.setTextSize(16f)
                 } else {
                     textView.setTextColor(Color.GRAY)
-//                    textView.setTextSize(16f)
                 }
             }
         }
@@ -441,12 +384,5 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         }
     }
 
-    private fun display(){
-        sharedvm.reservations.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-                i ->
-            Log.i("MY", i.toString())
-
-        })
-    }
 }
 

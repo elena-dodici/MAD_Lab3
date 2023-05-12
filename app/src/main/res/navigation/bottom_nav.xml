@@ -21,7 +21,9 @@
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_searchFragment_to_addReservationFragment"
-            app:destination="@id/addReservationFragment" />
+            app:destination="@id/addReservationFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/mainFragment2"

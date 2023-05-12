@@ -1,9 +1,7 @@
 package com.example.lab3
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
@@ -13,8 +11,6 @@ import com.example.lab3.database.entity.CourtTime
 import com.example.lab3.database.entity.Reservation
 import com.example.lab3.database.entity.User
 import com.example.lab3.databinding.ActivityMainBinding
-import com.example.lab3.databinding.ActivityMyReservationBinding
-import java.sql.Date
 import java.sql.Time
 import java.time.LocalDate
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -42,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-      // initDatabase(db) // add some initial data
+//       initDatabase(db) // add some initial data
 
 
     }
