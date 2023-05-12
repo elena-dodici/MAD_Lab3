@@ -92,10 +92,10 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     private val monthCalendarView: CalendarView get() = binding.calendarView
     private val weekCalendarView: WeekCalendarView get() = binding.weekCalendar
     private var selectedDate:LocalDate? = null
-    private var selectedSport : String = "running" // default sport
+    private var selectedSport : String = sports[0] // default sport
 //    private val events = mutableMapOf<LocalDate, List<Event>>() // 已有的预定
     private val reservations = mutableMapOf<LocalDate, List<Event>>() // 已有的预定
-    private val FreeCourts = mutableMapOf<LocalDate, List<FreeCourt>>() // 空闲的时间段，要维护来显示到recyclerview中的
+    private val freeCourts = mutableMapOf<LocalDate, List<FreeCourt>>() // 空闲的时间段，要维护来显示到recyclerview中的 通过传入adapter中来显示的屏幕上
 
     val adapterC = CourtAdapter()
 
@@ -104,7 +104,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        vm.getResBySport(this.requireActivity().application,"running") // 当前运动所有预定信息
+        vm.getResBySport(this.requireActivity().application,selectedSport) // 当前运动所有预定信息
         vm.reservations.observe(viewLifecycleOwner){
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
             for (res in it){
@@ -113,25 +113,9 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 
         }
         vm.getAllCourtTime(this.requireActivity().application,selectedSport)
-        FreeCourts.clear()
+        freeCourts.clear()
         //get all courtTime
 
-//        vm.F.observe(viewLifecycleOwner){
-//            // 从viewmodel获取数据（viewmodel从数据库拿到数据）
-//            for (res in it){
-////                println(">>>>> $res")
-//                FreeCourts[res.sport]= FreeCourts[res.sport].orEmpty().plus(FreeCourt(res.name,res.address,res.sport,res.startTime,res.endTime,res.courtTimeId,res.courtId)) as List<FreeCourt>
-//            }
-//        }
-
-//        vm.getCourtBySport(this.requireActivity().application,"running")
-//        vm.Courts.observe(viewLifecycleOwner){
-//            // 从viewmodel获取数据（viewmodel从数据库拿到数据）
-//            for (res in it){
-//                println(">>>>> $res")
-//
-//            }
-//        }
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -154,7 +138,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         //监听下拉菜单
         spinnerSports.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                FreeCourts.clear()
+                freeCourts.clear()
                 // 获取当前选中的字符串
 //                val selectedSportName = parent.getItemAtPosition(position).toString()
                 selectedSport = parent.getItemAtPosition(position).toString()
@@ -217,43 +201,6 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 
     }
 
-//    override fun onPause() {
-//        super.onPause()
-//        println("search onPause")
-//
-//    }
-//    override fun onStop() {
-//        super.onStop()
-//        println("search onStop")
-//    }
-//
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        println("search onDestroyView")
-//
-//    }
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        println("search onDestroy")
-//    }
-//
-//    override fun onDetach() {
-//        super.onDetach()
-//        println("search onDetach")
-//    }
-//
-//    override fun onStart() {
-//        super.onStart()
-//        println("search onStart")
-//
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//        println("search onResume")
-//
-//    }
-
 
     private val weekModeToggled = object :CompoundButton.OnCheckedChangeListener{
         override fun onCheckedChanged(buttonView: CompoundButton, monthToWeek: Boolean) {
@@ -313,7 +260,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     private fun updateAdapterForDate(date: LocalDate?) { // 填充会被展示在recyclerview的events数组
         adapterC.apply {
             events.clear()
-            events.addAll(this@SearchFragment.FreeCourts[date]?.distinct().orEmpty())
+            events.addAll(this@SearchFragment.freeCourts[date]?.distinct().orEmpty())
             notifyDataSetChanged()
 
         }
@@ -412,16 +359,16 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 // 不显示小蓝点了，改成如果不能预约就禁用那一天
             }
             if (reservations[date].orEmpty().isEmpty()) {//对应sport当天没有任何预约
-                if (FreeCourts[date] == null){
+                if (freeCourts[date] == null){
 
                     vm.F.observe(viewLifecycleOwner) {
                         // 从viewmodel获取数据（viewmodel从数据库拿到数据）
                         for (res in it) {
                             //it代表从数据库取出的某一个运动的所有时间段
                             //res为其中的一个时间段
-//                            if(FreeCourts[date]?.get(0)?.sport!=sportSelected){  FreeCourts.clear()}
+//                            if(freeCourts[date]?.get(0)?.sport!=sportSelected){  freeCourts.clear()}
 
-                            FreeCourts[date] = FreeCourts[date].orEmpty().plus(
+                            freeCourts[date] = freeCourts[date].orEmpty().plus(
                                 FreeCourt(res.name, res.address, res.sport, res.startTime, res.endTime, res.courtTimeId, res.courtId )
                             )
                         }
@@ -431,7 +378,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
             else {//无小蓝点，表示当天有预约
                 val T = reservations[date]?.map { it.startTime }//T包含了在date这天所有对应sport预约的startTime
 
-                FreeCourts[date] = listOf<FreeCourt>()
+                freeCourts[date] = listOf<FreeCourt>()
 
                 vm.F.observe(viewLifecycleOwner) {
                     // 从viewmodel获取数据（viewmodel从数据库拿到数据）
@@ -441,7 +388,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 
                             } else {//对应时间段没有预约
 
-                                FreeCourts[date] = FreeCourts[date].orEmpty().plus(
+                                freeCourts[date] = freeCourts[date].orEmpty().plus(
                                     FreeCourt(res.name, res.address, res.sport, res.startTime, res.endTime, res.courtTimeId, res.courtId )
                                 )
 
