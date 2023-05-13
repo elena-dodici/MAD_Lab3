@@ -19,15 +19,15 @@ import java.util.*
  * Use the [DatePickerFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DatePickerFragment(val max: () -> Unit) : DialogFragment(), DatePickerDialog.OnDateSetListener {
+class DatePickerFragment() : DialogFragment(), DatePickerDialog.OnDateSetListener {
     // TODO: Rename and change types of parameters
 
     private val sharedvm : CalendarViewModel by activityViewModels()
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             // Use the current time as the default values for the picker
-            val year = sharedvm.selectedRes.value!!.date.year
-            val month = sharedvm.selectedRes.value!!.date.getMonthValue()
-            val day = sharedvm.selectedRes.value!!.date.dayOfMonth
+            val year = sharedvm.selDate.value!!.year
+            val month = sharedvm.selDate.value!!.monthValue
+            val day = sharedvm.selDate.value!!.dayOfMonth
             // Use the current time as the default values for the picker
             return DatePickerDialog(requireContext(),this,year,month - 1 ,day)
 
@@ -37,11 +37,8 @@ class DatePickerFragment(val max: () -> Unit) : DialogFragment(), DatePickerDial
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
         val newDate = LocalDate.of(year,month+1,day)
-        sharedvm.selectedRes.value!!.date = newDate
+        sharedvm.setSelDate(newDate)
         sharedvm.getAllFreeSLotByCourtIdAndDate(sharedvm.selectedRes.value!!.courtId, newDate,0,this.requireActivity().application)
-
-
-        max()
 
     }
 

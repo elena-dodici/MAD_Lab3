@@ -60,13 +60,14 @@ interface CourtDao {
 //    fun getAllCourtFreeSlotsByCourtId(id:Int) : LiveData<List<CourtTime>>
 
 
+
     @Query("SELECT * FROM court WHERE courtId=:id")
     fun getCourtById(id:Int): Court?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addCourt(court: Court)
     @Query("SELECT * FROM court WHERE sport=:sport")
-    fun getCourtsBySport(sport:String): List<Court>
+    fun getCourtBySport(sport:String): List<Court>
     @Delete
     fun deleteCourt(court:Court)
 

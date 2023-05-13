@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-//       initDatabase(db) // add some initial data
+//      initDatabase(db) // add some initial data
 
 
     }
