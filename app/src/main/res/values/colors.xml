@@ -7,4 +7,37 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="colorAccent">#FF4081</color>
+    <color name="toolbar_color">#607D8B</color>
+    <color name="deeper_toolbar_color">#5A7481</color>
+    <color name="red">#f00</color>
+    <color name="blue">#009de0</color>
+    <color name="blue_light">#D2E3FC</color>
+    <color name="off_white">#f1f5f7</color>
+    <color name="blue_selector">#00aeea</color>
+    <color name="red_negative_progress">#ff3333</color>
+
+    <color name="bg_color">#e3ebee</color>
+    <color name="color_grey">#2a2d30</color>
+    <color name="colorPrimary">@color/blue</color>
+    <color name="colorPrimaryDark">@color/blue</color>
+
+    <color name="background">#E0E0E0</color>
+    <color name="grey">#757575</color>
+    <color name="blue_grey_700">#455A64</color>
+    <color name="example_5_item_view_bg_color">#1B1B1B</color>
+    <color name="brown_700">#5D4037</color>
+    <color name="example_5_page_bg_color">#0E0E0E</color>
+    <color name="example_5_toolbar_color">#282828</color>
+    <color name="example_5_text_grey">#DCDCDC</color>
+    <color name="example_5_text_grey_light">#616161</color>
+    <color name="example_1_white">#D9FFFFFF</color>
+
+    <color name="bottom_nav_background">#E3F2C1</color>
+    <color name="bottom_nav_item">#AAC8A7</color>
+    <color name="bottom_nav_selected_item">#263A29</color>
+    <color name="fragment_bg_color">#F6FFDE</color>
+
+
 </resources>
