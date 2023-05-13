@@ -131,7 +131,20 @@ class MainActivity : AppCompatActivity() {
             Reservation(21, 1, 0, LocalDate.of(2023,4,23),"res7"),
             Reservation(22, 1, 0, LocalDate.of(2023,5,1),"res8"),
             Reservation(23, 1, 0, LocalDate.of(2023,5,4),"res9"),
-        )
+
+            Reservation(11, 1, 0, LocalDate.of(2023,5,3),"res9"),
+            Reservation(12, 1, 0, LocalDate.of(2023,5,3),"res9"),
+            Reservation(13, 1, 0, LocalDate.of(2023,5,3),"res9"),
+            Reservation(14, 1, 0, LocalDate.of(2023,5,3),"res9"),
+            Reservation(15, 1, 0, LocalDate.of(2023,5,3),"res9"),
+            Reservation(16, 1, 0, LocalDate.of(2023,5,3),"res9"),
+            Reservation(17, 1, 0, LocalDate.of(2023,5,3),"res9"),
+            Reservation(18, 1, 0, LocalDate.of(2023,5,3),"res9"),
+            Reservation(19, 1, 0, LocalDate.of(2023,5,3),"res9"),
+            Reservation(20, 1, 0, LocalDate.of(2023,5,3),"res9"),
+
+
+            )
 
 //        insert data
         for ( u in users){

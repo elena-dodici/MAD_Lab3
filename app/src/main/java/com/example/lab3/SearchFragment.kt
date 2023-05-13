@@ -97,7 +97,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 //    private val events = mutableMapOf<LocalDate, List<Event>>() // 已有的预定
     private val reservations = mutableMapOf<LocalDate, List<Event>>() // 已有的预定
     private val freeCourts = mutableMapOf<LocalDate, List<FreeCourt>>() // 空闲的时间段，要维护来显示到recyclerview中的 通过传入adapter中来显示的屏幕上
-
+    private val allReserved = mutableMapOf<LocalDate,Boolean>() // 某一天是否完全被预定了
     val adapterC = CourtAdapter()
 
     override fun onCreateView(
@@ -106,14 +106,10 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         savedInstanceState: Bundle?
     ): View? {
         // init
-        vm.getResBySport(this.requireActivity().application,selectedSport) // 当前运动所有预定信息
-        vm.reservations.observe(viewLifecycleOwner){// 为啥被调用2次？？？
-            // 从viewmodel获取数据（viewmodel从数据库拿到数据）
-            for (res in it){
-                reservations[res.date] = reservations[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
-            }
-
-        }
+        reservations.clear()
+        allReserved.clear()
+        freeCourts.clear()
+        allStartTime.clear()
         vm.getAllCourtTime(this.requireActivity().application,selectedSport)
         vm.F.observe(viewLifecycleOwner){ // 为啥被调用2次？？？
             allStartTime.clear()
@@ -121,9 +117,21 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 allStartTime.add(slot.startTime)
             }
         }
+        vm.getResBySport(this.requireActivity().application,selectedSport) // 当前运动所有预定信息
+        vm.reservations.observe(viewLifecycleOwner){// 为啥被调用2次？？？
+            // 所有的预约信息
+            for (res in it){
+                reservations[res.date] = reservations[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
+                allReserved[res.date] = (allStartTime.size == reservations[res.date]!!.size) // 若所有时间段数== 当前运动这一天的预定数，说明这一天被预定满了
+            }
+        }
+        // 不需要知道每天的free，只要知道哪天没有free即可（用于标记），剩下的点击那一天的时候再获取free slot显示出来即可
+        // 一开始就可以知道哪天已经预约满了(那一天就没有free
+        // 对于每一个reservation里有的日期，我可以知道这一天的free slot
+        // 剩余的所有日期，每个时间段都应该可用
+
 //        freeCourts.clear()
         //get all courtTime
-
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -146,10 +154,13 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         //监听下拉菜单
         spinnerSports.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                freeCourts.clear()
+//                reservations.clear() // 清空小蓝点
+                freeCourts.clear()   // 更新列表
                 // 获取当前选中的字符串
                 selectedSport = parent.getItemAtPosition(position).toString()
-                updateCalendar()
+                updateCalendar(selectedSport) // 拿到了新的预定信息  某个date如果满了就不能点了(在bind实现
+                if(selectedDate != null)
+                    getFreeSlot(selectedSport,selectedDate)  // 拿到当前天的free slot
                 updateAdapterForDate(selectedDate)
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -264,7 +275,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     private fun updateAdapterForDate(date: LocalDate?) { // 填充会被展示在recyclerview的events数组
         adapterC.apply {
             events.clear()
-            events.addAll(this@SearchFragment.freeCourts[date]?.distinct().orEmpty())
+            events.addAll(this@SearchFragment.freeCourts[date].orEmpty())
             notifyDataSetChanged()
 
         }
@@ -296,13 +307,12 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 val layout = container.binding.dayLayout
                 val dotView = container.binding.DotView
                 bindDate(data.date, textView, dotView, layout, data.position == DayPosition.MonthDate)
+//                bindDate(data.date, textView, layout, data.position == DayPosition.MonthDate)
 //                textView.text = data.date.dayOfMonth.toString()
                 if (data.position == DayPosition.MonthDate) {
                     textView.setTextColor(Color.BLACK)
-//                    textView.setTextSize(16f)
                 } else {
                     textView.setTextColor(Color.GRAY)
-//                    textView.setTextSize(16f)
                 }
             }
         }
@@ -336,6 +346,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 val layout = container.binding.dayLayout
                 val dotView = container.binding.DotView
                 bindDate(data.date, textView, dotView, layout, data.position == WeekDayPosition.RangeDate)
+//                bindDate(data.date, textView, layout, data.position == WeekDayPosition.RangeDate)
 //                textView.text = data.date.dayOfMonth.toString()
                 textView.setTextColor(Color.BLACK)
 //                textView.setTextSize(16f)
@@ -347,66 +358,75 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     }
     private fun bindDate(date:LocalDate, textView: TextView, dotView:View, layout:ConstraintLayout, isSelectable:Boolean){
         textView.text = date.dayOfMonth.toString()
+        dotView.makeInVisible()
         if (isSelectable){
 
             if (selectedDate == date){ // 选择的日期
                 textView.setTextColorRes(R.color.blue)
                 textView.setBackgroundResource(R.drawable.selected_bg)
-                dotView.makeInVisible()
+//                dotView.makeInVisible()
 
             }
             else {
                 textView.setTextColorRes(R.color.black)
 
                 textView.background = null
-                dotView.isVisible = reservations[date].orEmpty().isEmpty()
+//                dotView.isVisible = reservations[date].orEmpty().isEmpty()
 // 不显示小蓝点了，改成如果不能预约就禁用那一天
             }
-            if (reservations[date].orEmpty().isEmpty()) {//对应sport当天没有任何预约
-                if (freeCourts[date] == null){
-
-                    vm.F.observe(viewLifecycleOwner) {
-                        // 从viewmodel获取数据（viewmodel从数据库拿到数据）
-                        for (res in it) {
-                            //it代表从数据库取出的某一个运动的所有时间段
-                            //res为其中的一个时间段
-//                            if(freeCourts[date]?.get(0)?.sport!=sportSelected){  freeCourts.clear()}
-
-                            freeCourts[date] = freeCourts[date].orEmpty().plus(
-                                FreeCourt(res.name, res.address, res.sport, res.startTime, res.endTime, res.courtTimeId, res.courtId )
-                            )
-                        }
-                    }
-                }
+            layout.isClickable = allReserved[date] != true
+            if (allReserved[date] == true){
+                layout.setBackgroundColor(Color.LTGRAY)
+            }else{
+                layout.setBackgroundColor(Color.WHITE)
             }
-            else {//无小蓝点，表示当天有预约
-                val T = reservations[date]?.map { it.startTime }//T包含了在date这天所有对应sport预约的startTime
-
-                freeCourts[date] = listOf<FreeCourt>()
-
-                vm.F.observe(viewLifecycleOwner) {
-                    // 从viewmodel获取数据（viewmodel从数据库拿到数据）
-                    for (res in it) {
-                        if (T != null) {
-                            if (T.contains(res.startTime)) {//对应时间段有预约
-
-                            } else {//对应时间段没有预约
-
-                                freeCourts[date] = freeCourts[date].orEmpty().plus(
-                                    FreeCourt(res.name, res.address, res.sport, res.startTime, res.endTime, res.courtTimeId, res.courtId )
-                                )
-
-                            }
-                        }
-
-                    }
-
-                }
-            
-            }
+//            if (reservations[date].orEmpty().isEmpty()) {//对应sport当天没有任何预约
+//                if (freeCourts[date] == null){
+//
+//                    vm.F.observe(viewLifecycleOwner) {
+//                        // 从viewmodel获取数据（viewmodel从数据库拿到数据）
+//                        for (res in it) {
+//                            //it代表从数据库取出的某一个运动的所有时间段
+//                            //res为其中的一个时间段
+////                            if(freeCourts[date]?.get(0)?.sport!=sportSelected){  freeCourts.clear()}
+//
+//                            freeCourts[date] = freeCourts[date].orEmpty().plus(
+//                                FreeCourt(res.name, res.address, res.sport, res.startTime, res.endTime, res.courtTimeId, res.courtId )
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//            else {//无小蓝点，表示当天有预约
+//                val T = reservations[date]?.map { it.startTime }//T包含了在date这天所有对应sport预约的startTime
+//
+//                freeCourts[date] = listOf<FreeCourt>()
+//
+//                vm.F.observe(viewLifecycleOwner) {
+//                    // 从viewmodel获取数据（viewmodel从数据库拿到数据）
+//                    for (res in it) {
+//                        if (T != null) {
+//                            if (T.contains(res.startTime)) {//对应时间段有预约
+//
+//                            } else {//对应时间段没有预约
+//
+//                                freeCourts[date] = freeCourts[date].orEmpty().plus(
+//                                    FreeCourt(res.name, res.address, res.sport, res.startTime, res.endTime, res.courtTimeId, res.courtId )
+//                                )
+//
+//                            }
+//                        }
+//
+//                    }
+//
+//                }
+//
+//            }
         }else{
             textView.background = null
-            dotView.makeInVisible()
+//            dotView.makeInVisible()
+            textView.setBackgroundColor(Color.WHITE)
+
 
         }
 
@@ -424,6 +444,8 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 weekCalendarView.notifyDateChanged(it)
 
             }
+            getFreeSlot(selectedSport, date)
+//            println(freeCourts[date])
             updateAdapterForDate(date) // 将当前date的空闲时间段的内容显示在下面列表
         }
 
@@ -469,31 +491,37 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         }
     }
 
-//    private fun updateCalendar(selectedSport: String) {
-    private fun updateCalendar() {
-//        sportSelected=selectedSport
-        vm.getAllCourtTime(this.requireActivity().application,selectedSport)
-        vm.getResBySport(this.requireActivity().application,selectedSport)
+    private fun updateCalendar(sport:String) { // 获取新的运动的预定信息-> 调用日历的bind
+//        vm.getAllCourtTime(this.requireActivity().application,sport) // 根据sport获取相关的court和所有的时间段 保存到F中
+        vm.getResBySport(this.requireActivity().application,sport)   // 根据sport获取预定信息
         vm.reservations.observe(viewLifecycleOwner){
             val oldDate=reservations.keys
-
-            reservations.clear()
             oldDate.forEach(){
-                monthCalendarView.notifyDateChanged(it)
+                monthCalendarView.notifyDateChanged(it) // 调用monthCalendarView的bind
                 weekCalendarView.notifyDateChanged(it)
             }
 
-
+            reservations.clear()
+            allReserved.clear()
             for (res in it){
                 reservations[res.date] = reservations[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
                 monthCalendarView.notifyDateChanged(res.date)
                 weekCalendarView.notifyDateChanged(res.date)
+                allReserved[res.date] = (allStartTime.size == reservations[res.date]!!.size) // 若所有时间段数== 当前运动这一天的预定数，说明这一天被预定满了
+
             }
-
-
 
         }
 
+    }
+
+    private fun getFreeSlot(sport: String, date: LocalDate?){
+//        freeCourts.clear() // 清除旧的
+//        freeCourts[date!!] = listOf() // 清空这一天原本的free slot
+        vm.getFreeSlotBySportAndDate(sport, date!!,this.requireActivity().application)
+        vm.freeSlots.observe(this){
+            this.freeCourts[date] = it
+        }
     }
 
 

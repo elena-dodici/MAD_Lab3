@@ -9,6 +9,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.lab3.database.entity.Court
 import com.example.lab3.database.entity.CourtTime
+import com.example.lab3.database.entity.FreeCourt
 import com.example.lab3.database.entity.Reservation
 import java.time.LocalDate
 
@@ -33,6 +34,15 @@ interface CourtDao {
             " AND reservation.status = :status \n" +
             ") AND  courtId= :id")
     fun getAllFreeSlotByCourtIdAndDate(id: Int, date:LocalDate, status: Int): List<CourtTime>
+
+    // 关于某个运动，在这一天没有预约的时间段
+    @Query("SELECT name,address,sport,startTime,endTime,courtTime.id as courtTimeId,court.courtId as courtId \n" +
+            "FROM court , courtTime\n" +
+            "WHERE sport =:sport AND court.courtId = courtTime.courtId AND courtTime.id NOT IN(\n" +
+            "        SELECT courtTimeId\n" +
+            "        FROM reservation \n" +
+            "        WHERE userId=1 AND status=0 AND date =:date)")
+    fun getFreeSlotBySportAndDate(sport: String, date:LocalDate): List<FreeCourt>
 
     @Query("SELECT courtId FROM court WHERE sport=:sport")
     fun getCourtIdBySport(sport: String) : Int

@@ -31,6 +31,8 @@ class  CalendarViewModel() : ViewModel( ) {
     val freeStartTimes:LiveData<List<Time>> = _freeStartTimes
     private var _sportList = listOf("running", "basketball", "swimming","tennis","pingpong")
     val sportList = _sportList
+    private var _freeSlots = MutableLiveData<List<FreeCourt>>().also { it.value = listOf() }
+    val freeSlots = _freeSlots
     fun getAllRes(application: Application){
         db = AppDatabase.getDatabase(application)
         _reservations.value = db.reservationDao().getReservationByUserId(1,1)
@@ -84,9 +86,12 @@ class  CalendarViewModel() : ViewModel( ) {
             }
         }
     }
-
+    fun getFreeSlotBySportAndDate(sport: String, date: LocalDate, application: Application){
+        db = AppDatabase.getDatabase(application)
+        _freeSlots.value = db.courtDao().getFreeSlotBySportAndDate(sport, date)
+    }
      fun getAllFreeSLotByCourtIdAndDate(courtId : Int, date:LocalDate, status:Int, application:Application){
-       val freeCourtTime = AppDatabase.getDatabase(application).courtDao().getAllFreeSlotByCourtIdAndDate(courtId, date,status)
+         val freeCourtTime = AppDatabase.getDatabase(application).courtDao().getAllFreeSlotByCourtIdAndDate(courtId, date,status)
          val freeEndTimeList = mutableListOf<Time>()
          val freStartTimeList = mutableListOf<Time>()
          for (i in freeCourtTime){
@@ -97,7 +102,7 @@ class  CalendarViewModel() : ViewModel( ) {
          freeEndTimeList.add(_selectedRes.value!!.endTime)
          freStartTimeList.add(_selectedRes.value!!.startTime)
          _freeEndTimes.value  = freeEndTimeList
-        _freeStartTimes.value = freStartTimeList
+         _freeStartTimes.value = freStartTimeList
     }
 
     fun addOrUpdateRes(application: Application){
