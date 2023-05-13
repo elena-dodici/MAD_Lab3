@@ -35,6 +35,8 @@
     <color name="example_1_white">#D9FFFFFF</color>
 
     <color name="bottom_nav_background">#E3F2C1</color>
+    <color name="button_color">#AAC8A7</color>
+
     <color name="bottom_nav_item">#AAC8A7</color>
     <color name="bottom_nav_selected_item">#263A29</color>
     <color name="fragment_bg_color">#F6FFDE</color>

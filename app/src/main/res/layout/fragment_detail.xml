@@ -41,36 +41,17 @@
             android:text="@{vm.selectedRes.date.toString()}"
             android:textSize="20sp"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_timePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/rounded_corner"
             android:text="@string/pick_time"
             />
     </LinearLayout>
 
-<!--    <LinearLayout-->
-<!--        android:layout_marginTop="30dp"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content">-->
-<!--        <TextView-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="StartTime:"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="20sp" />-->
-
-<!--        <TextView-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:text="@{vm.selectedRes.startTime.toString()}"-->
-<!--            android:textSize="20sp" />-->
-
-
-<!--    </LinearLayout>-->
 
         <LinearLayout
             android:layout_marginTop="30dp"
@@ -193,11 +174,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/saveBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="SAVE"
+            android:textSize="20dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/rounded_corner"
             android:layout_weight="1"
             android:layout_marginTop="30dp"
             android:layout_marginRight="20dp"
@@ -206,23 +190,29 @@
 
 
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/delBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="DELETE"
+            android:textSize="20dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/rounded_corner"
             android:layout_marginTop="30dp"
             android:layout_marginRight="20dp"
 
             />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/calBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="CANCEL"
+            android:textSize="20dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/rounded_corner"
             android:layout_marginTop="30dp"
 
             />
