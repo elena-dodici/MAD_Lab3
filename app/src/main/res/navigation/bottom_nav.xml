@@ -63,5 +63,24 @@
             android:id="@+id/action_addReservationFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/courtDetailFragment"
+        android:name="com.example.lab3.CourtDetailFragment"
+        android:label="fragment_court_detail"
+        tools:layout="@layout/fragment_court_detail" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.lab3.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/courtFragment"
+        android:name="com.example.lab3.courtFragment"
+        android:label="fragment_court"
+        tools:layout="@layout/fragment_court" >
+        <action
+            android:id="@+id/action_courtFragment_to_courtDetailFragment"
+            app:destination="@id/courtDetailFragment" />
+    </fragment>
 
 </navigation>

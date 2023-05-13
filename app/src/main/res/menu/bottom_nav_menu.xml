@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="My Reservation"
+    <item android:title="My Booking"
         android:icon="@drawable/baseline_star_24"
         android:id="@+id/calendar"/>
-    <item android:title="Search Availability"
+    <item android:title="Search"
         android:icon="@drawable/baseline_search_24"
         android:id="@+id/searchFragment"/>
+    <item android:title="Profile"
+        android:icon="@drawable/baseline_person_24"
+        android:id="@+id/profileFragment"/>
+    <item android:title="Court Info"
+        android:icon="@drawable/baseline_golf_course_24"
+        android:id="@+id/courtFragment"/>
 </menu>
