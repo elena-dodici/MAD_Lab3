@@ -9,7 +9,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bottom_nav_selected_item"
+        android:background="@color/deeper_toolbar_color2"
 
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -76,7 +76,7 @@
             android:id="@+id/bottomNavView"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:background="@color/bottom_nav_background"
+            android:background="@color/lighter_toolbar_color"
             app:itemIconTint="@drawable/bottom_nav_colors"
             app:itemTextColor="@drawable/bottom_nav_colors"
             app:layout_constraintBottom_toBottomOf="parent"
