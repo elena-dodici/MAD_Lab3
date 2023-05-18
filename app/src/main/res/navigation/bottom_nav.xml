@@ -75,7 +75,7 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/courtFragment"
-        android:name="com.example.lab3.courtFragment"
+        android:name="com.example.lab3.CourtFragment"
         android:label="fragment_court"
         tools:layout="@layout/fragment_court" >
         <action
