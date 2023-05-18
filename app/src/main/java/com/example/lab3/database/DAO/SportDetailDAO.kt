@@ -14,5 +14,11 @@ interface SportDetailDAO {
     fun getSportDetailsByUserId(id:Int): SportDetail?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addSportDetail(sportDetail: SportDetail)
+    fun addSportDetails(sportDetail: SportDetail)
+
+    @Delete
+    fun deleteSportDetails(sportDetail : SportDetail)
+
+    @Update
+    fun updateSportDetails(sportDetail: SportDetail)
 }
