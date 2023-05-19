@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_calendar_view" >
         <action
             android:id="@+id/action_calendar_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -41,7 +43,9 @@
         tools:layout="@layout/fragment_detail" >
         <action
             android:id="@+id/action_detailFragment_to_calendar"
-            app:destination="@id/calendar" />
+            app:destination="@id/calendar"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
 
         <action
             android:id="@+id/action_detailFragment_to_timePickerFragment"
@@ -61,7 +65,9 @@
         tools:layout="@layout/fragment_add_reservation" >
         <action
             android:id="@+id/action_addReservationFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
+            app:destination="@id/searchFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/courtDetailFragment"
@@ -70,7 +76,9 @@
         tools:layout="@layout/fragment_court_detail" >
         <action
             android:id="@+id/action_courtDetailFragment_to_courtFragment"
-            app:destination="@id/courtFragment" />
+            app:destination="@id/courtFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -84,7 +92,9 @@
         tools:layout="@layout/fragment_court" >
         <action
             android:id="@+id/action_courtFragment_to_courtDetailFragment"
-            app:destination="@id/courtDetailFragment" />
+            app:destination="@id/courtDetailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
 
 </navigation>
