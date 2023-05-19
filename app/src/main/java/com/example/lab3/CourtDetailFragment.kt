@@ -169,4 +169,7 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail) {
         }
 
     }
+
+
+
 }

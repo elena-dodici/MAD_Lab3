@@ -58,6 +58,13 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        vm.setShowNav(true)
+
+
+    }
     fun BottomNavigationView.uncheckAllItems() {
         menu.setGroupCheckable(0, true, false)
         for (i in 0 until menu.size()) {
