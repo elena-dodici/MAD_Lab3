@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab3.database.entity.CourtInfo
@@ -13,6 +14,7 @@ import com.example.lab3.databinding.FragmentCourtBinding
 import com.example.lab3.databinding.ItemLayoutBinding
 import com.example.lab3.databinding.ItemLayoutCourtScoreBinding
 import java.time.LocalDate
+import kotlin.math.roundToInt
 
 //data class CourtInfo(val courtName:String, val avgScore:Float)
 
@@ -27,7 +29,8 @@ class ScoreAdapter(val onTap:(CourtInfo)->Unit):RecyclerView.Adapter<ScoreAdapte
             binding.itemTextRank.text =ranking.toString()
             ranking+=1
             binding.itemTextCourt.text = courtInfo.courtname
-            binding.itemTextScore.text = courtInfo.avg_rating.toString()
+            courtInfo.avg_rating = ((courtInfo.avg_rating *100.0).roundToInt() / 100.0).toFloat()
+            binding.itemTextScore.text =  courtInfo.avg_rating.toString()
         }
     }
     val courtInfoList = mutableListOf<CourtInfo>()
@@ -54,8 +57,13 @@ class CourtFragment : BaseFragment(R.layout.fragment_court) {
     private val courtInfoList = mutableListOf<CourtInfo>()
     val adapter = ScoreAdapter{
         println("click: ${it.courtname} - ${it.avg_rating}")
+        //avg_rating: 0-xxx
+        gotoCourtDetailFrag(it.courtId, it.avg_rating)
     }
-
+    private fun gotoCourtDetailFrag(courtId: Int, avg_rating:Float){
+       sharedvm.setSelectedCourtById(courtId,avg_rating, this.requireActivity().application)
+        findNavController().navigate(R.id.action_courtFragment_to_courtDetailFragment)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedvm.getCourtInfo(this.requireActivity().application)
@@ -63,7 +71,7 @@ class CourtFragment : BaseFragment(R.layout.fragment_court) {
             courtInfoList.clear();
             courtInfoList.addAll(it)
             updateAdapter()
-            println("1 ${courtInfoList}")
+            //println("1 ${courtInfoList}")
         }
 //        println(courtInfoList)
     }
@@ -75,6 +83,7 @@ class CourtFragment : BaseFragment(R.layout.fragment_court) {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL,false)
 //        updateAdapter()
+
     }
 
 
@@ -82,7 +91,7 @@ class CourtFragment : BaseFragment(R.layout.fragment_court) {
         adapter.apply {
             courtInfoList.clear()
             courtInfoList.addAll(this@CourtFragment.courtInfoList)
-            println("2 ${this@CourtFragment.courtInfoList}")
+           // println("2 ${this@CourtFragment.courtInfoList}")
 
         }
 

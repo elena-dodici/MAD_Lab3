@@ -67,7 +67,11 @@
         android:id="@+id/courtDetailFragment"
         android:name="com.example.lab3.CourtDetailFragment"
         android:label="fragment_court_detail"
-        tools:layout="@layout/fragment_court_detail" />
+        tools:layout="@layout/fragment_court_detail" >
+        <action
+            android:id="@+id/action_courtDetailFragment_to_courtFragment"
+            app:destination="@id/courtFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.lab3.ProfileFragment"

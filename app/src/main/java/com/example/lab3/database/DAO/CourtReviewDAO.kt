@@ -6,7 +6,7 @@ import com.example.lab3.database.entity.CourtReview
 
 @Dao
 interface CourtReviewDAO {
-    @Query("SELECT c.name as courtname,avg(cr.rating) as avg_rating\n" +
+    @Query("SELECT c.courtId,c.name as courtname,avg(cr.rating) as avg_rating\n" +
             "FROM courtReview as cr,court as c\n" +
             "WHERE cr.courtId = c.courtId\n" +
             "GROUP BY cr.courtId\n" +
@@ -18,11 +18,14 @@ interface CourtReviewDAO {
     @Query("SELECT * FROM courtReview WHERE crId=:id")
     fun getCourtReviewById(id:Int): CourtReview?
 
-    @Query("SELECT * FROM courtReview WHERE userId=:id")
-    fun getCourtReviewByUserId(id:Int): CourtReview?
+//    @Query("SELECT * FROM courtReview WHERE userId=:id")
+//    fun getCourtReviewByUserId(id:Int): CourtReview?
 
     @Query("SELECT * FROM courtReview WHERE courtId=:id")
-    fun getCourtReviewByCourtId(id:Int): CourtReview?
+    fun getCourtReviewByCourtId(id:Int): List<CourtReview>?
+
+    @Query("SELECT * FROM courtReview WHERE courtId=:id AND userId = :uid")
+    fun getCourtReviewByCourtIdUserId(id:Int, uid:Int): CourtReview?
 
     @Update
     fun update(courtReview : CourtReview)

@@ -44,7 +44,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
 
         }
         binding.calBtn.setOnClickListener {
-            sharedvm.selectedRes.value!!.description = sharedvm.selDes.value!!
+
             findNavController().navigate(R.id.action_detailFragment_to_calendar)
             Toast.makeText(context, "Unsaved information", Toast.LENGTH_LONG).show()
         }
