@@ -483,7 +483,7 @@ class DBtest {
     fun addSportDetails(){
         userDao.addUser(User("User1","1","3333444555"))
         courtDao.addCourt(Court("Court1","aaa","running"))
-        sportDetailDAO.addSportDetails(SportDetail("running",1,2,"--"))
+        sportDetailDAO.addSportDetails(SportDetail(1,"running",2,"--"))
         val sDs = sportDetailDAO.getAllSportDetails()
         println(">>>>> ${sDs}")
         Assert.assertEquals(1, sDs?.size)
@@ -493,9 +493,9 @@ class DBtest {
     @Throws(Exception::class)
     fun addMultipleSportDetails(){
         userDao.addUser(User("User1","1","3333444555"))
-        sportDetailDAO.addSportDetails(SportDetail("running",1,2,"--"))
-        sportDetailDAO.addSportDetails(SportDetail("basketball",1,3,"--"))
-        sportDetailDAO.addSportDetails(SportDetail("swimming",1,5,"--"))
+        sportDetailDAO.addSportDetails(SportDetail(1,"running",2,"--"))
+        sportDetailDAO.addSportDetails(SportDetail(1,"basketball",3,"--"))
+        sportDetailDAO.addSportDetails(SportDetail(1,"swimming",5,"--"))
         val sDs = sportDetailDAO.getAllSportDetails()
         println(">>>>> ${sDs}")
         Assert.assertEquals(3, sDs?.size)
@@ -507,14 +507,14 @@ class DBtest {
         userDao.addUser(User("User1","1","3333444555"))
         userDao.addUser(User("User2","2","3333444555"))
         userDao.addUser(User("User3","3","3333444555"))
-        sportDetailDAO.addSportDetails(SportDetail("running",1,2,"--"))
-        sportDetailDAO.addSportDetails(SportDetail("basketball",1,3,"--"))
-        sportDetailDAO.addSportDetails(SportDetail("swimming",1,5,"--"))
+        sportDetailDAO.addSportDetails(SportDetail(1,"running",2,"--"))
+        sportDetailDAO.addSportDetails(SportDetail(1,"basketball",3,"--"))
+        sportDetailDAO.addSportDetails(SportDetail(1,"swimming",5,"--"))
 
-        sportDetailDAO.addSportDetails(SportDetail("running",2,2,"--"))
-        sportDetailDAO.addSportDetails(SportDetail("basketball",2,2,"--"))
+        sportDetailDAO.addSportDetails(SportDetail(2,"running",2,"--"))
+        sportDetailDAO.addSportDetails(SportDetail(2,"basketball",2,"--"))
 
-        sportDetailDAO.addSportDetails(SportDetail("running",3,1,"--"))
+        sportDetailDAO.addSportDetails(SportDetail(3,"running",1,"--"))
 
         val sDs1 = sportDetailDAO.getSportDetailsByUserId(1)
         val sDs2 = sportDetailDAO.getSportDetailsByUserId(2)
