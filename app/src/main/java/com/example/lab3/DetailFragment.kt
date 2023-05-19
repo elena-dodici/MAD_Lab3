@@ -54,6 +54,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
             newSelDate ->
             binding.showDate.setText(newSelDate.toString())
         }
+
         val startTSpinner = binding.startTimeSpinner
         sharedvm.freeStartTimes.observe(viewLifecycleOwner) { newST ->
             val arrayAdapterST =

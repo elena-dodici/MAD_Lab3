@@ -74,6 +74,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -113,13 +115,12 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail) {
             binding.showCourtName.text = newCN.toString()
         }
 
-        sharedvm.courtRate.observe(viewLifecycleOwner){
-                newCR ->
-            binding.showCourtRate.text = newCR.toString()
+
+
+
+        binding.apply {
+            vm = sharedvm
         }
-
-
-
 
         if (sharedvm.hasRev.value!!) {
             binding.delBtn.visibility = View.VISIBLE;
@@ -129,7 +130,6 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail) {
             findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
             Toast.makeText(context, "Your Review is not saved!", Toast.LENGTH_LONG).show()
         }
-
         binding.delBtn.setOnClickListener {
             //if delete bottom show, it must means has review
             sharedvm.deleteCourtRev(this.requireActivity().application)
@@ -138,9 +138,35 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail) {
         }
         binding.saveBtn.setOnClickListener {
 
-               sharedvm.addOrUpdateCourtRev(4, sharedvm.review.value!!, this.requireActivity().application)
+            sharedvm.addOrUpdateCourtRev(sharedvm.courtRate.value!!, sharedvm.selectedCourtRev.value!!.review, this.requireActivity().application)
             findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
             Toast.makeText(context, "Update successfully", Toast.LENGTH_LONG).show()
         }
+
+        val rateSpinner = binding.rateSpinner
+        val rateList = listOf<Int>(0,1,2,3,4,5)
+        val arrayAdapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, rateList)
+        rateSpinner.adapter = arrayAdapter
+        val rateDefault =
+            arrayAdapter.getPosition(sharedvm.selectedCourtRev.value!!.rating)
+        rateSpinner.setSelection(rateDefault)
+
+        rateSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                p0: AdapterView<*>?,
+                p1: View?,
+                position: Int,
+                p3: Long
+            ) {
+                println(rateList[position])
+                sharedvm.setRate(rateList[position])
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+
+        }
+
     }
 }

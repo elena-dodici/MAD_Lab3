@@ -32,8 +32,8 @@ class CourtViewModel : ViewModel( ) {
     private var _courtId = MutableLiveData<Int>()
     val courtId : LiveData<Int> = _courtId
 
-    private var _courtRate = MutableLiveData<Float>()
-    val courtRate : LiveData<Float> = _courtRate
+    private var _courtRate = MutableLiveData<Int>()
+    val courtRate : LiveData<Int> = _courtRate
 
     private var _courtName = MutableLiveData<String>()
     val courtName : LiveData<String> = _courtName
@@ -56,38 +56,31 @@ class CourtViewModel : ViewModel( ) {
                 _courtId.value = r.courtId
                 _hasRev.value = false
                 //0-xxx
-                _courtRate.value = avg_Rate
-                _review.value=""
 
-                val reviewList = AppDatabase.getDatabase(application).courtReviewDao().getCourtReviewByCourtId(courtId)
-                if (reviewList != null) {
-                    for (rev in reviewList){
-                        //_userId.value need to be updated once profile give userId
-                        if (rev.userId == 1 ) {
-                            _hasRev.value = true
-                            //uid needed to be updated
-                            _selectedCourtRev.value = AppDatabase.getDatabase(application).courtReviewDao().getCourtReviewByCourtIdUserId(courtId,1)
-                            _review.value = _selectedCourtRev.value!!.review
 
-                        }
-                        else{
-                            //this user never review this court
-                            _selectedCourtRev.value!!.courtId = courtId
-                            _selectedCourtRev.value!!.review = "Please leave your message"
-                            _selectedCourtRev.value!!.userId = 1
-                            _selectedCourtRev.value!!.rating = 0
-                        }
+                val review = AppDatabase.getDatabase(application).courtReviewDao().getCourtReviewByCourtIdUserId(courtId,1)
+                if (review != null) {
+                    //_userId.value need to be updated once profile give userId
+                    //hasreview
+                    _hasRev.value = true
 
-                    }
+                    //uid needed to be updated
+                    _selectedCourtRev.value = AppDatabase.getDatabase(application).courtReviewDao().getCourtReviewByCourtIdUserId(courtId,1)
+                    _courtRate.value = _selectedCourtRev.value!!.rating
+//                    _review.value = _selectedCourtRev.value!!.review
                 }
+                else{
+                    //this user never review this court
+                    _selectedCourtRev.value =CourtReview(1,courtId,0,"")
 
-
-            }
-
-
+                }
+                }
         }
     }
 
+    fun setRate(newRate: Int){
+        _courtRate.value = newRate
+    }
     fun deleteCourtRev( application: Application){
          println(_selectedCourtRev.value)
         //AppDatabase.getDatabase(application).courtReviewDao().deleteCourtReview( _selectedCourtRev.value!!)

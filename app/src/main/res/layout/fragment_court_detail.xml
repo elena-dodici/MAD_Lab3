@@ -61,38 +61,37 @@
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/showCourtRate"
+
+            <Spinner
+                android:id="@+id/rate_spinner"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_weight="1"
-
-                android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="20dp" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="30dp">-->
 
-            <TextView
-                android:id="@+id/descriptionTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+<!--            <TextView-->
+<!--                android:id="@+id/descriptionTv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
 
-                android:layout_weight="1"
-                android:text="Leave your review here:"
-                android:textColor="@color/black"
-                android:textSize="20dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerView2" />
+<!--                android:layout_weight="1"-->
+<!--                android:text="Leave your review here:"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="20dp"-->
+<!--                android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/recyclerView2" />-->
 
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -109,9 +108,9 @@
                     android:id="@+id/showRev"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
-                    android:text="@={vm.selectedCourtRev.review}"
+                    android:hint="Type or update your review:"
+                    android:text="@={vm.selectedCourtRev.review}" />
 
-                    />
 
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
