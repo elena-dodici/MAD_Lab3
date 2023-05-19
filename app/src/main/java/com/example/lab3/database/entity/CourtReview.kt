@@ -3,7 +3,7 @@ package com.example.lab3.database.entity
 import androidx.room.*
 
 @Entity(tableName = "courtReview",
-    indices = [Index(value = ["courtId"], unique = true), Index(value = ["userId"], unique = true)],
+    indices = [Index(value = ["courtId"], unique = true), Index(value = ["userId"], unique = false)],
     foreignKeys = [
         ForeignKey(
             entity = Court::class,
