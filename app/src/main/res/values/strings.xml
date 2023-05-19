@@ -6,4 +6,5 @@
     <string name="hello_blank_fragment">This is search fragment</string>
     <string name="pick_time">Pick</string>
     <string name="court_review_title">Court Review</string>
+    <string name="court_detail_title">Review Detail</string>
 </resources>
