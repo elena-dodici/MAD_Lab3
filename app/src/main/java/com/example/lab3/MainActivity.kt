@@ -7,8 +7,10 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.lab3.database.AppDatabase
 import com.example.lab3.database.entity.Court
+import com.example.lab3.database.entity.CourtReview
 import com.example.lab3.database.entity.CourtTime
 import com.example.lab3.database.entity.Reservation
+import com.example.lab3.database.entity.SportDetail
 import com.example.lab3.database.entity.User
 import com.example.lab3.databinding.ActivityMainBinding
 import java.sql.Time
@@ -38,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-//      initDatabase(db) // add some initial data
+      initDatabase(db) // add some initial data
 
 
     }
@@ -145,6 +147,12 @@ class MainActivity : AppCompatActivity() {
 
 
             )
+        val courtReviews = listOf<CourtReview>(
+            CourtReview(1,1,4,"good!")
+        )
+        val sportDetails = listOf<SportDetail>(
+            SportDetail(1,2,"w")
+        )
 
 //        insert data
         for ( u in users){
@@ -158,6 +166,9 @@ class MainActivity : AppCompatActivity() {
         }
         for (r in reservations){
             db.reservationDao().addReservation(r)
+        }
+        for(cr in courtReviews){
+            db.courtReviewDao().addCourtReview(cr)
         }
     }
 

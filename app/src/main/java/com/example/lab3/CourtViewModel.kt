@@ -14,7 +14,7 @@ class CourtViewModel : ViewModel( ) {
 
     fun getCourtInfo(application: Application){
         db = AppDatabase.getDatabase(application)
-//        _courtInfo.value = db.
+//        _courtInfo.value = db.courtReviewDao().
 //        拿到平均分和名字
     }
 }

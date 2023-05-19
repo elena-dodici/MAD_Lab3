@@ -3,6 +3,7 @@ package com.example.lab3.database.DAO
 import androidx.room.*
 import com.example.lab3.database.entity.SportDetail
 
+@Dao
 interface SportDetailDAO {
     @Query("SELECT * FROM sportDetail")
     fun getAllSportDetails(): List<SportDetail>

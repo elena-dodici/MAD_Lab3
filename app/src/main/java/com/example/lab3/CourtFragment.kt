@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab3.databinding.ItemLayoutBinding
@@ -49,6 +50,8 @@ class CourtFragment : BaseFragment(R.layout.fragment_court) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        println(123)
+        sharedvm
 
     }
 
