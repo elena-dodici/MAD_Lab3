@@ -6,11 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lab3.database.entity.CourtInfo
+import com.example.lab3.databinding.FragmentCourtBinding
 import com.example.lab3.databinding.ItemLayoutBinding
 import com.example.lab3.databinding.ItemLayoutCourtScoreBinding
+import java.time.LocalDate
 
-data class CourtInfo(val courtName:String, val avgScore:Float)
+//data class CourtInfo(val courtName:String, val avgScore:Float)
 
 class ScoreAdapter(val onTap:(CourtInfo)->Unit):RecyclerView.Adapter<ScoreAdapter.ScoreViewHolder>(){
     inner class  ScoreViewHolder(private val binding:ItemLayoutCourtScoreBinding):RecyclerView.ViewHolder(binding.root){
@@ -20,11 +24,14 @@ class ScoreAdapter(val onTap:(CourtInfo)->Unit):RecyclerView.Adapter<ScoreAdapte
             }
         }
         fun bind(courtInfo:CourtInfo){
-            binding.itemTextCourt.text = courtInfo.courtName
-            binding.itemTextScore.text = courtInfo.avgScore.toString()
+            binding.itemTextRank.text =ranking.toString()
+            ranking+=1
+            binding.itemTextCourt.text = courtInfo.courtname
+            binding.itemTextScore.text = courtInfo.avg_rating.toString()
         }
     }
     val courtInfoList = mutableListOf<CourtInfo>()
+    var ranking:Int = 1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScoreViewHolder {
         val b = ItemLayoutCourtScoreBinding.inflate(parent.context.layoutInflater, parent, false)
         return ScoreViewHolder(b)
@@ -42,19 +49,42 @@ class CourtFragment : BaseFragment(R.layout.fragment_court) {
     companion object {
         fun newInstance() = CourtFragment()
     }
+    private lateinit var binding:FragmentCourtBinding
     private val sharedvm : CourtViewModel by activityViewModels()
     private val courtInfoList = mutableListOf<CourtInfo>()
     val adapter = ScoreAdapter{
-        println("click: ${it.courtName} - ${it.avgScore}")
+        println("click: ${it.courtname} - ${it.avg_rating}")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        println(123)
-        sharedvm
+        sharedvm.getCourtInfo(this.requireActivity().application)
+        sharedvm.courtInfo.observe(this){
+            courtInfoList.clear();
+            courtInfoList.addAll(it)
+            updateAdapter()
+            println("1 ${courtInfoList}")
+        }
+//        println(courtInfoList)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentCourtBinding.bind(view)
+        val recyclerView = binding.recyclerView
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL,false)
+//        updateAdapter()
     }
 
 
+    private fun updateAdapter() {
+        adapter.apply {
+            courtInfoList.clear()
+            courtInfoList.addAll(this@CourtFragment.courtInfoList)
+            println("2 ${this@CourtFragment.courtInfoList}")
 
+        }
+
+    }
 }

@@ -30,7 +30,10 @@ data class CourtReview(
     var review:String,
 
 //    @Ignore
-//    var courtName:String =""
+//    var courtname:String? =null,
+//
+//    @Ignore
+//    var username:String? = null
 ){
     @PrimaryKey(autoGenerate = true)
     var crId:Int = 0

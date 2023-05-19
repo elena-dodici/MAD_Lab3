@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-      initDatabase(db) // add some initial data
+//      initDatabase(db) // add some initial data
 
 
     }
@@ -148,7 +148,9 @@ class MainActivity : AppCompatActivity() {
 
             )
         val courtReviews = listOf<CourtReview>(
-            CourtReview(1,1,4,"good!")
+            CourtReview(1,1,4,"good!"),
+            CourtReview(1,2,4,"g!"),
+            CourtReview(2,1,3,"good!"),
         )
         val sportDetails = listOf<SportDetail>(
             SportDetail(1,2,"w")
@@ -169,6 +171,9 @@ class MainActivity : AppCompatActivity() {
         }
         for(cr in courtReviews){
             db.courtReviewDao().addCourtReview(cr)
+        }
+        for(s in sportDetails){
+            db.sportDetailDao().addSportDetails(s)
         }
     }
 
