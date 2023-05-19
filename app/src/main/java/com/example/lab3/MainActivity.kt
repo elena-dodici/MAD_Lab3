@@ -150,10 +150,26 @@ class MainActivity : AppCompatActivity() {
         val courtReviews = listOf<CourtReview>(
             CourtReview(1,1,4,"good!"),
             CourtReview(1,2,4,"g!"),
+            CourtReview(1,3,4,"almost perfect"),
             CourtReview(2,1,3,"good!"),
+            CourtReview(2,3,3,"good but i've seen better"),
+            CourtReview(2,4,3,"best tables i've seen so far"),
+            CourtReview(3,1,4,"no problems at all"),
+            CourtReview(3,5,1,"faulty net and neglected place overall"),
+
         )
         val sportDetails = listOf<SportDetail>(
-            SportDetail(1,2,"w")
+            SportDetail(1,"running",3,"achievement") ,
+            SportDetail(1,"basketball",2,"achievement"),
+            SportDetail(1,"swimming",1,"achievement"),
+
+            SportDetail(1,"basketball",4,"achievement"),
+            SportDetail(1,"swimming",1,"achievement"),
+            SportDetail(1,"pingpong",5,"achievement"),
+
+            SportDetail(1,"basketball",1,"achievement"),
+            SportDetail(1,"tennis",5,"achievement"),
+
         )
 
 //        insert data
