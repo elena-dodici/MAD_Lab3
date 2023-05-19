@@ -24,12 +24,12 @@ class CourtViewModel : ViewModel( ) {
       // println(_courtInfo.value)
 
     }
-    private var _showNav = MutableLiveData<Boolean>()
-    val showNav : LiveData<Boolean> = _showNav
-
-    fun setShowNav(vis:Boolean){
-        _showNav.value = vis
-    }
+//    private var _showNav = MutableLiveData<Boolean>()
+//    val showNav : LiveData<Boolean> = _showNav
+//
+//    fun setShowNav(vis:Boolean){
+//        _showNav.value = vis
+//    }
 
     //selected Reservation
     private var _selectedCourtRev = MutableLiveData<CourtReview>()

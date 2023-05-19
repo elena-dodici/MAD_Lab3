@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -25,6 +26,7 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToo
 
     private lateinit var binding: FragmentCourtDetailBinding
     private val sharedvm: CourtViewModel by activityViewModels()
+    private val mainvm: MainViewModel by activityViewModels()
     override val toolbar: Toolbar?
         get() = binding.activityToolbar
 
@@ -57,20 +59,20 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToo
 
         binding.calBtn.setOnClickListener {
             findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
-            sharedvm.setShowNav(true)
+            mainvm.setShowNav(true)
             Toast.makeText(context, "Your Review is not saved!", Toast.LENGTH_LONG).show()
         }
         binding.delBtn.setOnClickListener {
             //if delete bottom show, it must means has review
             sharedvm.deleteCourtRev(this.requireActivity().application)
-            sharedvm.setShowNav(true)
+            mainvm.setShowNav(true)
             findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
             Toast.makeText(context, "Delete successfully", Toast.LENGTH_LONG).show()
         }
         binding.saveBtn.setOnClickListener {
 
             sharedvm.addOrUpdateCourtRev(sharedvm.courtRate.value!!, sharedvm.selectedCourtRev.value!!.review, this.requireActivity().application)
-            sharedvm.setShowNav(true)
+            mainvm.setShowNav(true)
             findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
 
             Toast.makeText(context, "Update successfully", Toast.LENGTH_LONG).show()

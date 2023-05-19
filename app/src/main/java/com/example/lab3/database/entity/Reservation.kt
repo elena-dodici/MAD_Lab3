@@ -10,7 +10,7 @@ import java.sql.Date
 import java.time.LocalDate
 
 @Entity(tableName = "reservation",
-    indices = [Index(value = ["courtTimeId"], unique = true),Index(value = ["userId"], unique = true)],
+    indices = [Index(value = ["courtTimeId"], unique = false),Index(value = ["userId"], unique = false)],
 foreignKeys = [
     ForeignKey(
         entity = CourtTime::class,

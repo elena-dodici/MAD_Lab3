@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,8 +29,9 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
 
     private var layoutManager : RecyclerView.LayoutManager ?= null
     private var  adapter : MyAdapter1 ?= null
-    private lateinit var viewModel: AddReservationViewModel
-
+    //private lateinit var viewModel: AddReservationViewModel
+    private val viewModel:  AddReservationViewModel by activityViewModels()
+    private val mainVm: MainViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
@@ -40,7 +42,7 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
         val sportDisplayed = view.findViewById<TextView>(R.id.textView11)
         selectedSlot = ""
 
-        viewModel = ViewModelProvider(this).get(AddReservationViewModel::class.java)
+//        viewModel = ViewModelProvider(this).get(AddReservationViewModel::class.java)
         var dateString : String? = arguments?.getString("date")
         dateDisplayed.setText(dateString)
         var sport : String? = arguments?.getString("sport")
@@ -93,6 +95,7 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+                mainVm.setShowNav(true)
                 findNavController().navigate(R.id.action_addReservationFragment_to_searchFragment)
             }
             /*

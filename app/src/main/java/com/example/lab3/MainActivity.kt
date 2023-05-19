@@ -21,14 +21,14 @@ class MainActivity : AppCompatActivity() {
     internal lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     lateinit var db:AppDatabase
-    private lateinit var vm: CourtViewModel
+    private  val vm: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        vm = ViewModelProvider(this)[CourtViewModel::class.java]
+//        val vm: MainViewModel by viewModels()
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainContainer) as NavHostFragment
         navController = navHostFragment.navController
         val bottonNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavView)
@@ -48,12 +48,7 @@ class MainActivity : AppCompatActivity() {
                 View.GONE
             }
         }
-
-
         db = AppDatabase.getDatabase(application)
-
-
-
      //initDatabase(db) // add some initial data
 
 

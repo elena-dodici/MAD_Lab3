@@ -82,7 +82,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     val sports = listOf("running", "basketball", "swimming","pingpong","tennis")
     val allStartTime = mutableListOf<Time>()
     val vm : CalendarViewModel by activityViewModels()
-
+    private val mainVm: MainViewModel by activityViewModels()
 
     override val toolbar: Toolbar?
         get() = null
@@ -212,6 +212,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
             } else sD = LocalDate.now().toString()
             var bundle = bundleOf("date" to sD, "sport" to selectedSport)
             findNavController().navigate(R.id.action_searchFragment_to_addReservationFragment,bundle)
+            mainVm.setShowNav(false)
         }
 
     }
