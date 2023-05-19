@@ -3,7 +3,7 @@ package com.example.lab3.database.DAO
 import androidx.room.*
 import com.example.lab3.database.entity.CourtReview
 
-
+@Dao
 interface CourtReviewDAO {
     @Query("SELECT * FROM courtReview")
     fun getAllCourtReviews(): List<CourtReview>

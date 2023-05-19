@@ -3,7 +3,7 @@ package com.example.lab3.database.entity
 import androidx.room.*
 
 @Entity(tableName = "sportDetail",
-    indices = [Index(value = ["userId"], unique = true)],
+    indices = [Index(value = ["userId"], unique = false)],
     foreignKeys = [
         ForeignKey(
             entity = User::class,
@@ -12,8 +12,11 @@ import androidx.room.*
     ])
 data class SportDetail(
 
+    @ColumnInfo(name="sportType")
+    var sportType:String,
+
     @ColumnInfo(name = "userId")
-    var userId:String,
+    var userId:Int,
 
     @ColumnInfo(name = "masteryLevel")
     var masteryLevel:Int, // values = [0/1/2] -> beginner / intermediate / expert
