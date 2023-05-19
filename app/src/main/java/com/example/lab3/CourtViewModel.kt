@@ -21,8 +21,14 @@ class CourtViewModel : ViewModel( ) {
         tempList.addAll(db.courtReviewDao().getAllCourtReviews())
         tempList.addAll(db.courtReviewDao().getCourtWithoutReview())
         _courtInfo.value = tempList
-//        println(_courtInfo.value)
+      // println(_courtInfo.value)
 
+    }
+    private var _showNav = MutableLiveData<Boolean>()
+    val showNav : LiveData<Boolean> = _showNav
+
+    fun setShowNav(vis:Boolean){
+        _showNav.value = vis
     }
 
     //selected Reservation
@@ -59,14 +65,11 @@ class CourtViewModel : ViewModel( ) {
                 _courtId.value = r.courtId
                 _hasRev.value = false
                 //0-xxx
-
-
                 val review = AppDatabase.getDatabase(application).courtReviewDao().getCourtReviewByCourtIdUserId(courtId,1)
                 if (review != null) {
                     //_userId.value need to be updated once profile give userId
                     //hasreview
                     _hasRev.value = true
-
                     //uid needed to be updated
                     _selectedCourtRev.value = AppDatabase.getDatabase(application).courtReviewDao().getCourtReviewByCourtIdUserId(courtId,1)
                     _courtRate.value = _selectedCourtRev.value!!.rating
@@ -85,15 +88,17 @@ class CourtViewModel : ViewModel( ) {
         _courtRate.value = newRate
     }
     fun deleteCourtRev( application: Application){
-         println(_selectedCourtRev.value)
-        //AppDatabase.getDatabase(application).courtReviewDao().deleteCourtReview( _selectedCourtRev.value!!)
+         //println(_selectedCourtRev.value)
+        AppDatabase.getDatabase(application).courtReviewDao().deleteCourtReview( _selectedCourtRev.value!!)
     }
 
     fun addOrUpdateCourtRev(newRate:Int, newReview:String, application: Application){
 
         var newCR = CourtReview(1,_courtId.value!!,newRate,newReview)
         println(newCR)
-       // AppDatabase.getDatabase(application).courtReviewDao().addCourtReview(newCR)
+        newCR.crId =  _selectedCourtRev.value!!.crId
+        println( newCR.crId)
+       AppDatabase.getDatabase(application).courtReviewDao().addCourtReview(newCR)
     }
 
 }

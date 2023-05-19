@@ -114,10 +114,6 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail) {
                 newCN ->
             binding.showCourtName.text = newCN.toString()
         }
-
-
-
-
         binding.apply {
             vm = sharedvm
         }
@@ -128,18 +124,22 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail) {
 
         binding.calBtn.setOnClickListener {
             findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
+            sharedvm.setShowNav(true)
             Toast.makeText(context, "Your Review is not saved!", Toast.LENGTH_LONG).show()
         }
         binding.delBtn.setOnClickListener {
             //if delete bottom show, it must means has review
             sharedvm.deleteCourtRev(this.requireActivity().application)
+            sharedvm.setShowNav(true)
             findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
             Toast.makeText(context, "Delete successfully", Toast.LENGTH_LONG).show()
         }
         binding.saveBtn.setOnClickListener {
 
             sharedvm.addOrUpdateCourtRev(sharedvm.courtRate.value!!, sharedvm.selectedCourtRev.value!!.review, this.requireActivity().application)
+            sharedvm.setShowNav(true)
             findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
+
             Toast.makeText(context, "Update successfully", Toast.LENGTH_LONG).show()
         }
 

@@ -1,33 +1,34 @@
 package com.example.lab3
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.example.lab3.database.AppDatabase
-import com.example.lab3.database.entity.Court
-import com.example.lab3.database.entity.CourtReview
-import com.example.lab3.database.entity.CourtTime
-import com.example.lab3.database.entity.Reservation
-import com.example.lab3.database.entity.SportDetail
-import com.example.lab3.database.entity.User
+import com.example.lab3.database.entity.*
 import com.example.lab3.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.sql.Time
 import java.time.LocalDate
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.time.LocalTime
 
 class MainActivity : AppCompatActivity() {
     internal lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     lateinit var db:AppDatabase
-
+    private lateinit var vm: CourtViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        vm = ViewModelProvider(this)[CourtViewModel::class.java]
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainContainer) as NavHostFragment
         navController = navHostFragment.navController
         val bottonNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavView)
@@ -36,11 +37,24 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.activityToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
+
+
+        vm.showNav.observe(this){
+                show ->
+            println(vm.showNav.value)
+            bottonNavigationView.visibility = if (vm.showNav.value == true) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
+
+
         db = AppDatabase.getDatabase(application)
 
 
 
-//     initDatabase(db) // add some initial data
+     //initDatabase(db) // add some initial data
 
 
     }
@@ -66,6 +80,7 @@ class MainActivity : AppCompatActivity() {
             Court("Court_4PP","rfv","pingpong"),
             Court("Court_5T","rrv","tennis"),
         )
+        @Suppress("DEPRECATION")
         val ct = listOf<CourtTime>(
             CourtTime(1, Time(9,0,0),Time(10,0,0)),
             CourtTime(1, Time(10,0,0),Time(11,0,0)),
@@ -149,8 +164,8 @@ class MainActivity : AppCompatActivity() {
             )
         val courtReviews = listOf<CourtReview>(
             CourtReview(1,1,4,"good!"),
-            CourtReview(1,2,4,"g!"),
-            CourtReview(1,3,4,"almost perfect"),
+            CourtReview(1,2,3,"g!"),
+            CourtReview(1,3,5,"almost perfect"),
             CourtReview(2,1,3,"good!"),
             CourtReview(2,3,3,"good but i've seen better"),
             CourtReview(2,4,3,"best tables i've seen so far"),
