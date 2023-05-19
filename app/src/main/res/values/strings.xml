@@ -6,4 +6,10 @@
     <string name="hello_blank_fragment">This is search fragment</string>
     <string name="pick_time">Pick</string>
     <string name="court_review_title">Court Review</string>
+    <string name="user_profile">user_profile</string>
+    <string name="full_name">Yufei Ma</string>
+    <string name="nickname">Murphy</string>
+    <string name="email">s300570@studenti.polito.it</string>
+    <string name="phone">+39123458888</string>
+    <string name="job">Full stack Developer</string>
 </resources>

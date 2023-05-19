@@ -12,7 +12,7 @@ interface SportDetailDAO {
     fun getSportDetailsById(id:Int): SportDetail?
 
     @Query("SELECT * FROM sportDetail WHERE userId=:id")
-    fun getSportDetailsByUserId(id:Int): SportDetail?
+    fun getSportDetailsByUserId(id:Int): List<SportDetail>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addSportDetails(sportDetail: SportDetail)

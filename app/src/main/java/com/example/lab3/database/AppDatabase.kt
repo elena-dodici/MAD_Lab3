@@ -15,7 +15,7 @@ import com.example.lab3.database.DAO.SportDetailDAO
 import com.example.lab3.database.entity.CourtReview
 import com.example.lab3.database.entity.SportDetail
 
-@Database(entities = [CourtTime::class, Court::class, Reservation::class, User::class, CourtReview::class, SportDetail::class], version = 1, exportSchema = false)
+@Database(entities = [CourtTime::class, Court::class, Reservation::class, User::class, CourtReview::class, SportDetail::class], version = 2, exportSchema = false)
 @TypeConverters(Converter::class)
 abstract class AppDatabase:RoomDatabase() {
     abstract fun userDao():UserDao
@@ -34,7 +34,7 @@ abstract class AppDatabase:RoomDatabase() {
                                                         AppDatabase::class.java,
                                                         "AppDatabase")
                     .allowMainThreadQueries()
-//                   .fallbackToDestructiveMigration()
+                   .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = i
                 INSTANCE
