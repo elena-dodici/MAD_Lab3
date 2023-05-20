@@ -13,6 +13,9 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.lab3.database.entity.SportDetail
 import java.util.UUID
 
 // TODO: Rename parameter arguments, choose names that match
@@ -74,6 +77,16 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         val editButton = view.findViewById<Button>(R.id.btE)
         val fullName = view.findViewById<TextView>(R.id.tv_name)
         val tel = view.findViewById<TextView>(R.id.tv_phone)
+        // 找到 RecyclerView 实例
+        val recyclerViewSports = view.findViewById<RecyclerView>(R.id.recyclerViewS)
+
+        // 设置布局管理器
+        recyclerViewSports.layoutManager = LinearLayoutManager(requireContext())
+
+        // 创建适配器并设置给 RecyclerView
+        val adapter = SportsAdapter(vm.userSports.value ?: emptyList())
+        recyclerViewSports.adapter = adapter
+
         vm.User.observe(viewLifecycleOwner){
             _name=it.name
             _surname=it.surname
@@ -83,12 +96,36 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             tel.setText(tele)
 //            println("user:"+ it)
         }
-        vm.userSports.observe(viewLifecycleOwner){
-            println(it)
-        }
+//        vm.userSports.observe(viewLifecycleOwner){
+
+//        }
         editButton.setOnClickListener {
-            var bundle = bundleOf("name" to _name,"surname" to _surname,"phone" to tele,"sports" to vm.userSports.value)
+            var bundle = bundleOf("name" to _name,"surname" to _surname,"phone" to tele)
             findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment,bundle)
+        }
+    }
+}
+class SportsAdapter(private val sportsList: List<SportDetail>) : RecyclerView.Adapter<SportsAdapter.SportsViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SportsViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout_my_sports, parent, false)
+        return SportsViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: SportsViewHolder, position: Int) {
+        holder.bind(sportsList[position].sportType,sportsList[position].masteryLevel)
+    }
+
+    override fun getItemCount(): Int {
+        return sportsList.size
+    }
+
+    inner class SportsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val textViewSport: TextView = itemView.findViewById(R.id.item_text_sportName)
+        private val textViewLevel: TextView = itemView.findViewById(R.id.item_text_materLevel)
+        fun bind(sport: String,level:Int) {
+            textViewSport.text = sport
+            textViewLevel.text = level.toString()
         }
     }
 }
