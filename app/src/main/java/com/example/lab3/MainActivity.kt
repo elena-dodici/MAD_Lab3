@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-     //initDatabase(db) // add some initial data
+//     initDatabase(db) // add some initial data
 
 
     }
@@ -155,7 +155,7 @@ class MainActivity : AppCompatActivity() {
             CourtReview(2,3,3,"good but i've seen better"),
             CourtReview(2,4,3,"best tables i've seen so far"),
             CourtReview(3,1,4,"no problems at all"),
-            CourtReview(3,5,1,"faulty net and neglected place overall"),
+//            CourtReview(3,5,1,"faulty net and neglected place overall"),
 
         )
         val sportDetails = listOf<SportDetail>(

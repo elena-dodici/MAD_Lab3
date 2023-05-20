@@ -17,8 +17,11 @@ class CourtViewModel : ViewModel( ) {
     val courtInfo:LiveData<List<CourtInfo>> = _courtInfo
     fun getCourtInfo(application: Application){
         db = AppDatabase.getDatabase(application)
-        _courtInfo.value = db.courtReviewDao().getAllCourtReviews()
-
+        var tempList:MutableList<CourtInfo> = mutableListOf()
+        tempList.addAll(db.courtReviewDao().getAllCourtReviews())
+        tempList.addAll(db.courtReviewDao().getCourtWithoutReview())
+        _courtInfo.value = tempList
+//        println(_courtInfo.value)
 
     }
 
