@@ -112,9 +112,11 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail),HasTool
             SportDetail.masteryLevel= ratingBar.rating.toInt()
             SportDetail.achievement= achText.text.toString()
                vm.updateUserSport(this.requireActivity().application,SportDetail,vmMain.user)
+            vmMain.setShowNav(true)
             findNavController().navigate(R.id.action_ProfileDetailFragment_to_profileFragment)
         }
         cancelButton.setOnClickListener {
+            vmMain.setShowNav(true)
             findNavController().navigate(R.id.action_ProfileDetailFragment_to_profileFragment)
         }
     }
@@ -127,6 +129,7 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail),HasTool
             //点击确认的情况，添加对应数据到db并设置按钮不可选
             vm.deleteUserSport(this.requireActivity().application,SportDetail)
             //删除完毕后返回profile界面
+            vmMain.setShowNav(true)
             findNavController().navigate(R.id.action_ProfileDetailFragment_to_profileFragment)
         }
         builder.setNegativeButton("no", null)

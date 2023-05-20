@@ -74,16 +74,16 @@ class MainActivity : AppCompatActivity() {
 //        var db = AppDatabase.getDatabase(application)
 //        build data
         val users = listOf<User>(
-            User("aaa","aaa","222222"),
-            User("bbb","bbb","222222"),
-            User("ccc","ccc","222222"),
+            User("John","Wong","+393259874588"),
+            User("Mark","Joshnon","+393289548752"),
+            User("Ann","Kumar","+392157895468"),
         )
         val courts = listOf<Court>(
-            Court("Court_1BB","qaz","basketball"),
-            Court("Court_2RUN","wsx","running"),
-            Court("Court_3SWIM","edc","swimming"),
-            Court("Court_4PP","rfv","pingpong"),
-            Court("Court_5T","rrv","tennis"),
+            Court("Court_1BacketBall Player","Via Roma 23, Turin,Italy","basketball"),
+            Court("Court_2RUNNER","Via Po 25, Torino, Italy","running"),
+            Court("Court_3POOLING","Via Garibaldi 122,Turin, Italy","swimming"),
+            Court("Court_4TABLEFUN","Corso Re Umberto 34, Turin, Italy","pingpong"),
+            Court("Court_5TENNIS","Corso Vittorio Emanuele II, Turin, Italy","tennis"),
         )
         @Suppress("DEPRECATION")
         val ct = listOf<CourtTime>(
@@ -168,13 +168,13 @@ class MainActivity : AppCompatActivity() {
 
             )
         val courtReviews = listOf<CourtReview>(
-            CourtReview(1,1,4,"good!"),
-            CourtReview(1,2,3,"g!"),
-            CourtReview(1,3,5,"almost perfect"),
-            CourtReview(2,1,3,"good!"),
-            CourtReview(2,3,3,"good but i've seen better"),
-            CourtReview(2,4,3,"best tables i've seen so far"),
-            CourtReview(3,1,4,"no problems at all"),
+            CourtReview(1,1,4,"I had a great experience here. The staff was professional and helpful, guiding me through the legal process with patience and clarity. The courtrooms were well-maintained, and the proceedings were conducted fairly and efficiently"),
+            CourtReview(1,2,3,"The court demonstrated a high level of professionalism and integrity. The judges were knowledgeable and unbiased, ensuring a fair and just outcome. The support staff was friendly and accommodating, making the entire process less intimidating."),
+            CourtReview(1,3,5,"I had a positive experience for here. The judges were highly knowledgeable and demonstrated a deep understanding of the law. The court maintained a respectful and dignified atmosphere, fostering a sense of trust and credibility. Overall, the court provided a fair and transparent judicial process"),
+            CourtReview(2,1,3,"The proceedings were conducted in a timely manner, and the judges paid close attention to details. The court facilities were modern and comfortable, creating a conducive environment for justice to be served"),
+            CourtReview(2,3,3,"It exceeded my expectations. The judges were not only knowledgeable but also empathetic, considering all aspects of the case before making a decision. The courtrooms were well-equipped, and the entire process was conducted with utmost professionalism"),
+            CourtReview(2,4,3,"This is highly organized and transparent. The judges were diligent in explaining legal complexities in a way that was understandable to all parties involved. The court's commitment to fairness and adherence to due process were evident throughout the proceedings"),
+            CourtReview(3,1,4," I appreciated the court's commitment to justice."),
 //            CourtReview(3,5,1,"faulty net and neglected place overall"),
 
         )

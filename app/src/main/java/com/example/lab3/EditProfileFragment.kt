@@ -223,6 +223,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
                 vm.updateUser(this.requireActivity().application,u,vmMain.user)
             }
             var bundle = bundleOf("Path" to profilePicturePath)
+            vmMain.setShowNav(true)
             findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment,bundle)
         }
     }
