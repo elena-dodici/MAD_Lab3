@@ -39,4 +39,15 @@ class ProfileViewModel : ViewModel() {
         db = AppDatabase.getDatabase(application)
         db.sportDetailDao().addSportDetails(sd)
     }
+
+    fun updateUserSport(application: Application, sd: SportDetail,id:Int){
+        db = AppDatabase.getDatabase(application)
+        sd.userId=id
+        db.sportDetailDao().updateSportDetails(sd)
+    }
+
+    fun deleteUserSport(application: Application, sd: SportDetail){
+        db = AppDatabase.getDatabase(application)
+        db.sportDetailDao().deleteSportDetails(sd)
+    }
 }

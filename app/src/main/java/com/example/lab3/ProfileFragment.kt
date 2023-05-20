@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -85,8 +86,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         // 创建适配器并设置给 RecyclerView
         val adapter = SportsAdapter(vm.userSports.value ?: emptyList())
-        recyclerViewSports.adapter = adapter
 
+        recyclerViewSports.adapter = adapter
+        adapter.setOnItemClickListener {
+            var bundle = bundleOf("sportName" to it)
+            findNavController().navigate(R.id.action_profileFragment_to_sportsDetail,bundle)
+        }
+        println(vm.userSports.value)
         vm.User.observe(viewLifecycleOwner){
             _name=it.name
             _surname=it.surname
@@ -101,9 +107,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 //        }
         editButton.setOnClickListener {
             var bundle = bundleOf("name" to _name,"surname" to _surname,"phone" to tele)
+            println("button pressed")
             findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment,bundle)
         }
     }
+
 }
 class SportsAdapter(private val sportsList: List<SportDetail>) : RecyclerView.Adapter<SportsAdapter.SportsViewHolder>() {
 
@@ -114,15 +122,33 @@ class SportsAdapter(private val sportsList: List<SportDetail>) : RecyclerView.Ad
 
     override fun onBindViewHolder(holder: SportsViewHolder, position: Int) {
         holder.bind(sportsList[position].sportType,sportsList[position].masteryLevel)
+//        holder.itemView.setOnClickListener {
+//            val selectedSport = sportsList[position].sportType
+//            var bundle = bundleOf("sportName" to selectedSport)
+//        }
     }
 
     override fun getItemCount(): Int {
         return sportsList.size
     }
+    private var onItemClickListener: ((String) -> Unit)? = null
+    fun setOnItemClickListener(listener: (String) -> Unit) {
+        onItemClickListener = listener
+    }
 
     inner class SportsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textViewSport: TextView = itemView.findViewById(R.id.item_text_sportName)
         private val textViewLevel: TextView = itemView.findViewById(R.id.item_text_materLevel)
+        init {
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    // 处理点击事件
+                    val selectedSport = sportsList[position].sportType
+                    onItemClickListener?.invoke(selectedSport)
+                }
+            }
+        }
         fun bind(sport: String,level:Int) {
             textViewSport.text = sport
             textViewLevel.text = level.toString()
