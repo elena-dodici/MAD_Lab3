@@ -144,7 +144,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text=""
-                    android:hint="Your achievement"
+                    android:hint="Input Your Achievement"
                     android:inputType="textMultiLine"
                     android:maxLines="9"
                     android:scrollbars="vertical"
