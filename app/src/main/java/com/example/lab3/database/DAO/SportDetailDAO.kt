@@ -1,5 +1,6 @@
 package com.example.lab3.database.DAO
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.lab3.database.entity.SportDetail
 

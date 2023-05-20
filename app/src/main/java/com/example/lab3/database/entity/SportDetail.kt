@@ -15,6 +15,9 @@ data class SportDetail(
     @ColumnInfo(name = "userId")
     var userId:Int,
 
+    @ColumnInfo(name="sportType")
+    var sportType:String,
+
     @ColumnInfo(name = "masteryLevel")
     var masteryLevel:Int, // values = [0/1/2] -> beginner / intermediate / expert
 
