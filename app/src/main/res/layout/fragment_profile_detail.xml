@@ -69,11 +69,13 @@
                     android:textColor="#000000"
                     android:textSize="30sp" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btD"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Delete"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/rounded_corner"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.254"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -165,21 +167,29 @@
 <!--                app:layout_constraintStart_toStartOf="parent"-->
 <!--                app:layout_constraintTop_toBottomOf="@+id/layoutA" />-->
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btS"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
                 android:text="Save"
+                android:textSize="20dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/rounded_corner"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.254"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/achievement" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btC"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cancel"
+                android:textSize="20dp"
+                android:layout_marginTop="50dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/rounded_corner"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.723"
                 app:layout_constraintStart_toStartOf="parent"

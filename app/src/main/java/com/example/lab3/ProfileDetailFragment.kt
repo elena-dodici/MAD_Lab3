@@ -44,6 +44,7 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail),HasTool
     private var Level:Int = 0
     private var SportDetail = SportDetail(1,"running",0,"")
     private val vm : ProfileViewModel by activityViewModels()
+    private val mainVm: MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,9 +110,11 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail),HasTool
             SportDetail.masteryLevel= ratingBar.rating.toInt()
             SportDetail.achievement= achText.text.toString()
                vm.updateUserSport(this.requireActivity().application,SportDetail,1)
+            mainVm.setShowNav(true)
             findNavController().navigate(R.id.action_ProfileDetailFragment_to_profileFragment)
         }
         cancelButton.setOnClickListener {
+            mainVm.setShowNav(true)
             findNavController().navigate(R.id.action_ProfileDetailFragment_to_profileFragment)
         }
     }

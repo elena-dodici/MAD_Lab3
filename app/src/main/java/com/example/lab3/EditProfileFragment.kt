@@ -48,6 +48,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
     private  var _surname :String? = null
     private  var tele :String? = null
     private val vm : ProfileViewModel by activityViewModels()
+    private val mainvm: MainViewModel by activityViewModels()
     var frame: ImageView? = null
     var imageBitmap : Bitmap?  = null
     var hasPhotoChanged : Boolean = false
@@ -194,6 +195,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
         }
         //cancelButton
         cancelButton.setOnClickListener {
+         mainvm.setShowNav(true)
             findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment)
         }
         //按下save将数据保存
@@ -220,6 +222,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
                 vm.updateUser(this.requireActivity().application,u,1)
             }
             var bundle = bundleOf("Path" to profilePicturePath)
+            mainvm.setShowNav(true)
             findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment,bundle)
         }
     }

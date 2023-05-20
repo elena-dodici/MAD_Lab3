@@ -19,6 +19,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
 
     private lateinit var binding: FragmentDetailBinding
     private val sharedvm : CalendarViewModel by activityViewModels()
+    private val mainvm: MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,6 +31,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
         binding.delBtn.setOnClickListener {
             sharedvm.deleteRes(sharedvm.resIdvm.value!!,this.requireActivity().application)
             findNavController().navigate(R.id.action_detailFragment_to_calendar)
+            mainvm.setShowNav(true)
             Toast.makeText(context, "Delete successfully", Toast.LENGTH_LONG).show()
         }
         binding.saveBtn.setOnClickListener {
@@ -39,6 +41,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
             else{
                 sharedvm.addOrUpdateRes(this.requireActivity().application)
                 findNavController().navigate(R.id.action_detailFragment_to_calendar)
+                mainvm.setShowNav(true)
                 Toast.makeText(context, "Update successfully", Toast.LENGTH_LONG).show()
             }
 
@@ -46,6 +49,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail) {
         binding.calBtn.setOnClickListener {
 
             findNavController().navigate(R.id.action_detailFragment_to_calendar)
+            mainvm.setShowNav(true)
             Toast.makeText(context, "Unsaved information", Toast.LENGTH_LONG).show()
         }
 
