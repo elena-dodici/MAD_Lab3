@@ -38,6 +38,21 @@
         <action
             android:id="@+id/action_mainFragment2_to_addReservationFragment"
             app:destination="@id/addReservationFragment" />
+        <action
+            android:id="@+id/action_mainFragment2_to_courtFragment"
+            app:destination="@id/courtFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_mainFragment2_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_mainFragment2_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"

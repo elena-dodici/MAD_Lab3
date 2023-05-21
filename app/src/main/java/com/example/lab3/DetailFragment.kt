@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.*
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.lab3.databinding.FragmentDetailBinding
@@ -15,12 +16,13 @@ import com.example.lab3.databinding.FragmentDetailBinding
  * Use the [DetailFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DetailFragment : BaseFragment(R.layout.fragment_detail) {
+class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
 
     private lateinit var binding: FragmentDetailBinding
     private val sharedvm : CalendarViewModel by activityViewModels()
     private val mainvm: MainViewModel by activityViewModels()
-
+    override val toolbar: Toolbar?
+        get() = binding.activityToolbar
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

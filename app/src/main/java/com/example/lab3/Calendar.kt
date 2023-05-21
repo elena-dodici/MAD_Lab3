@@ -100,6 +100,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
     private fun gotoDetailFrag(resId: Int){
         sharedvm.setSelectedResByResId(resId,this.requireActivity().application)
+        vmMain.setShowNav(false)
         findNavController().navigate(R.id.action_calendar_to_detailFragment)
     }
     override fun onCreateView(

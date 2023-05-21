@@ -1,14 +1,8 @@
 package com.example.lab3
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
-import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.lab3.databinding.FragmentCourtBinding
 import com.example.lab3.databinding.FragmentMainBinding
 
 
