@@ -48,10 +48,12 @@ class ScoreAdapter(val onTap:(CourtInfo)->Unit):RecyclerView.Adapter<ScoreAdapte
         holder.bind(courtInfoList[position])
     }
 }
-class CourtFragment : BaseFragment(R.layout.fragment_court) {
+class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
     companion object {
         fun newInstance() = CourtFragment()
     }
+    override val toolbar: Toolbar?
+        get() = binding.activityToolbar
     private lateinit var binding:FragmentCourtBinding
     private val sharedvm : CourtViewModel by activityViewModels()
     private val courtInfoList = mutableListOf<CourtInfo>()
