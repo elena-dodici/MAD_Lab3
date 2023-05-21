@@ -82,7 +82,7 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
                 )
                 val resDescription = description.editText?.text.toString()
                 val newReservation: Reservation =
-                    Reservation(courtTimeId, 1, 0, dateLD, resDescription)
+                    Reservation(courtTimeId, mainVm.user, 0, dateLD, resDescription)
                 try {viewModel.addNewReservation(this.requireActivity().application, newReservation) }
                 catch (e : Exception){
                     failed = true;

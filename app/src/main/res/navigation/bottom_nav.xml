@@ -62,6 +62,8 @@
         <action
             android:id="@+id/action_detailFragment_to_calendar"
             app:destination="@id/calendar"
+            app:popUpTo="@+id/calendar"
+            app:popUpToInclusive="true"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right" />
 
@@ -97,6 +99,8 @@
         <action
             android:id="@+id/action_courtDetailFragment_to_courtFragment"
             app:destination="@id/courtFragment"
+            app:popUpTo="@+id/courtFragment"
+            app:popUpToInclusive="true"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
@@ -125,6 +129,8 @@
         <action
             android:id="@+id/action_ProfileDetailFragment_to_profileFragment"
             app:destination="@id/profileFragment"
+            app:popUpTo="@+id/profileFragment"
+            app:popUpToInclusive="true"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right" />
     </fragment>

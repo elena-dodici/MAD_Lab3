@@ -24,6 +24,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab3.database.entity.SportDetail
+import com.example.lab3.databinding.FragmentCourtDetailBinding
+import com.example.lab3.databinding.FragmentProfileBinding
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -40,9 +42,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
-
+    private lateinit var  binding: FragmentProfileBinding
     override val toolbar: Toolbar?
-        get() = null
+        get() = binding.activityToolbar
     private var param1: String? = null
     private var param2: String? = null
     private  var full_name :String? = null
@@ -90,6 +92,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding = FragmentProfileBinding.bind(view)
         val sharedPreferences = requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
         val savedPath = sharedPreferences.getString("path", null)
         //获取头像

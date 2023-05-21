@@ -30,20 +30,20 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToo
     override val toolbar: Toolbar?
         get() = binding.activityToolbar
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_court_detail, container, false)
-        return binding.root
-        // return inflater.inflate(R.layout.fragment_court_detail, container, false)
-    }
+//    override fun onCreateView(
+//        inflater: LayoutInflater, container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+//        // Inflate the layout for this fragment
+//        binding =
+//            DataBindingUtil.inflate(inflater, R.layout.fragment_court_detail, container, false)
+//        return binding.root
+//        // return inflater.inflate(R.layout.fragment_court_detail, container, false)
+//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //  binding = CourtDetailFragment.bind(view, savedInstanceState)
+         binding = FragmentCourtDetailBinding.bind(view)
 
         sharedvm.courtName.observe(viewLifecycleOwner){
                 newCN ->

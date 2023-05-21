@@ -32,6 +32,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.lab3.database.entity.SportDetail
 import com.example.lab3.database.entity.User
+import com.example.lab3.databinding.FragmentProfileBinding
+import com.example.lab3.databinding.FragmentProfileDetailBinding
+import com.example.lab3.databinding.FragmentProfileEditBinding
 import java.io.File
 import java.io.FileDescriptor
 import java.io.FileInputStream
@@ -42,8 +45,9 @@ import java.io.IOException
 
 class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasToolbar {
 
+    private lateinit var binding: FragmentProfileEditBinding
     override val toolbar: Toolbar?
-        get() = null
+        get() = binding.activityToolbar
     private  var _name :String? = null
     private  var _surname :String? = null
     private  var tele :String? = null
@@ -88,7 +92,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        binding = FragmentProfileEditBinding.bind(view)
         super.onViewCreated(view, savedInstanceState)
         val sharedPreferences = context?.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences?.edit()
