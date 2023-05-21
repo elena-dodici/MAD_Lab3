@@ -24,12 +24,7 @@ class CourtViewModel : ViewModel( ) {
       // println(_courtInfo.value)
 
     }
-//    private var _showNav = MutableLiveData<Boolean>()
-//    val showNav : LiveData<Boolean> = _showNav
-//
-//    fun setShowNav(vis:Boolean){
-//        _showNav.value = vis
-//    }
+
 
     //selected Reservation
     private var _selectedCourtRev = MutableLiveData<CourtReview>()
@@ -57,7 +52,7 @@ class CourtViewModel : ViewModel( ) {
     private var _hasRev = MutableLiveData<Boolean>()
     val hasRev : LiveData<Boolean> = _hasRev
 
-    fun setSelectedCourtById(courtId:Int, avg_Rate: Float, application:Application){
+    fun setSelectedCourtById(courtId:Int, avg_Rate: Float, application:Application,user:Int){
         //courtInfo contains all courtid courtname and its avg_score
         for (r in _courtInfo.value!! ){
             if (r.courtId == courtId){
@@ -65,19 +60,19 @@ class CourtViewModel : ViewModel( ) {
                 _courtId.value = r.courtId
                 _hasRev.value = false
                 //0-xxx
-                val review = AppDatabase.getDatabase(application).courtReviewDao().getCourtReviewByCourtIdUserId(courtId,1)
+                val review = AppDatabase.getDatabase(application).courtReviewDao().getCourtReviewByCourtIdUserId(courtId,user)
                 if (review != null) {
                     //_userId.value need to be updated once profile give userId
                     //hasreview
                     _hasRev.value = true
                     //uid needed to be updated
-                    _selectedCourtRev.value = AppDatabase.getDatabase(application).courtReviewDao().getCourtReviewByCourtIdUserId(courtId,1)
+                    _selectedCourtRev.value = AppDatabase.getDatabase(application).courtReviewDao().getCourtReviewByCourtIdUserId(courtId,user)
                     _courtRate.value = _selectedCourtRev.value!!.rating
 //                    _review.value = _selectedCourtRev.value!!.review
                 }
                 else{
                     //this user never review this court
-                    _selectedCourtRev.value =CourtReview(1,courtId,0,"")
+                    _selectedCourtRev.value =CourtReview(user,courtId,0,"")
 
                 }
                 }
@@ -92,9 +87,9 @@ class CourtViewModel : ViewModel( ) {
         AppDatabase.getDatabase(application).courtReviewDao().deleteCourtReview( _selectedCourtRev.value!!)
     }
 
-    fun addOrUpdateCourtRev(newRate:Int, newReview:String, application: Application){
+    fun addOrUpdateCourtRev(newRate:Int, newReview:String, application: Application,user: Int){
 
-        var newCR = CourtReview(1,_courtId.value!!,newRate,newReview)
+        var newCR = CourtReview(user,_courtId.value!!,newRate,newReview)
         println(newCR)
         newCR.crId =  _selectedCourtRev.value!!.crId
         println( newCR.crId)

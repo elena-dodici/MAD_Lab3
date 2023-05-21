@@ -13,4 +13,5 @@
     <string name="phone">+39123458888</string>
     <string name="job">Full stack Developer</string>
     <string name="court_detail_title">Review Detail</string>
+    <string name="main_page">Main Page</string>
 </resources>

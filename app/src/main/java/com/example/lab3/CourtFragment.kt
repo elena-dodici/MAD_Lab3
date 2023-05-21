@@ -64,7 +64,7 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
         gotoCourtDetailFrag(it.courtId, it.avg_rating)
     }
     private fun gotoCourtDetailFrag(courtId: Int, avg_rating:Float){
-       sharedvm.setSelectedCourtById(courtId,avg_rating, this.requireActivity().application)
+       sharedvm.setSelectedCourtById(courtId,avg_rating, this.requireActivity().application,mainVm.user)
         mainVm.setShowNav(false)
         findNavController().navigate(R.id.action_courtFragment_to_courtDetailFragment)
     }

@@ -71,7 +71,7 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToo
         }
         binding.saveBtn.setOnClickListener {
 
-            sharedvm.addOrUpdateCourtRev(sharedvm.courtRate.value!!, sharedvm.selectedCourtRev.value!!.review, this.requireActivity().application)
+            sharedvm.addOrUpdateCourtRev(sharedvm.courtRate.value!!, sharedvm.selectedCourtRev.value!!.review, this.requireActivity().application,mainvm.user)
             mainvm.setShowNav(true)
             findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
 
