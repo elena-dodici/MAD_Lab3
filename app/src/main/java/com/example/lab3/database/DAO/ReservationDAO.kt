@@ -11,15 +11,15 @@ interface ReservationDAO {
     @Query("SELECT * FROM reservation")
     fun getAllReservations(): LiveData<List<Reservation>>
 
-//    // These functions are only for testing purposes ( comment or ignore if not needed)
-//    @Query("SELECT * FROM reservation")
-//    fun getAllReservationsTest(): List<Reservation>
-//
-//
-//    @Query("SELECT * FROM reservation,(SELECT * FROM courtTime WHERE courtId=:id) AS cts " +
-//            "WHERE reservation.courtTimeId = cts.id")
-//    fun getReservationsByCourtId(id:Int): LiveData<List<Reservation>>
+    // These functions are only for testing purposes ( comment or ignore if not needed)
+    @Query("SELECT * FROM reservation")
+    fun getAllReservationsTest(): List<Reservation>
 
+    @Query("SELECT * FROM reservation,(SELECT * FROM courtTime WHERE courtId=:id) AS cts " +
+            "WHERE reservation.courtTimeId = cts.id")
+   fun getReservationsByCourtId(id:Int): List<Reservation>
+
+    //
 
     @Query("SELECT * FROM reservation WHERE resId=:id")
     fun getReservationById(id:Int): Reservation?

@@ -35,6 +35,9 @@
         <action
             android:id="@+id/action_mainFragment2_to_calendar"
             app:destination="@id/calendar" />
+        <action
+            android:id="@+id/action_mainFragment2_to_addReservationFragment"
+            app:destination="@id/addReservationFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -84,7 +87,42 @@
         android:id="@+id/profileFragment"
         android:name="com.example.lab3.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_sportsDetail"
+            app:destination="@id/ProfileDetailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/ProfileDetailFragment"
+        android:name="com.example.lab3.ProfileDetailFragment"
+        android:label="fragment_profile_detail"
+        tools:layout="@layout/fragment_profile_detail" >
+
+        <action
+            android:id="@+id/action_ProfileDetailFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.example.lab3.EditProfileFragment"
+        android:label="fragment_profile_edit"
+        tools:layout="@layout/fragment_profile_edit" >
+
+        <action
+            android:id="@+id/action_editProfileFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/courtFragment"
         android:name="com.example.lab3.CourtFragment"
