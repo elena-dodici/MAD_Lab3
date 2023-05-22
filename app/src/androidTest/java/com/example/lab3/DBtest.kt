@@ -433,7 +433,7 @@ class DBtest {
         courtReviewDAO.addCourtReview(CourtReview(1,1,3,"ok"))
         val cR = courtReviewDAO.getCourtReviewByCourtId(1)
         println(">>>>> ${cR}")
-        Assert.assertEquals("ok", cR?.review)
+        Assert.assertEquals("ok", cR!![0].review)
     }
 
     @Test
@@ -461,7 +461,8 @@ class DBtest {
         courtReviewDAO.addCourtReview(CourtReview(2,1,2,"aaaa"))
         val cRs = courtReviewDAO.getAllCourtReviews()
         println(">>>>> ${cRs}")
-        Assert.assertEquals(2, cRs?.size)
+        val avg_expected : Float = 2.5F
+        Assert.assertEquals(avg_expected, cRs[0].avg_rating)
     }
 
     @Test
