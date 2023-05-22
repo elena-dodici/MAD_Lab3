@@ -14,44 +14,29 @@
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="serif-monospace"
+            android:fontFamily="@font/alegreya_sans_sc_bold_italic"
             android:text="TextView"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#263A29"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.03"
-            app:layout_constraintStart_toEndOf="@+id/textView10"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="181dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="sans-serif-light"
-            android:text="Selected Sport :"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView4"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/black"
+            android:textSize="34sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView6"
+            app:layout_constraintEnd_toStartOf="@+id/textView5"
+            app:layout_constraintHorizontal_bias="0.8"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <TextView
             android:id="@+id/textView4"
-            android:layout_width="356dp"
+            android:layout_width="wrap_content"
             android:layout_height="43dp"
-            android:layout_marginTop="160dp"
-            android:text="Select Time Slot :"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="- Select Time Slot -"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.672"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.231" />
 
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/materialDivider2"
@@ -97,8 +82,8 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout"
-            android:layout_width="280dp"
-            android:layout_height="126dp"
+            android:layout_width="311dp"
+            android:layout_height="125dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7">
@@ -111,19 +96,18 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="122dp"
+            android:layout_height="65dp"
             android:layout_marginTop="50dp"
             android:background="@drawable/rounded_corner"
             android:text="Done!"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
+            android:textColor="@color/example_5_page_bg_color"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-            app:layout_constraintVertical_bias="0.064" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/textView"
@@ -137,31 +121,33 @@
 
         <TextView
             android:id="@+id/textView5"
-            android:layout_width="156dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:fontFamily="sans-serif-light"
-            android:text="Selected Date :"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+            android:layout_width="266dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="50dp"
+            android:fontFamily="serif"
+            android:text="court on day"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="34sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8"
+            app:layout_constraintVertical_bias="0.8" />
 
         <TextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            android:fontFamily="serif-monospace"
+            android:fontFamily="monospace"
             android:text="TextView"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#263A29"
-            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:textSize="38sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView4"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.12"
-            app:layout_constraintStart_toEndOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8"
+            app:layout_constraintVertical_bias="0.8" />
 
         <TextView
             android:id="@+id/textView8"
@@ -169,9 +155,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-medium"
-            android:text="ADD NEW RESERVATION"
+            android:text="New reservation for a"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="34sp"
+            android:textSize="40sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.468"
             app:layout_constraintStart_toStartOf="parent"
