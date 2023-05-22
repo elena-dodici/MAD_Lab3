@@ -1,5 +1,7 @@
 package com.example.lab3
 
+import android.content.Context
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.os.bundleOf
@@ -17,6 +20,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab3.database.entity.SportDetail
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileNotFoundException
 import java.util.UUID
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,12 +36,14 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private  var full_name :String? = null
     private  var _name :String? = null
     private  var _surname :String? = null
+    private var profilePicturePath : String? = null
     private  var tele :String? = null
     private val vm : ProfileViewModel by activityViewModels()
 
@@ -73,12 +81,19 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        val sharedPreferences = requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+        val savedPath = sharedPreferences.getString("path", null)
+        if (savedPath != null) {
+            profilePicturePath=savedPath
+        }
+//        profilePicturePath = arguments?.getString("Path")
         super.onViewCreated(view, savedInstanceState)
+        loadImageFromStorage(profilePicturePath)
         val editButton = view.findViewById<Button>(R.id.btE)
         val fullName = view.findViewById<TextView>(R.id.tv_name)
         val tel = view.findViewById<TextView>(R.id.tv_phone)
         // 找到 RecyclerView 实例
+
         val recyclerViewSports = view.findViewById<RecyclerView>(R.id.recyclerViewS)
 
         // 设置布局管理器
@@ -92,7 +107,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             var bundle = bundleOf("sportName" to it)
             findNavController().navigate(R.id.action_profileFragment_to_sportsDetail,bundle)
         }
-        println(vm.userSports.value)
+
         vm.User.observe(viewLifecycleOwner){
             _name=it.name
             _surname=it.surname
@@ -106,12 +121,21 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
 //        }
         editButton.setOnClickListener {
-            var bundle = bundleOf("name" to _name,"surname" to _surname,"phone" to tele)
+            var bundle = bundleOf("name" to _name,"surname" to _surname,"phone" to tele,"Path" to profilePicturePath)
             println("button pressed")
             findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment,bundle)
         }
     }
-
+    private fun loadImageFromStorage(path: String?) {
+        try {
+            val f = File(path, "profilePicture.jpg")
+            val b = BitmapFactory.decodeStream(FileInputStream(f))
+            val img: ImageView = requireView().findViewById<ImageView>(R.id.imageView)
+            img.setImageBitmap(b)
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        }
+    }
 }
 class SportsAdapter(private val sportsList: List<SportDetail>) : RecyclerView.Adapter<SportsAdapter.SportsViewHolder>() {
 
