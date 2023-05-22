@@ -107,11 +107,10 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail),HasTool
         //按下save将数据保存
         saveButton.setOnClickListener {
             //将修改后的数值添加到数据库
-
             SportDetail.sportType= sportText.text.toString()
             SportDetail.masteryLevel= ratingBar.rating.toInt()
             SportDetail.achievement= achText.text.toString()
-               vm.updateUserSport(this.requireActivity().application,SportDetail,vmMain.user)
+            vm.updateUserSport(this.requireActivity().application,SportDetail,vmMain.user)
             vmMain.setShowNav(true)
             findNavController().navigate(R.id.action_ProfileDetailFragment_to_profileFragment)
         }

@@ -35,7 +35,7 @@ class ProfileViewModel : ViewModel() {
         _userSports.value=db.sportDetailDao().getSportDetailsByUserId(id)
     }
 
-    fun addUserSport(application: Application, sd: SportDetail){
+    fun addUserSport(application: Application, sd:SportDetail){
         db = AppDatabase.getDatabase(application)
         db.sportDetailDao().addSportDetails(sd)
     }
