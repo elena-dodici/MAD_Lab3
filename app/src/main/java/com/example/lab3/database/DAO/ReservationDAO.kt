@@ -26,8 +26,8 @@ interface ReservationDAO {
 
     @Query("SELECT r.resId, name, address, sport, startTime, endTime, date, description,ct.id as courtTimeId,c.courtId\n" +
             "FROM reservation as r, court as c, courtTime as ct\n" +
-            "WHERE r.courtTimeId=ct.id and r.status != :status and ct.courtId=c.courtId and userId=:id ")
-    fun getReservationByUserId(status:Int, id:Int): List<MyReservation>?
+            "WHERE r.courtTimeId=ct.id and r.status = 0 and ct.courtId=c.courtId and userId=:id ")
+    fun getReservationByUserId(id:Int): List<MyReservation>?
 
     @Query("SELECT r.resId, name, address, sport, startTime, endTime, date, description,ct.id as courtTimeId,c.courtId\n" +
             "FROM reservation as r, court as c, courtTime as ct\n" +
