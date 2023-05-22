@@ -44,9 +44,11 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail),HasTool
     private var Level:Int = 0
     private var SportDetail = SportDetail(1,"running",0,"")
     private val vm : ProfileViewModel by activityViewModels()
+    private val vmMain : MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        SportDetail.userId=vmMain.user
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -58,7 +60,7 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail),HasTool
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        vm.getUserSportsById(this.requireActivity().application,1)
+        vm.getUserSportsById(this.requireActivity().application, vmMain.user)
 
         return inflater.inflate(R.layout.fragment_profile_detail, container, false)
     }
@@ -105,10 +107,11 @@ class ProfileDetailFragment : Fragment(R.layout.fragment_profile_detail),HasTool
         //按下save将数据保存
         saveButton.setOnClickListener {
             //将修改后的数值添加到数据库
+
             SportDetail.sportType= sportText.text.toString()
             SportDetail.masteryLevel= ratingBar.rating.toInt()
             SportDetail.achievement= achText.text.toString()
-               vm.updateUserSport(this.requireActivity().application,SportDetail,1)
+               vm.updateUserSport(this.requireActivity().application,SportDetail,vmMain.user)
             findNavController().navigate(R.id.action_ProfileDetailFragment_to_profileFragment)
         }
         cancelButton.setOnClickListener {

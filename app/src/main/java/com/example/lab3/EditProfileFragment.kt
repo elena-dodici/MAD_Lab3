@@ -48,6 +48,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
     private  var _surname :String? = null
     private  var tele :String? = null
     private val vm : ProfileViewModel by activityViewModels()
+    private val vmMain : MainViewModel by activityViewModels()
     var frame: ImageView? = null
     var imageBitmap : Bitmap?  = null
     var hasPhotoChanged : Boolean = false
@@ -56,7 +57,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        SportDetail.userId=vmMain.user
 
     } override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -217,7 +218,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
 
             val u = User(editName.text.toString(),editSurname.text.toString(),editTel.text.toString())
             if (u != null) {
-                vm.updateUser(this.requireActivity().application,u,1)
+                vm.updateUser(this.requireActivity().application,u,vmMain.user)
             }
             var bundle = bundleOf("Path" to profilePicturePath)
             findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment,bundle)

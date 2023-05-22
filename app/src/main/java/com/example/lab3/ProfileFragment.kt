@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -15,6 +17,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -48,6 +51,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
     private var profilePicturePath : String? = null
     private  var tele :String? = null
     private val vm : ProfileViewModel by activityViewModels()
+    private val vmMain : MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,13 +61,14 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         }
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        vm.getUserById(this.requireActivity().application,1)
-        vm.getUserSportsById(this.requireActivity().application,1)
+        vm.getUserById(this.requireActivity().application, vmMain.user)
+        vm.getUserSportsById(this.requireActivity().application, vmMain.user)
 //        vm.User.observe(viewLifecycleOwner){
 //            println("user:"+ (vm.User.value?.surname ))
 //        }
@@ -85,9 +90,19 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val sharedPreferences = requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
         val savedPath = sharedPreferences.getString("path", null)
+        //获取头像
         if (savedPath != null) {
             profilePicturePath=savedPath
         }
+
+        val users = listOf("user1", "user2", "user3")
+        val spinnerUser = view.findViewById<Spinner>(R.id.userSpinner)
+//        spinnerUser.setSelection(vmMain.user-1)
+        val adapterU = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, users)
+        adapterU.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerUser.adapter = adapterU
+
+
 //        profilePicturePath = arguments?.getString("Path")
         super.onViewCreated(view, savedInstanceState)
         loadImageFromStorage(profilePicturePath)
@@ -102,7 +117,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         recyclerViewSports.layoutManager = LinearLayoutManager(requireContext())
 
         // 创建适配器并设置给 RecyclerView
-        val adapter = SportsAdapter(vm.userSports.value ?: emptyList())
+        var adapter = SportsAdapter(vm.userSports.value ?: emptyList())
 
         recyclerViewSports.adapter = adapter
         adapter.setOnItemClickListener {
@@ -122,12 +137,53 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
 //        vm.userSports.observe(viewLifecycleOwner){
 
 //        }
+        println(vmMain.user)
+        spinnerUser.setSelection(vmMain.user-1)
+        spinnerUser.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                updateUser(parent.getItemAtPosition(position).toString())
+                vm.User.observe(viewLifecycleOwner){
+                    _name=it.name
+                    _surname=it.surname
+                    full_name="${it.name}"+"  "+"${it.surname}"
+                    tele = it.tel
+                    fullName.setText(full_name)
+                    tel.setText(tele)
+                }
+                adapter = SportsAdapter(vm.userSports.value ?: emptyList())
+                recyclerViewSports.adapter = adapter
+                adapter.setOnItemClickListener {
+                    var bundle = bundleOf("sportName" to it)
+                    findNavController().navigate(R.id.action_profileFragment_to_sportsDetail,bundle)
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
         editButton.setOnClickListener {
             var bundle = bundleOf("name" to _name,"surname" to _surname,"phone" to tele,"Path" to profilePicturePath)
             println("button pressed")
             findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment,bundle)
         }
     }
+
+    private fun updateUser(User: String) {
+        when(User){
+            ("user1")->{
+                vmMain.user=1
+            }
+            ("user2")->{
+                vmMain.user=2
+            }
+            ("user3")->{
+                vmMain.user=3
+            }
+
+        }
+        vm.getUserById(this.requireActivity().application, vmMain.user)
+        vm.getUserSportsById(this.requireActivity().application, vmMain.user)
+        println(vm.User.value)
+    }
+
     private fun loadImageFromStorage(path: String?) {
         try {
             val f = File(path, "profilePicture.jpg")
@@ -160,6 +216,9 @@ class SportsAdapter(private val sportsList: List<SportDetail>) : RecyclerView.Ad
     private var onItemClickListener: ((String) -> Unit)? = null
     fun setOnItemClickListener(listener: (String) -> Unit) {
         onItemClickListener = listener
+    }
+    private fun refreshFragment(view: View) {
+
     }
 
     inner class SportsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
