@@ -112,27 +112,30 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mySport" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/btE"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:text="Edit Your Profile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerViewS">
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewS"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/recyclerViewS">-->
 
 
 
-                <Button
-                    android:id="@+id/btE"
-                    android:layout_width="398dp"
-                    android:layout_height="wrap_content"
-                    android:text="Edit Your Profile"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.498"
-                    app:layout_constraintStart_toStartOf="parent" />
+<!--                -->
 
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
 
 

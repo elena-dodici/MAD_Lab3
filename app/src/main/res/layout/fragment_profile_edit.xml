@@ -163,117 +163,85 @@
                     android:textColor="#000000"
                     android:textSize="40sp" />
             </LinearLayout>
-
             <LinearLayout
-                android:id="@+id/linearA"
+                android:id="@+id/selectiveSport"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-
+                android:layout_height="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutJob">
+                app:layout_constraintTop_toBottomOf="@+id/layoutJob"
+                android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btrunning"
-                    android:layout_width="139dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="running"
                     android:background="@color/lighter_toolbar_color"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.254"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewE" />
+                     />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/bttennis"
-                    android:layout_width="114dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="tennis"
                     android:background="@color/lighter_toolbar_color"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.254"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewE" />
+                     />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btpingpong"
-                    android:layout_width="129dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/lighter_toolbar_color"
                     android:text="pingpong"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.254"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewE" />
+                     />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btswimming"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="swimming"
+                    android:background="@color/lighter_toolbar_color"
+                     />
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btbasketball"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="basketball"
+                    android:background="@color/lighter_toolbar_color"
+                     />
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/selectiveSport"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearA">
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center"
+                android:layout_marginTop="15dp"
+                >
+                <Button
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btswimming"
-                    android:layout_width="203dp"
-                    android:layout_height="wrap_content"
-                    android:text="swimming"
-                    android:background="@color/lighter_toolbar_color"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.254"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewE" />
+                    android:id="@+id/btS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Save"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="5dp"
+                    />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btbasketball"
-                    android:layout_width="177dp"
-                    android:layout_height="wrap_content"
-                    android:text="basketball"
-                    android:background="@color/lighter_toolbar_color"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.254"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewE" />
+                <Button
+                    android:id="@+id/btC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Cancel"
+                    android:layout_marginLeft="5dp"
 
+                    />
             </LinearLayout>
 
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/recyclerViewE"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:layout_marginTop="2dp"-->
-<!--                android:nestedScrollingEnabled="false"-->
-<!--                android:textSize="30sp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.0"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/layoutJob" />-->
-
-            <Button
-                android:id="@+id/btS"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Save"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.254"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearB" />
-
-            <Button
-                android:id="@+id/btC"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cancel"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.723"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearB" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

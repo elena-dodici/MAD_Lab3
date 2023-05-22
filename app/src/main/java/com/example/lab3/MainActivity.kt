@@ -178,19 +178,19 @@ class MainActivity : AppCompatActivity() {
 //            CourtReview(3,5,1,"faulty net and neglected place overall"),
 
         )
-        val sportDetails = listOf<SportDetail>(
-            SportDetail(1,"running",3,"achievement") ,
-            SportDetail(1,"basketball",2,"achievement"),
-            SportDetail(1,"swimming",1,"achievement"),
-
-            SportDetail(1,"basketball",4,"achievement"),
-            SportDetail(1,"swimming",1,"achievement"),
-            SportDetail(1,"pingpong",5,"achievement"),
-
-            SportDetail(1,"basketball",1,"achievement"),
-            SportDetail(1,"tennis",5,"achievement"),
-
-        )
+//        val sportDetails = listOf<SportDetail>(
+//            SportDetail(1,"running",3,"achievement") ,
+//            SportDetail(1,"basketball",2,"achievement"),
+//            SportDetail(1,"swimming",1,"achievement"),
+//
+//            SportDetail(1,"basketball",4,"achievement"),
+//            SportDetail(1,"swimming",1,"achievement"),
+//            SportDetail(1,"pingpong",5,"achievement"),
+//
+//            SportDetail(1,"basketball",1,"achievement"),
+//            SportDetail(1,"tennis",5,"achievement"),
+//
+//        )
 
 //        insert data
         for ( u in users){
@@ -208,9 +208,9 @@ class MainActivity : AppCompatActivity() {
         for(cr in courtReviews){
             db.courtReviewDao().addCourtReview(cr)
         }
-        for(s in sportDetails){
-            db.sportDetailDao().addSportDetails(s)
-        }
+//        for(s in sportDetails){
+//            db.sportDetailDao().addSportDetails(s)
+//        }
     }
 
 

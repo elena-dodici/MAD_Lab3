@@ -10,6 +10,8 @@ class MainViewModel: ViewModel() {
     private var _showNav = MutableLiveData<Boolean>()
     val showNav : LiveData<Boolean> = _showNav
 
+    var user:String="1"
+
     fun setShowNav(vis:Boolean){
         _showNav.value = vis
     }

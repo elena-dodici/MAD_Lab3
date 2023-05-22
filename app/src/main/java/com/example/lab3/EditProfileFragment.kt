@@ -23,6 +23,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.PopupMenu
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.os.bundleOf
@@ -39,8 +40,10 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 
-class EditProfileFragment: Fragment(R.layout.fragment_profile_edit) {
+class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasToolbar {
 
+    override val toolbar: Toolbar?
+        get() = null
     private  var _name :String? = null
     private  var _surname :String? = null
     private  var tele :String? = null
