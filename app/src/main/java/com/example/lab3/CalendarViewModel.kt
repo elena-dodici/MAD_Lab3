@@ -1,6 +1,7 @@
 package com.example.lab3
 
 import android.app.Application
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +15,6 @@ import java.sql.Time
 import java.time.LocalDate
 
 class  CalendarViewModel() : ViewModel( ) {
-
     //reservationList of this user
     private var _reservations = MutableLiveData<List<MyReservation>>().also { it.value = listOf() }
     val reservations:LiveData<List<MyReservation>> = _reservations
@@ -72,9 +72,9 @@ class  CalendarViewModel() : ViewModel( ) {
     val selSport : LiveData<String> = _selSport
 
 
-    fun getAllRes(application: Application){
+    fun getAllRes(application: Application, userid:Int){
         db = AppDatabase.getDatabase(application)
-        _reservations.value = db.reservationDao().getReservationByUserId(1,1)
+        _reservations.value = db.reservationDao().getReservationByUserId(userid)
         getCourts(application)
     }
     fun getCourts(application: Application){

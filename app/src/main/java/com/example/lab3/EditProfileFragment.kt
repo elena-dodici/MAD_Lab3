@@ -53,11 +53,20 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
     var imageBitmap : Bitmap?  = null
     var hasPhotoChanged : Boolean = false
     var profilePicturePath : String? = null
-    private var SportDetail = SportDetail(1,"running",0,"")
-
+    private var _sportList = listOf("running", "basketball", "swimming","tennis","pingpong")
+    private  var SportDetail = mutableMapOf<String,SportDetail?>()
+    private  var DELETESportDetail = mutableMapOf<String,SportDetail?>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SportDetail.userId=vmMain.user
+        _sportList.forEach{
+            SportDetail[it]=null
+        }
+        _sportList.forEach{
+            DELETESportDetail[it]=null
+        }
+        vm.userSports.value?.forEach{
+            SportDetail[it.sportType]=it
+        }
 
     } override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -153,45 +162,53 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
         editSurname.setText(_surname)
         editTel.setText(tele)
         //初始化按钮状态,如果对应sport已经添加则设为不可选中
-        vm.userSports.value?.forEach(){
-            when(it.sportType){
-                "running"->{
-                    runbt.isEnabled=false
-                }
-                "basketball"->{
-                    bskbt.isEnabled=false
-                }
-                "pingpong"->{
-                    pingbt.isEnabled= false
-                }
-                "tennis"->{
-                    tennisbt.isEnabled=false
-                }
-                "swimming"->{
-                    swbt.isEnabled=false
+
+        SportDetail.values.forEach(){
+            if (it != null) {
+                when(it.sportType){
+                    "running"->{
+                        runbt.setBackgroundColor(R.color.black)
+                    }
+
+                    "basketball"->{
+                        bskbt.setBackgroundColor(R.color.black)
+                    }
+
+                    "pingpong"->{
+                        pingbt.setBackgroundColor(R.color.black)
+                    }
+
+                    "tennis"->{
+                        tennisbt.setBackgroundColor(R.color.black)
+                    }
+
+                    "swimming"->{
+                        swbt.setBackgroundColor(R.color.black)
+                    }
                 }
             }
+
         }
+
         //5个添加运动按键
         bskbt.setOnClickListener {
-            SportDetail.sportType="basketball"
-            Dialog(bskbt)
+            addSportBtn(bskbt,"basketball")
         }
         runbt.setOnClickListener {
-            SportDetail.sportType="running"
-            Dialog(runbt)
+
+            addSportBtn( runbt,"running")
         }
         tennisbt.setOnClickListener {
-            SportDetail.sportType="tennis"
-            Dialog(tennisbt)
+
+            addSportBtn(tennisbt,"tennis")
         }
         swbt.setOnClickListener {
-            SportDetail.sportType="swimming"
-            Dialog(swbt)
+
+            addSportBtn(swbt,"swimming")
         }
         pingbt.setOnClickListener {
-            SportDetail.sportType="pingpong"
-            Dialog(pingbt)
+
+            addSportBtn(pingbt,"pingpong")
         }
         //cancelButton
         cancelButton.setOnClickListener {
@@ -224,22 +241,55 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
             }
             var bundle = bundleOf("Path" to profilePicturePath)
             vmMain.setShowNav(true)
+
+            SportDetail.forEach{
+                if (it.value!=null){
+                    vm.addUserSport(this.requireActivity().application, it.value!!)
+                }
+            }
+
+            DELETESportDetail.forEach{
+                if (it.value!=null){
+                    vm.deleteUserSport(this.requireActivity().application,it.value!!)
+                }
+            }
+
+
             findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment,bundle)
         }
     }
     //确认提示弹窗
-    fun Dialog(bt:Button){
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("Add to Your Interested")
-        builder.setMessage("Are you sure you want to add this sport to your interested sports?")
-        builder.setPositiveButton("yes") { dialog, which ->
-            //点击确认的情况，添加对应数据到db并设置按钮不可选
-            vm.addUserSport(this.requireActivity().application,SportDetail)
-            bt.isEnabled=false
+//    fun Dialog(bt:Button){
+//        val builder = AlertDialog.Builder(context)
+//        builder.setTitle("Add to Your Interested")
+//        builder.setMessage("Are you sure you want to add this sport to your interested sports?")
+//        builder.setPositiveButton("yes") { dialog, which ->
+//            //点击确认的情况，添加对应数据到db并设置按钮不可选
+//            vm.addUserSport(this.requireActivity().application,SportDetail)
+//            bt.isEnabled
+//        }
+//        builder.setNegativeButton("no", null)
+//        val dialog = builder.create()
+//        dialog.show()
+//    }
+    fun addSportBtn(bt:Button,sportType:String){
+        if(SportDetail[sportType]==null){
+           bt.setBackgroundColor(R.color.black)
+            val sp = SportDetail(vmMain.user,sportType,0,"")
+            SportDetail[sportType]=sp
+            DELETESportDetail[sportType]=null
         }
-        builder.setNegativeButton("no", null)
-        val dialog = builder.create()
-        dialog.show()
+        else{
+            SportDetail[sportType]=null
+            bt.setBackgroundColor(R.color.white)
+            vm.userSports.value?.forEach {vit->
+                if (vit.sportType==sportType){
+                    DELETESportDetail[sportType]=vit
+                }
+            }
+
+//            println("${sportType} 空")
+        }
     }
     var image_uri: Uri? = null
     private val RESULT_LOAD_IMAGE = 123
