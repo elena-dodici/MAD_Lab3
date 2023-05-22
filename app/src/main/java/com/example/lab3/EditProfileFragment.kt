@@ -195,10 +195,12 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
         }
         //cancelButton
         cancelButton.setOnClickListener {
+            vmMain.setShowNav(true)
             findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment)
         }
         //按下save将数据保存
         saveButton.setOnClickListener {
+            vmMain.setShowNav(true)
             if(imageBitmap == null && image_uri != null){
                 //val bitmap = uriToBitmap(image_uri!!)
                 val bitmap= frame?.drawable?.toBitmap()
