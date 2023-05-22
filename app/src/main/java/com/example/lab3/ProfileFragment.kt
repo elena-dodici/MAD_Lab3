@@ -51,7 +51,11 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
     private var profilePicturePath : String? = null
     private  var tele :String? = null
     private val vm : ProfileViewModel by activityViewModels()
+
     private val vmMain : MainViewModel by activityViewModels()
+
+    private val mainVm: MainViewModel by activityViewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,6 +126,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         recyclerViewSports.adapter = adapter
         adapter.setOnItemClickListener {
             var bundle = bundleOf("sportName" to it)
+            mainVm.setShowNav(false)
             findNavController().navigate(R.id.action_profileFragment_to_sportsDetail,bundle)
         }
 
@@ -161,7 +166,8 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         }
         editButton.setOnClickListener {
             var bundle = bundleOf("name" to _name,"surname" to _surname,"phone" to tele,"Path" to profilePicturePath)
-            println("button pressed")
+
+            mainVm.setShowNav(false)
             findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment,bundle)
         }
     }
