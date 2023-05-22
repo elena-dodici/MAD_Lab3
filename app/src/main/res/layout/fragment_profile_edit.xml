@@ -29,7 +29,7 @@
                 android:background="#DCDCDC"
                 android:contentDescription="@string/user_profile"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/user_profile" />
@@ -222,20 +222,24 @@
                 android:gravity="center"
                 android:layout_marginTop="15dp"
                 >
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
 
                     android:id="@+id/btS"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:text="Save"
                     android:layout_gravity="center"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/rounded_corner"
                     android:layout_marginRight="5dp"
                     />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btC"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/rounded_corner"
                     android:text="Cancel"
                     android:layout_marginLeft="5dp"
 
