@@ -3,10 +3,9 @@
 ## Our app offers a convenient platform for users to make, update, and delete their court reservations with ease. 
 ## Not only can you manage your reservations effortlessly, but you can also explore detailed court information right at your fingertips. From court availability and booking rates to amenities and location, our app provides comprehensive details to help you make informed decisions.
 
-
 ### Preparation of DataBase
 - Below are the data pre saved in our DataBase
-- Please avoid restarting app , otherwise the data will be recreated !
+- ***<span style="color: red;">```initDatabase(db)``` in MainActivity is used to initialize our DataBase. Please kindly annotate it if you would like to rerun the app, otherwise the same data will be recreated***
 
 ## Presaved Data
 ### User
