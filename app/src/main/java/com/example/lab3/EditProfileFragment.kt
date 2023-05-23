@@ -24,6 +24,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.os.bundleOf
@@ -169,25 +170,26 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
 
         SportDetail.values.forEach(){
             if (it != null) {
+                val color = ContextCompat.getColor(requireContext(), R.color.grey)
                 when(it.sportType){
                     "running"->{
-                        runbt.setBackgroundColor(R.color.black)
+                        runbt.setBackgroundColor(color)
                     }
 
                     "basketball"->{
-                        bskbt.setBackgroundColor(R.color.black)
+                        bskbt.setBackgroundColor(color)
                     }
 
                     "pingpong"->{
-                        pingbt.setBackgroundColor(R.color.black)
+                        pingbt.setBackgroundColor(color)
                     }
 
                     "tennis"->{
-                        tennisbt.setBackgroundColor(R.color.black)
+                        tennisbt.setBackgroundColor(color)
                     }
 
                     "swimming"->{
-                        swbt.setBackgroundColor(R.color.black)
+                        swbt.setBackgroundColor(color)
                     }
                 }
             }
@@ -278,14 +280,16 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
 //    }
     fun addSportBtn(bt:Button,sportType:String){
         if(SportDetail[sportType]==null){
-           bt.setBackgroundColor(R.color.black)
+            val color = ContextCompat.getColor(requireContext(), R.color.grey)
+            bt.setBackgroundColor(color)
             val sp = SportDetail(vmMain.user,sportType,0,"")
             SportDetail[sportType]=sp
             DELETESportDetail[sportType]=null
         }
         else{
             SportDetail[sportType]=null
-            bt.setBackgroundColor(R.color.white)
+            val color = ContextCompat.getColor(requireContext(), R.color.lighter_toolbar_color)
+            bt.setBackgroundColor(color)
             vm.userSports.value?.forEach {vit->
                 if (vit.sportType==sportType){
                     DELETESportDetail[sportType]=vit
