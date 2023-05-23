@@ -15,14 +15,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab3.database.entity.CourtTime
 import com.example.lab3.database.entity.Reservation
+import com.example.lab3.databinding.FragmentAddReservationBinding
+import com.example.lab3.databinding.FragmentProfileDetailBinding
 import com.google.android.material.textfield.TextInputLayout
 import java.sql.Time
 import java.time.LocalDate
 
 
 class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),HasToolbar {
+    private lateinit var binding: FragmentAddReservationBinding
     override val toolbar: Toolbar?
-        get() = null
+        get() =binding.activityToolbar
     companion object {
         fun newInstance() = AddReservationFragment()
     }
@@ -35,6 +38,7 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentAddReservationBinding.bind(view)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView2)
         val doneButton = view.findViewById<Button>(R.id.button2)
         val description = view.findViewById<TextInputLayout>(R.id.textInputLayout)
