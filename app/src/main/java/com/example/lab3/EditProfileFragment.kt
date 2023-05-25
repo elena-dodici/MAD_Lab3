@@ -174,6 +174,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
                 when(it.sportType){
                     "running"->{
                         runbt.setBackgroundColor(color)
+
                     }
 
                     "basketball"->{

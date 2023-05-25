@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    // initDatabase(db) // pre_saved the data in our DB
+    initDatabase(db) // pre_saved the data in our DB
 
 
     }

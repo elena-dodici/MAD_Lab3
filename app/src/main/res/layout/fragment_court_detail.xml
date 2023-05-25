@@ -87,27 +87,7 @@
 
         </LinearLayout>
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="30dp">-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/descriptionTv"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-
-<!--                android:layout_weight="1"-->
-<!--                android:text="Leave your review here:"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textSize="20dp"-->
-<!--                android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/recyclerView2" />-->
-
-
-<!--        </LinearLayout>-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -144,7 +124,7 @@
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:textColor="@android:color/white"
-                android:background="@drawable/rounded_corner"
+                android:background="@drawable/custom_sports"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="20dp"
 
@@ -160,7 +140,7 @@
                 android:text="DELETE"
                 android:textSize="20dp"
                 android:textColor="@android:color/white"
-                android:background="@drawable/rounded_corner"
+                android:background="@drawable/custom_sports"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="20dp"
 
@@ -174,7 +154,7 @@
                 android:text="CANCEL"
                 android:textSize="20dp"
                 android:textColor="@android:color/white"
-                android:background="@drawable/rounded_corner"
+                android:background="@drawable/custom_sports"
                 android:layout_marginTop="30dp"
 
                 />

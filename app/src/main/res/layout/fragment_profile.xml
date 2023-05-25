@@ -145,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:text="Edit Your Profile"
                 android:textColor="@android:color/white"
-                android:background="@drawable/rounded_corner"
+                android:background="@drawable/custom_sports"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerViewS"

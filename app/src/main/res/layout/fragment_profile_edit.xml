@@ -69,7 +69,6 @@
             android:layout_marginHorizontal="16dp"
             android:layout_weight="2">
 
-            <!--            name-->
             <LinearLayout
                 android:id="@+id/layoutName"
                 android:layout_width="match_parent"
@@ -186,19 +185,24 @@
                 app:layout_constraintTop_toBottomOf="@+id/layoutJob"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <android.widget.Button
                     android:id="@+id/btrunning"
                     android:layout_width="match_parent"
+
                     android:layout_height="wrap_content"
-                    android:text="running"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
                     android:background="@color/lighter_toolbar_color"
-                     />
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:text="running" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/bttennis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:text="tennis"
+                    android:layout_marginTop="10dp"
                     android:background="@color/lighter_toolbar_color"
                      />
 
@@ -206,6 +210,8 @@
                     android:id="@+id/btpingpong"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:layout_marginTop="10dp"
                     android:background="@color/lighter_toolbar_color"
                     android:text="pingpong"
                      />
@@ -213,6 +219,8 @@
                     android:id="@+id/btswimming"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:layout_marginTop="10dp"
                     android:text="swimming"
                     android:background="@color/lighter_toolbar_color"
                      />
@@ -221,6 +229,8 @@
                     android:id="@+id/btbasketball"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:text="basketball"
                     android:background="@color/lighter_toolbar_color"
                      />
@@ -244,7 +254,7 @@
                     android:text="Save"
                     android:layout_gravity="center"
                     android:textColor="@android:color/white"
-                    android:background="@drawable/rounded_corner"
+                    android:background="@drawable/custom_sports"
                     android:layout_marginRight="5dp"
                     />
 
@@ -253,7 +263,7 @@
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:textColor="@android:color/white"
-                    android:background="@drawable/rounded_corner"
+                    android:background="@drawable/custom_sports"
                     android:text="Cancel"
                     android:layout_marginLeft="5dp"
 
