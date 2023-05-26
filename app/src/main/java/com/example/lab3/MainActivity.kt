@@ -2,6 +2,7 @@ package com.example.lab3
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
@@ -14,15 +15,32 @@ import com.example.lab3.databinding.ActivityMainBinding
 import java.sql.Time
 import java.time.LocalDate
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
     internal lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     lateinit var db:AppDatabase
-
+    val db1 = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val user = hashMapOf(
+            "first" to "Ada",
+            "last" to "lovelace",
+            "born" to 1815
+        )
+        db1.collection("users")
+            .add(user)
+            .addOnSuccessListener { documentReference->
+                Log.d("firestore","DocumentSnapshot added")
+            }
+            .addOnFailureListener{e->
+                Log.w("fireshore","Error")
+            }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

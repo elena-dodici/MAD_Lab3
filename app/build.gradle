@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt' apply true
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -42,7 +43,8 @@ android {
 
 dependencies {
 
-        def nav_version = "2.5.3"
+        implementation 'com.google.firebase:firebase-firestore-ktx:24.4.1'
+    def nav_version = "2.5.3"
 
         // Java language implementation
         implementation("androidx.navigation:navigation-fragment:$nav_version")
