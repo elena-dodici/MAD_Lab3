@@ -15,8 +15,13 @@ import com.example.lab3.databinding.ActivityMainBinding
 import java.sql.Time
 import java.time.LocalDate
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.util.*
+
+
 import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
@@ -28,19 +33,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val user = hashMapOf(
-            "first" to "Ada",
-            "last" to "lovelace",
-            "born" to 1815
-        )
-        db1.collection("users")
-            .add(user)
-            .addOnSuccessListener { documentReference->
-                Log.d("firestore","DocumentSnapshot added")
-            }
-            .addOnFailureListener{e->
-                Log.w("fireshore","Error")
-            }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -58,6 +51,81 @@ class MainActivity : AppCompatActivity() {
 
 //       initDatabase(db) // add some initial data
 
+
+
+
+
+
+    }
+
+    data class reservation(val ct: courtTime, val status:Int, val description:String, val review:String)
+    data class courtTime(
+        val startTime : Timestamp,
+        val endTime:Timestamp
+
+    )
+    fun initFirebase(){
+        val user = hashMapOf(
+            "name" to "Ann",
+            "surname" to "Johnson",
+            "tel" to "2598498759"
+        )
+        val t = hashMapOf(
+            "level" to  1,
+            "achievement" to "3rd price",
+            )
+
+        val res1 = hashMapOf(
+            "courtTime" to  "9:00 - 10:00",
+            "achievement" to "3rd price",
+        )
+
+//        val res1u1 = hashMapOf(
+//            "courtTime" to hashMapOf(
+//                "start" to startTime1,
+//                "end" to endTime1
+//            ),
+//            "status" to 0,  // 0 for normal, 1 for cancelled
+//            "description" to "description for u1 's reservation",
+//            "review" to "review1"
+ //       )
+        val resu1= listOf<reservation>(
+            reservation(courtTime(Timestamp(Date(2023 - 1900, 0, 5, 9, 0)),
+                                  Timestamp(Date(2023 - 1900, 0, 5, 10, 0))),
+                            0,"description1 for u1 's reservation","review1"),
+            reservation(courtTime(Timestamp(Date(2023 - 1900, 0, 6, 10, 0)),
+                                 Timestamp(Date(2023 - 1900, 0, 6, 11, 0))),
+                            0,"description2 for u1 's reservation","review2"),
+            reservation(courtTime(Timestamp(Date(2023 - 1900, 0, 7, 10, 0)),
+                                 Timestamp(Date(2023 - 1900, 0, 7, 11, 0))),
+                           0,"description2 for u1 's reservation","review3"),
+        )
+        val users = listOf<String>("u1","u2","u3")
+        for (i in users){
+            for (r in resu1){
+                println(i)
+                println(r)
+                db1.collection("users").document(i).collection("reservation").add(r)
+                    .addOnSuccessListener { documentReference->
+                        Log.d("firestore","DocumentSnapshot added")
+                    }
+                    .addOnFailureListener{e->
+                        Log.w("fireshore","Error")
+                    }
+            }
+
+
+        }
+
+        val userSportRef = db1.collection("users").document("u2").collection("sports").document("tennis").set(t)
+
+//        db1.collection("users").document("u1").collection("reservation").document("res1").set(t)
+//            .addOnSuccessListener { documentReference->
+//                Log.d("firestore","DocumentSnapshot added")
+//            }
+//            .addOnFailureListener{e->
+//                Log.w("fireshore","Error")
+//            }
 
     }
     fun BottomNavigationView.uncheckAllItems() {
