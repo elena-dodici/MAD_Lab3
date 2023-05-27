@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
 
 //       initDatabase(db) // add some initial data
-
+        initFirebase()
 
 
 
@@ -58,75 +58,95 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    data class reservation(val ct: courtTime, val status:Int, val description:String, val review:String)
+    data class reservation(val name:String,val ct: courtTime,val description: String, val rating:Int, val review:String, val status:Int)
     data class courtTime(
         val startTime : Timestamp,
         val endTime:Timestamp
-
     )
+    data class interestSport(val achievement:String, val level:Int)
+    data class review(val user:String, val review:String)
+    data class court(val address:String, val name: String, val avg_rating: Float, val review:List<review>, val sport:String)
+
     fun initFirebase(){
         val user = hashMapOf(
             "name" to "Ann",
             "surname" to "Johnson",
             "tel" to "2598498759"
         )
-        val t = hashMapOf(
-            "level" to  1,
-            "achievement" to "3rd price",
-            )
 
         val res1 = hashMapOf(
             "courtTime" to  "9:00 - 10:00",
             "achievement" to "3rd price",
         )
 
-//        val res1u1 = hashMapOf(
-//            "courtTime" to hashMapOf(
-//                "start" to startTime1,
-//                "end" to endTime1
-//            ),
-//            "status" to 0,  // 0 for normal, 1 for cancelled
-//            "description" to "description for u1 's reservation",
-//            "review" to "review1"
- //       )
-        val resu1= listOf<reservation>(
-            reservation(courtTime(Timestamp(Date(2023 - 1900, 0, 5, 9, 0)),
-                                  Timestamp(Date(2023 - 1900, 0, 5, 10, 0))),
-                            0,"description1 for u1 's reservation","review1"),
-            reservation(courtTime(Timestamp(Date(2023 - 1900, 0, 6, 10, 0)),
-                                 Timestamp(Date(2023 - 1900, 0, 6, 11, 0))),
-                            0,"description2 for u1 's reservation","review2"),
-            reservation(courtTime(Timestamp(Date(2023 - 1900, 0, 7, 10, 0)),
-                                 Timestamp(Date(2023 - 1900, 0, 7, 11, 0))),
-                           0,"description2 for u1 's reservation","review3"),
+        val reservations= listOf<reservation>(
+            reservation("bbcourt1", courtTime(Timestamp(Date(2023 - 1900, 0, 5, 9, 0)), Timestamp(Date(2023 - 1900, 0, 5, 10, 0))),
+                            "d1 for u",2,"review1",0),
+            reservation("bbcourt2", courtTime(Timestamp(Date(2023 - 1900, 0, 6, 10, 0)), Timestamp(Date(2023 - 1900, 0, 6, 11, 0))),
+                            "d2 for u",3,"review2",0),
+            reservation("bbcourt3", courtTime(Timestamp(Date(2023 - 1900, 0, 7, 10, 0)), Timestamp(Date(2023 - 1900, 0, 7, 11, 0))),
+                           "d3 for u",4,"review3",0),
         )
-        val users = listOf<String>("u1","u2","u3")
-        for (i in users){
-            for (r in resu1){
-                println(i)
-                println(r)
-                db1.collection("users").document(i).collection("reservation").add(r)
-                    .addOnSuccessListener { documentReference->
-                        Log.d("firestore","DocumentSnapshot added")
-                    }
-                    .addOnFailureListener{e->
-                        Log.w("fireshore","Error")
-                    }
-            }
+//        for (i in 1..3){
+//            for ((id,r) in reservations.withIndex()){
+//                db1.collection("users").document("u${i}").collection("reservation").document("res${id}").set(r)
+//                    .addOnSuccessListener { documentReference->
+//                        Log.d("firestore","DocumentSnapshot added")
+//                    }
+//                    .addOnFailureListener{e->
+//                        Log.w("fireshore","Error")
+//                    }
+//            }
+//        }
+        val s = listOf("running", "basketball", "swimming","pingpong","tennis")
 
 
+        val interestSports = listOf<interestSport>(
+            interestSport("asd",1),
+            interestSport("3rd price",1),
+            interestSport("1st price",5)
+        )
+        // interesting sports for each user
+//        db1.collection("users").document("u1")
+//            .collection("sports").document(s[1]).set(interestSports[0])
+//
+//        db1.collection("users").document("u2")
+//            .collection("sports").document(s[3]).set(interestSports[1])
+//
+//        db1.collection("users").document("u3")
+//            .collection("sports").document(s[0]).set(interestSports[2])
+
+        // court
+        val courts = listOf<court>(
+            court("via po 1", "rcourt1", 2.0f, listOf( review("u1","rev1foru1")), s[0]),
+            court("via po 2", "bbcourt2", 3.5f,listOf(review("u2","rev2foru1")), s[1]),
+            court("via po 3", "swcourt3", 2.0f,listOf(review("u1","rev3foru1")), s[2]),
+            court("via po 4", "ppcourt4", 2.0f,listOf(review("u1","rev4foru1")), s[3]),
+            court("via po 5", "tcourt5", 2.0f,listOf(review("u1","rev5foru1")), s[4]),
+
+        )
+        for ((i,c) in courts.withIndex()){
+            db1.collection("court").document("court${i+1}").set(c)
         }
+        // court time
+        val dates = listOf<String>("2023-05-27", "2023-05-28", "2023-05-29", "2023-05-30", "2023-05-31",
+            "2023-06-01", "2023-06-02", "2023-06-03", "2023-06-04", "2023-06-05",
+            "2023-06-06", "2023-06-07", "2023-06-08", "2023-06-09", "2023-06-10",
+            "2023-06-11", "2023-06-12", "2023-06-13", "2023-06-14", "2023-06-15",
+            "2023-06-16", "2023-06-17", "2023-06-18", "2023-06-19", "2023-06-20",
+            "2023-06-21", "2023-06-22", "2023-06-23", "2023-06-24", "2023-06-25",
+            "2023-06-26", "2023-06-27", "2023-06-28", "2023-06-29", "2023-06-30",
+        )
 
-        val userSportRef = db1.collection("users").document("u2").collection("sports").document("tennis").set(t)
+        val timeslot = hashMapOf<String, Boolean>()
 
-//        db1.collection("users").document("u1").collection("reservation").document("res1").set(t)
-//            .addOnSuccessListener { documentReference->
-//                Log.d("firestore","DocumentSnapshot added")
-//            }
-//            .addOnFailureListener{e->
-//                Log.w("fireshore","Error")
-//            }
-
+        for (i in 9..19) {
+            timeslot[i.toString()] = true // true 表示free
+        }
+        for (date in dates){
+            for (i in 1..5)
+                db1.collection("court").document("court${i}").collection("courtTime").document(date).set(timeslot)
+        }
     }
     fun BottomNavigationView.uncheckAllItems() {
         menu.setGroupCheckable(0, true, false)
