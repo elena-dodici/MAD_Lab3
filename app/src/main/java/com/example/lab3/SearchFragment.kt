@@ -82,7 +82,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     val sports = listOf("running", "basketball", "swimming","pingpong","tennis")
     val allStartTime = mutableListOf<Time>()
     val vm : CalendarViewModel by activityViewModels()
-
+    private val mainVm: MainViewModel by activityViewModels()
 
     override val toolbar: Toolbar?
         get() = null
@@ -212,6 +212,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
             } else sD = LocalDate.now().toString()
             var bundle = bundleOf("date" to sD, "sport" to selectedSport)
             findNavController().navigate(R.id.action_searchFragment_to_addReservationFragment,bundle)
+            mainVm.setShowNav(false)
         }
 
     }
@@ -361,24 +362,27 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         dotView.makeInVisible()
         if (isSelectable){
 
-            if (selectedDate == date){ // 选择的日期
-                textView.setTextColorRes(R.color.blue)
-                textView.setBackgroundResource(R.drawable.selected_bg)
+
+//            layout.isClickable = allReserved[date] != true
+            if (allReserved[date] == true){
+//                layout.setBackgroundColor(Color.LTGRAY)
+                textView.setBackgroundResource(R.drawable.forbid_bg)
+
+            }else{
+                if (selectedDate == date){ // 选择的日期
+                    textView.setTextColorRes(R.color.blue)
+                    textView.setBackgroundResource(R.drawable.selected_bg)
 //                dotView.makeInVisible()
 
-            }
-            else {
-                textView.setTextColorRes(R.color.black)
+                }
+                else {
+                    textView.setTextColorRes(R.color.black)
 
-                textView.background = null
+                    textView.background = null
 //                dotView.isVisible = reservations[date].orEmpty().isEmpty()
 // 不显示小蓝点了，改成如果不能预约就禁用那一天
-            }
-            layout.isClickable = allReserved[date] != true
-            if (allReserved[date] == true){
-                layout.setBackgroundColor(Color.LTGRAY)
-            }else{
-                layout.setBackgroundColor(Color.WHITE)
+                }
+
             }
 //            if (reservations[date].orEmpty().isEmpty()) {//对应sport当天没有任何预约
 //                if (freeCourts[date] == null){
@@ -433,20 +437,26 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     }
     private fun dateClicked(date: LocalDate) {
         if(selectedDate != date){
-            val oldDate = selectedDate
-            selectedDate = date
+            if(allReserved[date] == true){
+//                println("这一天都被预定了！")
+                Toast.makeText(context, "All reserved", Toast.LENGTH_LONG).show()
+            }else{
+                val oldDate = selectedDate
+                selectedDate = date
 //                        println(day.date) // day.date就是点击的日期
 //        Refresh both calendar views..
-            monthCalendarView.notifyDateChanged(date)
-            weekCalendarView.notifyDateChanged(date)
-            oldDate?.let {
-                monthCalendarView.notifyDateChanged(it)
-                weekCalendarView.notifyDateChanged(it)
+                monthCalendarView.notifyDateChanged(date)
+                weekCalendarView.notifyDateChanged(date)
+                oldDate?.let {
+                    monthCalendarView.notifyDateChanged(it)
+                    weekCalendarView.notifyDateChanged(it)
 
-            }
-            getFreeSlot(selectedSport, date)
+                }
+                getFreeSlot(selectedSport, date)
 //            println(freeCourts[date])
-            updateAdapterForDate(date) // 将当前date的空闲时间段的内容显示在下面列表
+                updateAdapterForDate(date) // 将当前date的空闲时间段的内容显示在下面列表
+            }
+
         }
 
     }

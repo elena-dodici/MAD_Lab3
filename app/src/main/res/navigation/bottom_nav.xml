@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_calendar_view" >
         <action
             android:id="@+id/action_calendar_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -33,6 +35,24 @@
         <action
             android:id="@+id/action_mainFragment2_to_calendar"
             app:destination="@id/calendar" />
+        <action
+            android:id="@+id/action_mainFragment2_to_addReservationFragment"
+            app:destination="@id/addReservationFragment" />
+        <action
+            android:id="@+id/action_mainFragment2_to_courtFragment"
+            app:destination="@id/courtFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_mainFragment2_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_mainFragment2_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -41,7 +61,11 @@
         tools:layout="@layout/fragment_detail" >
         <action
             android:id="@+id/action_detailFragment_to_calendar"
-            app:destination="@id/calendar" />
+            app:destination="@id/calendar"
+            app:popUpTo="@+id/calendar"
+            app:popUpToInclusive="true"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
 
         <action
             android:id="@+id/action_detailFragment_to_timePickerFragment"
@@ -61,26 +85,79 @@
         tools:layout="@layout/fragment_add_reservation" >
         <action
             android:id="@+id/action_addReservationFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
+            app:destination="@id/searchFragment"
+            app:popUpTo="@+id/searchFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/courtDetailFragment"
         android:name="com.example.lab3.CourtDetailFragment"
         android:label="fragment_court_detail"
-        tools:layout="@layout/fragment_court_detail" />
+        tools:layout="@layout/fragment_court_detail" >
+        <action
+            android:id="@+id/action_courtDetailFragment_to_courtFragment"
+            app:destination="@id/courtFragment"
+            app:popUpTo="@+id/courtFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.lab3.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_sportsDetail"
+            app:destination="@id/ProfileDetailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/ProfileDetailFragment"
+        android:name="com.example.lab3.ProfileDetailFragment"
+        android:label="fragment_profile_detail"
+        tools:layout="@layout/fragment_profile_detail" >
+
+        <action
+            android:id="@+id/action_ProfileDetailFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@+id/profileFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.example.lab3.EditProfileFragment"
+        android:label="fragment_profile_edit"
+        tools:layout="@layout/fragment_profile_edit" >
+
+        <action
+            android:id="@+id/action_editProfileFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@+id/profileFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/courtFragment"
-        android:name="com.example.lab3.courtFragment"
+        android:name="com.example.lab3.CourtFragment"
         android:label="fragment_court"
         tools:layout="@layout/fragment_court" >
         <action
             android:id="@+id/action_courtFragment_to_courtDetailFragment"
-            app:destination="@id/courtDetailFragment" />
+            app:destination="@id/courtDetailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
 
 </navigation>

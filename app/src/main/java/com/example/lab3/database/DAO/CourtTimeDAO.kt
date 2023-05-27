@@ -25,8 +25,8 @@ interface CourtTimeDAO {
 
     // This function is only for testing purposes ( comment or ignore if not needed)
 
-    @Query("SELECT * FROM courtTime WHERE startTime = :startTime AND endTime = :endTime")
-    fun getCourtTimeId(startTime: Time, endTime:Time): CourtTime?
+    @Query("SELECT * FROM courtTime WHERE startTime = :startTime AND endTime = :endTime AND courtId = :courtId")
+    fun getCourtTimeId(startTime: Time, endTime:Time, courtId : Int): CourtTime?
 
 
 //    @Query("SELECT * FROM courtTime")

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+
+    tools:context=".EditProfileFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/deeper_toolbar_color2"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/activityToolbar"
+                android:layout_width="match_parent"
+                app:title="@string/profile"
+                android:layout_height="?attr/actionBarSize"
+                />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="16dp"
+            >
+
+            <ImageView
+                android:id="@+id/imageViewE"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:background="#DCDCDC"
+                android:contentDescription="@string/user_profile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/user_profile" />
+
+            <ImageButton
+                android:id="@+id/imgbtn"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewE"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/ic_camera"
+                android:contentDescription="camera"
+                android:background="@drawable/img_btn_border"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_weight="2">
+
+            <LinearLayout
+                android:id="@+id/layoutName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="16dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Name"
+                    android:textColor="#000000"
+                    android:textSize="40sp" />
+
+                <EditText
+                    android:id="@+id/ed_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:selectAllOnFocus="true"
+                    android:inputType="textPersonName"
+                    android:hint="Name"
+                    android:text="@string/full_name"
+                    android:textSize="30sp" />
+
+            </LinearLayout>
+
+            <!--            nickname-->
+            <LinearLayout
+                android:id="@+id/layoutNick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutName"
+
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Surname"
+                    android:textColor="#000000"
+                    android:textSize="25sp" />
+                <EditText
+                    android:id="@+id/ed_surname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:selectAllOnFocus="true"
+                    android:inputType="textPersonName"
+                    android:hint="Surname"
+                    android:text="@string/nickname"
+                    android:textSize="30sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linearLayoutPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="309dp"
+                app:layout_constraintTop_toBottomOf="@+id/layoutNick">
+
+                <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:contentDescription="phone"
+                    android:src="@drawable/ic_phone" />
+
+                <EditText
+                    android:id="@+id/ed_phone"
+                    android:layout_width="285dp"
+                    android:layout_height="wrap_content"
+                    android:hint="phone"
+                    android:inputType="phone"
+                    android:selectAllOnFocus="true"
+                    android:text="@string/phone"
+                    android:textColor="#000000"
+                    android:textSize="30sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutJob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayoutPhone"
+
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Interested Sports:"
+                    android:textColor="#000000"
+                    android:textSize="40sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/selectiveSport"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutJob"
+                android:orientation="vertical">
+
+                <android.widget.Button
+                    android:id="@+id/btrunning"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/lighter_toolbar_color"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:text="running" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/bttennis"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:text="tennis"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/lighter_toolbar_color"
+                     />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btpingpong"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/lighter_toolbar_color"
+                    android:text="pingpong"
+                     />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btswimming"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:layout_marginTop="10dp"
+                    android:text="swimming"
+                    android:background="@color/lighter_toolbar_color"
+                     />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btbasketball"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:text="basketball"
+                    android:background="@color/lighter_toolbar_color"
+                     />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/selectiveSport"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center"
+                android:layout_marginTop="15dp"
+                >
+                <androidx.appcompat.widget.AppCompatButton
+
+                    android:id="@+id/btS"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:text="Save"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/custom_sports"
+                    android:layout_marginRight="5dp"
+                    />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btC"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/custom_sports"
+                    android:text="Cancel"
+                    android:layout_marginLeft="5dp"
+
+                    />
+            </LinearLayout>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</ScrollView>

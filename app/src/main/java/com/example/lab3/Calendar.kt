@@ -77,6 +77,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
     //    val vm by viewModels<CalendarViewModel>()
     private val sharedvm : CalendarViewModel by activityViewModels()
+    private val vmMain : MainViewModel by activityViewModels()
 
     override val toolbar: Toolbar?
         get() = null
@@ -99,6 +100,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
     private fun gotoDetailFrag(resId: Int){
         sharedvm.setSelectedResByResId(resId,this.requireActivity().application)
+        vmMain.setShowNav(false)
         findNavController().navigate(R.id.action_calendar_to_detailFragment)
     }
     override fun onCreateView(
@@ -110,7 +112,8 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
 //        应该在viewmodel里获取数据
         // 将res放入event数组即可！
-        sharedvm.getAllRes(this.requireActivity().application)
+        println(vmMain.user)
+        sharedvm.getAllRes(this.requireActivity().application, vmMain.user)
         sharedvm.reservations.observe(viewLifecycleOwner){
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
             events.clear()

@@ -8,31 +8,37 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab3.database.entity.CourtTime
 import com.example.lab3.database.entity.Reservation
+import com.example.lab3.databinding.FragmentAddReservationBinding
+import com.example.lab3.databinding.FragmentProfileDetailBinding
 import com.google.android.material.textfield.TextInputLayout
 import java.sql.Time
 import java.time.LocalDate
 
 
 class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),HasToolbar {
+    private lateinit var binding: FragmentAddReservationBinding
     override val toolbar: Toolbar?
-        get() = null
+        get() =binding.activityToolbar
     companion object {
         fun newInstance() = AddReservationFragment()
     }
 
     private var layoutManager : RecyclerView.LayoutManager ?= null
     private var  adapter : MyAdapter1 ?= null
-    private lateinit var viewModel: AddReservationViewModel
-
+    //private lateinit var viewModel: AddReservationViewModel
+    private val viewModel:  AddReservationViewModel by activityViewModels()
+    private val mainVm: MainViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
+        binding = FragmentAddReservationBinding.bind(view)
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView2)
         val doneButton = view.findViewById<Button>(R.id.button2)
         val description = view.findViewById<TextInputLayout>(R.id.textInputLayout)
@@ -40,7 +46,7 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
         val sportDisplayed = view.findViewById<TextView>(R.id.textView11)
         selectedSlot = ""
 
-        viewModel = ViewModelProvider(this).get(AddReservationViewModel::class.java)
+//        viewModel = ViewModelProvider(this).get(AddReservationViewModel::class.java)
         var dateString : String? = arguments?.getString("date")
         dateDisplayed.setText(dateString)
         var sport : String? = arguments?.getString("sport")
@@ -80,7 +86,7 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
                 )
                 val resDescription = description.editText?.text.toString()
                 val newReservation: Reservation =
-                    Reservation(courtTimeId, 1, 0, dateLD, resDescription)
+                    Reservation(courtTimeId, mainVm.user, 0, dateLD, resDescription)
                 try {viewModel.addNewReservation(this.requireActivity().application, newReservation) }
                 catch (e : Exception){
                     failed = true;
@@ -93,6 +99,7 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+                mainVm.setShowNav(true)
                 findNavController().navigate(R.id.action_addReservationFragment_to_searchFragment)
             }
             /*
