@@ -38,7 +38,7 @@ class DatePickerFragment() : DialogFragment(), DatePickerDialog.OnDateSetListene
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
         val newDate = LocalDate.of(year,month+1,day)
         sharedvm.setSelDate(newDate)
-        sharedvm.getAllFreeSLotByCourtIdAndDate(sharedvm.selectedRes.value!!.courtId, newDate,0,this.requireActivity().application)
+//        sharedvm.getAllFreeSLotByCourtIdAndDate(sharedvm.selectedRes.value!!.courtId, newDate,0,this.requireActivity().application)
 
     }
 
