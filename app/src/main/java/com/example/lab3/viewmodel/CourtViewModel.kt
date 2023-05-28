@@ -7,20 +7,45 @@ import androidx.lifecycle.ViewModel
 import com.example.lab3.database.AppDatabase
 import com.example.lab3.database.entity.CourtInfo
 import com.example.lab3.database.entity.CourtReview
+import com.example.lab3.database.entity.MyReservation
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import java.sql.Time
+import java.time.Instant
+import java.time.ZoneId
 
 class CourtViewModel : ViewModel( ) {
     lateinit var db: AppDatabase
+    val db1 = Firebase.firestore
 
 //    private var _courtreview = MutableLiveData<List<CourtReview>>().also { it.value = listOf() }
 //    val courtreview:LiveData<List<CourtReview>> = _courtreview
-    private var _courtInfo = MutableLiveData<List<CourtInfo>>().also { it.value = listOf() }
+    private var _courtInfo = MutableLiveData<List<CourtInfo>>()
     val courtInfo:LiveData<List<CourtInfo>> = _courtInfo
     fun getCourtInfo(application: Application){
-        db = AppDatabase.getDatabase(application)
-        var tempList:MutableList<CourtInfo> = mutableListOf()
-        tempList.addAll(db.courtReviewDao().getAllCourtReviews())
-        tempList.addAll(db.courtReviewDao().getCourtWithoutReview())
-        _courtInfo.value = tempList
+//        db = AppDatabase.getDatabase(application)
+        val tempList:MutableList<CourtInfo> = mutableListOf()
+//        tempList.addAll(db.courtReviewDao().getAllCourtReviews())
+//        tempList.addAll(db.courtReviewDao().getCourtWithoutReview())
+        db1.collection("court").get()
+            .addOnSuccessListener { result ->
+                val dataList = result.map { document ->
+                    document.data
+                }
+                dataList.forEach{res-> // 遍历每一个reservation
+//                    println(res)
+                    tempList.add(CourtInfo(res["name"].toString(), res["avg_rating"].toString().toFloat()))
+                }
+//                _reservations.value = dataList
+                _courtInfo.value = tempList
+            }
+            .addOnFailureListener { exception ->
+                // 处理错误
+                println("Error getting documents: ${exception.message}")
+                _courtInfo.value = null
+            }
+
+
       // println(_courtInfo.value)
 
     }
@@ -54,29 +79,29 @@ class CourtViewModel : ViewModel( ) {
 
     fun setSelectedCourtById(courtId:Int, avg_Rate: Float, application:Application,user:Int){
         //courtInfo contains all courtid courtname and its avg_score
-        for (r in _courtInfo.value!! ){
-            if (r.courtId == courtId){
-                _courtName.value = r.courtname
-                _courtId.value = r.courtId
-                _hasRev.value = false
-                //0-xxx
-                val review = AppDatabase.getDatabase(application).courtReviewDao().getCourtReviewByCourtIdUserId(courtId,user)
-                if (review != null) {
-                    //_userId.value need to be updated once profile give userId
-                    //hasreview
-                    _hasRev.value = true
-                    //uid needed to be updated
-                    _selectedCourtRev.value = AppDatabase.getDatabase(application).courtReviewDao().getCourtReviewByCourtIdUserId(courtId,user)
-                    _courtRate.value = _selectedCourtRev.value!!.rating
-//                    _review.value = _selectedCourtRev.value!!.review
-                }
-                else{
-                    //this user never review this court
-                    _selectedCourtRev.value =CourtReview(user,courtId,0,"")
-
-                }
-                }
-        }
+//        for (r in _courtInfo.value!! ){
+//            if (r.courtId == courtId){
+//                _courtName.value = r.courtname
+//                _courtId.value = r.courtId
+//                _hasRev.value = false
+//                //0-xxx
+//                val review = AppDatabase.getDatabase(application).courtReviewDao().getCourtReviewByCourtIdUserId(courtId,user)
+//                if (review != null) {
+//                    //_userId.value need to be updated once profile give userId
+//                    //hasreview
+//                    _hasRev.value = true
+//                    //uid needed to be updated
+//                    _selectedCourtRev.value = AppDatabase.getDatabase(application).courtReviewDao().getCourtReviewByCourtIdUserId(courtId,user)
+//                    _courtRate.value = _selectedCourtRev.value!!.rating
+////                    _review.value = _selectedCourtRev.value!!.review
+//                }
+//                else{
+//                    //this user never review this court
+//                    _selectedCourtRev.value =CourtReview(user,courtId,0,"")
+//
+//                }
+//                }
+//        }
     }
 
     fun setRate(newRate: Int){

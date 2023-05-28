@@ -14,12 +14,13 @@ import com.example.lab3.databinding.FragmentCourtBinding
 import com.example.lab3.databinding.ItemLayoutBinding
 import com.example.lab3.databinding.ItemLayoutCourtScoreBinding
 import java.time.LocalDate
+import java.util.UUID
 import kotlin.math.roundToInt
 
 //data class CourtInfo(val courtName:String, val avgScore:Float)
 
 class ScoreAdapter(val onTap:(CourtInfo)->Unit):RecyclerView.Adapter<ScoreAdapter.ScoreViewHolder>(){
-    inner class  ScoreViewHolder(private val binding:ItemLayoutCourtScoreBinding):RecyclerView.ViewHolder(binding.root){
+    inner class ScoreViewHolder(private val binding:ItemLayoutCourtScoreBinding):RecyclerView.ViewHolder(binding.root){
         init {
             itemView.setOnClickListener {
                 onTap(courtInfoList[bindingAdapterPosition])
@@ -52,7 +53,7 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
     companion object {
         fun newInstance() = CourtFragment()
     }
-    override val toolbar: Toolbar?
+    override val toolbar: Toolbar
         get() = binding.activityToolbar
     private lateinit var binding:FragmentCourtBinding
     private val sharedvm : CourtViewModel by activityViewModels()
@@ -61,23 +62,27 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
     val adapter = ScoreAdapter{
        // println("click: ${it.courtname} - ${it.avg_rating}")
         //avg_rating: 0-xxx
-        gotoCourtDetailFrag(it.courtId, it.avg_rating)
+//        gotoCourtDetailFrag(it.courtId, it.avg_rating)
     }
     private fun gotoCourtDetailFrag(courtId: Int, avg_rating:Float){
        sharedvm.setSelectedCourtById(courtId,avg_rating, this.requireActivity().application,mainVm.user)
         mainVm.setShowNav(false)
         findNavController().navigate(R.id.action_courtFragment_to_courtDetailFragment)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedvm.getCourtInfo(this.requireActivity().application)
         sharedvm.courtInfo.observe(this){
             courtInfoList.clear();
-            courtInfoList.addAll(it)
+            for (res in it){
+                courtInfoList.add(res)
+            }
+            courtInfoList.sortByDescending {
+                it.avg_rating
+            }
             updateAdapter()
-            //println("1 ${courtInfoList}")
         }
-//        println(courtInfoList)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,9 +100,8 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
         adapter.apply {
             courtInfoList.clear()
             courtInfoList.addAll(this@CourtFragment.courtInfoList)
-           // println("2 ${this@CourtFragment.courtInfoList}")
-
+//            println("2 $courtInfoList")
+            notifyDataSetChanged() // 通知adapter发生变化，调用bind方法
         }
-
     }
 }
