@@ -43,7 +43,8 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.util.*
 
-data class Event(val resId: Int, val id: String, val courtName:String, val sportName:String, val startTime: Time, val date: LocalDate)
+//data class Event(val resId: Int, val id: String, val courtName:String, val sportName:String, val startTime: Time, val date: LocalDate)
+data class Event(val id: String, val courtName:String, val sportName:String, val startTime: Time, val date: LocalDate)
 // 调用Adapter的时候传进去一个点击的回调函数
 class MyAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
     inner class MyViewHolder(private val binding:ItemLayoutBinding):RecyclerView.ViewHolder(binding.root){
@@ -95,7 +96,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     val eventsAdapter = MyAdapter{
         // 点击下面recyclerView调用的事件
 //        println(it.resId)
-        gotoDetailFrag(it.resId)
+//        gotoDetailFrag(it.resId) // !!!!! 没有res id了
     }
 
     private fun gotoDetailFrag(resId: Int){
@@ -109,18 +110,14 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         savedInstanceState: Bundle?
     ): View? {
         // 在某个日期下面 初始化 几个reservation
-
 //        应该在viewmodel里获取数据
-        // 将res放入event数组即可！
-        println(vmMain.user)
         sharedvm.getAllRes(this.requireActivity().application, vmMain.user)
         sharedvm.reservations.observe(viewLifecycleOwner){
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
             events.clear()
             for (res in it){
-
-                events[res.date] = events[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
-
+//                events[res.date] = events[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
+                events[res.date] = events[res.date].orEmpty().plus(Event(UUID.randomUUID().toString(), res.name, res.sport,res.startTime, res.date))
             }
 
         }

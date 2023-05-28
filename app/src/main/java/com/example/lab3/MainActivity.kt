@@ -65,11 +65,8 @@ class MainActivity : AppCompatActivity() {
 
 
 //       initDatabase(db) // add some initial data
-        initFirebase()
+//        initFirebase()
 
-
-
-    initDatabase(db) // pre_saved the data in our DB
 
 
     }
@@ -81,7 +78,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    data class reservation(val name:String,val ct: courtTime,val description: String, val rating:Int, val review:String, val status:Int)
+    data class reservation(val name:String,val ct: courtTime,val description: String, val rating:Int, val review:String, val status:Int, val sport: String)
     data class courtTime(
         val startTime : Timestamp,
         val endTime:Timestamp
@@ -103,12 +100,12 @@ class MainActivity : AppCompatActivity() {
         )
 
         val reservations= listOf<reservation>(
-            reservation("bbcourt1", courtTime(Timestamp(Date(2023 - 1900, 0, 5, 9, 0)), Timestamp(Date(2023 - 1900, 0, 5, 10, 0))),
-                            "d1 for u",2,"review1",0),
+            reservation("rcourt1", courtTime(Timestamp(Date(2023 - 1900, 0, 5, 9, 0)), Timestamp(Date(2023 - 1900, 0, 5, 10, 0))),
+                            "d1 for u",2,"review1",0,"running"),
             reservation("bbcourt2", courtTime(Timestamp(Date(2023 - 1900, 0, 6, 10, 0)), Timestamp(Date(2023 - 1900, 0, 6, 11, 0))),
-                            "d2 for u",3,"review2",0),
-            reservation("bbcourt3", courtTime(Timestamp(Date(2023 - 1900, 0, 7, 10, 0)), Timestamp(Date(2023 - 1900, 0, 7, 11, 0))),
-                           "d3 for u",4,"review3",0),
+                            "d2 for u",3,"review2",0, "basketball"),
+            reservation("swcourt3", courtTime(Timestamp(Date(2023 - 1900, 0, 7, 10, 0)), Timestamp(Date(2023 - 1900, 0, 7, 11, 0))),
+                           "d3 for u",4,"review3",0, "swimming"),
         )
 //        for (i in 1..3){
 //            for ((id,r) in reservations.withIndex()){

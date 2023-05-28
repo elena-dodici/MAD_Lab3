@@ -11,8 +11,15 @@ import com.example.lab3.database.entity.Court
 import com.example.lab3.database.entity.MyReservation
 import com.example.lab3.database.entity.FreeCourt
 import com.example.lab3.database.entity.Reservation
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.sql.Time
+import java.time.Instant
+import java.util.*
 import java.time.LocalDate
+import java.time.ZoneId
+import java.util.Calendar
 
 class  CalendarViewModel() : ViewModel( ) {
     //reservationList of this user
@@ -61,7 +68,7 @@ class  CalendarViewModel() : ViewModel( ) {
     private var _courtNames = MutableLiveData<List<String>>().also { it.value = listOf() }
     val courtNames:LiveData<List<String>> = _courtNames
 
-    //selected Sport
+    val db1 = Firebase.firestore
 
 
 
@@ -73,9 +80,54 @@ class  CalendarViewModel() : ViewModel( ) {
 
 
     fun getAllRes(application: Application, userid:Int){
-        db = AppDatabase.getDatabase(application)
-        _reservations.value = db.reservationDao().getReservationByUserId(userid)
-        getCourts(application)
+//        db = AppDatabase.getDatabase(application)
+
+        db1.collection("users").document("u${userid}").collection("reservation").get()
+            .addOnSuccessListener { result ->
+                val dataList = result.map { document ->
+                    document.data
+                }
+                val myres = mutableListOf<MyReservation>()
+                dataList.forEach{res-> // 遍历每一个reservation
+//                    println(res["name"].toString())
+                    val ct = res["ct"] as Map<*,*>
+                    val starttimeStr = ct["startTime"].toString()
+                    val endtimeStr = ct["endTime"].toString()
+                    // 使用正则表达式提取秒数值
+                    val regex = "seconds=(\\d+)".toRegex()
+                    var matchResult = regex.find(starttimeStr)
+                    val secondsStart = matchResult?.groupValues?.get(1)?.toLongOrNull()
+
+                    // 将秒数值转换为 Timestamp 对象
+//                    val starttimestamp = seconds?.let { Timestamp(it, 0) }
+
+                    val zone = ZoneId.of("GMT+1")
+//                    val zone = ZoneId.systemDefault()
+                    val startTime = Instant.ofEpochSecond(secondsStart!!).atZone(zone)
+
+                    matchResult = regex.find(endtimeStr)
+                    val secondsEnd = matchResult?.groupValues?.get(1)?.toLongOrNull()
+//                    val endtimestamp = seconds?.let { Timestamp(it,0) }
+                    val endTime = Instant.ofEpochSecond(secondsEnd!!)
+//                    println("${startTime} ")
+//                    println(res["description"].toString())
+                    if (res["status"].toString() == "0"){
+                        myres.add(
+                            MyReservation(res["name"].toString(), res["sport"].toString(),Time(secondsStart), Time(secondsEnd), startTime.toLocalDate(),res["description"].toString() )
+                        )
+                    }
+
+                }
+                _reservations.value = myres
+//                _reservations.value = dataList
+            }
+            .addOnFailureListener { exception ->
+                // 处理错误
+                println("Error getting documents: ${exception.message}")
+                _reservations.value = null
+            }
+//        _reservations.value = db.reservationDao().getReservationByUserId(userid)
+//        getCourts(application)
     }
     fun getCourts(application: Application){
         db = AppDatabase.getDatabase(application)
@@ -94,31 +146,31 @@ class  CalendarViewModel() : ViewModel( ) {
 
 
     fun setSelectedResByResId(resId:Int, application:Application){
-        for (r in _reservations.value!! ){
-            if (r.resId == resId) {
-                _selectedRes.value = r
-                _selDate.value = r.date
-                _resIdvm.value = resId
-                _selCourtId.value = r.courtId
-                _selStartTime.value = r.startTime
-                _selEndTime.value = r.endTime
-                _selDes.value = r.description
-                _selSport.value = r.sport
-                //getAllFreeSLotByCourtIdAndDate(r.courtId, r.date,0,application)
-                val freeCourtTime = AppDatabase.getDatabase(application).courtDao().getAllFreeSlotByCourtIdAndDate(r.courtId, r.date,0)
-                val freeEndTimeList = mutableListOf<Time>()
-                val freStartTimeList = mutableListOf<Time>()
-                for (i in freeCourtTime){
-                    freeEndTimeList.add(i.endTime)
-                    freStartTimeList.add(i.startTime)
-                }
-
-                freeEndTimeList.add(_selectedRes.value!!.endTime)
-                freStartTimeList.add(_selectedRes.value!!.startTime)
-                _freeEndTimes.value  = freeEndTimeList
-                _freeStartTimes.value = freStartTimeList
-            }
-        }
+//        for (r in _reservations.value!! ){
+//            if (r.resId == resId) {
+//                _selectedRes.value = r
+//                _selDate.value = r.date
+//                _resIdvm.value = resId
+//                _selCourtId.value = r.courtId
+//                _selStartTime.value = r.startTime
+//                _selEndTime.value = r.endTime
+//                _selDes.value = r.description
+//                _selSport.value = r.sport
+//                //getAllFreeSLotByCourtIdAndDate(r.courtId, r.date,0,application)
+//                val freeCourtTime = AppDatabase.getDatabase(application).courtDao().getAllFreeSlotByCourtIdAndDate(r.courtId, r.date,0)
+//                val freeEndTimeList = mutableListOf<Time>()
+//                val freStartTimeList = mutableListOf<Time>()
+//                for (i in freeCourtTime){
+//                    freeEndTimeList.add(i.endTime)
+//                    freStartTimeList.add(i.startTime)
+//                }
+//
+//                freeEndTimeList.add(_selectedRes.value!!.endTime)
+//                freStartTimeList.add(_selectedRes.value!!.startTime)
+//                _freeEndTimes.value  = freeEndTimeList
+//                _freeStartTimes.value = freStartTimeList
+//            }
+//        }
     }
 
     fun setSelDate(newDate: LocalDate){
@@ -175,14 +227,14 @@ class  CalendarViewModel() : ViewModel( ) {
 
     fun addOrUpdateRes(application: Application){
         //find courtTImdId
-        val newCourtTime =  AppDatabase.getDatabase(application).courtTimeDao().getCourtTimeId(_selStartTime.value!!,_selEndTime.value!!,selCourtId.value!!)
-        if (newCourtTime != null) {
-            _selectedRes.value!!.courtTimeId = newCourtTime.id
-        }
-
-        val updateRes = Reservation(_selectedRes.value!!.courtTimeId, 1, 0,  _selDate.value!!,_selectedRes.value!!.description)
-        updateRes.resId = _selectedRes.value!!.resId
-        AppDatabase.getDatabase(application).reservationDao().addReservation(updateRes)
+//        val newCourtTime =  AppDatabase.getDatabase(application).courtTimeDao().getCourtTimeId(_selStartTime.value!!,_selEndTime.value!!,selCourtId.value!!)
+//        if (newCourtTime != null) {
+//            _selectedRes.value!!.courtTimeId = newCourtTime.id
+//        }
+//
+//        val updateRes = Reservation(_selectedRes.value!!.courtTimeId, 1, 0,  _selDate.value!!,_selectedRes.value!!.description)
+//        updateRes.resId = _selectedRes.value!!.resId
+//        AppDatabase.getDatabase(application).reservationDao().addReservation(updateRes)
 
     }
 
