@@ -15,24 +15,24 @@ interface ReservationDAO {
     @Query("SELECT * FROM reservation")
     fun getAllReservationsTest(): List<Reservation>
 
-    @Query("SELECT * FROM reservation,(SELECT * FROM courtTime WHERE courtId=:id) AS cts " +
-            "WHERE reservation.courtTimeId = cts.id")
-   fun getReservationsByCourtId(id:Int): List<Reservation>
+//    @Query("SELECT * FROM reservation,(SELECT * FROM courtTime WHERE courtId=:id) AS cts " +
+//            "WHERE reservation.courtTimeId = cts.id")
+//   fun getReservationsByCourtId(id:Int): List<Reservation>
 
     //
 
     @Query("SELECT * FROM reservation WHERE resId=:id")
     fun getReservationById(id:Int): Reservation?
 
-    @Query("SELECT r.resId, name, address, sport, startTime, endTime, date, description,ct.id as courtTimeId,c.courtId\n" +
-            "FROM reservation as r, court as c, courtTime as ct\n" +
-            "WHERE r.courtTimeId=ct.id and r.status = 0 and ct.courtId=c.courtId and userId=:id ")
-    fun getReservationByUserId(id:Int): List<MyReservation>?
+//    @Query("SELECT r.resId, name, address, sport, startTime, endTime, date, description,ct.id as courtTimeId,c.courtId\n" +
+//            "FROM reservation as r, court as c, courtTime as ct\n" +
+//            "WHERE r.courtTimeId=ct.id and r.status = 0 and ct.courtId=c.courtId and userId=:id ")
+//    fun getReservationByUserId(id:Int): List<MyReservation>?
 
-    @Query("SELECT r.resId, name, address, sport, startTime, endTime, date, description,ct.id as courtTimeId,c.courtId\n" +
-            "FROM reservation as r, court as c, courtTime as ct\n" +
-            "WHERE r.courtTimeId=ct.id  and ct.courtId=c.courtId and sport=:sport and r.status!=1")
-    fun getReservationBySport(sport:String): List<MyReservation>?
+//    @Query("SELECT r.resId, name, address, sport, startTime, endTime, date, description,ct.id as courtTimeId,c.courtId\n" +
+//            "FROM reservation as r, court as c, courtTime as ct\n" +
+//            "WHERE r.courtTimeId=ct.id  and ct.courtId=c.courtId and sport=:sport and r.status!=1")
+//    fun getReservationBySport(sport:String): List<MyReservation>?
 //    @Query("SELECT * FROM reservation WHERE userId=:id ")
 //    fun getReservationByUserId(id:Int): List<Reservation>?
 

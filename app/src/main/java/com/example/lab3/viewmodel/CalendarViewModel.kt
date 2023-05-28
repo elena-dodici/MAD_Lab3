@@ -135,7 +135,7 @@ class  CalendarViewModel() : ViewModel( ) {
     }
     fun getResBySport(application: Application,sport:String){
         db = AppDatabase.getDatabase(application)
-        _reservations.value = db.reservationDao().getReservationBySport(sport)
+//        _reservations.value = db.reservationDao().getReservationBySport(sport)
     }
 
 
