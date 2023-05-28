@@ -121,7 +121,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         vm.reservations.observe(viewLifecycleOwner){// 为啥被调用2次？？？
             // 所有的预约信息
             for (res in it){
-//                reservations[res.date] = reservations[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
+                reservations[res.date] = reservations[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
                 allReserved[res.date] = (allStartTime.size == reservations[res.date]!!.size) // 若所有时间段数== 当前运动这一天的预定数，说明这一天被预定满了
             }
         }
@@ -514,7 +514,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
             reservations.clear()
             allReserved.clear()
             for (res in it){
-//                reservations[res.date] = reservations[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
+                reservations[res.date] = reservations[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
                 monthCalendarView.notifyDateChanged(res.date)
                 weekCalendarView.notifyDateChanged(res.date)
                 allReserved[res.date] = (allStartTime.size == reservations[res.date]!!.size) // 若所有时间段数== 当前运动这一天的预定数，说明这一天被预定满了
