@@ -13,6 +13,7 @@ import com.example.lab3.database.entity.FreeCourt
 import com.example.lab3.database.entity.Reservation
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.ktx.Firebase
 import java.sql.Time
 import java.time.Instant
@@ -84,9 +85,13 @@ class  CalendarViewModel() : ViewModel( ) {
 
         db1.collection("users").document("u${userid}").collection("reservation").get()
             .addOnSuccessListener { result ->
+
                 val dataList = result.map { document ->
                     document.data
+
+
                 }
+                println("result ${dataList}")
                 val myres = mutableListOf<MyReservation>()
                 dataList.forEach{res-> // 遍历每一个reservation
 //                    println(res["name"].toString())
@@ -113,7 +118,7 @@ class  CalendarViewModel() : ViewModel( ) {
 //                    println(res["description"].toString())
                     if (res["status"].toString() == "0"){
                         myres.add(
-                            MyReservation(res["name"].toString(), res["sport"].toString(),Time(secondsStart), Time(secondsEnd), startTime.toLocalDate(),res["description"].toString() )
+                            MyReservation( res["name"].toString(), res["sport"].toString(),Time(secondsStart), Time(secondsEnd), startTime.toLocalDate(),res["description"].toString() )
                         )
                     }
 
@@ -145,17 +150,32 @@ class  CalendarViewModel() : ViewModel( ) {
     }
 
 
-    fun setSelectedResByResId(resId:Int, application:Application){
-//        for (r in _reservations.value!! ){
-//            if (r.resId == resId) {
-//                _selectedRes.value = r
-//                _selDate.value = r.date
+    fun setSelectedResByResId(courtName : String){
+        for (r in _reservations.value!! ){
+            if (r.name == courtName) {
+
+                _selectedRes.value = r
+                _selDate.value = r.date
 //                _resIdvm.value = resId
 //                _selCourtId.value = r.courtId
-//                _selStartTime.value = r.startTime
-//                _selEndTime.value = r.endTime
-//                _selDes.value = r.description
-//                _selSport.value = r.sport
+                _selStartTime.value = r.startTime
+                _selEndTime.value = r.endTime
+                _selDes.value = r.description
+                _selSport.value = r.sport
+                db1.collection("court").document(courtName).collection("courtTime")
+                    .document("${r.date}").get()
+                    .addOnSuccessListener { result ->
+                        val dataList = result.data
+                        println(dataList)
+                        val freeStartTimeList = mutableListOf<Time>()
+                        val freeEndTimeList = mutableListOf<Time>()
+
+                    }
+                    .addOnFailureListener { exception ->
+                        // 处理错误
+                        println("Error getting documents: ${exception.message}")
+
+                    }
 //                //getAllFreeSLotByCourtIdAndDate(r.courtId, r.date,0,application)
 //                val freeCourtTime = AppDatabase.getDatabase(application).courtDao().getAllFreeSlotByCourtIdAndDate(r.courtId, r.date,0)
 //                val freeEndTimeList = mutableListOf<Time>()
@@ -169,8 +189,9 @@ class  CalendarViewModel() : ViewModel( ) {
 //                freStartTimeList.add(_selectedRes.value!!.startTime)
 //                _freeEndTimes.value  = freeEndTimeList
 //                _freeStartTimes.value = freStartTimeList
-//            }
-//        }
+
+            }
+        }
     }
 
     fun setSelDate(newDate: LocalDate){
