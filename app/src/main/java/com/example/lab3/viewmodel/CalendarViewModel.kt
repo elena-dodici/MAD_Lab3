@@ -106,19 +106,21 @@ class  CalendarViewModel() : ViewModel( ) {
                     // 将秒数值转换为 Timestamp 对象
 //                    val starttimestamp = seconds?.let { Timestamp(it, 0) }
 
-                    val zone = ZoneId.of("GMT+1")
+                    val zone = ZoneId.of("UTC+1")
 //                    val zone = ZoneId.systemDefault()
                     val startTime = Instant.ofEpochSecond(secondsStart!!).atZone(zone)
 
                     matchResult = regex.find(endtimeStr)
                     val secondsEnd = matchResult?.groupValues?.get(1)?.toLongOrNull()
 //                    val endtimestamp = seconds?.let { Timestamp(it,0) }
-                    val endTime = Instant.ofEpochSecond(secondsEnd!!)
-//                    println("${startTime} ")
+                    val endTime = Instant.ofEpochSecond(secondsEnd!!).atZone(zone)
+
 //                    println(res["description"].toString())
                     if (res["status"].toString() == "0"){
                         myres.add(
-                            MyReservation( res["name"].toString(), res["sport"].toString(),Time(secondsStart), Time(secondsEnd), startTime.toLocalDate(),res["description"].toString() )
+
+                            MyReservation(res["name"].toString(), res["sport"].toString(),Time(startTime.hour,startTime.minute,startTime.second), Time(endTime.hour,endTime.minute,endTime.second), startTime.toLocalDate(),res["description"].toString() )
+
                         )
                     }
 
