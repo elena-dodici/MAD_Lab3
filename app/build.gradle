@@ -29,15 +29,19 @@ android {
 
         viewBinding = true
         dataBinding true
+        compose true
     }
     compileOptions {
         // Enable support for the new language APIs
         coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.4.0'
     }
 }
 
@@ -90,4 +94,10 @@ dependencies {
     // The view calendar library
     implementation 'com.kizitonwose.calendar:view:2.3.0'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
+
+    // compose
+    implementation 'androidx.compose.ui:ui:1.4.3'
+    implementation 'androidx.compose.material:material:1.4.3'
+    implementation 'androidx.compose.runtime:runtime:1.4.3'
+
 }
