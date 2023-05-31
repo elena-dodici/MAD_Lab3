@@ -13,4 +13,7 @@
     <item android:title="Court Info"
         android:icon="@drawable/baseline_golf_course_24"
         android:id="@+id/courtFragment"/>
+    <item android:title="my frag"
+        android:icon="@drawable/baseline_golf_course_24"
+        android:id="@+id/myFragment"/>
 </menu>
