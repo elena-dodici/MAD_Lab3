@@ -84,8 +84,8 @@ class MainActivity : AppCompatActivity() {
         val endTime:Timestamp
     )
     data class interestSport(val achievement:String, val level:Int)
-    data class review(val user:String, val review:String)
-    data class court(val address:String, val name: String, val avg_rating: Float, val review:List<review>, val sport:String)
+    data class review(val user:String, val review:String,val rating: Int)
+    data class court(val address:String, val avg_rating: Float, val review:List<review>, val sport:String)
 
     fun initFirebase(){
         val user = hashMapOf(
@@ -94,10 +94,7 @@ class MainActivity : AppCompatActivity() {
             "tel" to "2598498759"
         )
 
-        val res1 = hashMapOf(
-            "courtTime" to  "9:00 - 10:00",
-            "achievement" to "3rd price",
-        )
+
 
         val reservations= listOf<reservation>(
             // u1
@@ -116,8 +113,8 @@ class MainActivity : AppCompatActivity() {
                 "Please leave some clean towels",4,"The Sport Court's facility is conveniently located and fosters a sense of community. With ample parking, accessible entrances, and organized sports events, it brings people together and encourages a healthy and active lifestyle.",0, "swimming"),
 
             //u3
-            reservation("court5", courtTime(Timestamp(Date(2023 - 1900, 5, 18, 15, 0)), Timestamp(Date(2023 - 1900, 5, 18, 16, 0))),
-                "We need some tennis balls",5," The courts are immaculately maintained, with clean surfaces and properly marked boundaries, ensuring a safe and enjoyable playing experience.",0, "tennis"),
+            reservation("court5", courtTime(Timestamp(Date(2023 - 1900, 4, 28, 15, 0)), Timestamp(Date(2023 - 1900, 4, 28, 16, 0))),
+                "We need some tennis balls",5," The courts are immaculately aintained, with clean surfaces and properly marked boundaries, ensuring a safe and enjoyable playing experience.",0, "tennis"),
             reservation("court4", courtTime(Timestamp(Date(2023 - 1900, 5, 14, 10, 0)), Timestamp(Date(2023 - 1900, 5, 14, 11, 0))),
                 "description for user3",-1,"",0, "pingpong"),
             reservation("court3", courtTime(Timestamp(Date(2023 - 1900, 5, 1, 14, 0)), Timestamp(Date(2023 - 1900, 5, 1, 15, 0))),
@@ -165,18 +162,56 @@ class MainActivity : AppCompatActivity() {
 //        db1.collection("users").document("u3")
 //            .collection("sports").document(s[0]).set(interestSports[2])
 
-        // court
-        val courts = listOf<court>(
-            court("via po 1", "rcourt1", 2.0f, listOf( review("u1","rev1foru1")), s[0]),
-            court("via po 2", "bbcourt2", 3.5f,listOf(review("u2","rev2foru1")), s[1]),
-            court("via po 3", "swcourt3", 2.0f,listOf(review("u1","rev3foru1")), s[2]),
-            court("via po 4", "ppcourt4", 2.0f,listOf(review("u1","rev4foru1")), s[3]),
-            court("via po 5", "tcourt5", 2.0f,listOf(review("u1","rev5foru1")), s[4]),
+
+
+
+        val rev = listOf<review>(
+
+            review("u1",
+                "At the Sport Court's facility, the staff exhibits professionalism and friendliness. Their knowledge, approachability, and willingness to assist create a welcoming atmosphere for visitors, making the overall experience enjoyable.",
+                5),
 
         )
-//        for ((i,c) in courts.withIndex()){
-//            db1.collection("court").document("court${i+1}").set(c)
-//        }
+
+
+        // court
+        val courts = listOf<court>(
+            court("Via Po 25, Torino, Italy", 4.0f, listOf(
+                review("u1",
+                    "The Sport Court's facility is a fun and competitive hub for sports enthusiasts. With its well-maintained courts, modern equipment, and opportunities for organized leagues and tournaments, it offers an exhilarating experience for those seeking both recreation and healthy competition.",
+                    4),
+                review("u2",
+                    "The Sport Court's facility is conveniently located and fosters a sense of community. With ample parking, accessible entrances, and organized sports events, it brings people together and encourages a healthy and active lifestyle.",
+                    4),),
+                "running"),
+            court("Corso Re Umberto 31, Turin, Italy", 4.0f, listOf(
+                review("u1",
+                    "At the Sport Court's facility, the staff exhibits professionalism and friendliness. Their knowledge, approachability, and willingness to assist create a welcoming atmosphere for visitors, making the overall experience enjoyable.",
+                    5)),
+                "basketball"),
+            court("Via Roma 123, Turin, Italy", 4.0f, listOf(
+                review("u3",
+                    "the facility stands as a testament to its commitment to providing an exceptional environment for athletes and fitness enthusiasts.",
+                    4)),
+                "swimming"),
+            court("Corso Vittorio Emanuele II 45, Turin, Italy", 0.0f, listOf(),
+                "pingpong"),
+            court("Via Giuseppe Garibaldi 5, Turin, Italy", 5.0f, listOf(
+                review("u1",
+                    "The Sport Court's facility is a fun and competitive hub for sports enthusiasts. With its well-maintained courts, modern equipment, and opportunities for organized leagues and tournaments, it offers an exhilarating experience for those seeking both recreation and healthy competition.",
+                    5)
+            ),
+                "tennis"),
+
+
+
+        )
+
+//        db1.collection("court").document("court1").set(courts[0])
+//        db1.collection("court").document("court2").set(courts[1])
+        for ((i,c) in courts.withIndex()){
+            db1.collection("court").document("court${i+1}").set(c)
+        }
         // court time
         val dates = listOf<String>("2023-05-27", "2023-05-28", "2023-05-29", "2023-05-30", "2023-05-31",
             "2023-06-01", "2023-06-02", "2023-06-03", "2023-06-04", "2023-06-05",
@@ -187,15 +222,15 @@ class MainActivity : AppCompatActivity() {
             "2023-06-26", "2023-06-27", "2023-06-28", "2023-06-29", "2023-06-30",
         )
 
-//        val timeslot = hashMapOf<String, Boolean>()
-//
-//        for (i in 9..19) {
-//            timeslot[i.toString()] = true // true 表示free
-//        }
-//        for (date in dates){
-//            for (i in 1..5)
-//                db1.collection("court").document("court${i}").collection("courtTime").document(date).set(timeslot)
-//        }
+        val timeslot = hashMapOf<String, Boolean>()
+
+        for (i in 9..19) {
+            timeslot[i.toString()] = true // true 表示free
+        }
+        for (date in dates){
+            for (i in 1..5)
+                db1.collection("court").document("court${i}").collection("courtTime").document(date).set(timeslot)
+        }
     }
     fun BottomNavigationView.uncheckAllItems() {
         menu.setGroupCheckable(0, true, false)

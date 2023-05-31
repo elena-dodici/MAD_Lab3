@@ -27,6 +27,7 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToo
     private lateinit var binding: FragmentCourtDetailBinding
     private val sharedvm: CourtViewModel by activityViewModels()
     private val mainvm: MainViewModel by activityViewModels()
+    private var Level:Int = 0
     override val toolbar: Toolbar?
         get() = binding.activityToolbar
 
@@ -44,6 +45,9 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
          binding = FragmentCourtDetailBinding.bind(view)
+
+        binding.ratingBar.stepSize = 1f
+        binding.ratingBar.rating = Level.toFloat()
 
         sharedvm.courtName.observe(viewLifecycleOwner){
                 newCN ->
@@ -64,19 +68,20 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToo
         }
         binding.delBtn.setOnClickListener {
             //if delete bottom show, it must means has review
-            sharedvm.deleteCourtRev(this.requireActivity().application)
+           sharedvm.deleteCourtRev()
             mainvm.setShowNav(true)
             findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
             Toast.makeText(context, "Delete successfully", Toast.LENGTH_LONG).show()
         }
         binding.saveBtn.setOnClickListener {
-
-            sharedvm.addOrUpdateCourtRev(sharedvm.courtRate.value!!, sharedvm.selectedCourtRev.value!!.review, this.requireActivity().application,mainvm.user)
+            println("this is save test for trating bar : ${binding.ratingBar.rating.toInt()}")
+            //sharedvm.addOrUpdateCourtRev(sharedvm.courtRate.value!!, sharedvm.selectedCourtRev.value!!.review, this.requireActivity().application,mainvm.user)
             mainvm.setShowNav(true)
             findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
 
             Toast.makeText(context, "Update successfully", Toast.LENGTH_LONG).show()
         }
+
 
         val rateSpinner = binding.rateSpinner
         val rateList = listOf<Int>(0,1,2,3,4,5)

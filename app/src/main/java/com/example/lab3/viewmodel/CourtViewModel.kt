@@ -52,14 +52,14 @@ class CourtViewModel : ViewModel( ) {
 
 
     //selected Reservation
-    private var _selectedCourtRev = MutableLiveData<CourtReview>()
-    val selectedCourtRev: LiveData<CourtReview> = _selectedCourtRev
+    private var _selectedCourtInfo = MutableLiveData<CourtInfo>()
+    val selectedCourtInfo: LiveData<CourtInfo> = _selectedCourtInfo
 
     private var _showCourtInfo = MutableLiveData<CourtReview>()
     val showCourtInfo: LiveData<CourtReview> = _showCourtInfo
 
-    private var _courtId = MutableLiveData<Int>()
-    val courtId : LiveData<Int> = _courtId
+//    private var _courtId = MutableLiveData<Int>()
+//    val courtId : LiveData<Int> = _courtId
 
     private var _courtRate = MutableLiveData<Int>()
     val courtRate : LiveData<Int> = _courtRate
@@ -77,7 +77,8 @@ class CourtViewModel : ViewModel( ) {
     private var _hasRev = MutableLiveData<Boolean>()
     val hasRev : LiveData<Boolean> = _hasRev
 
-    fun setSelectedCourtById(courtId:Int, avg_Rate: Float, application:Application,user:Int){
+    fun setSelectedCourtById(courtName:String, avg_Rate: Float, user:Int){
+
         //courtInfo contains all courtid courtname and its avg_score
 //        for (r in _courtInfo.value!! ){
 //            if (r.courtId == courtId){
@@ -107,9 +108,13 @@ class CourtViewModel : ViewModel( ) {
     fun setRate(newRate: Int){
         _courtRate.value = newRate
     }
-    fun deleteCourtRev( application: Application){
-         //println(_selectedCourtRev.value)
-        AppDatabase.getDatabase(application).courtReviewDao().deleteCourtReview( _selectedCourtRev.value!!)
+    fun deleteCourtRev( ){
+         println(selectedCourtInfo.value)
+        db1.collection("court").document()
+            .delete()
+            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
+            .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
+        //AppDatabase.getDatabase(application).courtReviewDao().deleteCourtReview( _selectedCourtRev.value!!)
     }
 
     fun addOrUpdateCourtRev(newRate:Int, newReview:String, application: Application,user: Int){
