@@ -3,8 +3,6 @@ package com.example.lab3
 import android.animation.ValueAnimator
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,17 +13,15 @@ import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.core.os.bundleOf
 import androidx.core.view.children
-import androidx.core.view.get
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.lab3.database.entity.CourtTime
 import com.example.lab3.database.entity.FreeCourt
+import com.example.lab3.database.entity.MyReservation
 import com.example.lab3.databinding.CalendarDayLayoutBinding
 import com.example.lab3.databinding.FragmentCalendarViewBinding
 
@@ -51,7 +47,6 @@ import java.sql.Time
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
-import java.util.UUID
 
 
 class CourtAdapter(): RecyclerView.Adapter<CourtAdapter.CourtViewHolder>(){
@@ -98,6 +93,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     private val reservations = mutableMapOf<LocalDate, List<Event>>() // 已有的预定
     private val freeCourts = mutableMapOf<LocalDate, List<FreeCourt>>() // 空闲的时间段，要维护来显示到recyclerview中的 通过传入adapter中来显示的屏幕上
     private val allReserved = mutableMapOf<LocalDate,Boolean>() // 某一天是否完全被预定了
+    private val allDateAvailable = mutableListOf<LocalDate>() // 所有可用日期
     val adapterC = CourtAdapter()
 
     override fun onCreateView(
@@ -110,21 +106,25 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         allReserved.clear()
         freeCourts.clear()
         allStartTime.clear()
-        vm.getAllCourtTime(this.requireActivity().application,selectedSport)
-        vm.F.observe(viewLifecycleOwner){ // 为啥被调用2次？？？
-            allStartTime.clear()
-            for (slot in it){
-                allStartTime.add(slot.startTime)
+        allDateAvailable.clear()
+        vm.getAllDate(this.requireActivity().application)
+        vm.allDate.observe(viewLifecycleOwner){
+            it.forEach{date->
+                if (!allDateAvailable.contains(date)){
+                    allDateAvailable.add(date)
+                }
             }
         }
-        vm.getResBySport(this.requireActivity().application,selectedSport) // 当前运动所有预定信息
-        vm.reservations.observe(viewLifecycleOwner){// 为啥被调用2次？？？
+        vm.getDateFull(this.requireActivity().application,selectedSport,allDateAvailable) // 当前运动所有预定信息
+        vm.FullDate.observe(viewLifecycleOwner){// 为啥被调用2次？？？
             // 所有的预约信息
             for (res in it){
 //                reservations[res.date] = reservations[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
-                allReserved[res.date] = (allStartTime.size == reservations[res.date]!!.size) // 若所有时间段数== 当前运动这一天的预定数，说明这一天被预定满了
+                allReserved[res.key] = res.value // 若所有时间段数== 当前运动这一天的预定数，说明这一天被预定满了
+
             }
         }
+
         // 不需要知道每天的free，只要知道哪天没有free即可（用于标记），剩下的点击那一天的时候再获取free slot显示出来即可
         // 一开始就可以知道哪天已经预约满了(那一天就没有free
         // 对于每一个reservation里有的日期，我可以知道这一天的free slot
@@ -361,10 +361,14 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         textView.text = date.dayOfMonth.toString()
         dotView.makeInVisible()
         if (isSelectable){
+//            print("date is " + date)
+//            println(!allDateAvailable.contains(date))
+            //allDateAvailable中包含了数据库中的所有日期，如果数据库不存在对应日期则证明不可选择对应日期
+            if (allDateAvailable.contains(date)==false){
+                textView.setBackgroundResource(R.drawable.forbid_bg)
+            }
 
-
-//            layout.isClickable = allReserved[date] != true
-            if (allReserved[date] == true){
+            if (allReserved[date] == false){
 //                layout.setBackgroundColor(Color.LTGRAY)
                 textView.setBackgroundResource(R.drawable.forbid_bg)
 
@@ -437,7 +441,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     }
     private fun dateClicked(date: LocalDate) {
         if(selectedDate != date){
-            if(allReserved[date] == true){
+            if(allReserved[date] == false){
 //                println("这一天都被预定了！")
                 Toast.makeText(context, "All reserved", Toast.LENGTH_LONG).show()
             }else{
@@ -504,7 +508,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     private fun updateCalendar(sport:String) { // 获取新的运动的预定信息-> 调用日历的bind
 //        vm.getAllCourtTime(this.requireActivity().application,sport) // 根据sport获取相关的court和所有的时间段 保存到F中
         vm.getResBySport(this.requireActivity().application,sport)   // 根据sport获取预定信息
-        vm.reservations.observe(viewLifecycleOwner){
+        vm.FullDate.observe(viewLifecycleOwner){
             val oldDate=reservations.keys
             oldDate.forEach(){
                 monthCalendarView.notifyDateChanged(it) // 调用monthCalendarView的bind
@@ -515,9 +519,9 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
             allReserved.clear()
             for (res in it){
 //                reservations[res.date] = reservations[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
-                monthCalendarView.notifyDateChanged(res.date)
-                weekCalendarView.notifyDateChanged(res.date)
-                allReserved[res.date] = (allStartTime.size == reservations[res.date]!!.size) // 若所有时间段数== 当前运动这一天的预定数，说明这一天被预定满了
+                monthCalendarView.notifyDateChanged(res.key)
+                weekCalendarView.notifyDateChanged(res.key)
+                allReserved[res.key] = res.value // 若所有时间段数== 当前运动这一天的预定数，说明这一天被预定满了
 
             }
 
@@ -528,10 +532,28 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     private fun getFreeSlot(sport: String, date: LocalDate?){
 //        freeCourts.clear() // 清除旧的
 //        freeCourts[date!!] = listOf() // 清空这一天原本的free slot
-        vm.getFreeSlotBySportAndDate(sport, date!!,this.requireActivity().application)
-        vm.freeSlots.observe(this){
-            this.freeCourts[date] = it
+        vm.getFreeSlotByDateAndSport(this.requireActivity().application,sport, date!!)
+
+        val fc = mutableListOf<FreeCourt>()
+        vm.FreeSlotsOneDay.observe(this){
+            fc.clear()
+            it.forEach{m1->
+                m1.value.forEach{m2->
+                    if(m2.value==true){
+                        val startTime = m2.key.toInt()
+                        val endTime = m2.key.toInt()+1
+                        fc.add(
+                            FreeCourt(m1.key,"",sport,Time.valueOf("${startTime}:00:00"),Time.valueOf("${endTime}:00:00"),0,0)
+                        )
+                    }
+                }
+            }
+            this.freeCourts[date]=fc
+
+            updateAdapterForDate(date)
         }
+
+
     }
 
 
