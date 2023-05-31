@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
 
 //       initDatabase(db) // add some initial data
-//        initFirebase()
+        initFirebase()
 
 
 
@@ -100,13 +100,30 @@ class MainActivity : AppCompatActivity() {
         )
 
         val reservations= listOf<reservation>(
-            reservation("rcourt1", courtTime(Timestamp(Date(2023 - 1900, 0, 5, 9, 0)), Timestamp(Date(2023 - 1900, 0, 5, 10, 0))),
-                            "d1 for u",2,"review1",0,"running"),
-            reservation("bbcourt2", courtTime(Timestamp(Date(2023 - 1900, 0, 6, 10, 0)), Timestamp(Date(2023 - 1900, 0, 6, 11, 0))),
-                            "d2 for u",3,"review2",0, "basketball"),
-            reservation("swcourt3", courtTime(Timestamp(Date(2023 - 1900, 0, 7, 10, 0)), Timestamp(Date(2023 - 1900, 0, 7, 11, 0))),
-                           "d3 for u",4,"review3",0, "swimming"),
-        )
+            // u1
+            reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 5, 1, 9, 0)), Timestamp(Date(2023 - 1900, 5, 1, 10, 0))),
+                            "This is the description for user1's reservation of his running ",4,"The Sport Court's facility is a fun and competitive hub for sports enthusiasts. With its well-maintained courts, modern equipment, and opportunities for organized leagues and tournaments, it offers an exhilarating experience for those seeking both recreation and healthy competition.",0,"running"),
+            reservation("court2", courtTime(Timestamp(Date(2023 - 1900, 5, 3, 10, 0)), Timestamp(Date(2023 - 1900, 5, 3, 11, 0))),
+                            "No specific requirement",5,"At the Sport Court's facility, the staff exhibits professionalism and friendliness. Their knowledge, approachability, and willingness to assist create a welcoming atmosphere for visitors, making the overall experience enjoyable.",0, "basketball"),
+            reservation("court3", courtTime(Timestamp(Date(2023 - 1900, 5, 22, 16, 0)), Timestamp(Date(2023 - 1900, 5, 22, 17, 0))),
+                "No specific requirement",-1,"",0, "swimming"),
+            //u2
+            reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 5, 18, 15, 0)), Timestamp(Date(2023 - 1900, 5, 18, 16, 0))),
+                "d1 for u2",-1,"",0, "running"),
+            reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 5, 19, 11, 0)), Timestamp(Date(2023 - 1900, 5, 19, 12, 0))),
+                "d2 for u2",-1,"",0, "basketball"),
+            reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 5, 1, 10, 0)), Timestamp(Date(2023 - 1900, 5, 1, 11, 0))),
+                "Please leave some clean towels",4,"The Sport Court's facility is conveniently located and fosters a sense of community. With ample parking, accessible entrances, and organized sports events, it brings people together and encourages a healthy and active lifestyle.",0, "swimming"),
+
+            //u3
+            reservation("court5", courtTime(Timestamp(Date(2023 - 1900, 5, 18, 15, 0)), Timestamp(Date(2023 - 1900, 5, 18, 16, 0))),
+                "We need some tennis balls",5," The courts are immaculately maintained, with clean surfaces and properly marked boundaries, ensuring a safe and enjoyable playing experience.",0, "tennis"),
+            reservation("court4", courtTime(Timestamp(Date(2023 - 1900, 5, 14, 10, 0)), Timestamp(Date(2023 - 1900, 5, 14, 11, 0))),
+                "description for user3",-1,"",0, "pingpong"),
+            reservation("court3", courtTime(Timestamp(Date(2023 - 1900, 5, 1, 14, 0)), Timestamp(Date(2023 - 1900, 5, 1, 15, 0))),
+                "No specific requirement",4," the facility stands as a testament to its commitment to providing an exceptional environment for athletes and fitness enthusiasts.",0, "swimming"),
+
+            )
 //        for (i in 1..3){
 //            for ((id,r) in reservations.withIndex()){
 //                db1.collection("users").document("u${i}").collection("reservation").document("res${id}").set(r)
@@ -118,6 +135,18 @@ class MainActivity : AppCompatActivity() {
 //                    }
 //            }
 //        }
+        db1.collection("users").document("u1").collection("reservation").document("res0").set(reservations[0])
+        db1.collection("users").document("u1").collection("reservation").document("res1").set(reservations[1])
+        db1.collection("users").document("u1").collection("reservation").document("res2").set(reservations[2])
+
+        db1.collection("users").document("u2").collection("reservation").document("res0").set(reservations[3])
+        db1.collection("users").document("u2").collection("reservation").document("res1").set(reservations[4])
+        db1.collection("users").document("u2").collection("reservation").document("res2").set(reservations[5])
+
+        db1.collection("users").document("u3").collection("reservation").document("res0").set(reservations[6])
+        db1.collection("users").document("u3").collection("reservation").document("res1").set(reservations[7])
+        db1.collection("users").document("u3").collection("reservation").document("res2").set(reservations[8])
+
         val s = listOf("running", "basketball", "swimming","pingpong","tennis")
 
 
@@ -145,9 +174,9 @@ class MainActivity : AppCompatActivity() {
             court("via po 5", "tcourt5", 2.0f,listOf(review("u1","rev5foru1")), s[4]),
 
         )
-        for ((i,c) in courts.withIndex()){
-            db1.collection("court").document("court${i+1}").set(c)
-        }
+//        for ((i,c) in courts.withIndex()){
+//            db1.collection("court").document("court${i+1}").set(c)
+//        }
         // court time
         val dates = listOf<String>("2023-05-27", "2023-05-28", "2023-05-29", "2023-05-30", "2023-05-31",
             "2023-06-01", "2023-06-02", "2023-06-03", "2023-06-04", "2023-06-05",
@@ -158,15 +187,15 @@ class MainActivity : AppCompatActivity() {
             "2023-06-26", "2023-06-27", "2023-06-28", "2023-06-29", "2023-06-30",
         )
 
-        val timeslot = hashMapOf<String, Boolean>()
-
-        for (i in 9..19) {
-            timeslot[i.toString()] = true // true 表示free
-        }
-        for (date in dates){
-            for (i in 1..5)
-                db1.collection("court").document("court${i}").collection("courtTime").document(date).set(timeslot)
-        }
+//        val timeslot = hashMapOf<String, Boolean>()
+//
+//        for (i in 9..19) {
+//            timeslot[i.toString()] = true // true 表示free
+//        }
+//        for (date in dates){
+//            for (i in 1..5)
+//                db1.collection("court").document("court${i}").collection("courtTime").document(date).set(timeslot)
+//        }
     }
     fun BottomNavigationView.uncheckAllItems() {
         menu.setGroupCheckable(0, true, false)
