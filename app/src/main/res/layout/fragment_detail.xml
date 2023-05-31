@@ -83,7 +83,7 @@
 
 
             <Spinner
-                android:id="@+id/avaTime_spinner"
+                android:id="@+id/avaTime_spinner1"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="48dp"
@@ -189,6 +189,51 @@
             android:textSize="20sp" />
     </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+
+                android:text="Rating:"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:numStars="5"
+                android:rating="@{vm.selectedRes.rating}"
+                android:stepSize="1"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Review:"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/editReview"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:hint="Review"
+                android:text="@={vm.selectedRes.review}"
+                android:textSize="20sp" />
+        </LinearLayout>
 
 
     <LinearLayout

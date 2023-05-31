@@ -1,17 +1,15 @@
 package com.example.lab3
 
 import android.os.Bundle
-import android.text.format.Time
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.*
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.lab3.databinding.FragmentDetailBinding
-
-import java.time.LocalTime
+import java.time.*
 
 
 /**
@@ -24,6 +22,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
     private lateinit var binding: FragmentDetailBinding
     private val sharedvm : CalendarViewModel by activityViewModels()
     private val mainvm: MainViewModel by activityViewModels()
+//    private var Level:Int = 0
     override val toolbar: Toolbar?
         get() = binding.activityToolbar
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,10 +40,20 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
         }
         binding.saveBtn.setOnClickListener {
             //add limitation for rating and review
-            sharedvm.addOrUpdateRes(mainvm.user)
-            findNavController().navigate(R.id.action_detailFragment_to_calendar)
-            mainvm.setShowNav(true)
-            Toast.makeText(context, "Update successfully", Toast.LENGTH_LONG).show()
+
+            val resTime = LocalDateTime.of(sharedvm.selDate.value!!.year, sharedvm.selDate.value!!.monthValue, sharedvm.selDate.value!!.dayOfMonth, sharedvm.selectedRes.value!!.startTime.hours, sharedvm.selectedRes.value!!.startTime.minutes)
+
+            if (LocalDateTime.now().isBefore(resTime)  ){
+                Toast.makeText(context, "You cannot write your reservation before the date", Toast.LENGTH_LONG).show()
+            }else{
+                sharedvm.addOrUpdateRes(mainvm.user,binding.ratingBar.rating.toInt())
+                findNavController().navigate(R.id.action_detailFragment_to_calendar)
+                mainvm.setShowNav(true)
+                Toast.makeText(context, "Update successfully", Toast.LENGTH_LONG).show()
+            }
+
+
+
 
 
         }
@@ -58,41 +67,15 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
         sharedvm.selDate.observe(viewLifecycleOwner){
             newSelDate ->
             binding.showDate.text = newSelDate.toString()
-           //sharedvm.getFreeSlotByCourtName(sharedvm.selCourtName.value!!)
+            sharedvm.getFreeSlotByCourtName(sharedvm.selCourtName.value!!)
 
         }
 
-//        val startTSpinner = binding.startTimeSpinner
-//        sharedvm.freeStartTimes.observe(viewLifecycleOwner) { newST ->
-//            newST.sorted()
-//            val arrayAdapterST =
-//                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, newST)
-//            startTSpinner.adapter = arrayAdapterST
-//
-//            val startTimeDefault =
-//                arrayAdapterST.getPosition(sharedvm.selStartTime!!.value)
-//            startTSpinner.setSelection(startTimeDefault)
-//
-//            startTSpinner.onItemSelectedListener = object : OnItemSelectedListener {
-//                override fun onItemSelected(
-//                    p0: AdapterView<*>?,
-//                    p1: View?,
-//                    position: Int,
-//                    p3: Long
-//                ) {
-//                    sharedvm.setStartTime(newST[position] )
-//                }
-//
-//                override fun onNothingSelected(p0: AdapterView<*>?) {
-//                }
-//
-//            }
-//        }
 
-        val avaTSpinner = binding.avaTimeSpinner
+        val avaTSpinner = binding.avaTimeSpinner1
         sharedvm.freeStartTimes.observe(viewLifecycleOwner) { newST ->
-            var isFirstSelection = true
-            newST.sorted()
+
+
             var showList = mutableListOf<String>()
             for (i in newST){
                 var time =LocalTime.of(i.hours, i.minutes, i.seconds)
@@ -111,10 +94,11 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
             var newTime  = time.plusHours(1)
             val showtime = java.sql.Time(newTime.hour, newTime.minute, newTime.second)
 
-            var default = "$sT - $showtime "
-            println("default $sT")
+            var default = "$sT - $showtime"
+
             val startTimeDefault =
                 arrayAdapterST.getPosition(default)
+
             avaTSpinner.setSelection(startTimeDefault)
 
             avaTSpinner.onItemSelectedListener = object : OnItemSelectedListener {
@@ -124,11 +108,11 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
                     position: Int,
                     p3: Long
                 ) {
-                   if (isFirstSelection) {
-                        isFirstSelection = false
-                        return
-                    }
-                    //sharedvm.setStartTime(newST[position] )
+                    //transform from string into time
+                    var sTstring = showList[position].split(" ")[0]
+                    var putST = java.sql.Time(sTstring.split(":")[0].toInt(),0,0)
+                    sharedvm.setStartTime(putST )
+
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -142,7 +126,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
         val courtNameSpinner = binding.courtNameSpinner
         sharedvm.getCourtNames()
         sharedvm.courtNames.observe(viewLifecycleOwner) { newCN ->
-            var isFirstSelection = true
+
             val courtNameList = newCN
             val arrayAdapterCourtName =
                 ArrayAdapter(
@@ -161,17 +145,14 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
                     position: Int,
                     p3: Long
                 ) {
-//                    if (isFirstSelection) {
-//                        isFirstSelection = false
-//                        return
-//                    }
+//
                     var newCourtName = courtNameList[position]
                     sharedvm.setCourtName(newCourtName)
-                    println("newcournamechange: ${sharedvm.selCourtName.value}")
+
                     //val sport = courtSportIdMap.entries.find { it.value == newCourtId }?.key
                     //sharedvm.setSport(sport!!)
                     sharedvm.getFreeSlotByCourtName(newCourtName)
-                    //sharedvm.getAllFreeSLotByCourtIdAndDate(newCourtId, sharedvm.selDate.value!!,0, application = activity!!.application )
+
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {

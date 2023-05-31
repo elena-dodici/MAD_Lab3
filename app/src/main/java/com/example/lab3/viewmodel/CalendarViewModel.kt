@@ -125,7 +125,9 @@ class  CalendarViewModel() : ViewModel( ) {
                                 Time(startTime.hour, startTime.minute, startTime.second),
                                 Time(endTime.hour, endTime.minute, endTime.second),
                                 startTime.toLocalDate(),
-                                res["description"].toString()
+                                res["description"].toString(),
+                                res["review"].toString(),
+                                res["rating"].toString().toInt()
                             )
 
                         )
@@ -163,17 +165,18 @@ class  CalendarViewModel() : ViewModel( ) {
     val freeEndTimeList = mutableListOf<Time>()
 
     fun setSelectedResByCourtName(resId: String) {
-        println("resId is :$resId")
+
+
         for (r in _reservations.value!!) {
             if (r.resId == resId) {
-                println("?????????????????????????")
+
                 _selectedRes.value = r
                 _selDate.value = r.date
 //                _resIdvm.value = resId
 //                _selCourtId.value = r.courtId
                 _selStartTime.value = r.startTime
-                println("test is ${_selectedRes.value!!.startTime}")
 
+                _selCourtName.value = r.name
                 _selDes.value = r.description
                 _selSport.value = r.sport
 
@@ -192,9 +195,9 @@ class  CalendarViewModel() : ViewModel( ) {
                             }
 
                             freeStartTimeList.add(_selectedRes.value!!.startTime)
-                            println(" freeStartTimeList is : ${freeStartTimeList}")
+                            //println(" freeStartTimeList is : ${freeStartTimeList}")
                             _freeStartTimes.value = freeStartTimeList
-
+                            println("bug ${selectedRes.value!!.rating}")
                         } else {
                             Log.d(TAG, "No such document")
                         }
@@ -276,12 +279,12 @@ class  CalendarViewModel() : ViewModel( ) {
                             }
 
                         }
-                        freeStartTimeList.add(_selectedRes.value!!.startTime)
+                        if (_selectedRes.value!!.name == selCourtName.value && selDate.value == _selectedRes.value!!.date){
+                            freeStartTimeList.add(_selectedRes.value!!.startTime)
+                        }
 
-                        println(" in gerfreeSLot starttime is : ${_selectedRes.value!!.startTime}")
                         _freeStartTimes.value = freeStartTimeList
-                       // freeEndTimeList.add(_selectedRes.value!!.endTime)
-                       // _freeEndTimes.value  = freeEndTimeList
+
                     } else {
                         Log.d(TAG, "No such document")
                     }
@@ -312,43 +315,42 @@ class  CalendarViewModel() : ViewModel( ) {
             _freeStartTimes.value = freStartTimeList
         }
 
-        fun addOrUpdateRes(userId: Int) {
-            //find courtTImdId
-//        val newCourtTime =  AppDatabase.getDatabase(application).courtTimeDao().getCourtTimeId(_selStartTime.value!!,_selEndTime.value!!,selCourtId.value!!)
-//        if (newCourtTime != null) {
-//            _selectedRes.value!!.courtTimeId = newCourtTime.id
-//        }
-//
-//        val updateRes = Reservation(_selectedRes.value!!.courtTimeId, 1, 0,  _selDate.value!!,_selectedRes.value!!.description)
-//        updateRes.resId = _selectedRes.value!!.resId
-//        AppDatabase.getDatabase(application).reservationDao().addReservation(updateRes)
-            var startTimeDay = Timestamp(Date(2023 - 1900, 0, 5, 0, 0))
-            var endTimeDay = Timestamp(Date(2023 - 1900, 0, 5, 0, 0))
+        fun addOrUpdateRes(userId: Int,rating: Int) {
+
+
+            var startTimeDay = Timestamp(Date(selDate.value!!.year - 1900, selDate.value!!.monthValue -1, selDate.value!!.dayOfMonth, selStartTime.value!!.hours, selStartTime.value!!.minutes))
+            var endTimeDay = Timestamp(Date(selDate.value!!.year - 1900, selDate.value!!.monthValue-1, selDate.value!!.dayOfMonth, selStartTime.value!!.hours + 1, selStartTime.value!!.minutes))
+
             val newRes = hashMapOf(
-                //This need to be combine iwth the day!!!!
+
                 "ct" to mapOf(
-                    "endTime" to selStartTime,
-                    "startTime" to selStartTime
+                    "endTime" to endTimeDay,
+                    "startTime" to startTimeDay
                 ),
-                "description" to "This is a new test description",
-                "name" to "$selCourtName",
-                "rating" to -1,
-                "review" to -1,
-                "sport" to selSport,
+                "description" to selectedRes.value!!.description,
+                "name" to "${selCourtName.value}",
+                "rating" to rating,
+                "review" to selectedRes.value!!.review,
+                "sport" to selSport.value,
                 "status" to 0
 
             )
             println(newRes)
-//            db1.collection("users").document("$userId").collection("reservation").document(selectedRes.value!!.resId)
-//                .set(newRes)
-//                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
-//                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+            db1.collection("users").document("u$userId").collection("reservation").document(selectedRes.value!!.resId)
+                .set(newRes)
+                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
+                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
 
         }
 
         fun deleteRes(userid: Int, resId:String) {
-            println("userId: $userid")
-            println("resId: $resId")
+
+
+            db1.collection("users").document("u$userid").collection("reservation").document("$resId")
+                .update("status",1).addOnSuccessListener{
+                    Log.d(TAG, "delete successfully")
+                }
+
 
         }
 

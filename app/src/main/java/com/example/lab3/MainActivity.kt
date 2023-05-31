@@ -232,37 +232,37 @@ class MainActivity : AppCompatActivity() {
                 db1.collection("court").document("court${i}").collection("courtTime").document(date).set(timeslot)
         }
 
-        val t1 = hashMapOf("9" to false)
+
         db1.collection("court").document("court1").collection("courtTime").document("2023-06-01")
             .update("9",false)
 
-        val t2 = hashMapOf("10" to false)
+
         db1.collection("court").document("court1").collection("courtTime").document("2023-06-01")
             .update("10",false)
 
-        val t3 = hashMapOf("15" to false)
+
         db1.collection("court").document("court1").collection("courtTime").document("2023-06-18")
             .update("15",false)
 
-        val t4 = hashMapOf("11" to false)
+
         db1.collection("court").document("court1").collection("courtTime").document("2023-06-19")
             .update("11",false)
 
-        val t5 = hashMapOf("10" to false)
+
         db1.collection("court").document("court2").collection("courtTime").document("2023-06-03")
             .update("10",false)
 
-        val t6 = hashMapOf("16" to false)
+
         db1.collection("court").document("court3").collection("courtTime").document("2023-06-22")
             .update("16",false)
-        val t7 = hashMapOf("14" to false)
+
         db1.collection("court").document("court3").collection("courtTime").document("2023-06-01")
             .update("14",false)
-        val t8 = hashMapOf("10" to false)
+
         db1.collection("court").document("court4").collection("courtTime").document("2023-06-14")
             .update("10",false)
 
-        //val t9 = hashMapOf("15" to false)
+
         db1.collection("court").document("court5").collection("courtTime").document("2023-05-28")
             .update("15",false)
 

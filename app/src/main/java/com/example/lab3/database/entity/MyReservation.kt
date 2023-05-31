@@ -21,8 +21,8 @@ data class MyReservation(
     var date: LocalDate,//dd/mm/yyyy
     var description: String,
 
-//    var review:String,
-//    var rating:Int
+    var review:String,
+    var rating:Int
 //    var courtTimeId: Int,
 //    var courtId: Int
 
