@@ -96,12 +96,12 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     val eventsAdapter = MyAdapter{
         // 点击下面recyclerView调用的事件
 
-
-        gotoDetailFrag(it.resId) //
+        print("!!!!!!!!!!!!!!!!1")
+        //gotoDetailFrag(it.resId) //
     }
 
     private fun gotoDetailFrag(resId : String){
-        sharedvm.setSelectedResByCourtName(resId)
+        //sharedvm.setSelectedResByCourtName(resId)
         vmMain.setShowNav(false)
         findNavController().navigate(R.id.action_calendar_to_detailFragment)
     }

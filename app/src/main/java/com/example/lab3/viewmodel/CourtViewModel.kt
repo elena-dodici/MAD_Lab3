@@ -1,6 +1,7 @@
 package com.example.lab3
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,7 @@ import java.time.ZoneId
 class CourtViewModel : ViewModel( ) {
     lateinit var db: AppDatabase
     val db1 = Firebase.firestore
+    private val TAG = "CourtVM"
 
 //    private var _courtreview = MutableLiveData<List<CourtReview>>().also { it.value = listOf() }
 //    val courtreview:LiveData<List<CourtReview>> = _courtreview
@@ -117,13 +119,13 @@ class CourtViewModel : ViewModel( ) {
         //AppDatabase.getDatabase(application).courtReviewDao().deleteCourtReview( _selectedCourtRev.value!!)
     }
 
-    fun addOrUpdateCourtRev(newRate:Int, newReview:String, application: Application,user: Int){
-
-        var newCR = CourtReview(user,_courtId.value!!,newRate,newReview)
-        println(newCR)
-        newCR.crId =  _selectedCourtRev.value!!.crId
-        println( newCR.crId)
-       AppDatabase.getDatabase(application).courtReviewDao().addCourtReview(newCR)
-    }
+//    fun addOrUpdateCourtRev(newRate:Int, newReview:String, application: Application,user: Int){
+//
+//        var newCR = CourtReview(user,_courtId.value!!,newRate,newReview)
+//        println(newCR)
+//        newCR.crId =  _selectedCourtRev.value!!.crId
+//        println( newCR.crId)
+//       AppDatabase.getDatabase(application).courtReviewDao().addCourtReview(newCR)
+//    }
 
 }

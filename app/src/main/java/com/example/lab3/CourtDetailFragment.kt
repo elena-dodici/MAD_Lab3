@@ -83,30 +83,30 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToo
         }
 
 
-        val rateSpinner = binding.rateSpinner
-        val rateList = listOf<Int>(0,1,2,3,4,5)
-        val arrayAdapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, rateList)
-        rateSpinner.adapter = arrayAdapter
-        val rateDefault =
-            arrayAdapter.getPosition(sharedvm.selectedCourtRev.value!!.rating)
-        rateSpinner.setSelection(rateDefault)
-
-        rateSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                p0: AdapterView<*>?,
-                p1: View?,
-                position: Int,
-                p3: Long
-            ) {
-                println(rateList[position])
-                sharedvm.setRate(rateList[position])
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-
-        }
+//        val rateSpinner = binding.rateSpinner
+//        val rateList = listOf<Int>(0,1,2,3,4,5)
+//        val arrayAdapter =
+//            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, rateList)
+//        rateSpinner.adapter = arrayAdapter
+//        val rateDefault =
+//            arrayAdapter.getPosition(sharedvm.selectedCourtRev.value!!.rating)
+//        rateSpinner.setSelection(rateDefault)
+//
+//        rateSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(
+//                p0: AdapterView<*>?,
+//                p1: View?,
+//                position: Int,
+//                p3: Long
+//            ) {
+//                println(rateList[position])
+//                sharedvm.setRate(rateList[position])
+//            }
+//
+//            override fun onNothingSelected(p0: AdapterView<*>?) {
+//            }
+//
+//        }
 
     }
 

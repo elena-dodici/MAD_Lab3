@@ -91,6 +91,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
 
         val avaTSpinner = binding.avaTimeSpinner
         sharedvm.freeStartTimes.observe(viewLifecycleOwner) { newST ->
+            var isFirstSelection = true
             newST.sorted()
             var showList = mutableListOf<String>()
             for (i in newST){
@@ -109,9 +110,6 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
             var time =LocalTime.of(sT.hours, sT.minutes, 0)
             var newTime  = time.plusHours(1)
             val showtime = java.sql.Time(newTime.hour, newTime.minute, newTime.second)
-//            showtime.hour = newTime.hour
-//            showtime.minute = newTime.minute
-//            showtime.second = newTime.second
 
             var default = "$sT - $showtime "
             println("default $sT")
@@ -126,7 +124,11 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
                     position: Int,
                     p3: Long
                 ) {
-                    sharedvm.setStartTime(newST[position] )
+                   if (isFirstSelection) {
+                        isFirstSelection = false
+                        return
+                    }
+                    //sharedvm.setStartTime(newST[position] )
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -135,34 +137,6 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
             }
         }
 
-
-
-//        val endTSpinner = binding.endTimeSpinner
-//        sharedvm.freeEndTimes.observe(viewLifecycleOwner) { newET ->
-//            val arrayAdapterET =
-//                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, newET.sorted())
-//            endTSpinner.adapter = arrayAdapterET
-//
-//
-//            val endTimeDefault =
-//                arrayAdapterET.getPosition(sharedvm.selEndTime!!.value)
-//            endTSpinner.setSelection(endTimeDefault)
-//
-//            endTSpinner.onItemSelectedListener = object : OnItemSelectedListener {
-//                override fun onItemSelected(
-//                    p0: AdapterView<*>?,
-//                    p1: View?,
-//                    position: Int,
-//                    p3: Long
-//                ) {
-//
-//                    sharedvm.setEndTime(newET[position] )
-//                }
-//                override fun onNothingSelected(p0: AdapterView<*>?) {
-//                }
-//
-//            }
-//        }
 
 
         val courtNameSpinner = binding.courtNameSpinner

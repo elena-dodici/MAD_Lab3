@@ -45,14 +45,14 @@ class  CalendarViewModel() : ViewModel( ) {
 
     private var _selStartTime = MutableLiveData<Time>()
     val selStartTime: LiveData<Time> = _selStartTime
-    private var _selEndTime = MutableLiveData<Time>()
-    val selEndTime: LiveData<Time> = _selEndTime
+//    private var _selEndTime = MutableLiveData<Time>()
+//    val selEndTime: LiveData<Time> = _selEndTime
 
     private var _selDes = MutableLiveData<String>()
     val selDes: LiveData<String> = _selDes
 
-    private var _freeEndTimes = MutableLiveData<List<Time>>().also { it.value = listOf() }
-    val freeEndTimes: LiveData<List<Time>> = _freeEndTimes
+//    private var _freeEndTimes = MutableLiveData<List<Time>>().also { it.value = listOf() }
+//    val freeEndTimes: LiveData<List<Time>> = _freeEndTimes
     private var _freeStartTimes = MutableLiveData<List<Time>>().also { it.value = listOf() }
     val freeStartTimes: LiveData<List<Time>> = _freeStartTimes
 
@@ -106,7 +106,7 @@ class  CalendarViewModel() : ViewModel( ) {
                     // 将秒数值转换为 Timestamp 对象
 //                    val starttimestamp = seconds?.let { Timestamp(it, 0) }
 
-                    val zone = ZoneId.of("UTC+1")
+                    val zone = ZoneId.of("UTC+2")
 //                    val zone = ZoneId.systemDefault()
                     val startTime = Instant.ofEpochSecond(secondsStart!!).atZone(zone)
 
@@ -163,15 +163,17 @@ class  CalendarViewModel() : ViewModel( ) {
     val freeEndTimeList = mutableListOf<Time>()
 
     fun setSelectedResByCourtName(resId: String) {
+        println("resId is :$resId")
         for (r in _reservations.value!!) {
             if (r.resId == resId) {
-
+                println("?????????????????????????")
                 _selectedRes.value = r
                 _selDate.value = r.date
 //                _resIdvm.value = resId
 //                _selCourtId.value = r.courtId
                 _selStartTime.value = r.startTime
-                _selEndTime.value = r.endTime
+                println("test is ${_selectedRes.value!!.startTime}")
+
                 _selDes.value = r.description
                 _selSport.value = r.sport
 
@@ -192,8 +194,7 @@ class  CalendarViewModel() : ViewModel( ) {
                             freeStartTimeList.add(_selectedRes.value!!.startTime)
                             println(" freeStartTimeList is : ${freeStartTimeList}")
                             _freeStartTimes.value = freeStartTimeList
-                            freeEndTimeList.add(_selectedRes.value!!.endTime)
-                            _freeEndTimes.value  = freeEndTimeList
+
                         } else {
                             Log.d(TAG, "No such document")
                         }
@@ -226,9 +227,7 @@ class  CalendarViewModel() : ViewModel( ) {
             _selStartTime.value = newST
         }
 
-        fun setEndTime(newET: Time) {
-            _selEndTime.value = newET
-        }
+
 
         fun setCourtName(newCourtName: String) {
             _selCourtName.value = newCourtName
@@ -277,9 +276,9 @@ class  CalendarViewModel() : ViewModel( ) {
                             }
 
                         }
-                        // println(" freeStartTimeList is : ${freeStartTimeList}")
                         freeStartTimeList.add(_selectedRes.value!!.startTime)
-                        println(" in gerfreeSLot starttimeList is : $freeStartTimeList")
+
+                        println(" in gerfreeSLot starttime is : ${_selectedRes.value!!.startTime}")
                         _freeStartTimes.value = freeStartTimeList
                        // freeEndTimeList.add(_selectedRes.value!!.endTime)
                        // _freeEndTimes.value  = freeEndTimeList
@@ -306,10 +305,10 @@ class  CalendarViewModel() : ViewModel( ) {
                 freeEndTimeList.add(i.endTime)
                 freStartTimeList.add(i.startTime)
             }
-            if (_selectedRes.value!!.startTime == selDate) freStartTimeList.add(_selectedRes.value!!.startTime)
-            if (_selectedRes.value!!.endTime == selDate) freeEndTimeList.add(_selectedRes.value!!.endTime)
+//            if (_selectedRes.value!!.startTime == selDate) freStartTimeList.add(_selectedRes.value!!.startTime)
+//            if (_selectedRes.value!!.endTime == selDate) freeEndTimeList.add(_selectedRes.value!!.endTime)
 
-            _freeEndTimes.value = freeEndTimeList
+
             _freeStartTimes.value = freStartTimeList
         }
 
@@ -329,7 +328,7 @@ class  CalendarViewModel() : ViewModel( ) {
                 //This need to be combine iwth the day!!!!
                 "ct" to mapOf(
                     "endTime" to selStartTime,
-                    "startTime" to selEndTime
+                    "startTime" to selStartTime
                 ),
                 "description" to "This is a new test description",
                 "name" to "$selCourtName",

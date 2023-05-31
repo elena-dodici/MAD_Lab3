@@ -112,7 +112,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:hint="Type or update your review:"
-                    android:text="@={vm.selectedCourtRev.review}" />
+                    android:text="xxx" />
 
 
             </com.google.android.material.textfield.TextInputLayout>
