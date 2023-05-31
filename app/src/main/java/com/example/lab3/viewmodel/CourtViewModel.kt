@@ -32,7 +32,10 @@ class CourtViewModel : ViewModel( ) {
         db1.collection("court").get()
             .addOnSuccessListener { result ->
                 val dataList = result.map { document ->
-                    document.data
+                    val courtName = mapOf(
+                        "name" to document.id,
+                    )
+                    courtName + document.data
                 }
                 dataList.forEach{res-> // 遍历每一个reservation
 //                    println(res)

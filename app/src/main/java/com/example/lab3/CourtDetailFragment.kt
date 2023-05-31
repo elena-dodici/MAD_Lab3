@@ -14,6 +14,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.lab3.database.CourtAdapter
+import com.example.lab3.database.entity.courtsReviews
 import com.example.lab3.databinding.FragmentCourtDetailBinding
 
 
@@ -24,10 +28,18 @@ import com.example.lab3.databinding.FragmentCourtDetailBinding
  */
 class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToolbar  {
 
+    companion object {
+        fun newInstance() = CourtDetailFragment()
+    }
+
     private lateinit var binding: FragmentCourtDetailBinding
     private val sharedvm: CourtViewModel by activityViewModels()
     private val mainvm: MainViewModel by activityViewModels()
-    private var Level:Int = 0
+
+    private lateinit var newRecyclerview: RecyclerView
+    private lateinit var newArrayList: ArrayList<courtsReviews>
+    lateinit var rating: Array<Int>
+    lateinit var review: Array<String>
     override val toolbar: Toolbar?
         get() = binding.activityToolbar
 
@@ -46,8 +58,19 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToo
         super.onViewCreated(view, savedInstanceState)
          binding = FragmentCourtDetailBinding.bind(view)
 
-        binding.ratingBar.stepSize = 1f
-        binding.ratingBar.rating = Level.toFloat()
+        rating = arrayOf(1,2,4)
+        review = arrayOf("test","test","test")
+
+        newRecyclerview = binding.recycleView
+        newRecyclerview.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
+        newArrayList = arrayListOf<courtsReviews>()
+        for (i in 0..2){
+            val reviews = courtsReviews(rating[i], review[i])
+            newArrayList.add(reviews)
+        }
+
+        newRecyclerview.adapter = CourtAdapter(newArrayList)
+
 
         sharedvm.courtName.observe(viewLifecycleOwner){
                 newCN ->
@@ -57,30 +80,30 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToo
             vm = sharedvm
         }
 
-        if (sharedvm.hasRev.value!!) {
-            binding.delBtn.visibility = View.VISIBLE;
-        } else binding.delBtn.visibility = View.GONE
+//        if (sharedvm.hasRev.value!!) {
+//            binding.delBtn.visibility = View.VISIBLE;
+//        } else binding.delBtn.visibility = View.GONE
 
-        binding.calBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
-            mainvm.setShowNav(true)
-            Toast.makeText(context, "Your Review is not saved!", Toast.LENGTH_LONG).show()
-        }
-        binding.delBtn.setOnClickListener {
-            //if delete bottom show, it must means has review
-           sharedvm.deleteCourtRev()
-            mainvm.setShowNav(true)
-            findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
-            Toast.makeText(context, "Delete successfully", Toast.LENGTH_LONG).show()
-        }
-        binding.saveBtn.setOnClickListener {
-            println("this is save test for trating bar : ${binding.ratingBar.rating.toInt()}")
-            //sharedvm.addOrUpdateCourtRev(sharedvm.courtRate.value!!, sharedvm.selectedCourtRev.value!!.review, this.requireActivity().application,mainvm.user)
-            mainvm.setShowNav(true)
-            findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
-
-            Toast.makeText(context, "Update successfully", Toast.LENGTH_LONG).show()
-        }
+//        binding.calBtn.setOnClickListener {
+//            findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
+//            mainvm.setShowNav(true)
+//            Toast.makeText(context, "Your Review is not saved!", Toast.LENGTH_LONG).show()
+//        }
+//        binding.delBtn.setOnClickListener {
+//            //if delete bottom show, it must means has review
+//           sharedvm.deleteCourtRev()
+//            mainvm.setShowNav(true)
+//            findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
+//            Toast.makeText(context, "Delete successfully", Toast.LENGTH_LONG).show()
+//        }
+//        binding.saveBtn.setOnClickListener {
+//            println("this is save test for trating bar : ${binding.ratingBar.rating.toInt()}")
+//            //sharedvm.addOrUpdateCourtRev(sharedvm.courtRate.value!!, sharedvm.selectedCourtRev.value!!.review, this.requireActivity().application,mainvm.user)
+//            mainvm.setShowNav(true)
+//            findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
+//
+//            Toast.makeText(context, "Update successfully", Toast.LENGTH_LONG).show()
+//        }
 
 
 //        val rateSpinner = binding.rateSpinner
