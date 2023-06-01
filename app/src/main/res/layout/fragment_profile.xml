@@ -146,18 +146,41 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mySport" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btE"
-                android:layout_width="250dp"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Edit Your Profile"
-                android:textColor="@android:color/white"
-                android:background="@drawable/custom_sports"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerViewS"
-                app:layout_constraintBottom_toBottomOf="parent"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center"
+                android:layout_marginTop="15dp"
+                >
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btE"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Edit Your Profile"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/custom_sports"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewS"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btHis"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="History"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/custom_sports"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewS"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+            </LinearLayout>
 <!--            <LinearLayout-->
 <!--                android:layout_width="match_parent"-->
 <!--                android:layout_height="wrap_content"-->
