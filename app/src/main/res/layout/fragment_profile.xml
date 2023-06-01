@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    >
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/deeper_toolbar_color2"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/activityToolbar"
+            android:layout_width="match_parent"
+            app:title="@string/profile"
+            android:layout_height="?attr/actionBarSize"
+            />
+    </com.google.android.material.appbar.AppBarLayout>
+<ScrollView
+
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/white"
@@ -13,19 +33,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/deeper_toolbar_color2"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/activityToolbar"
-                android:layout_width="match_parent"
-                app:title="@string/profile"
-                android:layout_height="?attr/actionBarSize"
-                />
-        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/imageView"
@@ -174,3 +181,4 @@
     </LinearLayout>
 
 </ScrollView>
+</LinearLayout>
