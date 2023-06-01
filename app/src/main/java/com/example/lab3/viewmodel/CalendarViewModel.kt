@@ -190,7 +190,7 @@ class  CalendarViewModel() : ViewModel( ) {
         db1.collection("court").whereEqualTo("sport","${sport}")
             .get().addOnSuccessListener {
                 it.forEach{court->
-                    val sportName =court.get("name").toString()
+                    val sportName =court.id.toString()
                     val allFreeSlot = court.reference.collection("courtTime")
                     allFreeSlot.get().addOnSuccessListener {courtTimeQuerySnapshot->
                         courtTimeQuerySnapshot.forEach{slot->
