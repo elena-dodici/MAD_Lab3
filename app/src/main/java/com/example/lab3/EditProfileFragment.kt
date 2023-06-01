@@ -2,7 +2,6 @@ package com.example.lab3
 
 import android.Manifest
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.ContextWrapper
@@ -28,13 +27,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker.checkSelfPermission
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.lab3.database.entity.SportDetail
 import com.example.lab3.database.entity.User
-import com.example.lab3.databinding.FragmentProfileBinding
-import com.example.lab3.databinding.FragmentProfileDetailBinding
 import com.example.lab3.databinding.FragmentProfileEditBinding
 import java.io.File
 import java.io.FileDescriptor

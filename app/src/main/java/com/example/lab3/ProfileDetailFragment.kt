@@ -3,27 +3,15 @@ package com.example.lab3
 import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RatingBar
-import android.widget.Spinner
-import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
-import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.lab3.database.entity.SportDetail
-import com.example.lab3.database.entity.User
-import com.example.lab3.databinding.FragmentCourtDetailBinding
 import com.example.lab3.databinding.FragmentProfileDetailBinding
-import java.util.UUID
-import java.util.logging.Level
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,7 +30,7 @@ class ProfileDetailFragment : BaseFragment(R.layout.fragment_profile_detail),Has
 
     private var sportName:String? = null
     private var achievement:String? = null
-    private var Level:Int = 0
+    private var Level:Long = 0
     private var SportDetail = SportDetail(1,"running",0,"")
     private val vm : ProfileViewModel by activityViewModels()
     private val vmMain : MainViewModel by activityViewModels()
@@ -68,7 +56,7 @@ class ProfileDetailFragment : BaseFragment(R.layout.fragment_profile_detail),Has
         sportName = arguments?.getString("sportName")
         vm.userSports.value?.forEach{
             if(it.sportType==sportName){
-                Level = it.masteryLevel
+                Level = it.masteryLevel!!
                 achievement = it.achievement
                 SportDetail=it
         }
@@ -86,7 +74,7 @@ class ProfileDetailFragment : BaseFragment(R.layout.fragment_profile_detail),Has
         saveButton.setOnClickListener {
             //将修改后的数值添加到数据库
             SportDetail.sportType= sportText.text.toString()
-            SportDetail.masteryLevel= ratingBar.rating.toInt()
+            SportDetail.masteryLevel= ratingBar.rating.toLong()
             SportDetail.achievement= achText.text.toString()
             vm.updateUserSport(this.requireActivity().application,SportDetail,vmMain.user)
             vmMain.setShowNav(true)

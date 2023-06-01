@@ -1,25 +1,20 @@
 package com.example.lab3
 
 import android.app.Application
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.lab3.database.AppDatabase
 import com.example.lab3.database.entity.Court
 import com.example.lab3.database.entity.MyReservation
 import com.example.lab3.database.entity.FreeCourt
-import com.example.lab3.database.entity.Reservation
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.sql.Time
 import java.time.Instant
-import java.util.*
 import java.time.LocalDate
 import java.time.ZoneId
-import java.util.Calendar
+import java.time.format.DateTimeFormatter
 
 class  CalendarViewModel() : ViewModel( ) {
     //reservationList of this user
@@ -133,9 +128,87 @@ class  CalendarViewModel() : ViewModel( ) {
         db = AppDatabase.getDatabase(application)
         _courts.value = db.courtDao().getAllCourts()
     }
+
+    private var _FreeSlotsOneDay = MutableLiveData<MutableMap<String,Map<String,Boolean>>>()
+    val FreeSlotsOneDay:LiveData<MutableMap<String,Map<String,Boolean>>> = _FreeSlotsOneDay
+    private var _FullDate = MutableLiveData<MutableMap<LocalDate,Boolean>>()
+    val FullDate:LiveData<MutableMap<LocalDate,Boolean>> = _FullDate
+    private var _allDate = MutableLiveData<MutableList<LocalDate>>()
+    val allDate:LiveData<MutableList<LocalDate>> = _allDate
     fun getResBySport(application: Application,sport:String){
         db = AppDatabase.getDatabase(application)
 //        _reservations.value = db.reservationDao().getReservationBySport(sport)
+    }
+
+    fun getDateFull(application: Application,sport:String,ad:List<LocalDate>) {
+        var fd = mutableMapOf<LocalDate, Boolean>()
+        ad.forEach {
+            fd[it]=false
+        }
+        db1.collection("court").whereEqualTo("sport", "${sport}")
+            .get().addOnSuccessListener {
+                it.forEach { court ->
+                    val allFreeSlot = court.reference.collection("courtTime")
+                    allFreeSlot.get().addOnSuccessListener { courtTimeQuerySnapshot ->
+                        courtTimeQuerySnapshot.forEach { date ->
+                            if (date.data.containsValue(true)) {
+                                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                                val localDate = LocalDate.parse(date.id, formatter)
+                                fd[localDate]=true
+                            }
+                        }
+                        _FullDate.value = fd
+                    }
+                }
+            }
+    }
+    fun getAllDate(application: Application){
+        val ad = mutableListOf<LocalDate>()
+        db1.collection("court").document("court1").collection("courtTime")
+            .get().addOnSuccessListener {
+                it.forEach{DATE->
+                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                    val localDate = LocalDate.parse(DATE.id, formatter)
+                    ad.add(localDate)
+                }
+                _allDate.value=ad
+            }
+    }
+    fun updateAllDate(application: Application){
+        val ad = mutableListOf<LocalDate>()
+        db1.collection("court").document()
+            .get().addOnSuccessListener {
+                println("court"+ it.id)
+                it.reference.collection("courtTime")
+            }
+    }
+
+    fun getFreeSlotByDateAndSport(application: Application, sport:String, date: LocalDate?){
+        //ct的key为court的名字，value为某一天所有时间段和对应占用状态
+        var ct = mutableMapOf<String,Map<String,Boolean>>()
+        //搜索所有运动为sport的court
+        db1.collection("court").whereEqualTo("sport","${sport}")
+            .get().addOnSuccessListener {
+                it.forEach{court->
+                    val sportName =court.get("name").toString()
+                    val allFreeSlot = court.reference.collection("courtTime")
+                    allFreeSlot.get().addOnSuccessListener {courtTimeQuerySnapshot->
+                        courtTimeQuerySnapshot.forEach{slot->
+                            if (slot.id==date.toString()){
+
+                                if (sportName != null) {
+                                    ct.put(sportName, slot.data as Map<String, Boolean>)
+                                }
+
+                            }
+                        }
+                        _FreeSlotsOneDay.value=ct
+                    }
+                }
+            }.addOnFailureListener { exception ->
+                // 处理错误
+                println("Error getting documents: ${exception.message}")
+            }
     }
 
 
@@ -143,6 +216,7 @@ class  CalendarViewModel() : ViewModel( ) {
         db = AppDatabase.getDatabase(application)
         _F.value =db.courtTimeDao().getAllTCourtTimes(sport)
     }
+
 
 
     fun setSelectedResByResId(resId:Int, application:Application){

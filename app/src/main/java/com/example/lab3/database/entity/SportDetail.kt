@@ -19,7 +19,7 @@ data class SportDetail(
     var sportType:String,
 
     @ColumnInfo(name = "masteryLevel")
-    var masteryLevel:Int, // values = [0/1/2] -> beginner / intermediate / expert
+    var masteryLevel: Long?, // values = [0/1/2] -> beginner / intermediate / expert
 
     @ColumnInfo(name = "achievement")
     var achievement:String
