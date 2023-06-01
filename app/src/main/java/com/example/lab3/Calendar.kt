@@ -118,6 +118,8 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
             for (res in it){
 //                events[res.date] = events[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
                 events[res.date] = events[res.date].orEmpty().plus(Event(UUID.randomUUID().toString(), res.name, res.sport,res.startTime, res.date))
+                monthCalendarView.notifyCalendarChanged()
+                weekCalendarView.notifyCalendarChanged()
             }
 
         }
@@ -126,6 +128,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        println("onViewCreated")
         binding = FragmentCalendarViewBinding.bind(view)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
@@ -320,6 +323,9 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
                 textView.background = null
                 dotView.isVisible = events[date].orEmpty().isNotEmpty()
+                if (dotView.isVisible){
+                    println(">> $date")
+                }
 
             }
         }else{
