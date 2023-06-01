@@ -20,7 +20,7 @@ class CourtViewModel : ViewModel( ) {
 
 //    private var _courtreview = MutableLiveData<List<CourtReview>>().also { it.value = listOf() }
 //    val courtreview:LiveData<List<CourtReview>> = _courtreview
-    private var _courtInfo = MutableLiveData<List<CourtInfo>>()
+    private var _courtInfo = MutableLiveData<List<CourtInfo>>().also { it.value = listOf() }
     val courtInfo:LiveData<List<CourtInfo>> = _courtInfo
     fun getCourtInfo(application: Application){
 //        db = AppDatabase.getDatabase(application)
