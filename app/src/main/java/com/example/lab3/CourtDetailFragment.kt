@@ -37,9 +37,9 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToo
     private val mainvm: MainViewModel by activityViewModels()
 
     private lateinit var newRecyclerview: RecyclerView
-    private lateinit var newArrayList: ArrayList<courtsReviews>
-    lateinit var rating: Array<Int>
-    lateinit var review: Array<String>
+
+//    lateinit var rating: Array<Int>
+//    lateinit var review: Array<String>
     override val toolbar: Toolbar?
         get() = binding.activityToolbar
 
@@ -55,27 +55,23 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToo
 //    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        var newList = mutableListOf<courtsReviews>()
         super.onViewCreated(view, savedInstanceState)
          binding = FragmentCourtDetailBinding.bind(view)
-
-        rating = arrayOf(1,2,4)
-        review = arrayOf("test","test","test")
-
+        binding.showCourtName.text = sharedvm.courtName.value
         newRecyclerview = binding.recycleView
         newRecyclerview.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
-        newArrayList = arrayListOf<courtsReviews>()
-        for (i in 0..2){
-            val reviews = courtsReviews(rating[i], review[i])
-            newArrayList.add(reviews)
+        //newList = sharedvm.courtReviews.value!!
+        sharedvm.courtReviews.observe(viewLifecycleOwner){
+                new ->
+            newList = new.toMutableList()
+//            println("this is newlist in courtFra : $newList")
+            newRecyclerview.adapter = CourtAdapter(newList)
         }
 
-        newRecyclerview.adapter = CourtAdapter(newArrayList)
 
 
-        sharedvm.courtName.observe(viewLifecycleOwner){
-                newCN ->
-            binding.showCourtName.text = newCN.toString()
-        }
+
         binding.apply {
             vm = sharedvm
         }

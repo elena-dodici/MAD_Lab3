@@ -60,12 +60,12 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
     private val mainVm: MainViewModel by activityViewModels()
     private val courtInfoList = mutableListOf<CourtInfo>()
     val adapter = ScoreAdapter{
-       println("click: ${it} ")
+//       println("click: ${it} ")
         //avg_rating: 0-xxx
         gotoCourtDetailFrag(it.courtname, it.avg_rating)
     }
     private fun gotoCourtDetailFrag(courtName: String, avg_rating:Float){
-       //sharedvm.setSelectedCourtById(courtName,avg_rating,mainVm.user)
+        sharedvm.setSelectedCourtById(courtName,avg_rating,mainVm.user)
         mainVm.setShowNav(false)
         findNavController().navigate(R.id.action_courtFragment_to_courtDetailFragment)
     }

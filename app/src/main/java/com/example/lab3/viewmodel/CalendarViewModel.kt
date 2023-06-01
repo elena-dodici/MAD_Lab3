@@ -9,6 +9,7 @@ import com.example.lab3.database.AppDatabase
 import com.example.lab3.database.entity.Court
 import com.example.lab3.database.entity.FreeCourt
 import com.example.lab3.database.entity.MyReservation
+import com.example.lab3.database.entity.courtsReviews
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -17,7 +18,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
-
+data class reviews(var rating:Int , var review:String,var user:String)
 class  CalendarViewModel() : ViewModel( ) {
     private val TAG = "CalendarVM"
 
@@ -48,8 +49,8 @@ class  CalendarViewModel() : ViewModel( ) {
 //    private var _selEndTime = MutableLiveData<Time>()
 //    val selEndTime: LiveData<Time> = _selEndTime
 
-    private var _selDes = MutableLiveData<String>()
-    val selDes: LiveData<String> = _selDes
+    private var _selRating = MutableLiveData<Int>()
+    val selRating: LiveData<Int> = _selRating
 
 //    private var _freeEndTimes = MutableLiveData<List<Time>>().also { it.value = listOf() }
 //    val freeEndTimes: LiveData<List<Time>> = _freeEndTimes
@@ -80,7 +81,7 @@ class  CalendarViewModel() : ViewModel( ) {
 
     fun getAllRes(application: Application, userid: Int) {
 //        db = AppDatabase.getDatabase(application)
-
+        println("getALl is activated!!!!")
         db1.collection("users").document("u${userid}").collection("reservation").get()
             .addOnSuccessListener { result ->
 
@@ -139,7 +140,7 @@ class  CalendarViewModel() : ViewModel( ) {
             }
             .addOnFailureListener { exception ->
                 // 处理错误
-                println("Error getting documents: ${exception.message}")
+                Log.d(TAG,"Error getting documents: ${exception.message}")
                 _reservations.value = null
             }
 //        _reservations.value = db.reservationDao().getReservationByUserId(userid)
@@ -165,22 +166,16 @@ class  CalendarViewModel() : ViewModel( ) {
     val freeEndTimeList = mutableListOf<Time>()
 
     fun setSelectedResByCourtName(resId: String) {
-
-
         for (r in _reservations.value!!) {
             if (r.resId == resId) {
-
                 _selectedRes.value = r
                 _selDate.value = r.date
-//                _resIdvm.value = resId
-//                _selCourtId.value = r.courtId
                 _selStartTime.value = r.startTime
-
                 _selCourtName.value = r.name
-                _selDes.value = r.description
+                _selRating.value = r.rating
                 _selSport.value = r.sport
 
-
+//                println("active  ${r.rating}")
                 db1.collection("court").document(r.name).collection("courtTime")
                     .document("${r.date}").get()
                     .addOnSuccessListener { result ->
@@ -195,9 +190,9 @@ class  CalendarViewModel() : ViewModel( ) {
                             }
 
                             freeStartTimeList.add(_selectedRes.value!!.startTime)
-                            //println(" freeStartTimeList is : ${freeStartTimeList}")
+                            println(" freeStartTimeList is : ${freeStartTimeList}")
                             _freeStartTimes.value = freeStartTimeList
-                            println("bug ${selectedRes.value!!.rating}")
+//
                         } else {
                             Log.d(TAG, "No such document")
                         }
@@ -265,7 +260,7 @@ class  CalendarViewModel() : ViewModel( ) {
             _freeSlots.value = db.courtDao().getFreeSlotBySportAndDate(sport, date)
         }
         fun getFreeSlotByCourtName(courtName:String){
-//            val freeEndTimeList = mutableListOf<Time>()
+
             val freeStartTimeList = mutableListOf<Time>()
             db1.collection("court").document(courtName).collection("courtTime")
                 .document("${selDate.value}").get()
@@ -335,12 +330,79 @@ class  CalendarViewModel() : ViewModel( ) {
                 "status" to 0
 
             )
-            println(newRes)
+            var newAvgrating: Float
+            db1.collection("court").document("${selCourtName.value}")
+                .get()
+                .addOnSuccessListener {docs->
+
+                    var reviewList = docs.data?.get("review") as? List<*>
+                    var sumRating =0
+
+                    val numOfRev = reviewList!!.size
+
+                    reviewList.forEach { r->
+
+                        val mapItem = r as Map<String, Any?>
+                        sumRating += mapItem["rating"].toString().toInt()
+
+                    }
+
+                    newAvgrating = (sumRating -_selectedRes.value!!.rating + rating).toFloat()/ (numOfRev)
+
+            var newRating = mapOf(
+                "avg_rating" to newAvgrating
+            )
+//            println(newRes)
+                    //set new reservation
             db1.collection("users").document("u$userId").collection("reservation").document(selectedRes.value!!.resId)
                 .set(newRes)
                 .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
                 .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+            //update new avg_rating
+                    db1.collection("court").document("${selCourtName.value}")
+                .update(newRating)
+                .addOnSuccessListener { Log.d(TAG, "${newRating}DocumentSnapshot successfully written!") }
+                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+            // update user rating
+                    db1.collection("court").document("${selCourtName.value}").get()
+                        .addOnSuccessListener {result->
+                            if (result != null) {
+                                var reviewList = result.data?.get("review") as? MutableList<*>
 
+
+                                val newList = mutableListOf<reviews>()
+                                if (reviewList != null) {
+                                    if (reviewList.size > 0) {
+                                        for (i in reviewList){
+                                            val mapItem = (i as MutableMap<String, Any?>).toMutableMap()
+                                            if (mapItem["user"] == "u$userId") { mapItem["rating"] = rating}
+                                        newList.add(reviews(mapItem["rating"].toString().toInt(),mapItem["review"].toString(),"u$userId"))
+
+                                        }
+                                                //update review list
+
+
+                                                db1.collection("court")
+                                                    .document("${selCourtName.value}")
+                                                    .update("review",newList)
+                                                    .addOnSuccessListener { Log.d(  TAG, "${newList} successfully updated!") }
+                                                    .addOnFailureListener { e -> Log.w(TAG,"Error update document", e) }
+
+
+
+
+                                        }
+
+                                    }
+                                }
+
+                            }
+
+
+
+
+                    Log.d(TAG, "DocumentSnapshot successfully written!") }
+                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
         }
 
         fun deleteRes(userid: Int, resId:String) {
