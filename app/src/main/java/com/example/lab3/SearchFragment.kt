@@ -441,6 +441,9 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     }
     private fun dateClicked(date: LocalDate) {
         if(selectedDate != date){
+            if(allDateAvailable.contains(date)==false){
+                Toast.makeText(context, "Please choose a valid date", Toast.LENGTH_LONG).show()
+            }
             if(allReserved[date] == false){
 //                println("这一天都被预定了！")
                 Toast.makeText(context, "All reserved", Toast.LENGTH_LONG).show()
@@ -506,8 +509,6 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     }
 
     private fun updateCalendar(sport:String) { // 获取新的运动的预定信息-> 调用日历的bind
-//        vm.getAllCourtTime(this.requireActivity().application,sport) // 根据sport获取相关的court和所有的时间段 保存到F中
-        vm.getResBySport(this.requireActivity().application,sport)   // 根据sport获取预定信息
         vm.FullDate.observe(viewLifecycleOwner){
             val oldDate=reservations.keys
             oldDate.forEach(){
