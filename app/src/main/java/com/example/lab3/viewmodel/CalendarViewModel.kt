@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 
 class  CalendarViewModel() : ViewModel( ) {
     //reservationList of this user
-    private var _reservations = MutableLiveData<List<MyReservation>>().also { it.value = listOf() }
+    private var _reservations = MutableLiveData<List<MyReservation>>()
     val reservations:LiveData<List<MyReservation>> = _reservations
     //allCourt
     private var _courts = MutableLiveData<List<Court>>().also { it.value = listOf() }
@@ -119,7 +119,7 @@ class  CalendarViewModel() : ViewModel( ) {
             .addOnFailureListener { exception ->
                 // 处理错误
                 println("Error getting documents: ${exception.message}")
-                _reservations.value = null
+                _reservations.value = listOf()
             }
 //        _reservations.value = db.reservationDao().getReservationByUserId(userid)
 //        getCourts(application)
@@ -314,7 +314,7 @@ class  CalendarViewModel() : ViewModel( ) {
     }
 
     fun clear(){
-        _reservations.value = null
+        _reservations.value = listOf()
     }
 
 
