@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
 
 //       initDatabase(db) // add some initial data
-        initFirebase()
+//        initFirebase()
 
 
 
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
                 "d1 for u2",-1,"",0, "running"),
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 5, 19, 11, 0)), Timestamp(Date(2023 - 1900, 5, 19, 12, 0))),
                 "d2 for u2",-1,"",0, "basketball"),
-            reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 5, 1, 10, 0)), Timestamp(Date(2023 - 1900, 5, 1, 11, 0))),
+            reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 4, 31, 10, 0)), Timestamp(Date(2023 - 1900, 5, 1, 11, 0))),
                 "Please leave some clean towels",4,"The Sport Court's facility is conveniently located and fosters a sense of community. With ample parking, accessible entrances, and organized sports events, it brings people together and encourages a healthy and active lifestyle.",0, "swimming"),
 
             //u3

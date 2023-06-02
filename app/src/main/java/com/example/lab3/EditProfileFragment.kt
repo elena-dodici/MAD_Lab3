@@ -29,6 +29,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.lab3.database.entity.SportDetail
 import com.example.lab3.database.entity.User
 import com.example.lab3.databinding.FragmentProfileEditBinding
@@ -87,22 +88,30 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
                 }
             }
     }
-
+    var image_uri: Uri? = null
+    private val RESULT_LOAD_IMAGE = 123
+    val IMAGE_CAPTURE_CODE = 654
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentProfileEditBinding.bind(view)
         super.onViewCreated(view, savedInstanceState)
         val sharedPreferences = context?.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences?.edit()
-
+        profilePicturePath = arguments?.getString("path")
         _name = arguments?.getString("name")
         _surname = arguments?.getString("surname")
         tele = arguments?.getString("phone")
-        profilePicturePath = arguments?.getString("Path")
         var img = view.findViewById<ImageView>(R.id.imageViewE)
-        if(profilePicturePath != "NAN" && profilePicturePath != null && hasPhotoChanged == false ) {
-            println("LOADING PROFILE PICTURE FROM : $profilePicturePath")
-            loadImageFromStorage(profilePicturePath,img)
-        }
+        println("this _"+profilePicturePath)
+        img.setImageURI(Uri.parse(profilePicturePath))
+            Glide.with(this)
+                .load(profilePicturePath)
+                .override(img.width, img.height)
+                .into(img)
+
+//        if(profilePicturePath != "NAN" && profilePicturePath != null && hasPhotoChanged == false ) {
+//            println("LOADING PROFILE PICTURE FROM : $profilePicturePath")
+//            loadImageFromStorage(profilePicturePath,img)
+//        }
         val cancelButton = view.findViewById<Button>(R.id.btC)
         val saveButton = view.findViewById<Button>(R.id.btS)
         val bskbt =view.findViewById<Button>(R.id.btbasketball)
@@ -162,6 +171,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
         editName.setText(_name)
         editSurname.setText(_surname)
         editTel.setText(tele)
+
         //初始化按钮状态,如果对应sport已经添加则设为不可选中
 
         SportDetail.values.forEach(){
@@ -222,6 +232,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
         saveButton.setOnClickListener {
             vmMain.setShowNav(true)
             if(imageBitmap == null && image_uri != null){
+                vm.uploadPhoto(this.requireActivity().application, image_uri!!,vmMain.user)
                 //val bitmap = uriToBitmap(image_uri!!)
                 val bitmap= frame?.drawable?.toBitmap()
                 imageBitmap = bitmap;
@@ -229,6 +240,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
             if(imageBitmap != null) {
                 // imageBitmap will be null the first time we try to edit the profile and will remain
                 // null if we don't select a profile picture
+                vm.uploadPhoto(this.requireActivity().application, image_uri!!,vmMain.user)
                 println("Saving new path for the new picture... ")
                 //profilePicturePath = saveToInternalStorage(imageBitmap!!)
                 profilePicturePath = saveToInternalStorage(frame?.drawable?.toBitmap()!!)
@@ -238,10 +250,16 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
                 editor.apply()
             }
 
-            val u = User(editName.text.toString(),editSurname.text.toString(),editTel.text.toString())
+            val u = ProfileViewModel.UserProfile(
+                editName.text.toString(),
+                editSurname.text.toString(),
+                editTel.text.toString(),
+                "user${vmMain.user}/images/user${vmMain.user}.jpg"
+            )
             if (u != null) {
                 vm.updateUser(this.requireActivity().application,u,vmMain.user)
             }
+
             var bundle = bundleOf("Path" to profilePicturePath)
             vmMain.setShowNav(true)
 
@@ -296,9 +314,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
 //            println("${sportType} 空")
         }
     }
-    var image_uri: Uri? = null
-    private val RESULT_LOAD_IMAGE = 123
-    val IMAGE_CAPTURE_CODE = 654
+
 
     //opens camera so that user can capture image
     private fun openCamera() {

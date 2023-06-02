@@ -2,6 +2,7 @@ package com.example.lab3
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -23,6 +24,7 @@ import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.lab3.database.entity.SportDetail
 import com.example.lab3.databinding.FragmentCourtDetailBinding
 import com.example.lab3.databinding.FragmentProfileBinding
@@ -50,12 +52,11 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
     private  var full_name :String? = null
     private  var _name :String? = null
     private  var _surname :String? = null
-    private var profilePicturePath : String? = null
     private  var tele :String? = null
     private val vm : ProfileViewModel by activityViewModels()
     private val vmMain : MainViewModel by activityViewModels()
     private  var sportList : List<SportDetail>? = null
-
+    private  var path :String?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,12 +96,8 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         binding = FragmentProfileBinding.bind(view)
         // 找到 RecyclerView 实例
         val recyclerViewSports = view.findViewById<RecyclerView>(R.id.recyclerViewS)
-        val sharedPreferences = requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
-        val savedPath = sharedPreferences.getString("path", null)
-        //获取头像
-        if (savedPath != null) {
-            profilePicturePath=savedPath
-        }
+//        val sharedPreferences = requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+//        val savedPath = sharedPreferences.getString("path", null)
 
         val users = listOf("user1", "user2", "user3")
         val spinnerUser = view.findViewById<Spinner>(R.id.userSpinner)
@@ -126,10 +123,12 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
 
 //        profilePicturePath = arguments?.getString("Path")
         super.onViewCreated(view, savedInstanceState)
-        loadImageFromStorage(profilePicturePath)
+//        loadImageFromStorage(profilePicturePath)
         val editButton = view.findViewById<Button>(R.id.btE)
+        val historyButton = view.findViewById<Button>(R.id.btHis)
         val fullName = view.findViewById<TextView>(R.id.tv_name)
         val tel = view.findViewById<TextView>(R.id.tv_phone)
+        val photoView = view.findViewById<ImageView>(R.id.TOP)
 
 
         // 设置布局管理器
@@ -152,9 +151,16 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
             tele = it.tel
             fullName.setText(full_name)
             tel.setText(tele)
-//            println("user:"+ it)
+            it.photo?.let { it1 -> vm.readPhoto(this.requireActivity().application, it1) }
         }
 
+        //读取头像URI加载到imageview
+        vm.photoUri.observe(viewLifecycleOwner) {
+            path=it
+            Glide.with(this)
+                .load(it)
+                .into(photoView)
+        }
 //        println(vmMain.user)
         spinnerUser.setSelection(vmMain.user-1)
         spinnerUser.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -178,8 +184,12 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+        //需把action_profileFragment_to_historyFragment的destination改成正确的跳转目的地
+        historyButton.setOnClickListener{
+            findNavController().navigate(R.id.action_profileFragment_to_historyFragment)
+        }
         editButton.setOnClickListener {
-            var bundle = bundleOf("name" to _name,"surname" to _surname,"phone" to tele,"Path" to profilePicturePath)
+            var bundle = bundleOf("name" to _name,"surname" to _surname,"phone" to tele,"path" to path)
 
             vmMain.setShowNav(false)
             findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment,bundle)

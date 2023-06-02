@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    >
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/deeper_toolbar_color2"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/activityToolbar"
+            android:layout_width="match_parent"
+            app:title="@string/profile"
+            android:layout_height="?attr/actionBarSize"
+            />
+    </com.google.android.material.appbar.AppBarLayout>
+
+<ScrollView
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/white"
@@ -14,36 +34,22 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/deeper_toolbar_color2"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/activityToolbar"
-                android:layout_width="match_parent"
-                app:title="@string/profile"
-                android:layout_height="?attr/actionBarSize"
-                />
-        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_marginHorizontal="16dp"
-            >
+            android:layout_weight="1">
 
             <ImageView
                 android:id="@+id/imageViewE"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="182dp"
+                android:layout_height="218dp"
                 android:layout_marginTop="16dp"
                 android:background="#DCDCDC"
                 android:contentDescription="@string/user_profile"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/user_profile" />
@@ -53,26 +59,25 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginBottom="16dp"
+                android:background="@drawable/img_btn_border"
+                android:contentDescription="camera"
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewE"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/ic_camera"
-                android:contentDescription="camera"
-                android:background="@drawable/img_btn_border"
-                />
+                app:srcCompat="@drawable/ic_camera" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_weight="2">
-
+<!--                name-->
             <LinearLayout
                 android:id="@+id/layoutName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -98,11 +103,11 @@
 
             </LinearLayout>
 
-            <!--            nickname-->
+            <!--            surname-->
             <LinearLayout
                 android:id="@+id/layoutNick"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -129,11 +134,11 @@
 
             </LinearLayout>
 
-
+<!--                phone-->
             <LinearLayout
                 android:id="@+id/linearLayoutPhone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="309dp"
@@ -147,7 +152,7 @@
 
                 <EditText
                     android:id="@+id/ed_phone"
-                    android:layout_width="285dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="phone"
                     android:inputType="phone"
@@ -157,11 +162,11 @@
                     android:textSize="30sp" />
 
             </LinearLayout>
-
+<!--            Interested Sports-->
             <LinearLayout
                 android:id="@+id/layoutJob"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -239,10 +244,11 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 app:layout_constraintTop_toBottomOf="@id/selectiveSport"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:gravity="center"
                 android:layout_marginTop="15dp"
                 >
@@ -250,7 +256,7 @@
 
                     android:id="@+id/btS"
                     android:layout_width="150dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="50dp"
                     android:text="Save"
                     android:layout_gravity="center"
                     android:textColor="@android:color/white"
@@ -261,7 +267,7 @@
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btC"
                     android:layout_width="150dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="50dp"
                     android:textColor="@android:color/white"
                     android:background="@drawable/custom_sports"
                     android:text="Cancel"
@@ -277,3 +283,4 @@
     </LinearLayout>
 
 </ScrollView>
+</LinearLayout>

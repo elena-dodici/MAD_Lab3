@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.doOnEnd
@@ -91,6 +92,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     private val weekCalendarView: WeekCalendarView get() = binding.weekCalendar
     private var selectedDate:LocalDate? = null
 
+    private val availableDateList = mutableListOf<LocalDate>()
     private val events = mutableMapOf<LocalDate, List<Event>>()
 
     val eventsAdapter = MyAdapter{
@@ -114,9 +116,22 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         savedInstanceState: Bundle?
     ): View? {
         // 在某个日期下面 初始化 几个reservation
+        availableDateList.clear()
+        sharedvm.getAllDate(this.requireActivity().application)
+        sharedvm.allDate.observe(viewLifecycleOwner){
+            it.forEach{date->
+                if (!availableDateList.contains(date)){
+                    availableDateList.add(date)
+                }
+            }
+//            println("所有可用日期：$availableDateList")
+        }
 //        应该在viewmodel里获取数据
+
         sharedvm.getAllRes( vmMain.user)
         sharedvm.getCourtNamesAndSport()
+
+
         sharedvm.reservations.observe(viewLifecycleOwner){
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
             events.clear()
@@ -135,7 +150,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        println("onViewCreated")
+
         binding = FragmentCalendarViewBinding.bind(view)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
@@ -271,11 +286,17 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                 val layout = container.binding.dayLayout
                 val dotView = container.binding.DotView
                 bindDate(data.date, textView, dotView, layout, data.position == DayPosition.MonthDate)
+//                bindDate(data.date, textView, dotView, layout, true)
+
                 if (data.position == DayPosition.MonthDate) {
                     textView.setTextColor(Color.BLACK)
+                    if (availableDateList.isNotEmpty() && !availableDateList.contains(data.date) ){ // 范围外的日期即使是MonthDate设为深灰色
+                        textView.setTextColor(Color.LTGRAY)
+                    }
                 } else {
                     textView.setTextColor(Color.GRAY)
                 }
+
             }
         }
         // 显示当前月 update title
@@ -306,9 +327,13 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                 val layout = container.binding.dayLayout
                 val dotView = container.binding.DotView
                 bindDate(data.date, textView, dotView, layout, data.position == WeekDayPosition.RangeDate)
+//                bindDate(data.date, textView, dotView, layout, true)
 //                textView.text = data.date.dayOfMonth.toString()
                 textView.setTextColor(Color.BLACK)
 //                textView.setTextSize(16f)
+                if (availableDateList.isNotEmpty() && !availableDateList.contains(data.date) ){ // 范围外的日期即使是MonthDate设为深灰色
+                    textView.setTextColor(Color.LTGRAY)
+                }
             }
         }
         weekCalendarView.weekScrollListener = { updateMonthTitle();clearBackground() }
@@ -343,20 +368,29 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
     }
     private fun dateClicked(date: LocalDate) {
-        if(selectedDate != date){
-            val oldDate = selectedDate
-            selectedDate = date
-//                        println(day.date) // day.date就是点击的日期
-//        Refresh both calendar views..
-            monthCalendarView.notifyDateChanged(date)
-            weekCalendarView.notifyDateChanged(date)
-            oldDate?.let {
-                monthCalendarView.notifyDateChanged(it)
-                weekCalendarView.notifyDateChanged(it)
+        if(selectedDate != date){ // 点的不是今天
+            if (availableDateList.isNotEmpty() && !availableDateList.contains(date) ){ // 范围外的日期 不允许查看
+
+                Toast.makeText(context, "Out of Range", Toast.LENGTH_LONG).show()
 
             }
-            updateAdapterForDate(date) // 将当前date的events的内容显示在下面列表
+            else{
+
+                val oldDate = selectedDate
+                selectedDate = date
+    //                        println(day.date) // day.date就是点击的日期
+    //        Refresh both calendar views..
+                monthCalendarView.notifyDateChanged(date)
+                weekCalendarView.notifyDateChanged(date)
+                oldDate?.let {
+                    monthCalendarView.notifyDateChanged(it)
+                    weekCalendarView.notifyDateChanged(it)
+
+                }
+                updateAdapterForDate(date) // 将当前date的events的内容显示在下面列表
+            }
         }
+
 
     }
     private fun updateMonthTitle() { // 更新月份

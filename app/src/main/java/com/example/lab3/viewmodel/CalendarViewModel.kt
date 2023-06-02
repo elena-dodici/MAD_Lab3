@@ -30,8 +30,9 @@ class CalendarViewModel : ViewModel() {
     private val TAG = "CalendarVM"
 
     //reservationList of this user
-    private var _reservations = MutableLiveData<List<MyReservation>>().also { it.value = listOf() }
-    val reservations: LiveData<List<MyReservation>> = _reservations
+
+    private var _reservations = MutableLiveData<List<MyReservation>>()
+    val reservations:LiveData<List<MyReservation>> = _reservations
 
     //allCourt
     private var _courts = MutableLiveData<List<Court>>().also { it.value = listOf() }
@@ -88,6 +89,7 @@ class CalendarViewModel : ViewModel() {
 
 
 
+
     fun test(userid: Int) {
         val colRef = db1.collection("users").document("u${userid}")
         colRef.addSnapshotListener { snapshot, e ->
@@ -104,6 +106,7 @@ class CalendarViewModel : ViewModel() {
 
 
     fun getAllRes(userid: Int) {
+
 //        db = AppDatabase.getDatabase(application)
 
         db1.collection("users").document("u${userid}").collection("reservation").get()
@@ -166,8 +169,10 @@ class CalendarViewModel : ViewModel() {
             }
             .addOnFailureListener { exception ->
                 // 处理错误
+
                 Log.d(TAG, "Error getting documents: ${exception.message}")
-                _reservations.value = null
+                _reservations.value = listOf()
+
             }
 //        _reservations.value = db.reservationDao().getReservationByUserId(userid)
 //        getCourts(application)
@@ -589,8 +594,11 @@ class CalendarViewModel : ViewModel() {
 
     }
 
-    fun clear() {
-        _reservations.value = null
+
+
+    fun clear(){
+        _reservations.value = listOf()
+
     }
 
 
