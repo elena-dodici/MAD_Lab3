@@ -8,14 +8,15 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.sql.Time
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 
 class HistoryViewModel:ViewModel() {
-    private var _reservations = MutableLiveData<List<MyReservation>>()
+    private var _reservations = MutableLiveData<List<MyReservation>>().also { listOf<MyReservation>() }
     val reservations: LiveData<List<MyReservation>> = _reservations
     val db1 = Firebase.firestore
 
-    fun getResbyUser(userid:Int){
+    fun getHistoryResbyUser(userid:Int){ // 只拿今天之前的！
         db1.collection("users").document("u${userid}").collection("reservation").get()
             .addOnSuccessListener { result ->
                 val dataList = result.map { document ->
@@ -39,8 +40,7 @@ class HistoryViewModel:ViewModel() {
 
                     val endTime = Instant.ofEpochSecond(secondsEnd!!).atZone(zone)
 
-
-                    if (res["status"].toString() == "0"){
+                    if (res["status"].toString() == "0" && startTime.toLocalDate()< LocalDate.now()){
                         myres.add(
                             MyReservation(res["name"].toString(), res["sport"].toString(),
                                 Time(startTime.hour,startTime.minute,startTime.second), Time(endTime.hour,endTime.minute,endTime.second), startTime.toLocalDate(),res["description"].toString() )

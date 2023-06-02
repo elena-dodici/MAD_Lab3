@@ -36,7 +36,7 @@ class HistoryAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<HistoryA
 
     }
     val events = mutableListOf<Event>()
-    var ranking:Int = 1
+//    var ranking:Int = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         val b = ItemLayoutHistoryBinding.inflate(parent.context.layoutInflater, parent, false)
@@ -51,6 +51,8 @@ class HistoryAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<HistoryA
         holder.bind(events[position])
     }
 }
+
+var ranking: Int = 1
 class HistoryFragment : BaseFragment(R.layout.fragment_history),HasToolbar{
     private lateinit var  binding: FragmentHistoryBinding
     private val sharedvm : HistoryViewModel by activityViewModels()
@@ -69,15 +71,18 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),HasToolbar{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedvm.getResbyUser(vmMain.user)
+        println()
+        sharedvm.getHistoryResbyUser(vmMain.user)
         sharedvm.reservations.observe(this){
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
             events.clear()
+            ranking = 1
             for (res in it){
                 events.add( Event(UUID.randomUUID().toString(), res.name, res.sport,res.startTime, res.date))
-
             }
-//            println(events)
+            events.sortBy {
+                it.date
+            }
             updateAdapter()
         }
     }

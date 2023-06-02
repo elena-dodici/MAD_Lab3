@@ -27,15 +27,15 @@ class ScoreAdapter(val onTap:(CourtInfo)->Unit):RecyclerView.Adapter<ScoreAdapte
             }
         }
         fun bind(courtInfo:CourtInfo){
-            binding.itemTextRank.text =ranking.toString()
-            ranking+=1
+            binding.itemTextRank.text =ranking1.toString()
+            ranking1+=1
             binding.itemTextCourt.text = courtInfo.courtname
             courtInfo.avg_rating = ((courtInfo.avg_rating *100.0).roundToInt() / 100.0).toFloat()
             binding.itemTextScore.text =  courtInfo.avg_rating.toString()
         }
     }
     val courtInfoList = mutableListOf<CourtInfo>()
-    var ranking:Int = 1
+//    var ranking:Int = 1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScoreViewHolder {
         val b = ItemLayoutCourtScoreBinding.inflate(parent.context.layoutInflater, parent, false)
         return ScoreViewHolder(b)
@@ -49,6 +49,7 @@ class ScoreAdapter(val onTap:(CourtInfo)->Unit):RecyclerView.Adapter<ScoreAdapte
         holder.bind(courtInfoList[position])
     }
 }
+var ranking1:Int = 1
 class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
     companion object {
         fun newInstance() = CourtFragment()
@@ -75,6 +76,7 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
         sharedvm.getCourtInfo(this.requireActivity().application)
         sharedvm.courtInfo.observe(this){
             courtInfoList.clear();
+            ranking1 = 1
             for (res in it){
                 courtInfoList.add(res)
             }
