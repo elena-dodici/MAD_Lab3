@@ -74,7 +74,7 @@ class  CalendarViewModel() : ViewModel( ) {
     val selSport : LiveData<String> = _selSport
 
 
-    fun getAllRes(application: Application, userid:Int){
+    fun getAllRes(userid:Int){
 //        db = AppDatabase.getDatabase(application)
 
         db1.collection("users").document("u${userid}").collection("reservation").get()
@@ -96,7 +96,7 @@ class  CalendarViewModel() : ViewModel( ) {
                     // 将秒数值转换为 Timestamp 对象
 //                    val starttimestamp = seconds?.let { Timestamp(it, 0) }
 
-                    val zone = ZoneId.of("UTC+1")
+                    val zone = ZoneId.of("UTC+2")
 //                    val zone = ZoneId.systemDefault()
                     val startTime = Instant.ofEpochSecond(secondsStart!!).atZone(zone)
 

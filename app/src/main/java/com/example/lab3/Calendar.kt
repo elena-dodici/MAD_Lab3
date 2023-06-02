@@ -123,7 +123,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 //            println("所有可用日期：$availableDateList")
         }
 //        应该在viewmodel里获取数据
-        sharedvm.getAllRes(this.requireActivity().application, vmMain.user)
+        sharedvm.getAllRes(vmMain.user)
         sharedvm.reservations.observe(viewLifecycleOwner){
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
             events.clear()
