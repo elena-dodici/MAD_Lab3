@@ -1,5 +1,6 @@
 package com.example.lab3
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -33,23 +34,27 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
         binding = FragmentDetailBinding.bind(view, savedInstanceState)
 
         binding.delBtn.setOnClickListener {
-            sharedvm.deleteRes(mainvm.user, sharedvm.selectedRes.value!!.resId)
-            findNavController().navigate(R.id.action_detailFragment_to_calendar)
-            mainvm.setShowNav(true)
-            Toast.makeText(context, "Delete successfully", Toast.LENGTH_LONG).show()
+
+            Dialog()
+
         }
+
+
+
         binding.saveBtn.setOnClickListener {
             //add limitation for rating and review
 
             val resTime = LocalDateTime.of(sharedvm.selDate.value!!.year, sharedvm.selDate.value!!.monthValue, sharedvm.selDate.value!!.dayOfMonth, sharedvm.selectedRes.value!!.startTime.hours, sharedvm.selectedRes.value!!.startTime.minutes)
 
-            if (LocalDateTime.now().isBefore(resTime)  ){
-                Toast.makeText(context, "You cannot write your reservation before the date", Toast.LENGTH_LONG).show()
+            if (LocalDateTime.now().isAfter(resTime)  ){
+                Toast.makeText(context, "You cannot change your reservation before today", Toast.LENGTH_LONG).show()
             }else{
-                sharedvm.addOrUpdateRes(mainvm.user,binding.ratingBar.rating.toInt())
-                findNavController().navigate(R.id.action_detailFragment_to_calendar)
-                mainvm.setShowNav(true)
-                Toast.makeText(context, "Update successfully", Toast.LENGTH_LONG).show()
+                sharedvm.addOrUpdateRes(mainvm.user)
+                sharedvm.test(mainvm.user)
+                gobackCal("Update successfully")
+//                findNavController().navigate(R.id.action_detailFragment_to_calendar)
+//                mainvm.setShowNav(true)
+//                Toast.makeText(context, "Update successfully", Toast.LENGTH_LONG).show()
             }
 
 
@@ -58,9 +63,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
 
         }
         binding.calBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_detailFragment_to_calendar)
-            mainvm.setShowNav(true)
-            Toast.makeText(context, "Unsaved information", Toast.LENGTH_LONG).show()
+            gobackCal("Unsaved information")
         }
 
 
@@ -70,6 +73,8 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
             sharedvm.getFreeSlotByCourtName(sharedvm.selCourtName.value!!)
 
         }
+
+
 
 
         val avaTSpinner = binding.avaTimeSpinner1
@@ -121,18 +126,31 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
             }
         }
 
-
+//        sharedvm.combinedLiveData.addSource(sharedvm.selCourtName) { value1 ->
+//            val value2 = sharedvm.courtNames.value
+//            if (value2 != null) {
+//                sharedvm.combinedLiveData.value = Pair(value1, value2)
+//            }
+//        }
+//
+//        sharedvm.combinedLiveData.addSource(sharedvm.courtNames) { value2 ->
+//            val value1 = sharedvm.selCourtName.value
+//            if (value1 != null) {
+//                sharedvm.combinedLiveData.value = Pair(value1, value2)
+//            }
+//        }
 
         val courtNameSpinner = binding.courtNameSpinner
-        sharedvm.getCourtNames()
-        sharedvm.courtNames.observe(viewLifecycleOwner) { newCN ->
+        var courtNameList = sharedvm.courtNamesSport.keys.toList()
+        //sharedvm.selCourtName.observe(viewLifecycleOwner) { newSt->
+//        println("test${courtNameList}")
 
-            val courtNameList = newCN
+
             val arrayAdapterCourtName =
                 ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_spinner_dropdown_item,
-                    courtNameList
+                    courtNameList.sorted()
                 )
             courtNameSpinner.adapter = arrayAdapterCourtName
             val courtNameDefault =
@@ -145,12 +163,10 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
                     position: Int,
                     p3: Long
                 ) {
-//
-                    var newCourtName = courtNameList[position]
-                    sharedvm.setCourtName(newCourtName)
 
-                    //val sport = courtSportIdMap.entries.find { it.value == newCourtId }?.key
-                    //sharedvm.setSport(sport!!)
+                    var newCourtName = courtNameList[position]
+                    sharedvm.setSelCourtName(newCourtName)
+                    sharedvm.setSelSport(sharedvm.courtNamesSport[newCourtName]!!)
                     sharedvm.getFreeSlotByCourtName(newCourtName)
 
                 }
@@ -159,7 +175,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
                 }
 
             }
-        }
+
 
 
 //        val courtSportIdMap =  mutableMapOf<String,Int>()
@@ -239,7 +255,6 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
 
 
 
-
         binding.apply {
             vm = sharedvm
             btnTimePicker.setOnClickListener{
@@ -249,4 +264,27 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
             }
         }
     }
+
+    fun gobackCal(message: String){
+        findNavController().navigate(R.id.action_detailFragment_to_calendar)
+        mainvm.setShowNav(true)
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    }
+    private fun Dialog(){
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Alert")
+        builder.setMessage("Your reservation will be cancelled!")
+        builder.setPositiveButton("yes") { dialog, which ->
+
+            sharedvm.deleteRes(mainvm.user, sharedvm.selectedRes.value!!.resId)
+
+            gobackCal("Delete successfully")
+        }
+        builder.setNegativeButton("no", null)
+        val dialog = builder.create()
+        dialog.show()
+    }
 }
+
+
+

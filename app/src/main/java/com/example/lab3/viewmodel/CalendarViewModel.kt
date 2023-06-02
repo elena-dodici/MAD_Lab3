@@ -3,23 +3,30 @@ package com.example.lab3
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.lab3.database.AppDatabase
 import com.example.lab3.database.entity.Court
 import com.example.lab3.database.entity.FreeCourt
 import com.example.lab3.database.entity.MyReservation
-import com.example.lab3.database.entity.courtsReviews
 import com.google.firebase.Timestamp
+import com.google.firebase.Timestamp.now
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.sql.Time
 import java.time.Instant
+
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.*
-data class reviews(var rating:Int , var review:String,var user:String)
-class  CalendarViewModel() : ViewModel( ) {
+import java.time.format.DateTimeFormatter
+import java.util.Date
+
+data class reviews(var rating: Int, var review: String, var user: String)
+
+
+class CalendarViewModel : ViewModel() {
     private val TAG = "CalendarVM"
 
     //reservationList of this user
@@ -40,6 +47,7 @@ class  CalendarViewModel() : ViewModel( ) {
     val selectedRes: LiveData<MyReservation> = _selectedRes
 
 
+
     //selected Date
     private var _selDate = MutableLiveData<LocalDate>()
     val selDate: LiveData<LocalDate> = _selDate
@@ -52,7 +60,7 @@ class  CalendarViewModel() : ViewModel( ) {
     private var _selRating = MutableLiveData<Int>()
     val selRating: LiveData<Int> = _selRating
 
-//    private var _freeEndTimes = MutableLiveData<List<Time>>().also { it.value = listOf() }
+    //    private var _freeEndTimes = MutableLiveData<List<Time>>().also { it.value = listOf() }
 //    val freeEndTimes: LiveData<List<Time>> = _freeEndTimes
     private var _freeStartTimes = MutableLiveData<List<Time>>().also { it.value = listOf() }
     val freeStartTimes: LiveData<List<Time>> = _freeStartTimes
@@ -65,9 +73,9 @@ class  CalendarViewModel() : ViewModel( ) {
 
     private var _F = MutableLiveData<List<FreeCourt>>().also { it.value = listOf() }
     val F: LiveData<List<FreeCourt>> = _F
-
+/*
     private var _courtNames = MutableLiveData<List<String>>().also { it.value = listOf() }
-    val courtNames: LiveData<List<String>> = _courtNames
+    val courtNames: LiveData<List<String>> = _courtNames*/
 
     val db1 = Firebase.firestore
 
@@ -79,9 +87,25 @@ class  CalendarViewModel() : ViewModel( ) {
     val selSport: LiveData<String> = _selSport
 
 
-    fun getAllRes(application: Application, userid: Int) {
+
+    fun test(userid: Int) {
+        val colRef = db1.collection("users").document("u${userid}")
+        colRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e)
+                return@addSnapshotListener
+            }
+            getAllRes(userid)
+
+        }
+    }
+
+
+
+
+    fun getAllRes(userid: Int) {
 //        db = AppDatabase.getDatabase(application)
-        println("getALl is activated!!!!")
+
         db1.collection("users").document("u${userid}").collection("reservation").get()
             .addOnSuccessListener { result ->
 
@@ -132,40 +156,120 @@ class  CalendarViewModel() : ViewModel( ) {
                             )
 
                         )
+
                     }
 
                 }
                 _reservations.value = myres
+
 //                _reservations.value = dataList
             }
             .addOnFailureListener { exception ->
                 // 处理错误
-                Log.d(TAG,"Error getting documents: ${exception.message}")
+                Log.d(TAG, "Error getting documents: ${exception.message}")
                 _reservations.value = null
             }
 //        _reservations.value = db.reservationDao().getReservationByUserId(userid)
 //        getCourts(application)
+
     }
 
-    fun getCourts(application: Application) {
-        db = AppDatabase.getDatabase(application)
-        _courts.value = db.courtDao().getAllCourts()
-    }
 
+
+    private var _FreeSlotsOneDay = MutableLiveData<MutableMap<String, Map<String, Boolean>>>()
+    val FreeSlotsOneDay: LiveData<MutableMap<String, Map<String, Boolean>>> = _FreeSlotsOneDay
+    private var _FullDate = MutableLiveData<MutableMap<LocalDate, Boolean>>()
+    val FullDate: LiveData<MutableMap<LocalDate, Boolean>> = _FullDate
+    private var _allDate = MutableLiveData<MutableList<LocalDate>>()
+    val allDate: LiveData<MutableList<LocalDate>> = _allDate
     fun getResBySport(application: Application, sport: String) {
+
         db = AppDatabase.getDatabase(application)
 //        _reservations.value = db.reservationDao().getReservationBySport(sport)
     }
 
-
-    fun getAllCourtTime(application: Application, sport: String) {
-        db = AppDatabase.getDatabase(application)
-        _F.value = db.courtTimeDao().getAllTCourtTimes(sport)
+    fun getDateFull(application: Application, sport: String, ad: List<LocalDate>) {
+        var fd = mutableMapOf<LocalDate, Boolean>()
+        ad.forEach {
+            fd[it] = false
+        }
+        db1.collection("court").whereEqualTo("sport", "${sport}")
+            .get().addOnSuccessListener {
+                it.forEach { court ->
+                    val allFreeSlot = court.reference.collection("courtTime")
+                    allFreeSlot.get().addOnSuccessListener { courtTimeQuerySnapshot ->
+                        courtTimeQuerySnapshot.forEach { date ->
+                            if (date.data.containsValue(true)) {
+                                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                                val localDate = LocalDate.parse(date.id, formatter)
+                                fd[localDate] = true
+                            }
+                        }
+                        _FullDate.value = fd
+                    }
+                }
+            }
     }
-    var freeStartTimeList = mutableListOf<Time>()
-    val freeEndTimeList = mutableListOf<Time>()
+
+    fun getAllDate(application: Application) {
+        val ad = mutableListOf<LocalDate>()
+        db1.collection("court").document("court1").collection("courtTime")
+            .get().addOnSuccessListener {
+                it.forEach { DATE ->
+                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                    val localDate = LocalDate.parse(DATE.id, formatter)
+                    ad.add(localDate)
+                }
+                _allDate.value = ad
+            }
+    }
+
+    fun updateAllDate(application: Application) {
+        val ad = mutableListOf<LocalDate>()
+        db1.collection("court").document()
+            .get().addOnSuccessListener {
+                println("court" + it.id)
+                it.reference.collection("courtTime")
+            }
+    }
+
+    fun getFreeSlotByDateAndSport(application: Application, sport: String, date: LocalDate?) {
+        //ct的key为court的名字，value为某一天所有时间段和对应占用状态
+        var ct = mutableMapOf<String, Map<String, Boolean>>()
+        //搜索所有运动为sport的court
+        db1.collection("court").whereEqualTo("sport", "${sport}")
+            .get().addOnSuccessListener {
+                it.forEach { court ->
+                    val sportName = court.id.toString()
+                    val allFreeSlot = court.reference.collection("courtTime")
+                    allFreeSlot.get().addOnSuccessListener { courtTimeQuerySnapshot ->
+                        courtTimeQuerySnapshot.forEach { slot ->
+                            if (slot.id == date.toString()) {
+
+                                if (sportName != null) {
+                                    ct.put(sportName, slot.data as Map<String, Boolean>)
+                                }
+
+                            }
+                        }
+                        _FreeSlotsOneDay.value = ct
+                    }
+                }
+            }.addOnFailureListener { exception ->
+                // 处理错误
+                println("Error getting documents: ${exception.message}")
+            }
+    }
+
+
+
+
 
     fun setSelectedResByCourtName(resId: String) {
+
+//        getCourtNamesAndSport()
+        var freeStartTimeList = mutableListOf<Time>()
+        val freeEndTimeList = mutableListOf<Time>()
         for (r in _reservations.value!!) {
             if (r.resId == resId) {
                 _selectedRes.value = r
@@ -175,7 +279,6 @@ class  CalendarViewModel() : ViewModel( ) {
                 _selRating.value = r.rating
                 _selSport.value = r.sport
 
-//                println("active  ${r.rating}")
                 db1.collection("court").document(r.name).collection("courtTime")
                     .document("${r.date}").get()
                     .addOnSuccessListener { result ->
@@ -183,243 +286,314 @@ class  CalendarViewModel() : ViewModel( ) {
                             result.data?.forEach { ct ->
                                 if (ct.value == true) {
 
-                                    freeStartTimeList.add(Time(ct.key.toInt(), 0,0))
-                                    freeEndTimeList.add(Time(ct.key.toInt() + 1, 0,0))
+                                    freeStartTimeList.add(Time(ct.key.toInt(), 0, 0))
+                                    freeEndTimeList.add(Time(ct.key.toInt() + 1, 0, 0))
                                 }
 
                             }
 
                             freeStartTimeList.add(_selectedRes.value!!.startTime)
-                            println(" freeStartTimeList is : ${freeStartTimeList}")
+                            Log.d(TAG, "freeStartTimeList in setselected is : ${freeStartTimeList}")
                             _freeStartTimes.value = freeStartTimeList
-//
+
                         } else {
                             Log.d(TAG, "No such document")
                         }
-                    }  .addOnFailureListener { exception ->
-                                // 处理错误
-                                Log.d(TAG,"Error getting documents: ${exception.message}")
+                    }.addOnFailureListener { exception ->
+                        // 处理错误
+                        Log.d(TAG, "Error getting documents: ${exception.message}")
 
-                            }
-//                //getAllFreeSLotByCourtIdAndDate(r.courtId, r.date,0,application)
-//                val freeCourtTime = AppDatabase.getDatabase(application).courtDao().getAllFreeSlotByCourtIdAndDate(r.courtId, r.date,0)
-//                val freeEndTimeList = mutableListOf<Time>()
-//                val freStartTimeList = mutableListOf<Time>()
-//                for (i in freeCourtTime){
-//                    freeEndTimeList.add(i.endTime)
-//                    freStartTimeList.add(i.startTime)
+                    }
+
+
+
+
+            }
+        }
+    }
+
+    fun setSelDate(newDate: LocalDate) {
+        _selDate.value = newDate
+    }
+    fun setSelSport(newSport: String) {
+        _selSport.value = newSport
+    }
+
+    fun setStartTime(newST: Time) {
+        _selStartTime.value = newST
+    }
+
+
+    fun setSelCourtName(newCourtName: String) {
+
+        _selCourtName.value = newCourtName
+    }
+    var courtNamesSport = hashMapOf<String,String>()
+    fun getCourtNamesAndSport() {
+
+        db1.collection("court").get()
+            .addOnSuccessListener { querySnapshot ->
+                val test = querySnapshot.map { documentSnapshot ->
+                    val mapId = mapOf(
+                        "cn" to documentSnapshot.id,
+                    )
+                    mapId + documentSnapshot.data
+                }
+                test.forEach{res->
+
+
+                    courtNamesSport.put(res["cn"].toString(),res["sport"].toString())
+                }
+
+
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+
+        //  val courtNameList = courtNameIdMap.keys.toTypedArray()
+
+
+    }
+
+    fun getFreeSlotBySportAndDate(sport: String, date: LocalDate, application: Application) {
+        db = AppDatabase.getDatabase(application)
+        _freeSlots.value = db.courtDao().getFreeSlotBySportAndDate(sport, date)
+    }
+
+    fun getFreeSlotByCourtName(courtName: String) {
+
+        val freeStartTimeList = mutableListOf<Time>()
+        db1.collection("court").document(courtName).collection("courtTime")
+            .document("${selDate.value}").get()
+            .addOnSuccessListener { result ->
+                if (result != null) {
+                    result.data?.forEach { ct ->
+                        if (ct.value == true) {
+
+                            freeStartTimeList.add(Time(ct.key.toInt(), 0, 0))
+                            //freeEndTimeList.add(Time(ct.key.toInt() + 1, 0,0))
+                        }
+
+                    }
+                    if (_selectedRes.value!!.name == selCourtName.value && selDate.value == _selectedRes.value!!.date) {
+                        freeStartTimeList.add(_selectedRes.value!!.startTime)
+                    }
+
+                    _freeStartTimes.value = freeStartTimeList
+
+                } else {
+                    Log.d(TAG, "No such document")
+                }
+            }.addOnFailureListener { exception ->
+                // 处理错误
+                Log.d(TAG, "Error getting documents: ${exception.message}")
+
+            }
+    }
+
+
+    fun addOrUpdateRes(userId: Int) {
+
+
+        var startTimeDay = Timestamp(
+            Date(
+                selDate.value!!.year - 1900,
+                selDate.value!!.monthValue - 1,
+                selDate.value!!.dayOfMonth,
+                selStartTime.value!!.hours,
+                selStartTime.value!!.minutes
+            )
+        )
+        var endTimeDay = Timestamp(
+            Date(
+                selDate.value!!.year - 1900,
+                selDate.value!!.monthValue - 1,
+                selDate.value!!.dayOfMonth,
+                selStartTime.value!!.hours + 1,
+                selStartTime.value!!.minutes
+            )
+        )
+
+
+        val newRes = hashMapOf(
+
+            "ct" to mapOf(
+                "endTime" to endTimeDay,
+                "startTime" to startTimeDay
+            ),
+            "description" to selectedRes.value!!.description,
+            "name" to "${selCourtName.value}",
+            "rating" to selectedRes.value!!.rating,
+            "review" to selectedRes.value!!.review,
+            "sport" to selSport.value,
+            "status" to 0
+
+        )
+//        var newAvgrating: Float
+//        db1.collection("court").document("${selCourtName.value}")
+//            .get()
+//            .addOnSuccessListener { docs ->
+//
+//                var reviewList = docs.data?.get("review") as? List<*>
+//                var sumRating = 0
+//
+//                val numOfRev = reviewList!!.size
+//
+//                reviewList.forEach { r ->
+//
+//                    val mapItem = r as Map<String, Any?>
+//                    sumRating += mapItem["rating"].toString().toInt()
+//
 //                }
 //
+//                newAvgrating =
+//                    (sumRating - _selectedRes.value!!.rating + rating).toFloat() / (numOfRev)
+//
+//                var newRating = mapOf(
+//                    "avg_rating" to newAvgrating
+//                )
+//            println(newRes)
+                //set new reservation
+                db1.collection("users").document("u$userId").collection("reservation")
+                    .document(selectedRes.value!!.resId)
+                    .set(newRes)
+                    .addOnSuccessListener {
 
+                        Log.d(TAG, "new reservtion add successfully written!")
 
 
                     }
+                    .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+
+//                db1.collection("users").document("u$userId").collection("reservation")
+//                    .document(selectedRes.value!!.resId)
+//                    .get().addOnSuccessListener { result ->
+//                        result.data
+//
+//                    }
+
+                //update new avg_rating
+//                db1.collection("court").document("${selCourtName.value}")
+//                    .update(newRating)
+//                    .addOnSuccessListener {
+//                        Log.d(
+//                            TAG,
+//                            "${newRating} successfully written!"
+//                        )
+//                    }
+//                    .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+//                // update user rating
+//                db1.collection("court").document("${selCourtName.value}").get()
+//                    .addOnSuccessListener { result ->
+//                        if (result != null) {
+//                            var reviewList = result.data?.get("review") as? MutableList<*>
+//                            val newList = mutableListOf<reviews>()
+//                            if (reviewList != null) {
+//                                if (reviewList.size > 0) {
+//                                    for (i in reviewList) {
+//                                        val mapItem = (i as MutableMap<String, Any?>).toMutableMap()
+//                                        if (mapItem["user"] == "u$userId") {
+//                                            mapItem["rating"] = rating
+//                                            mapItem["review"] = selectedRes.value!!.review
+//                                        }
+//                                        newList.add(
+//                                            reviews(
+//                                                mapItem["rating"].toString().toInt(),
+//                                                mapItem["review"].toString(),
+//                                                "u$userId"
+//                                            )
+//                                        )
+//
+//                                    }
+//                                    //update review list
+//                                    db1.collection("court")
+//                                        .document("${selCourtName.value}")
+//                                        .update("review", newList)
+//                                        .addOnSuccessListener {
+//                                            Log.d(
+//                                                TAG,
+//                                                "review list successfully updated!"
+//                                            )
+//                                        }
+//                                        .addOnFailureListener { e ->
+//                                            Log.w(
+//                                                TAG,
+//                                                "Error update document",
+//                                                e
+//                                            )
+//                                        }
+//
+//
+//                                }
+//
+//                            }
+//                        }
+//
+//                    }
+
+                //update freeslot time
+                //changeinto false
+                val docRef1 = db1.collection("court").document(selCourtName.value!!).collection("courtTime").document("${selDate.value}")
+                docRef1.get().addOnSuccessListener { result ->
+                         docRef1.update("${selStartTime.value!!.hours}", false)
+                            .addOnSuccessListener {
+                                Log.d(TAG, "${selDate.value} of ${selCourtName.value} at this time  ${selStartTime.value!!.hours} set to false successfully!")
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.e("TAG", "Error updating field value: $exception")
+                            }
+
+                    }.addOnFailureListener { exception -> Log.d(TAG, " ${exception.message}") }
+                //change into true
+                val docRef2 =  db1.collection("court").document(selectedRes.value!!.name).collection("courtTime").document("${selectedRes.value!!.date}")
+                docRef2.get().addOnSuccessListener { result ->
+                    docRef2.update("${selectedRes.value!!.startTime.hours}", true)
+                        .addOnSuccessListener {
+                            Log.d(TAG, "${selectedRes.value!!.date} of ${selectedRes.value!!.name} at this time  ${selectedRes.value!!.startTime.hours} set to true successfully!")
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.e(TAG, "Error updating field value: $exception")
+                        }
+
+                    }.addOnFailureListener { exception -> Log.d(TAG, " ${exception.message}") }
+
+                Log.d(TAG, "DocumentSnapshot successfully written!")
+//            }
+//            .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+    }
+
+    fun deleteRes(userid: Int, resId: String) {
+
+
+        db1.collection("users").document("u$userid").collection("reservation").document("$resId")
+            .update("status", 1).addOnSuccessListener {
+
+                Log.d(TAG, "delete successfully")
             }
-        }
 
-        fun setSelDate(newDate: LocalDate) {
-            _selDate.value = newDate
-        }
+        //update freeslot time
+        //changeinto false
 
-        fun setStartTime(newST: Time) {
-            _selStartTime.value = newST
-        }
-
-
-
-        fun setCourtName(newCourtName: String) {
-            _selCourtName.value = newCourtName
-        }
-
-        fun setSport(newSport: String) {
-            _selSport.value = newSport
-        }
-
-        fun getCourtNames()  {
-
-            db1.collection("court").get()
-                .addOnSuccessListener { querySnapshot->
-                    val test = querySnapshot.documents.map {
-                        documentSnapshot ->documentSnapshot.id
-                    }
-                    _courtNames.value = test
-
+        //change into true
+        val docRef2 =  db1.collection("court").document(selCourtName.value!!).collection("courtTime").document("${selectedRes.value!!.date}")
+        docRef2.get().addOnSuccessListener { result ->
+            docRef2.update("${selectedRes.value!!.startTime.hours}", true)
+                .addOnSuccessListener {
+                    Log.d(TAG, "${selectedRes.value!!.date} of ${selCourtName.value} at this time  ${selectedRes.value!!.startTime.hours} set to true successfully!")
                 }
                 .addOnFailureListener { exception ->
-                    Log.w(TAG, "Error getting documents: ", exception)
+                    Log.e(TAG, "Error updating field value: $exception")
                 }
 
-            //  val courtNameList = courtNameIdMap.keys.toTypedArray()
+        }.addOnFailureListener { exception -> Log.d(TAG, " ${exception.message}") }
 
 
+    }
 
-        }
-
-        fun getFreeSlotBySportAndDate(sport: String, date: LocalDate, application: Application) {
-            db = AppDatabase.getDatabase(application)
-            _freeSlots.value = db.courtDao().getFreeSlotBySportAndDate(sport, date)
-        }
-        fun getFreeSlotByCourtName(courtName:String){
-
-            val freeStartTimeList = mutableListOf<Time>()
-            db1.collection("court").document(courtName).collection("courtTime")
-                .document("${selDate.value}").get()
-                .addOnSuccessListener { result ->
-                    if (result != null) {
-                        result.data?.forEach { ct ->
-                            if (ct.value == true) {
-
-                                freeStartTimeList.add(Time(ct.key.toInt(), 0,0))
-                                //freeEndTimeList.add(Time(ct.key.toInt() + 1, 0,0))
-                            }
-
-                        }
-                        if (_selectedRes.value!!.name == selCourtName.value && selDate.value == _selectedRes.value!!.date){
-                            freeStartTimeList.add(_selectedRes.value!!.startTime)
-                        }
-
-                        _freeStartTimes.value = freeStartTimeList
-
-                    } else {
-                        Log.d(TAG, "No such document")
-                    }
-                }  .addOnFailureListener { exception ->
-                    // 处理错误
-                    Log.d(TAG,"Error getting documents: ${exception.message}")
-
-                }
-        }
-        fun getAllFreeSLotByCourtIdAndDate(
-            courtId: Int,
-            date: LocalDate,
-            status: Int,
-            application: Application
-        ) {
-            val freeCourtTime = AppDatabase.getDatabase(application).courtDao()
-                .getAllFreeSlotByCourtIdAndDate(courtId, date, status)
-            val freeEndTimeList = mutableListOf<Time>()
-            val freStartTimeList = mutableListOf<Time>()
-            for (i in freeCourtTime) {
-                freeEndTimeList.add(i.endTime)
-                freStartTimeList.add(i.startTime)
-            }
-//            if (_selectedRes.value!!.startTime == selDate) freStartTimeList.add(_selectedRes.value!!.startTime)
-//            if (_selectedRes.value!!.endTime == selDate) freeEndTimeList.add(_selectedRes.value!!.endTime)
-
-
-            _freeStartTimes.value = freStartTimeList
-        }
-
-        fun addOrUpdateRes(userId: Int,rating: Int) {
-
-
-            var startTimeDay = Timestamp(Date(selDate.value!!.year - 1900, selDate.value!!.monthValue -1, selDate.value!!.dayOfMonth, selStartTime.value!!.hours, selStartTime.value!!.minutes))
-            var endTimeDay = Timestamp(Date(selDate.value!!.year - 1900, selDate.value!!.monthValue-1, selDate.value!!.dayOfMonth, selStartTime.value!!.hours + 1, selStartTime.value!!.minutes))
-
-            val newRes = hashMapOf(
-
-                "ct" to mapOf(
-                    "endTime" to endTimeDay,
-                    "startTime" to startTimeDay
-                ),
-                "description" to selectedRes.value!!.description,
-                "name" to "${selCourtName.value}",
-                "rating" to rating,
-                "review" to selectedRes.value!!.review,
-                "sport" to selSport.value,
-                "status" to 0
-
-            )
-            var newAvgrating: Float
-            db1.collection("court").document("${selCourtName.value}")
-                .get()
-                .addOnSuccessListener {docs->
-
-                    var reviewList = docs.data?.get("review") as? List<*>
-                    var sumRating =0
-
-                    val numOfRev = reviewList!!.size
-
-                    reviewList.forEach { r->
-
-                        val mapItem = r as Map<String, Any?>
-                        sumRating += mapItem["rating"].toString().toInt()
-
-                    }
-
-                    newAvgrating = (sumRating -_selectedRes.value!!.rating + rating).toFloat()/ (numOfRev)
-
-            var newRating = mapOf(
-                "avg_rating" to newAvgrating
-            )
-//            println(newRes)
-                    //set new reservation
-            db1.collection("users").document("u$userId").collection("reservation").document(selectedRes.value!!.resId)
-                .set(newRes)
-                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
-                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
-            //update new avg_rating
-                    db1.collection("court").document("${selCourtName.value}")
-                .update(newRating)
-                .addOnSuccessListener { Log.d(TAG, "${newRating}DocumentSnapshot successfully written!") }
-                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
-            // update user rating
-                    db1.collection("court").document("${selCourtName.value}").get()
-                        .addOnSuccessListener {result->
-                            if (result != null) {
-                                var reviewList = result.data?.get("review") as? MutableList<*>
-
-
-                                val newList = mutableListOf<reviews>()
-                                if (reviewList != null) {
-                                    if (reviewList.size > 0) {
-                                        for (i in reviewList){
-                                            val mapItem = (i as MutableMap<String, Any?>).toMutableMap()
-                                            if (mapItem["user"] == "u$userId") { mapItem["rating"] = rating}
-                                        newList.add(reviews(mapItem["rating"].toString().toInt(),mapItem["review"].toString(),"u$userId"))
-
-                                        }
-                                                //update review list
-
-
-                                                db1.collection("court")
-                                                    .document("${selCourtName.value}")
-                                                    .update("review",newList)
-                                                    .addOnSuccessListener { Log.d(  TAG, "${newList} successfully updated!") }
-                                                    .addOnFailureListener { e -> Log.w(TAG,"Error update document", e) }
-
-
-
-
-                                        }
-
-                                    }
-                                }
-
-                            }
-
-
-
-
-                    Log.d(TAG, "DocumentSnapshot successfully written!") }
-                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
-        }
-
-        fun deleteRes(userid: Int, resId:String) {
-
-
-            db1.collection("users").document("u$userid").collection("reservation").document("$resId")
-                .update("status",1).addOnSuccessListener{
-                    Log.d(TAG, "delete successfully")
-                }
-
-
-        }
-
-        fun clear() {
-            _reservations.value = null
-        }
-
+    fun clear() {
+        _reservations.value = null
+    }
 
 
 }

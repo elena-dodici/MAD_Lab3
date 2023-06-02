@@ -54,7 +54,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
     private  var tele :String? = null
     private val vm : ProfileViewModel by activityViewModels()
     private val vmMain : MainViewModel by activityViewModels()
-
+    private  var sportList : List<SportDetail>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,6 +93,8 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentProfileBinding.bind(view)
+        // 找到 RecyclerView 实例
+        val recyclerViewSports = view.findViewById<RecyclerView>(R.id.recyclerViewS)
         val sharedPreferences = requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
         val savedPath = sharedPreferences.getString("path", null)
         //获取头像
@@ -106,7 +108,21 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         val adapterU = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, users)
         adapterU.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerUser.adapter = adapterU
+        vm.userSports.observe(viewLifecycleOwner){
+            sportList= it
+//            println("this"+sportList)
+            recyclerViewSports.layoutManager = LinearLayoutManager(requireContext())
 
+            // 创建适配器并设置给 RecyclerView
+            var adapter = SportsAdapter(sportList ?: emptyList())
+
+            recyclerViewSports.adapter = adapter
+            adapter.setOnItemClickListener {
+                var bundle = bundleOf("sportName" to it)
+                vmMain.setShowNav(false)
+                findNavController().navigate(R.id.action_profileFragment_to_sportsDetail,bundle)
+            }
+        }
 
 //        profilePicturePath = arguments?.getString("Path")
         super.onViewCreated(view, savedInstanceState)
@@ -114,15 +130,13 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         val editButton = view.findViewById<Button>(R.id.btE)
         val fullName = view.findViewById<TextView>(R.id.tv_name)
         val tel = view.findViewById<TextView>(R.id.tv_phone)
-        // 找到 RecyclerView 实例
 
-        val recyclerViewSports = view.findViewById<RecyclerView>(R.id.recyclerViewS)
 
         // 设置布局管理器
         recyclerViewSports.layoutManager = LinearLayoutManager(requireContext())
 
         // 创建适配器并设置给 RecyclerView
-        var adapter = SportsAdapter(vm.userSports.value ?: emptyList())
+        var adapter = SportsAdapter(sportList ?: emptyList())
 
         recyclerViewSports.adapter = adapter
         adapter.setOnItemClickListener {
@@ -140,9 +154,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
             tel.setText(tele)
 //            println("user:"+ it)
         }
-//        vm.userSports.observe(viewLifecycleOwner){
 
-//        }
 //        println(vmMain.user)
         spinnerUser.setSelection(vmMain.user-1)
         spinnerUser.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -156,7 +168,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
                     fullName.setText(full_name)
                     tel.setText(tele)
                 }
-                adapter = SportsAdapter(vm.userSports.value ?: emptyList())
+                adapter = SportsAdapter(sportList ?: emptyList())
                 recyclerViewSports.adapter = adapter
                 adapter.setOnItemClickListener {
                     var bundle = bundleOf("sportName" to it)
@@ -189,7 +201,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         }
         vm.getUserById(this.requireActivity().application, vmMain.user)
         vm.getUserSportsById(this.requireActivity().application, vmMain.user)
-        println(vm.User.value)
+
     }
 
     private fun loadImageFromStorage(path: String?) {
@@ -211,7 +223,7 @@ class SportsAdapter(private val sportsList: List<SportDetail>) : RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: SportsViewHolder, position: Int) {
-        holder.bind(sportsList[position].sportType,sportsList[position].masteryLevel)
+        sportsList[position].masteryLevel?.let { holder.bind(sportsList[position].sportType, it) }
 //        holder.itemView.setOnClickListener {
 //            val selectedSport = sportsList[position].sportType
 //            var bundle = bundleOf("sportName" to selectedSport)
@@ -242,7 +254,7 @@ class SportsAdapter(private val sportsList: List<SportDetail>) : RecyclerView.Ad
                 }
             }
         }
-        fun bind(sport: String,level:Int) {
+        fun bind(sport: String,level:Long) {
             textViewSport.text = sport
             textViewLevel.text = level.toString()
         }

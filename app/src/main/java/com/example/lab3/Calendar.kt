@@ -95,12 +95,16 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
     val eventsAdapter = MyAdapter{
         // 点击下面recyclerView调用的事件
+        if(sharedvm.courtNamesSport.size>0){
+            gotoDetailFrag(it.resId)
+        }
 
-        gotoDetailFrag(it.resId)
     }
 
     private fun gotoDetailFrag(resId: String){
         sharedvm.setSelectedResByCourtName(resId)
+
+
         vmMain.setShowNav(false)
         findNavController().navigate(R.id.action_calendar_to_detailFragment)
     }
@@ -111,13 +115,18 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     ): View? {
         // 在某个日期下面 初始化 几个reservation
 //        应该在viewmodel里获取数据
-        sharedvm.getAllRes(this.requireActivity().application, vmMain.user)
+        sharedvm.getAllRes( vmMain.user)
+        sharedvm.getCourtNamesAndSport()
         sharedvm.reservations.observe(viewLifecycleOwner){
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
             events.clear()
             for (res in it){
 //                events[res.date] = events[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
-                events[res.date] = events[res.date].orEmpty().plus(Event(UUID.randomUUID().toString(), res.resId, res.name, res.sport,res.startTime, res.date))
+
+                events[res.date] = events[res.date].orEmpty().plus(Event(UUID.randomUUID().toString(),  res.resId , res.name, res.sport,res.startTime, res.date))
+                monthCalendarView.notifyCalendarChanged()
+                weekCalendarView.notifyCalendarChanged()
+
             }
 
         }
@@ -126,6 +135,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        println("onViewCreated")
         binding = FragmentCalendarViewBinding.bind(view)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
@@ -320,6 +330,9 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
                 textView.background = null
                 dotView.isVisible = events[date].orEmpty().isNotEmpty()
+//                if (dotView.isVisible){
+//                    println(">> $date")
+//                }
 
             }
         }else{
