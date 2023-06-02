@@ -181,12 +181,10 @@ class CalendarViewModel : ViewModel() {
     private var _FullDate = MutableLiveData<MutableMap<LocalDate, Boolean>>()
     val FullDate: LiveData<MutableMap<LocalDate, Boolean>> = _FullDate
     private var _allDate = MutableLiveData<MutableList<LocalDate>>()
-    val allDate: LiveData<MutableList<LocalDate>> = _allDate
-    fun getResBySport(application: Application, sport: String) {
 
-        db = AppDatabase.getDatabase(application)
-//        _reservations.value = db.reservationDao().getReservationBySport(sport)
-    }
+    val allDate:LiveData<MutableList<LocalDate>> = _allDate
+
+
 
     fun getDateFull(application: Application, sport: String, ad: List<LocalDate>) {
         var fd = mutableMapOf<LocalDate, Boolean>()
