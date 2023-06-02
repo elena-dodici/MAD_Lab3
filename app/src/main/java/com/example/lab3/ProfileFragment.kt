@@ -72,8 +72,8 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        vm.getUserById(this.requireActivity().application, vmMain.user)
-        vm.getUserSportsById(this.requireActivity().application, vmMain.user)
+        vm.getUserById(this.requireActivity().application, vmMain.user.value!!)
+        vm.getUserSportsById(this.requireActivity().application, vmMain.user.value!!)
 //        vm.User.observe(viewLifecycleOwner){
 //            println("user:"+ (vm.User.value?.surname ))
 //        }
@@ -101,7 +101,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
 
         val users = listOf("user1", "user2", "user3")
         val spinnerUser = view.findViewById<Spinner>(R.id.userSpinner)
-//        spinnerUser.setSelection(vmMain.user-1)
+//        spinnerUser.setSelection(vmMain.user.value!!-1)
         val adapterU = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, users)
         adapterU.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerUser.adapter = adapterU
@@ -161,8 +161,8 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
                 .load(it)
                 .into(photoView)
         }
-//        println(vmMain.user)
-        spinnerUser.setSelection(vmMain.user-1)
+//        println(vmMain.user.value!!)
+        spinnerUser.setSelection(vmMain.user.value!!-1)
         spinnerUser.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 updateUser(parent.getItemAtPosition(position).toString())
@@ -173,6 +173,8 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
                     tele = it.tel
                     fullName.setText(full_name)
                     tel.setText(tele)
+                    vmMain.setUser(position + 1)
+                    println("this is new user position !!! ${position}")
                 }
                 adapter = SportsAdapter(sportList ?: emptyList())
                 recyclerViewSports.adapter = adapter
@@ -199,18 +201,18 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
     private fun updateUser(User: String) {
         when(User){
             ("user1")->{
-                vmMain.user=1
+                vmMain.setUser(1)
             }
             ("user2")->{
-                vmMain.user=2
+                vmMain.setUser(2)
             }
             ("user3")->{
-                vmMain.user=3
+                vmMain.setUser(3)
             }
 
         }
-        vm.getUserById(this.requireActivity().application, vmMain.user)
-        vm.getUserSportsById(this.requireActivity().application, vmMain.user)
+        vm.getUserById(this.requireActivity().application, vmMain.user.value!!)
+        vm.getUserSportsById(this.requireActivity().application, vmMain.user.value!!)
 
     }
 

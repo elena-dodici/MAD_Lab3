@@ -37,7 +37,7 @@ class ProfileDetailFragment : BaseFragment(R.layout.fragment_profile_detail),Has
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SportDetail.userId=vmMain.user
+        SportDetail.userId=vmMain.user.value!!
     }
 
 
@@ -76,7 +76,7 @@ class ProfileDetailFragment : BaseFragment(R.layout.fragment_profile_detail),Has
             SportDetail.sportType= sportText.text.toString()
             SportDetail.masteryLevel= ratingBar.rating.toLong()
             SportDetail.achievement= achText.text.toString()
-            vm.updateUserSport(this.requireActivity().application,SportDetail,vmMain.user)
+            vm.updateUserSport(this.requireActivity().application,SportDetail,vmMain.user.value!!)
             vmMain.setShowNav(true)
             findNavController().navigate(R.id.action_ProfileDetailFragment_to_profileFragment)
         }

@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        vm.setUser(1)
 //        val vm: MainViewModel by viewModels()
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainContainer) as NavHostFragment
         navController = navHostFragment.navController
@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
         vm.showNav.observe(this){
                 show ->
-            println(vm.showNav.value)
+//            println(vm.showNav.value)
             bottonNavigationView.visibility = if (vm.showNav.value == true) {
                 View.VISIBLE
             } else {
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
 
 //       initDatabase(db) // add some initial data
-//        initFirebase()
+       initFirebase()
 
 
 
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
                 "d1 for u2",-1,"",0, "running"),
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 5, 19, 11, 0)), Timestamp(Date(2023 - 1900, 5, 19, 12, 0))),
                 "d2 for u2",-1,"",0, "basketball"),
-            reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 4, 31, 10, 0)), Timestamp(Date(2023 - 1900, 5, 1, 11, 0))),
+            reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 5, 1, 10, 0)), Timestamp(Date(2023 - 1900, 5, 1, 11, 0))),
                 "Please leave some clean towels",4,"The Sport Court's facility is conveniently located and fosters a sense of community. With ample parking, accessible entrances, and organized sports events, it brings people together and encourages a healthy and active lifestyle.",0, "swimming"),
 
             //u3

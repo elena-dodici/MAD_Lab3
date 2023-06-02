@@ -49,8 +49,8 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
             if (LocalDateTime.now().isAfter(resTime)  ){
                 Toast.makeText(context, "You cannot change your reservation before today", Toast.LENGTH_LONG).show()
             }else{
-                sharedvm.addOrUpdateRes(mainvm.user)
-                sharedvm.test(mainvm.user)
+                sharedvm.addOrUpdateRes(mainvm.user.value!!)
+                sharedvm.test(mainvm.user.value!!)
                 gobackCal("Update successfully")
 //                findNavController().navigate(R.id.action_detailFragment_to_calendar)
 //                mainvm.setShowNav(true)
@@ -79,8 +79,6 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
 
         val avaTSpinner = binding.avaTimeSpinner1
         sharedvm.freeStartTimes.observe(viewLifecycleOwner) { newST ->
-
-
             var showList = mutableListOf<String>()
             for (i in newST){
                 var time =LocalTime.of(i.hours, i.minutes, i.seconds)
@@ -276,7 +274,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
         builder.setMessage("Your reservation will be cancelled!")
         builder.setPositiveButton("yes") { dialog, which ->
 
-            sharedvm.deleteRes(mainvm.user, sharedvm.selectedRes.value!!.resId)
+            sharedvm.deleteRes(mainvm.user.value!!, sharedvm.selectedRes.value!!.resId)
 
             gobackCal("Delete successfully")
         }

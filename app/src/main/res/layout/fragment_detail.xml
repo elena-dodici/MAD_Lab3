@@ -189,51 +189,6 @@
             android:textSize="20sp" />
     </LinearLayout>
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="30dp">-->
-<!--            <TextView-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="wrap_content"-->
-
-<!--                android:text="Rating:"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textSize="20sp" />-->
-
-<!--            <RatingBar-->
-<!--                android:id="@+id/ratingBar"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:numStars="5"-->
-<!--                android:rating="@{vm.selRating}"-->
-<!--                android:stepSize="1"-->
-<!--                android:textSize="20sp"-->
-<!--                android:isIndicator="true"/>-->
-<!--        </LinearLayout>-->
-
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="30dp">-->
-<!--            <TextView-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="Review:"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textSize="20sp" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/editReview"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="2"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:hint="You don't leave review yet"-->
-<!--                android:text="@={vm.selectedRes.review}"-->
-<!--                android:textSize="20sp" />-->
-<!--        </LinearLayout>-->
 
 
     <LinearLayout

@@ -176,6 +176,20 @@
         <action
             android:id="@+id/action_historyFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_historyFragment_to_ownRevFragment"
+            app:destination="@id/ownRevFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ownRevFragment"
+        android:name="com.example.lab3.OwnRevFragment"
+        android:label="fragment_own_rev"
+        tools:layout="@layout/fragment_own_rev" >
+        <action
+            android:id="@+id/action_ownRevFragment_to_historyFragment"
+            app:popUpTo="@+id/historyFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/historyFragment" />
     </fragment>
 
 </navigation>

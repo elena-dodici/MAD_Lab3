@@ -8,13 +8,14 @@ import androidx.appcompat.widget.Toolbar
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab3.databinding.FragmentHistoryBinding
 import com.example.lab3.databinding.FragmentProfileBinding
 import com.example.lab3.databinding.ItemLayoutBinding
 import com.example.lab3.databinding.ItemLayoutHistoryBinding
-import com.example.lab3.viewmodel.HistoryViewModel
+
 import java.time.LocalDate
 import java.util.UUID
 
@@ -66,19 +67,24 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),HasToolbar{
     override val toolbar: Toolbar
         get() = binding.activityToolbar
     val adapter = HistoryAdapter{
-
+        println("active ${it}")
+        gotoRevDetailFrag(it.resId)
     }
-
+    private fun gotoRevDetailFrag(resId: String){
+        sharedvm.setHisReview(resId)
+        vmMain.setShowNav(false)
+        findNavController().navigate(R.id.action_historyFragment_to_ownRevFragment)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        println()
-        sharedvm.getHistoryResbyUser(vmMain.user)
+
+        sharedvm.getHistoryResbyUser(vmMain.user.value!!)
         sharedvm.reservations.observe(this){
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
             events.clear()
             ranking = 1
             for (res in it){
-                events.add( Event(UUID.randomUUID().toString(), res.name, res.sport,res.startTime, res.date))
+                events.add( Event(UUID.randomUUID().toString(), res.resId, res.name, res.sport,res.startTime, res.date))
             }
             events.sortBy {
                 it.date

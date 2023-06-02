@@ -23,7 +23,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Date
 
-data class reviews(var rating: Int, var review: String, var user: String)
+
 
 
 class CalendarViewModel : ViewModel() {
@@ -433,41 +433,18 @@ class CalendarViewModel : ViewModel() {
             "status" to 0
 
         )
-//        var newAvgrating: Float
-//        db1.collection("court").document("${selCourtName.value}")
-//            .get()
-//            .addOnSuccessListener { docs ->
-//
-//                var reviewList = docs.data?.get("review") as? List<*>
-//                var sumRating = 0
-//
-//                val numOfRev = reviewList!!.size
-//
-//                reviewList.forEach { r ->
-//
-//                    val mapItem = r as Map<String, Any?>
-//                    sumRating += mapItem["rating"].toString().toInt()
-//
-//                }
-//
-//                newAvgrating =
-//                    (sumRating - _selectedRes.value!!.rating + rating).toFloat() / (numOfRev)
-//
-//                var newRating = mapOf(
-//                    "avg_rating" to newAvgrating
-//                )
-//            println(newRes)
+
                 //set new reservation
-                db1.collection("users").document("u$userId").collection("reservation")
-                    .document(selectedRes.value!!.resId)
-                    .set(newRes)
-                    .addOnSuccessListener {
+        db1.collection("users").document("u$userId").collection("reservation")
+            .document(selectedRes.value!!.resId)
+            .set(newRes)
+            .addOnSuccessListener {
 
-                        Log.d(TAG, "new reservtion add successfully written!")
+                Log.d(TAG, "new reservtion add successfully written!")
 
 
-                    }
-                    .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+            }
+            .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
 
 //                db1.collection("users").document("u$userId").collection("reservation")
 //                    .document(selectedRes.value!!.resId)
@@ -476,64 +453,8 @@ class CalendarViewModel : ViewModel() {
 //
 //                    }
 
-                //update new avg_rating
-//                db1.collection("court").document("${selCourtName.value}")
-//                    .update(newRating)
-//                    .addOnSuccessListener {
-//                        Log.d(
-//                            TAG,
-//                            "${newRating} successfully written!"
-//                        )
-//                    }
-//                    .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
-//                // update user rating
-//                db1.collection("court").document("${selCourtName.value}").get()
-//                    .addOnSuccessListener { result ->
-//                        if (result != null) {
-//                            var reviewList = result.data?.get("review") as? MutableList<*>
-//                            val newList = mutableListOf<reviews>()
-//                            if (reviewList != null) {
-//                                if (reviewList.size > 0) {
-//                                    for (i in reviewList) {
-//                                        val mapItem = (i as MutableMap<String, Any?>).toMutableMap()
-//                                        if (mapItem["user"] == "u$userId") {
-//                                            mapItem["rating"] = rating
-//                                            mapItem["review"] = selectedRes.value!!.review
-//                                        }
-//                                        newList.add(
-//                                            reviews(
-//                                                mapItem["rating"].toString().toInt(),
-//                                                mapItem["review"].toString(),
-//                                                "u$userId"
-//                                            )
-//                                        )
-//
-//                                    }
-//                                    //update review list
-//                                    db1.collection("court")
-//                                        .document("${selCourtName.value}")
-//                                        .update("review", newList)
-//                                        .addOnSuccessListener {
-//                                            Log.d(
-//                                                TAG,
-//                                                "review list successfully updated!"
-//                                            )
-//                                        }
-//                                        .addOnFailureListener { e ->
-//                                            Log.w(
-//                                                TAG,
-//                                                "Error update document",
-//                                                e
-//                                            )
-//                                        }
-//
-//
-//                                }
-//
-//                            }
-//                        }
-//
-//                    }
+
+
 
                 //update freeslot time
                 //changeinto false

@@ -232,7 +232,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
         saveButton.setOnClickListener {
             vmMain.setShowNav(true)
             if(imageBitmap == null && image_uri != null){
-                vm.uploadPhoto(this.requireActivity().application, image_uri!!,vmMain.user)
+                vm.uploadPhoto(this.requireActivity().application, image_uri!!,vmMain.user.value!!)
                 //val bitmap = uriToBitmap(image_uri!!)
                 val bitmap= frame?.drawable?.toBitmap()
                 imageBitmap = bitmap;
@@ -240,7 +240,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
             if(imageBitmap != null) {
                 // imageBitmap will be null the first time we try to edit the profile and will remain
                 // null if we don't select a profile picture
-                vm.uploadPhoto(this.requireActivity().application, image_uri!!,vmMain.user)
+                vm.uploadPhoto(this.requireActivity().application, image_uri!!,vmMain.user.value!!)
                 println("Saving new path for the new picture... ")
                 //profilePicturePath = saveToInternalStorage(imageBitmap!!)
                 profilePicturePath = saveToInternalStorage(frame?.drawable?.toBitmap()!!)
@@ -257,7 +257,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
                 "user${vmMain.user}/images/user${vmMain.user}.jpg"
             )
             if (u != null) {
-                vm.updateUser(this.requireActivity().application,u,vmMain.user)
+                vm.updateUser(this.requireActivity().application,u,vmMain.user.value!!)
             }
 
             var bundle = bundleOf("Path" to profilePicturePath)
@@ -297,7 +297,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
         if(SportDetail[sportType]==null){
             val color = ContextCompat.getColor(requireContext(), R.color.grey)
             bt.setBackgroundColor(color)
-            val sp = SportDetail(vmMain.user,sportType,0,"")
+            val sp = SportDetail(vmMain.user.value!!,sportType,0,"")
             SportDetail[sportType]=sp
             DELETESportDetail[sportType]=null
         }

@@ -105,8 +105,6 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
     private fun gotoDetailFrag(resId: String){
         sharedvm.setSelectedResByCourtName(resId)
-
-
         vmMain.setShowNav(false)
         findNavController().navigate(R.id.action_calendar_to_detailFragment)
     }
@@ -128,7 +126,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         }
 //        应该在viewmodel里获取数据
 
-        sharedvm.getAllRes( vmMain.user)
+        sharedvm.getAllRes( vmMain.user.value!!)
         sharedvm.getCourtNamesAndSport()
 
 
