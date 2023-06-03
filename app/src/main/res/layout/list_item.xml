@@ -45,26 +45,34 @@
         android:id="@+id/review"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:fontFamily="sans-serif"
-        android:text="this is review"
         android:textColor="@color/black"
         android:textSize="15dp"
-
-
-        app:layout_constraintBottom_toTopOf="@id/sepLine"
+        android:text="this is review"
+        android:layout_marginStart="16dp"
+        android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/title_image"
-        app:layout_constraintTop_toBottomOf="@id/perRating" />
+        app:layout_constraintTop_toBottomOf="@id/perRating"
+        app:layout_constraintBottom_toTopOf="@id/sepLine"
+        />
 
-    <View
-        android:id="@+id/sepLine"
+    <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_margin="8dp"
+        android:id="@+id/sepLine"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/review"
-        android:background="@color/teal_700"/>
+
+        android:background="@color/sep_line"/>
+        />
+<!--    <View-->
+<!--        android:id="@+id/sepLine"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1dp"-->
+<!--        android:layout_margin="8dp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/review"-->
+<!--        android:background="@color/sep_line"/>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

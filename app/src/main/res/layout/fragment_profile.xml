@@ -126,6 +126,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/layoutEmail"/>
 
+                    <!--            button-->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewS"
                         android:layout_width="match_parent"
@@ -138,7 +139,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/mySport" />
 
-                    <!--            button-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -154,9 +154,10 @@
                             android:id="@+id/btE"
                             android:layout_width="150dp"
                             android:layout_height="48dp"
-                            android:text="Edit Your Profile"
+                            android:text="Edit"
                             android:textColor="@android:color/white"
                             android:background="@drawable/custom_sports"
+                            android:textAppearance="?attr/textAppearanceButton"
                             android:layout_marginRight="5dp"
                             />
                         <androidx.appcompat.widget.AppCompatButton

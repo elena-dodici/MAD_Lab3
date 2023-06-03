@@ -38,12 +38,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp">
+
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:text="Rating:"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textColor="@color/black" />
 
                 <RatingBar
                     android:id="@+id/ratingBar"
@@ -65,9 +66,9 @@
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Review:"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:layout_gravity="center"/>
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
     </LinearLayout>
 
 
@@ -93,12 +94,12 @@
 <!--                  -->
 <!--                    android:text="@={vm1.selRev.review}"-->
 <!--                    android:inputType="textMultiLine"/>-->
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="130dp"
-                    android:hint="Please leave your review"
-                    android:text="@={vm1.selRev.review}"
-                    />
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:hint="Please leave your review"
+        android:text="@={vm1.selRev.review}"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 </LinearLayout>
 <!--                <EditText-->
 <!--                    android:id="@+id/editTextTextMultiLine2"-->

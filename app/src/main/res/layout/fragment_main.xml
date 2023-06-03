@@ -28,6 +28,35 @@
                 app:title="@string/main_page" />
 
         </com.google.android.material.appbar.AppBarLayout>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/logo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/logo"
+            app:shapeAppearanceOverlay="@style/RoundCorner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/textWelcome1"
+            app:layout_constraintTop_toBottomOf="@+id/top_bar"
+            />
+        <TextView
+            android:id="@+id/textWelcome1"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Book your court"
+            android:textColor="@color/black"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/welcome"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toBottomOf="@+id/logo"
+
+            />
 
         <ImageView
             android:id="@+id/welcome"
@@ -37,46 +66,21 @@
             app:layout_constraintBottom_toTopOf="@id/textWelcome"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/top_bar" />
-        <TextView
-            android:id="@+id/textWelcome1"
+            app:layout_constraintTop_toBottomOf="@+id/textWelcome1" />
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Welcome"
-            android:textColor="@color/black"
-            android:textSize="26dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/textWelcome"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/welcome"
-            />
         <TextView
             android:id="@+id/textWelcome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Find your sport area!"
+            android:text="Find a court and have fun!"
             android:textColor="@color/black"
-            android:textSize="26dp"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textWelcome1" />
+            app:layout_constraintTop_toBottomOf="@id/welcome" />
 
-        <TextView
-            android:id="@+id/textIntro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Start your journey by a tap!"
-            android:textColor="@color/deeper_toolbar_color2"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textWelcome" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

@@ -62,9 +62,9 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
 
 
         }
-        binding.calBtn.setOnClickListener {
-            gobackCal("Unsaved information")
-        }
+//        binding.calBtn.setOnClickListener {
+//            gobackCal("Unsaved information")
+//        }
 
 
         sharedvm.selDate.observe(viewLifecycleOwner){

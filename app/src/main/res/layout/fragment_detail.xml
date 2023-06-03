@@ -29,8 +29,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="10dp"
         android:orientation="vertical">
 
@@ -38,14 +38,19 @@
         android:layout_marginTop="80dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
 
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Date:"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/title_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:adjustViewBounds="true"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/baseline_date_range_24"
+            app:shapeAppearanceOverlay="@style/RoundCorner"/>
 
 
         <TextView
@@ -53,20 +58,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:gravity="center_horizontal"
+
             android:text="@{vm.selectedRes.date.toString()}"
             android:textSize="20sp"/>
+
+
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_timePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textAppearance="?attr/textAppearanceButton"
             android:textColor="@android:color/white"
             android:background="@drawable/custom_sports"
             android:text="@string/pick_time"
             />
     </LinearLayout>
-
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/sep_line"/>
 
         <LinearLayout
             android:layout_marginTop="30dp"
@@ -74,23 +86,27 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_width="15dp"
-                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
                 android:layout_weight="1"
-                android:text="Available time slot"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:gravity="fill"
+                android:text="Free Slot"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="@color/black" />
 
 
             <Spinner
                 android:id="@+id/avaTime_spinner1"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="48dp"
-                android:textSize="20sp"/>
+                android:layout_weight="2"
+                android:layout_height="40dp"
+                android:switchTextAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
         </LinearLayout>
 
-
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/sep_line"/>
 
 
         <LinearLayout
@@ -99,21 +115,24 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_width="15dp"
-                android:layout_height="30dp"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
                 android:layout_weight="1"
-                android:text=" Duration"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:text="Duration"
+                android:gravity="fill"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="@color/black" />
 
             <TextView
-                android:layout_width="15dp"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="2"
+                android:gravity="fill"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:text="1 Hour"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:textColor="@color/black" />
+
+
 <!--            <Spinner-->
 <!--                android:id="@+id/endTime_spinner"-->
 <!--                android:layout_width="0dp"-->
@@ -121,6 +140,10 @@
 <!--                android:layout_height="48dp"-->
 <!--                android:textSize="20dp"/>-->
         </LinearLayout>
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/sep_line"/>
 
 <!--        <LinearLayout-->
 <!--            android:layout_width="match_parent"-->
@@ -151,9 +174,10 @@
             <TextView
 
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:text="CourtName:"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -163,9 +187,14 @@
                 android:id="@+id/courtName_spinner"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
+                android:switchTextAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textSize="20dp" />
         </LinearLayout>
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/sep_line"/>
 
         <LinearLayout
         android:layout_width="match_parent"
@@ -179,66 +208,86 @@
             android:textColor="@color/black"
             android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/editDescription"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:hint="Description"
-            android:text="@={vm.selectedRes.description}"
-            android:textSize="20sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/res_des">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:text="@={vm.selectedRes.description}"
+                    android:inputType="textMultiLine"
+                    tools:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+<!--            <EditText-->
+<!--                android:id="@+id/editDescription"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="2"-->
+<!--                android:hint="Description"-->
+<!--                android:text="@={vm.selectedRes.description}"-->
+<!--                android:textSize="20sp"-->
+<!--                tools:textAppearance="@style/TextAppearance.AppCompat.Body2" />-->
     </LinearLayout>
 
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp">
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/saveBtn"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SAVE"
-            android:textSize="20dp"
-            android:textColor="@android:color/white"
-            android:background="@drawable/custom_sports"
-            android:layout_weight="1"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginTop="30dp">
 
-            />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/saveBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_sports"
+                android:text="SAVE"
+                android:textAppearance="?attr/textAppearanceButton"
+                android:textColor="@android:color/white"
+
+                />
 
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/delBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_sports"
+                android:backgroundTint="@color/md_theme_light_onErrorContainer"
+                android:text="DELETE"
+                android:textAppearance="?attr/textAppearanceButton"
+                android:textColor="@android:color/white"
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/delBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="DELETE"
-            android:textSize="20dp"
-            android:textColor="@android:color/white"
-            android:background="@drawable/custom_sports"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="20dp"
+                />
 
-            />
+            <!--        <androidx.appcompat.widget.AppCompatButton-->
+            <!--            android:id="@+id/calBtn"-->
+            <!--            android:layout_width="0dp"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_weight="1"-->
+            <!--            android:text="CANCEL"-->
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/calBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="CANCEL"
-            android:textSize="20dp"
-            android:textColor="@android:color/white"
-            android:background="@drawable/custom_sports"
-            android:layout_marginTop="30dp"
+            <!--            android:textAppearance="?attr/textAppearanceButton"-->
+            <!--            android:textColor="@android:color/white"-->
+            <!--            android:background="@drawable/custom_sports"-->
+            <!--            android:layout_marginTop="30dp"-->
 
-            />
-    </LinearLayout>
+            <!--            />-->
+        </LinearLayout>
     </LinearLayout>
 
 
