@@ -78,7 +78,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),HasToolbar{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedvm.getHistoryResbyUser(vmMain.user.value!!)
+        sharedvm.getHistoryResbyUser(vmMain.user)
         sharedvm.reservations.observe(this){
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
             events.clear()

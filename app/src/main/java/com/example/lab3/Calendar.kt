@@ -126,7 +126,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         }
 //        应该在viewmodel里获取数据
 
-        sharedvm.getAllRes( vmMain.user.value!!)
+        sharedvm.getAllRes( vmMain.user)
         sharedvm.getCourtNamesAndSport()
 
 
