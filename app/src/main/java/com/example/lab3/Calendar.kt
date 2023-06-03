@@ -57,7 +57,7 @@ class MyAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<MyAdapter.MyV
         }
         fun bind(event: Event){
             binding.title.text = "${event.courtName}  ${event.sportName} "
-            binding.content.text =  "${event.startTime}  ${event.date}"
+           binding.content.text =  "${event.startTime}  ${event.date}"
         }
 
     }

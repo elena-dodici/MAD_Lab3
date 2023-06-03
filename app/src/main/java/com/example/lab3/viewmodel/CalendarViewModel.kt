@@ -103,27 +103,21 @@ class CalendarViewModel : ViewModel() {
     }
 
 
-
-
-    fun getAllRes(userid: Int) {
-
+    fun getAllRes(userid:Int){
 //        db = AppDatabase.getDatabase(application)
 
         db1.collection("users").document("u${userid}").collection("reservation").get()
             .addOnSuccessListener { result ->
-
                 val dataList = result.map { document ->
                     val mapId = mapOf(
                         "resId" to document.id,
                     )
                     mapId + document.data
                 }
-//                println("result ${dataList}")
                 val myres = mutableListOf<MyReservation>()
-                dataList.forEach { res -> // 遍历每一个reservation
+                dataList.forEach{res-> // 遍历每一个reservation
 //                    println(res["name"].toString())
-
-                    val ct = res["ct"] as Map<*, *>
+                    val ct = res["ct"] as Map<*,*>
                     val starttimeStr = ct["startTime"].toString()
                     val endtimeStr = ct["endTime"].toString()
                     // 使用正则表达式提取秒数值
@@ -144,40 +138,25 @@ class CalendarViewModel : ViewModel() {
                     val endTime = Instant.ofEpochSecond(secondsEnd!!).atZone(zone)
 
 //                    println(res["description"].toString())
-                    if (res["status"].toString() == "0") {
+                    if (res["status"].toString() == "0"){
                         myres.add(
-                            MyReservation(
-                                res["resId"].toString(),
-                                res["name"].toString(),
-                                res["sport"].toString(),
-                                Time(startTime.hour, startTime.minute, startTime.second),
-                                Time(endTime.hour, endTime.minute, endTime.second),
-                                startTime.toLocalDate(),
-                                res["description"].toString(),
-                                res["review"].toString(),
-                                res["rating"].toString().toInt()
-                            )
-
+                            MyReservation(res["resId"].toString(),res["name"].toString(), res["sport"].toString(),Time(startTime.hour,startTime.minute,startTime.second), Time(endTime.hour,endTime.minute,endTime.second), startTime.toLocalDate(),res["description"].toString(),res["review"].toString(),res["rating"].toString().toInt() )
                         )
-
                     }
 
                 }
                 _reservations.value = myres
-
 //                _reservations.value = dataList
             }
             .addOnFailureListener { exception ->
                 // 处理错误
-
-                Log.d(TAG, "Error getting documents: ${exception.message}")
+                println("Error getting documents: ${exception.message}")
                 _reservations.value = listOf()
-
             }
 //        _reservations.value = db.reservationDao().getReservationByUserId(userid)
 //        getCourts(application)
-
     }
+
 
 
 
