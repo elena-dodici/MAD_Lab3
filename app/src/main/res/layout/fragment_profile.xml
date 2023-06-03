@@ -153,7 +153,7 @@
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btE"
                             android:layout_width="150dp"
-                            android:layout_height="40dp"
+                            android:layout_height="48dp"
                             android:text="Edit Your Profile"
                             android:textColor="@android:color/white"
                             android:background="@drawable/custom_sports"
@@ -162,7 +162,7 @@
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btHis"
                             android:layout_width="150dp"
-                            android:layout_height="40dp"
+                            android:layout_height="48dp"
                             android:text="History"
                             android:textColor="@android:color/white"
                             android:background="@drawable/custom_sports"

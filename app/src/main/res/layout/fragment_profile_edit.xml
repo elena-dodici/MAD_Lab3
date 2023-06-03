@@ -22,16 +22,16 @@
             />
     </com.google.android.material.appbar.AppBarLayout>
 
-<ScrollView
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/white"
+<!--<ScrollView-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:background="@color/white"-->
 
-    tools:context=".EditProfileFragment">
+<!--    tools:context=".EditProfileFragment">-->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         >
 
@@ -45,9 +45,9 @@
                 android:id="@+id/imageViewE"
                 android:layout_width="182dp"
                 android:layout_height="218dp"
-                android:layout_marginTop="16dp"
                 android:background="#DCDCDC"
                 android:contentDescription="@string/user_profile"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
@@ -58,29 +58,31 @@
                 android:id="@+id/imgbtn"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginBottom="16dp"
                 android:background="@drawable/img_btn_border"
                 android:contentDescription="camera"
                 app:layout_constraintBottom_toBottomOf="@+id/imageViewE"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
                 app:srcCompat="@drawable/ic_camera" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        >
+        <!--下半部分-->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_weight="2">
-<!--                name-->
+            android:orientation="vertical">
+            <!--                name-->
             <LinearLayout
                 android:id="@+id/layoutName"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">
                 <TextView
                     android:layout_width="0dp"
@@ -107,11 +109,8 @@
             <LinearLayout
                 android:id="@+id/layoutNick"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutName"
 
                 >
                 <TextView
@@ -134,15 +133,11 @@
 
             </LinearLayout>
 
-<!--                phone-->
+            <!--                phone-->
             <LinearLayout
                 android:id="@+id/linearLayoutPhone"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="309dp"
-                app:layout_constraintTop_toBottomOf="@+id/layoutNick">
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:layout_width="45dp"
@@ -162,45 +157,30 @@
                     android:textSize="30sp" />
 
             </LinearLayout>
-<!--            Interested Sports-->
-            <LinearLayout
-                android:id="@+id/layoutJob"
+            <!--            Interested Sports-->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayoutPhone"
-
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Interested Sports:"
-                    android:textColor="#000000"
-                    android:textSize="40sp" />
-            </LinearLayout>
+                android:layout_weight="1"
+                android:text="Interested Sports:"
+                android:textColor="#000000"
+                android:textSize="40sp" />
             <LinearLayout
                 android:id="@+id/selectiveSport"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutJob"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <!--                运动-->
                 <android.widget.Button
                     android:id="@+id/btrunning"
                     android:layout_width="match_parent"
-
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:background="@color/lighter_toolbar_color"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:text="running" />
-
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/bttennis"
                     android:layout_width="match_parent"
@@ -209,8 +189,7 @@
                     android:text="tennis"
                     android:layout_marginTop="10dp"
                     android:background="@color/lighter_toolbar_color"
-                     />
-
+                    />
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btpingpong"
                     android:layout_width="match_parent"
@@ -219,7 +198,7 @@
                     android:layout_marginTop="10dp"
                     android:background="@color/lighter_toolbar_color"
                     android:text="pingpong"
-                     />
+                    />
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btswimming"
                     android:layout_width="match_parent"
@@ -228,8 +207,7 @@
                     android:layout_marginTop="10dp"
                     android:text="swimming"
                     android:background="@color/lighter_toolbar_color"
-                     />
-
+                    />
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btbasketball"
                     android:layout_width="match_parent"
@@ -238,19 +216,17 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     android:text="basketball"
                     android:background="@color/lighter_toolbar_color"
-                     />
+                    />
 
             </LinearLayout>
 
+            <!--           save/cancel button-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintTop_toBottomOf="@id/selectiveSport"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginTop="15dp"
+                android:layout_marginBottom="10dp"
                 >
                 <androidx.appcompat.widget.AppCompatButton
 
@@ -278,9 +254,11 @@
 
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+</ScrollView>
+
 
     </LinearLayout>
 
-</ScrollView>
+<!--</ScrollView>-->
 </LinearLayout>
