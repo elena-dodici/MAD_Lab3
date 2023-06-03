@@ -80,11 +80,11 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToo
 //            binding.delBtn.visibility = View.VISIBLE;
 //        } else binding.delBtn.visibility = View.GONE
 
-//        binding.calBtn.setOnClickListener {
-//            findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
-//            mainvm.setShowNav(true)
-//            Toast.makeText(context, "Your Review is not saved!", Toast.LENGTH_LONG).show()
-//        }
+        binding.calBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_courtDetailFragment_to_courtFragment)
+            mainvm.setShowNav(true)
+            //Toast.makeText(context, "Your Review is not saved!", Toast.LENGTH_LONG).show()
+        }
 //        binding.delBtn.setOnClickListener {
 //            //if delete bottom show, it must means has review
 //           sharedvm.deleteCourtRev()

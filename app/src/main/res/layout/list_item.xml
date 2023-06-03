@@ -45,16 +45,17 @@
         android:id="@+id/review"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="sans-serif"
+        android:text="this is review"
         android:textColor="@color/black"
         android:textSize="15dp"
-        android:text="this is review"
-        android:layout_marginStart="16dp"
-        android:textStyle="italic"
+
+
+        app:layout_constraintBottom_toTopOf="@id/sepLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/title_image"
-        app:layout_constraintTop_toBottomOf="@id/perRating"
-        app:layout_constraintBottom_toTopOf="@id/sepLine"
-        />
+        app:layout_constraintTop_toBottomOf="@id/perRating" />
 
     <View
         android:id="@+id/sepLine"

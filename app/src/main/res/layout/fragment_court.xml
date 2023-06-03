@@ -38,26 +38,27 @@
             android:textColor="#000000"
             android:paddingStart="5dp"
             />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="Court"
-            android:textSize="35sp"
             android:textColor="#000000"
-            />
+            android:textSize="35sp"
+            tools:fontFamily="@font/roboto" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/roboto"
             android:text="Rating"
-            android:textSize="35sp"
-            android:textColor="#000000"
             android:textAlignment="center"
+            android:textColor="#000000"
 
 
-            />
+            android:textSize="35sp" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

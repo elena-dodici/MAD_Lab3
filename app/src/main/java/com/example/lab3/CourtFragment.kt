@@ -95,6 +95,10 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
         recyclerView.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL,false)
 //        updateAdapter()
 
+//        binding.calBtn.setOnClickListener {
+//            gobackCal("Back to previous page")
+//        }
+
     }
 
 

@@ -99,6 +99,15 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),HasToolbar{
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
+
+        binding.calBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_historyFragment_to_profileFragment)
+            vmMain.setShowNav(true)
+        }
+
+
+
+
     }
     private fun updateAdapter() {
         adapter.apply {

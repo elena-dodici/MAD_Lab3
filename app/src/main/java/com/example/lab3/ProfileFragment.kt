@@ -188,6 +188,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         }
         //需把action_profileFragment_to_historyFragment的destination改成正确的跳转目的地
         historyButton.setOnClickListener{
+            vmMain.setShowNav(false)
             findNavController().navigate(R.id.action_profileFragment_to_historyFragment)
         }
         editButton.setOnClickListener {

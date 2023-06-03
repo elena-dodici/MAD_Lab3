@@ -32,7 +32,7 @@ class OwnRevFragment : BaseFragment(R.layout.fragment_own_rev), HasToolbar {
         binding = FragmentOwnRevBinding.bind(view, savedInstanceState)
 
         binding.calBtn.setOnClickListener {
-            gobackCal("Unsaved information")
+            gobackCal("Back to previous page")
         }
 
         val ratingBar = binding.ratingBar
@@ -55,7 +55,7 @@ class OwnRevFragment : BaseFragment(R.layout.fragment_own_rev), HasToolbar {
     fun gobackCal(message: String){
         findNavController().navigate(R.id.action_ownRevFragment_to_historyFragment)
         mainvm.setShowNav(true)
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        //Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
 }
