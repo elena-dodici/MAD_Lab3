@@ -100,10 +100,10 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),HasToolbar{
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
 
-        binding.calBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_historyFragment_to_profileFragment)
-            vmMain.setShowNav(true)
-        }
+//        binding.calBtn.setOnClickListener {
+//            findNavController().navigate(R.id.action_historyFragment_to_profileFragment)
+//            vmMain.setShowNav(true)
+//        }
 
 
 

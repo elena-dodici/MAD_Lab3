@@ -53,7 +53,8 @@ class CourtAdapter(): RecyclerView.Adapter<CourtAdapter.CourtViewHolder>(){
     inner class CourtViewHolder(private val binding:ItemLayoutBinding):RecyclerView.ViewHolder(binding.root){
         init {        }
         fun bind(event: FreeCourt){ // 显示到recyclerview
-            binding.itemText.text = "${event.name}  ${event.sport}  ${event.startTime}--${event.endTime}"
+            binding.title.text = "${event.name}  ${event.sport} "
+            binding.content.text = "${event.startTime}--${event.endTime}"
         }
 
     }

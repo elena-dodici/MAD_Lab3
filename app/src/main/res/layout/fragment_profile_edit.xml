@@ -52,8 +52,19 @@
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/user_profile" />
-
+                app:srcCompat="@drawable/user_profile"
+                app:shapeAppearanceOverlay="@style/RoundCorner"/>
+<!--            <com.google.android.material.imageview.ShapeableImageView-->
+<!--                android:id="@+id/imageViewE"-->
+<!--                android:layout_width="200dp"-->
+<!--                android:layout_height="200dp"-->
+<!--                android:adjustViewBounds="true"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                -->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:srcCompat="@drawable/user_profile"-->
+<!--                app:shapeAppearanceOverlay="@style/RoundCorner"/>-->
             <ImageButton
                 android:id="@+id/imgbtn"
                 android:layout_width="60dp"
@@ -90,7 +101,7 @@
                     android:layout_weight="1"
                     android:text="Name"
                     android:textColor="#000000"
-                    android:textSize="40sp" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
                 <EditText
                     android:id="@+id/ed_name"
@@ -101,7 +112,7 @@
                     android:inputType="textPersonName"
                     android:hint="Name"
                     android:text="@string/full_name"
-                    android:textSize="30sp" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
             </LinearLayout>
 
@@ -119,7 +130,7 @@
                     android:layout_weight="1"
                     android:text="Surname"
                     android:textColor="#000000"
-                    android:textSize="25sp" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
                 <EditText
                     android:id="@+id/ed_surname"
                     android:layout_width="0dp"
@@ -129,7 +140,7 @@
                     android:inputType="textPersonName"
                     android:hint="Surname"
                     android:text="@string/nickname"
-                    android:textSize="30sp" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
             </LinearLayout>
 
@@ -140,29 +151,33 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
                     android:contentDescription="phone"
                     android:src="@drawable/ic_phone" />
 
                 <EditText
                     android:id="@+id/ed_phone"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
                     android:layout_height="wrap_content"
                     android:hint="phone"
                     android:inputType="phone"
+
                     android:selectAllOnFocus="true"
                     android:text="@string/phone"
                     android:textColor="#000000"
-                    android:textSize="30sp" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
             </LinearLayout>
             <!--            Interested Sports-->
             <TextView
+                android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="Interested Sports:"
+                android:text="SKILL:"
                 android:textColor="#000000"
                 android:textSize="40sp" />
             <LinearLayout
@@ -173,6 +188,7 @@
 
                 <!--                运动-->
                 <android.widget.Button
+
                     android:id="@+id/btrunning"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -37,7 +37,7 @@
             android:id="@+id/userSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scrollbarSize="30dp"
+
             app:layout_constraintTop_toBottomOf="@id/TOP"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -50,17 +50,28 @@
             android:orientation="vertical"
             android:gravity="center_horizontal"
             >
-
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/TOP"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:background="#DCDCDC"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/user_profile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/user_profile" />
+                app:srcCompat="@drawable/user_profile"
+                app:shapeAppearanceOverlay="@style/RoundCorner"/>
+<!--            <ImageView-->
+<!--                android:id="@+id/TOP"-->
+<!--                android:layout_width="200dp"-->
+<!--                android:layout_height="200dp"-->
+<!--                android:background="#DCDCDC"-->
+<!--                android:contentDescription="@string/user_profile"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:srcCompat="@drawable/user_profile" />-->
 
         </LinearLayout>
 
@@ -72,43 +83,71 @@
             android:orientation="vertical">
 
             <!--            name-->
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/showName"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/full_name"
-                android:textColor="#000000"
-                android:textSize="45sp"
-                android:layout_gravity="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                >
+                <ImageView
+                    android:id="@+id/person_icon"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:contentDescription="phone"
+                    android:src="@drawable/baseline_person_24" />
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/full_name"
+                    android:textColor="#000000"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/person_icon"
+                  />
+            </LinearLayout>
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/sep_line"/>
             <!--            phone-->
             <LinearLayout
                 android:id="@+id/layoutEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_name">
+
+
+
+                >
 
                 <ImageView
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:contentDescription="phone"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
                     android:src="@drawable/ic_phone" />
 
                 <TextView
                     android:id="@+id/tv_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     android:text="@string/phone"
-                    android:textSize="30sp" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
             </LinearLayout>
 <!--            sport-->
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                app:dividerInsetStart="0dp"
+                app:dividerInsetEnd="0dp"
+                android:layout_height="1dp"
+                android:background="@color/sep_line"/>
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -120,8 +159,9 @@
                         android:id="@+id/mySport"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="My sports:"
-                        android:textSize="30sp"
+                        android:layout_marginTop="20dp"
+                        android:text="SKILL:"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/layoutEmail"/>
@@ -131,11 +171,9 @@
                         android:id="@+id/recyclerViewS"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="5dp"
                         android:nestedScrollingEnabled="false"
-                        android:textSize="30sp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/mySport" />
 
@@ -152,8 +190,9 @@
                         >
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btE"
-                            android:layout_width="150dp"
-                            android:layout_height="48dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:text="Edit"
                             android:textColor="@android:color/white"
                             android:background="@drawable/custom_sports"
@@ -162,8 +201,9 @@
                             />
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btHis"
-                            android:layout_width="150dp"
-                            android:layout_height="48dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
                             android:text="History"
                             android:textColor="@android:color/white"
                             android:background="@drawable/custom_sports"

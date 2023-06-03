@@ -88,8 +88,8 @@ class ProfileDetailFragment : BaseFragment(R.layout.fragment_profile_detail),Has
     //确认提示弹窗
     fun Dialog(){
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("Are you sure you want to Delete?")
-        builder.setMessage("Are you sure you want to remove this sport from your interested sports?")
+        builder.setTitle("Alert?")
+        builder.setMessage("This sport will be moved from your skill list!")
         builder.setPositiveButton("yes") { dialog, which ->
             //点击确认的情况，添加对应数据到db并设置按钮不可选
             vm.deleteUserSport(this.requireActivity().application,SportDetail)
@@ -99,6 +99,12 @@ class ProfileDetailFragment : BaseFragment(R.layout.fragment_profile_detail),Has
         }
         builder.setNegativeButton("no", null)
         val dialog = builder.create()
+        dialog.setOnShowListener {
+            val posBt = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            val negBt = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            posBt.setTextColor(resources.getColor(R.color.md_theme_light_error))
+            negBt.setTextColor(resources.getColor(R.color.button_color))
+        }
         dialog.show()
     }
 

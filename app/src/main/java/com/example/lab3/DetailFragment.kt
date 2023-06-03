@@ -280,6 +280,12 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
         }
         builder.setNegativeButton("no", null)
         val dialog = builder.create()
+        dialog.setOnShowListener {
+            val posBt = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            val negBt = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            posBt.setTextColor(resources.getColor(R.color.md_theme_light_error))
+            negBt.setTextColor(resources.getColor(R.color.button_color))
+        }
         dialog.show()
     }
 }
