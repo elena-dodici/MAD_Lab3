@@ -38,25 +38,38 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/top_bar" />
+        <TextView
+            android:id="@+id/textWelcome1"
 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome"
+            android:textColor="@color/black"
+            android:textSize="26dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/textWelcome"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/welcome"
+            />
         <TextView
             android:id="@+id/textWelcome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome and find your sport area!"
+            android:text="Find your sport area!"
             android:textColor="@color/black"
             android:textSize="26dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/welcome" />
+            app:layout_constraintTop_toBottomOf="@id/textWelcome1" />
 
         <TextView
             android:id="@+id/textIntro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start your journey by a click!"
+            android:text="Start your journey by a tap!"
             android:textColor="@color/deeper_toolbar_color2"
             android:textSize="15dp"
             android:textStyle="bold"
