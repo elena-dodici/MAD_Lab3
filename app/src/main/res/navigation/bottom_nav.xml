@@ -105,6 +105,12 @@
             app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.lab3.SignUpFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_sign_up" >
+    </fragment>>
+    <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.lab3.ProfileFragment"
         android:label="fragment_profile"
@@ -122,6 +128,11 @@
         <action
             android:id="@+id/action_profileFragment_to_historyFragment"
             app:destination="@id/historyFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/to_SignUpFragment"
+            app:destination="@id/signUpFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
