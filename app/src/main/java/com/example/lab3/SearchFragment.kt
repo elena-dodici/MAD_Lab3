@@ -88,7 +88,8 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     private lateinit var binding: FragmentCalendarViewBinding
     private val monthCalendarView: CalendarView get() = binding.calendarView
     private val weekCalendarView: WeekCalendarView get() = binding.weekCalendar
-    private var selectedDate:LocalDate? = null
+    private var selectedDate:LocalDate? = LocalDate.of(2023,6,1)
+    private var count = 2
     private var selectedSport : String = sports[0] // default sport
 //    private val events = mutableMapOf<LocalDate, List<Event>>() // 已有的预定
     private val reservations = mutableMapOf<LocalDate, List<Event>>() // 已有的预定
@@ -205,7 +206,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         monthCalendarView.isInvisible = binding.weekModeCheckBox.isChecked
         weekCalendarView.isInvisible = !binding.weekModeCheckBox.isChecked
         binding.weekModeCheckBox.setOnCheckedChangeListener(weekModeToggled)
-
+        // 默认week mode
         val oldHeight = 924
         val newHeight = 154
 //        println("$oldHeight $newHeight")
@@ -480,13 +481,17 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         }
     }
     private fun clearBackground(){
-        selectedDate?.let {
-            // clear selection if we scroll to a new month/week
-            selectedDate = null
-            monthCalendarView.notifyDateChanged(it)
-            weekCalendarView.notifyDateChanged(it)
-            updateAdapterForDate(null)
+        if(count == 0) {
+            selectedDate?.let {
+                // clear selection if we scroll to a new month/week
+                selectedDate = null
+                monthCalendarView.notifyDateChanged(it)
+                weekCalendarView.notifyDateChanged(it)
+                updateAdapterForDate(null)
+            }
         }
+        else
+            count -=1
     }
 
     private fun updateCalendar(sport:String) { // 获取新的运动的预定信息-> 调用日历的bind
