@@ -91,7 +91,8 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     private lateinit var binding: FragmentCalendarViewBinding
     private val monthCalendarView: CalendarView get() = binding.calendarView
     private val weekCalendarView: WeekCalendarView get() = binding.weekCalendar
-    private var selectedDate:LocalDate? = null
+    private var selectedDate:LocalDate? = LocalDate.now()
+//    private val today = LocalDate.now()
 
     private val availableDateList = mutableListOf<LocalDate>()
     private val events = mutableMapOf<LocalDate, List<Event>>()
@@ -285,16 +286,8 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                 val layout = container.binding.dayLayout
                 val dotView = container.binding.DotView
                 bindDate(data.date, textView, dotView, layout, data.position == DayPosition.MonthDate)
-//                bindDate(data.date, textView, dotView, layout, true)
 
-                if (data.position == DayPosition.MonthDate) {
-                    textView.setTextColor(Color.BLACK)
-                    if (availableDateList.isNotEmpty() && !availableDateList.contains(data.date) ){ // 范围外的日期即使是MonthDate设为深灰色
-                        textView.setTextColor(Color.LTGRAY)
-                    }
-                } else {
-                    textView.setTextColor(Color.GRAY)
-                }
+
 
             }
         }
@@ -326,13 +319,12 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                 val layout = container.binding.dayLayout
                 val dotView = container.binding.DotView
                 bindDate(data.date, textView, dotView, layout, data.position == WeekDayPosition.RangeDate)
-//                bindDate(data.date, textView, dotView, layout, true)
 //                textView.text = data.date.dayOfMonth.toString()
-                textView.setTextColor(Color.BLACK)
-//                textView.setTextSize(16f)
-                if (availableDateList.isNotEmpty() && !availableDateList.contains(data.date) ){ // 范围外的日期即使是MonthDate设为深灰色
-                    textView.setTextColor(Color.LTGRAY)
-                }
+//                textView.setTextColor(Color.BLACK)
+////                textView.setTextSize(16f)
+//                if (availableDateList.isNotEmpty() && !availableDateList.contains(data.date) ){ // 范围外的日期即使是MonthDate设为深灰色
+//                    textView.setTextColor(Color.LTGRAY)
+//                }
             }
         }
         weekCalendarView.weekScrollListener = { updateMonthTitle();clearBackground() }
@@ -342,8 +334,13 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     private fun bindDate(date:LocalDate, textView: TextView, dotView:View, layout:ConstraintLayout, isSelectable:Boolean){
         textView.text = date.dayOfMonth.toString()
         if (isSelectable){
+//                textView.setTextColor(Color.BLACK)
+
+
 
             if (selectedDate == date){ // 选择的日期
+//                textView.setTextColor(resources.getColor(R.color.red))
+                println("${textView.text}")
                 textView.setTextColorRes(R.color.blue)
                 textView.setBackgroundResource(R.drawable.selected_bg)
                 dotView.makeInVisible()
@@ -359,9 +356,13 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 //                }
 
             }
+            if (availableDateList.isNotEmpty() && !availableDateList.contains(date) ){ // 范围外的日期即使是MonthDate设为深灰色
+                textView.setTextColor(Color.LTGRAY)
+            }
         }else{
             textView.background = null
             dotView.makeInVisible()
+            textView.setTextColor(Color.GRAY)
 
         }
 
