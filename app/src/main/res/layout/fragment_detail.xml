@@ -21,7 +21,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/activityToolbar"
             android:layout_width="match_parent"
-            app:title="@string/court_review_title"
+            app:title="@string/reservation_detail"
             android:layout_height="?attr/actionBarSize"
             />
 
@@ -72,7 +72,9 @@
             android:textAppearance="?attr/textAppearanceButton"
             android:textColor="@android:color/white"
             android:background="@drawable/custom_sports"
-            android:text="@string/pick_time"
+            android:drawableTint="@color/white"
+            android:drawableStart="@drawable/baseline_edit_calendar_24"
+            android:text="Pick"
             />
     </LinearLayout>
         <com.google.android.material.divider.MaterialDivider
@@ -267,26 +269,26 @@
                 android:layout_marginRight="20dp"
                 android:layout_weight="1"
                 android:background="@drawable/custom_sports"
-                android:backgroundTint="@color/md_theme_light_onErrorContainer"
+                android:backgroundTint="@color/md_theme_light_error"
                 android:text="DELETE"
                 android:textAppearance="?attr/textAppearanceButton"
                 android:textColor="@android:color/white"
 
                 />
 
-            <!--        <androidx.appcompat.widget.AppCompatButton-->
-            <!--            android:id="@+id/calBtn"-->
-            <!--            android:layout_width="0dp"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:layout_weight="1"-->
-            <!--            android:text="CANCEL"-->
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/calBtn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="CANCEL"
 
-            <!--            android:textAppearance="?attr/textAppearanceButton"-->
-            <!--            android:textColor="@android:color/white"-->
-            <!--            android:background="@drawable/custom_sports"-->
-            <!--            android:layout_marginTop="30dp"-->
+                        android:textAppearance="?attr/textAppearanceButton"
+                        android:textColor="@android:color/white"
+                        android:background="@drawable/custom_sports"
+                        android:layout_marginTop="30dp"
 
-            <!--            />-->
+                        />
         </LinearLayout>
     </LinearLayout>
 

@@ -21,7 +21,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/activityToolbar"
             android:layout_width="match_parent"
-            app:title="@string/court_review_title"
+            app:title="@string/ownRev"
             android:layout_height="?attr/actionBarSize"
             />
 

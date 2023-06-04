@@ -95,6 +95,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),HasToolbar{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        ranking = 1
         binding = FragmentHistoryBinding.bind(view)
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter

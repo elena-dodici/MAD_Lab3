@@ -1,75 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout   xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/white"
-    tools:context=".ProfileFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    tools:context=".ProfileFragment"
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:background="@color/deeper_toolbar_color2"
+        android:id="@+id/appBar"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         >
-        <com.google.android.material.appbar.AppBarLayout
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/activityToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/deeper_toolbar_color2"
+            app:title="@string/sport_detail"
+            android:layout_height="?attr/actionBarSize"
+            />
 
-            android:theme="@style/AppTheme.AppBarOverlay">
+    </com.google.android.material.appbar.AppBarLayout>
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/activityToolbar"
-                android:layout_width="match_parent"
-                app:title="@string/sport_detail"
-                android:layout_height="?attr/actionBarSize"
-                />
 
-        </com.google.android.material.appbar.AppBarLayout>
-       <androidx.constraintlayout.widget.ConstraintLayout
+
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constrainlayout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
             android:layout_marginHorizontal="16dp"
-            android:layout_weight="2">
+            android:layout_height="match_parent">
+
+
             <LinearLayout
-                android:id="@+id/layoutTOP"
+                android:layout_marginTop="50dp"
+                android:id="@+id/layoutSport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/layoutMastery"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:layout_width="35dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text=""
-                    android:textColor="#000000"
-                    android:textSize="40sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layoutSport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutTOP">
-
-                <TextView
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="Sport:"
-                    android:textColor="#000000"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                    />
+                    android:textColor="#000000" />
 
                 <EditText
                     android:id="@+id/SportName"
@@ -81,33 +71,21 @@
                     android:inputType="textPersonName"
                     android:selectAllOnFocus="true"
                     android:text="running"
-                    android:textColor="#000000"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:textColor="#000000" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btD"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Delete"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/custom_sports"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.254"
-                    app:layout_constraintStart_toStartOf="parent" />
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/layoutMastery"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginVertical="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/layoutA"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutSport"
-
-                >
+                app:layout_constraintTop_toBottomOf="@+id/layoutSport">
 
                 <TextView
                     android:layout_width="40dp"
@@ -115,8 +93,8 @@
                     android:layout_weight="1"
                     android:gravity="fill"
                     android:text="Level:"
-                    android:textColor="#000000"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:textColor="#000000" />
 
                 <RatingBar
                     android:id="@+id/ratingBar"
@@ -132,18 +110,18 @@
                 android:id="@+id/layoutA"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+
+                android:layout_marginVertical="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layoutMastery">
 
                 <TextView
-                    android:layout_width="49dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="Achievements:"
-                    android:textColor="#000000"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:textColor="#000000" />
 
             </LinearLayout>
 
@@ -151,69 +129,67 @@
                 android:id="@+id/achievement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutA" >
-
-                <EditText
+                android:layout_marginVertical="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutA">
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_achievement"
                     android:layout_width="35dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="130dp"
                     android:layout_weight="1"
-                    android:text=""
                     android:hint="Input Your Achievement"
                     android:inputType="textMultiLine"
                     android:maxLines="9"
                     android:scrollbars="vertical"
-                    android:textColor="#000000"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+                    android:text=""
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:textColor="#000000" />
 
             </LinearLayout>
-
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/recyclerViewD"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="0dp"-->
-<!--                android:layout_marginTop="2dp"-->
-<!--                android:nestedScrollingEnabled="false"-->
-<!--                android:textSize="30sp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.0"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/layoutA" />-->
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btS"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:text="Save"
-                android:textSize="20dp"
-                android:textColor="@android:color/white"
-                android:background="@drawable/custom_sports"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.254"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/achievement" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btC"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cancel"
-                android:textSize="20dp"
-                android:layout_marginTop="50dp"
-                android:textColor="@android:color/white"
-                android:background="@drawable/custom_sports"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.723"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/achievement" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_sports"
+        android:text="Cancel"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btD"
+
+        app:layout_constraintStart_toEndOf="@+id/btS" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_sports"
+        android:text="Save"
+        android:layout_marginBottom="20dp"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btC"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_sports"
+        android:text="Delete"
+        android:backgroundTint="@color/md_theme_light_error"
+        android:layout_marginBottom="20dp"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btC" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

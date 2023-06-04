@@ -62,9 +62,9 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
 
 
         }
-//        binding.calBtn.setOnClickListener {
-//            gobackCal("Unsaved information")
-//        }
+        binding.calBtn.setOnClickListener {
+            gobackCal("Information Unsaved")
+        }
 
 
         sharedvm.selDate.observe(viewLifecycleOwner){
@@ -104,6 +104,9 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
 
             avaTSpinner.setSelection(startTimeDefault)
 
+
+
+
             avaTSpinner.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(
                     p0: AdapterView<*>?,
@@ -111,6 +114,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
                     position: Int,
                     p3: Long
                 ) {
+
                     //transform from string into time
                     var sTstring = showList[position].split(" ")[0]
                     var putST = java.sql.Time(sTstring.split(":")[0].toInt(),0,0)
@@ -154,6 +158,9 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
             val courtNameDefault =
                 arrayAdapterCourtName.getPosition(sharedvm.selectedRes.value!!.name)
             courtNameSpinner.setSelection(courtNameDefault)
+
+
+//            (v as TextView).textSize = 5F
             courtNameSpinner.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(
                     p0: AdapterView<*>?,

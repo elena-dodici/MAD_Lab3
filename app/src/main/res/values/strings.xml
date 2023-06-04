@@ -1,16 +1,20 @@
 <resources>
     <string name="app_name">Lab3</string>
-    <string name="week_mode">Week mode</string>
+    <string name="week_mode">Show in week</string>
     <string name="activity_title_view">Calendar View</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">This is search fragment</string>
     <string name="pick_time">Pick</string>
-    <string name="court_review_title">Court Review</string>
+    <string name="reservation_detail">Reservation Detail</string>
     <string name="user_profile">user_profile</string>
     <string name="full_name">Alice Johnson</string>
     <string name="nickname">Murphy</string>
     <string name="res_des">Description</string>
+    <string name="sport_hint">Input your award!</string>
+    <string name="ownRev">Review</string>
     <string name="res_date">Date</string>
+    <string name="_default">Deafult</string>
+
     <string name="email">s300570@studenti.polito.it</string>
     <string name="phone">+39 173458888</string>
     <string name="job">Full stack Developer</string>
@@ -19,4 +23,6 @@
     <string name="profile">Profile</string>
     <string name="court_detail_title">Court Ranking</string>
     <string name="main_page">Main Page</string>
+
+    <string name="layout_margin">16dp</string>
 </resources>

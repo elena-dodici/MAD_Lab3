@@ -73,10 +73,11 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ranking1 = 1
         sharedvm.getCourtInfo(this.requireActivity().application)
         sharedvm.courtInfo.observe(this){
             courtInfoList.clear();
-            ranking1 = 1
+
             for (res in it){
                 courtInfoList.add(res)
             }
@@ -89,6 +90,7 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        ranking1 = 1
         binding = FragmentCourtBinding.bind(view)
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter

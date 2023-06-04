@@ -54,7 +54,7 @@ class OwnRevFragment : BaseFragment(R.layout.fragment_own_rev), HasToolbar {
 
     fun gobackCal(message: String){
         findNavController().navigate(R.id.action_ownRevFragment_to_historyFragment)
-        mainvm.setShowNav(true)
+        mainvm.setShowNav(false)
         //Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 

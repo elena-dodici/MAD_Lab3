@@ -166,13 +166,17 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="5dp"
+
+
             android:nestedScrollingEnabled="false"
             app:layout_constraintBottom_toTopOf="@id/weekModeCheckBox"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textFreeSlot" />
-
+            app:layout_constraintTop_toBottomOf="@+id/textFreeSlot"
+            android:scrollbars="vertical"
+            android:scrollbarSize="10dp"
+            android:fadeScrollbars="false"/>
         <CheckBox
             android:id="@+id/weekModeCheckBox"
             android:layout_width="wrap_content"
