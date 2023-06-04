@@ -91,7 +91,9 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     private lateinit var binding: FragmentCalendarViewBinding
     private val monthCalendarView: CalendarView get() = binding.calendarView
     private val weekCalendarView: WeekCalendarView get() = binding.weekCalendar
-    private var selectedDate:LocalDate? = null
+//    private var selectedDate:LocalDate? = LocalDate.of(2023,6,3)
+    private var selectedDate:LocalDate? = LocalDate.now()
+    private var count = 2 // 为了初始化选中selectedDate，否则会调用clear
 
     private val availableDateList = mutableListOf<LocalDate>()
     private val events = mutableMapOf<LocalDate, List<Event>>()
@@ -142,6 +144,9 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                 weekCalendarView.notifyCalendarChanged()
 
             }
+            // 初始化下面的recyclerview
+            updateAdapterForDate(selectedDate)
+
 
         }
 
@@ -191,6 +196,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         monthCalendarView.isInvisible = binding.weekModeCheckBox.isChecked
         weekCalendarView.isInvisible = !binding.weekModeCheckBox.isChecked
         binding.weekModeCheckBox.setOnCheckedChangeListener(weekModeToggled)
+
     }
 
 
@@ -251,6 +257,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         }
     }
     private fun updateAdapterForDate(date: LocalDate?) { // 填充会被展示在recyclerview的events数组
+        println("init ${events}")
         eventsAdapter.apply {
             events.clear()
             events.addAll(this@Calendar.events[date].orEmpty())
@@ -285,16 +292,6 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                 val layout = container.binding.dayLayout
                 val dotView = container.binding.DotView
                 bindDate(data.date, textView, dotView, layout, data.position == DayPosition.MonthDate)
-//                bindDate(data.date, textView, dotView, layout, true)
-
-                if (data.position == DayPosition.MonthDate) {
-                    textView.setTextColor(Color.BLACK)
-                    if (availableDateList.isNotEmpty() && !availableDateList.contains(data.date) ){ // 范围外的日期即使是MonthDate设为深灰色
-                        textView.setTextColor(Color.LTGRAY)
-                    }
-                } else {
-                    textView.setTextColor(Color.GRAY)
-                }
 
             }
         }
@@ -326,13 +323,12 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                 val layout = container.binding.dayLayout
                 val dotView = container.binding.DotView
                 bindDate(data.date, textView, dotView, layout, data.position == WeekDayPosition.RangeDate)
-//                bindDate(data.date, textView, dotView, layout, true)
 //                textView.text = data.date.dayOfMonth.toString()
-                textView.setTextColor(Color.BLACK)
-//                textView.setTextSize(16f)
-                if (availableDateList.isNotEmpty() && !availableDateList.contains(data.date) ){ // 范围外的日期即使是MonthDate设为深灰色
-                    textView.setTextColor(Color.LTGRAY)
-                }
+//                textView.setTextColor(Color.BLACK)
+////                textView.setTextSize(16f)
+//                if (availableDateList.isNotEmpty() && !availableDateList.contains(data.date) ){ // 范围外的日期即使是MonthDate设为深灰色
+//                    textView.setTextColor(Color.LTGRAY)
+//                }
             }
         }
         weekCalendarView.weekScrollListener = { updateMonthTitle();clearBackground() }
@@ -342,13 +338,18 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     private fun bindDate(date:LocalDate, textView: TextView, dotView:View, layout:ConstraintLayout, isSelectable:Boolean){
         textView.text = date.dayOfMonth.toString()
         if (isSelectable){
-
             if (selectedDate == date){ // 选择的日期
+//                textView.setTextColor(resources.getColor(R.color.red))
                 textView.setTextColorRes(R.color.blue)
                 textView.setBackgroundResource(R.drawable.selected_bg)
                 dotView.makeInVisible()
 //                layout.setBackgroundResource(R.drawable.selected_bg)
             }
+//            else if(today == date){
+//                textView.setTextColorRes(R.color.blue)
+//                textView.setBackgroundResource(R.drawable.selected_bg)
+//                dotView.makeInVisible()
+//            }
             else{
                 textView.setTextColorRes(R.color.black)
 
@@ -359,9 +360,13 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 //                }
 
             }
+            if (availableDateList.isNotEmpty() && !availableDateList.contains(date) ){ // 范围外的日期即使是MonthDate设为深灰色
+                textView.setTextColor(Color.LTGRAY)
+            }
         }else{
             textView.background = null
             dotView.makeInVisible()
+            textView.setTextColor(Color.GRAY)
 
         }
 
@@ -421,13 +426,19 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         }
     }
     private fun clearBackground(){
-        selectedDate?.let {//切换mode的时候也会调用，但这时候不应该清除
-            // clear selection if we scroll to a new month/week
-            selectedDate = null
-            monthCalendarView.notifyDateChanged(it)
-            weekCalendarView.notifyDateChanged(it)
-            updateAdapterForDate(null)
+        if (count ==0){
+            println("clear")
+            selectedDate?.let {//切换mode的时候也会调用，但这时候不应该清除
+                // clear selection if we scroll to a new month/week
+                selectedDate = null
+                monthCalendarView.notifyDateChanged(it)
+                weekCalendarView.notifyDateChanged(it)
+                updateAdapterForDate(null)
+            }
         }
+        else
+            count -= 1
+
     }
 
 }

@@ -88,13 +88,14 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     private lateinit var binding: FragmentCalendarViewBinding
     private val monthCalendarView: CalendarView get() = binding.calendarView
     private val weekCalendarView: WeekCalendarView get() = binding.weekCalendar
-    private var selectedDate:LocalDate? = null
+    private var selectedDate:LocalDate? = LocalDate.of(2023,6,1)
+    private var count = 2
     private var selectedSport : String = sports[0] // default sport
 //    private val events = mutableMapOf<LocalDate, List<Event>>() // 已有的预定
     private val reservations = mutableMapOf<LocalDate, List<Event>>() // 已有的预定
     private val freeCourts = mutableMapOf<LocalDate, List<FreeCourt>>() // 空闲的时间段，要维护来显示到recyclerview中的 通过传入adapter中来显示的屏幕上
     private val allReserved = mutableMapOf<LocalDate,Boolean>() // 某一天是否完全被预定了
-    private val allDateAvailable = mutableListOf<LocalDate>() // 所有可用日期
+    private val availableDateList = mutableListOf<LocalDate>() // 所有可用日期
     val adapterC = CourtAdapter()
 
     override fun onCreateView(
@@ -107,16 +108,16 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         allReserved.clear()
         freeCourts.clear()
         allStartTime.clear()
-        allDateAvailable.clear()
+        availableDateList.clear()
         vm.getAllDate(this.requireActivity().application)
         vm.allDate.observe(viewLifecycleOwner){
             it.forEach{date->
-                if (!allDateAvailable.contains(date)){
-                    allDateAvailable.add(date)
+                if (!availableDateList.contains(date)){
+                    availableDateList.add(date)
                 }
             }
         }
-        vm.getDateFull(this.requireActivity().application,selectedSport,allDateAvailable) // 当前运动所有预定信息
+        vm.getDateFull(this.requireActivity().application,selectedSport,availableDateList) // 当前运动所有预定信息
         vm.FullDate.observe(viewLifecycleOwner){// 为啥被调用2次？？？
             // 所有的预约信息
             for (res in it){
@@ -201,9 +202,29 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
             }
         }
 
+        binding.weekModeCheckBox.isChecked = true
         monthCalendarView.isInvisible = binding.weekModeCheckBox.isChecked
         weekCalendarView.isInvisible = !binding.weekModeCheckBox.isChecked
         binding.weekModeCheckBox.setOnCheckedChangeListener(weekModeToggled)
+        // 默认week mode
+        val oldHeight = 924
+        val newHeight = 154
+//        println("$oldHeight $newHeight")
+        // Animate calendar height changes.
+        val animator = ValueAnimator.ofInt(oldHeight, newHeight)
+        animator.addUpdateListener { anim ->
+            monthCalendarView.updateLayoutParams {
+                height = anim.animatedValue as Int
+            }
+            // A bug is causing the month calendar to not redraw its children
+            // with the updated height during animation, this is a workaround.
+            monthCalendarView.children.forEach { child ->
+                child.requestLayout()
+            }
+        }
+        animator.duration = 500
+        animator.start()
+
 
         val floatingButton = view.findViewById<FloatingActionButton>(R.id.floatingAddButton)
         floatingButton.setOnClickListener {
@@ -311,11 +332,11 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 bindDate(data.date, textView, dotView, layout, data.position == DayPosition.MonthDate)
 //                bindDate(data.date, textView, layout, data.position == DayPosition.MonthDate)
 //                textView.text = data.date.dayOfMonth.toString()
-                if (data.position == DayPosition.MonthDate) {
-                    textView.setTextColor(Color.BLACK)
-                } else {
-                    textView.setTextColor(Color.GRAY)
-                }
+//                if (data.position == DayPosition.MonthDate) {
+//                    textView.setTextColor(Color.BLACK)
+//                } else {
+//                    textView.setTextColor(Color.GRAY)
+//                }
             }
         }
         // 显示当前月 update title
@@ -350,7 +371,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 bindDate(data.date, textView, dotView, layout, data.position == WeekDayPosition.RangeDate)
 //                bindDate(data.date, textView, layout, data.position == WeekDayPosition.RangeDate)
 //                textView.text = data.date.dayOfMonth.toString()
-                textView.setTextColor(Color.BLACK)
+//                textView.setTextColor(Color.BLACK)
 //                textView.setTextSize(16f)
             }
         }
@@ -363,17 +384,19 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         dotView.makeInVisible()
         if (isSelectable){
 //            print("date is " + date)
-//            println(!allDateAvailable.contains(date))
-            //allDateAvailable中包含了数据库中的所有日期，如果数据库不存在对应日期则证明不可选择对应日期
-            if (allDateAvailable.contains(date)==false){
-                textView.setBackgroundResource(R.drawable.forbid_bg)
-            }
+//            println(!availableDateList.contains(date))
+            //availableDateList，如果数据库不存在对应日期则证明不可选择对应日期
+//            if (availableDateList.contains(date)==false){
+//                textView.setBackgroundResource(R.drawable.forbid_bg)
+//            }
 
             if (allReserved[date] == false){
-//                layout.setBackgroundColor(Color.LTGRAY)
-                textView.setBackgroundResource(R.drawable.forbid_bg)
+                // 已经都被预约了
+                layout.setBackgroundColor(Color.LTGRAY)
+//                textView.setBackgroundResource(R.drawable.forbid_bg)
 
             }else{
+                // 这一天有空闲slot
                 if (selectedDate == date){ // 选择的日期
                     textView.setTextColorRes(R.color.blue)
                     textView.setBackgroundResource(R.drawable.selected_bg)
@@ -382,55 +405,13 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 }
                 else {
                     textView.setTextColorRes(R.color.black)
-
                     textView.background = null
-//                dotView.isVisible = reservations[date].orEmpty().isEmpty()
-// 不显示小蓝点了，改成如果不能预约就禁用那一天
                 }
-
+                if (availableDateList.isNotEmpty() && !availableDateList.contains(date)){
+                    textView.setTextColor(Color.LTGRAY)
+                }
             }
-//            if (reservations[date].orEmpty().isEmpty()) {//对应sport当天没有任何预约
-//                if (freeCourts[date] == null){
-//
-//                    vm.F.observe(viewLifecycleOwner) {
-//                        // 从viewmodel获取数据（viewmodel从数据库拿到数据）
-//                        for (res in it) {
-//                            //it代表从数据库取出的某一个运动的所有时间段
-//                            //res为其中的一个时间段
-////                            if(freeCourts[date]?.get(0)?.sport!=sportSelected){  freeCourts.clear()}
-//
-//                            freeCourts[date] = freeCourts[date].orEmpty().plus(
-//                                FreeCourt(res.name, res.address, res.sport, res.startTime, res.endTime, res.courtTimeId, res.courtId )
-//                            )
-//                        }
-//                    }
-//                }
-//            }
-//            else {//无小蓝点，表示当天有预约
-//                val T = reservations[date]?.map { it.startTime }//T包含了在date这天所有对应sport预约的startTime
-//
-//                freeCourts[date] = listOf<FreeCourt>()
-//
-//                vm.F.observe(viewLifecycleOwner) {
-//                    // 从viewmodel获取数据（viewmodel从数据库拿到数据）
-//                    for (res in it) {
-//                        if (T != null) {
-//                            if (T.contains(res.startTime)) {//对应时间段有预约
-//
-//                            } else {//对应时间段没有预约
-//
-//                                freeCourts[date] = freeCourts[date].orEmpty().plus(
-//                                    FreeCourt(res.name, res.address, res.sport, res.startTime, res.endTime, res.courtTimeId, res.courtId )
-//                                )
-//
-//                            }
-//                        }
-//
-//                    }
-//
-//                }
-//
-//            }
+
         }else{
             textView.background = null
 //            dotView.makeInVisible()
@@ -442,10 +423,10 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     }
     private fun dateClicked(date: LocalDate) {
         if(selectedDate != date){
-            if(allDateAvailable.contains(date)==false){
-                Toast.makeText(context, "Please choose a valid date", Toast.LENGTH_LONG).show()
+            if(availableDateList.isNotEmpty() && !availableDateList.contains(date)){
+                Toast.makeText(context, "Out of Range", Toast.LENGTH_LONG).show()
             }
-            if(allReserved[date] == false){
+            else if(allReserved[date] == false){
 //                println("这一天都被预定了！")
                 Toast.makeText(context, "All reserved", Toast.LENGTH_LONG).show()
             }else{
@@ -500,13 +481,17 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         }
     }
     private fun clearBackground(){
-        selectedDate?.let {
-            // clear selection if we scroll to a new month/week
-            selectedDate = null
-            monthCalendarView.notifyDateChanged(it)
-            weekCalendarView.notifyDateChanged(it)
-            updateAdapterForDate(null)
+        if(count == 0) {
+            selectedDate?.let {
+                // clear selection if we scroll to a new month/week
+                selectedDate = null
+                monthCalendarView.notifyDateChanged(it)
+                weekCalendarView.notifyDateChanged(it)
+                updateAdapterForDate(null)
+            }
         }
+        else
+            count -=1
     }
 
     private fun updateCalendar(sport:String) { // 获取新的运动的预定信息-> 调用日历的bind
