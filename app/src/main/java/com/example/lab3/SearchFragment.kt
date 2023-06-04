@@ -201,9 +201,29 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
             }
         }
 
+        binding.weekModeCheckBox.isChecked = true
         monthCalendarView.isInvisible = binding.weekModeCheckBox.isChecked
         weekCalendarView.isInvisible = !binding.weekModeCheckBox.isChecked
         binding.weekModeCheckBox.setOnCheckedChangeListener(weekModeToggled)
+
+        val oldHeight = 924
+        val newHeight = 154
+//        println("$oldHeight $newHeight")
+        // Animate calendar height changes.
+        val animator = ValueAnimator.ofInt(oldHeight, newHeight)
+        animator.addUpdateListener { anim ->
+            monthCalendarView.updateLayoutParams {
+                height = anim.animatedValue as Int
+            }
+            // A bug is causing the month calendar to not redraw its children
+            // with the updated height during animation, this is a workaround.
+            monthCalendarView.children.forEach { child ->
+                child.requestLayout()
+            }
+        }
+        animator.duration = 500
+        animator.start()
+
 
         val floatingButton = view.findViewById<FloatingActionButton>(R.id.floatingAddButton)
         floatingButton.setOnClickListener {
