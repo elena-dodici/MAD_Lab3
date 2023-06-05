@@ -23,23 +23,6 @@
         android:inputType="textPassword"
         android:hint="Password" />
 
-    <EditText
-        android:id="@+id/editTextName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Name" />
-
-    <EditText
-        android:id="@+id/editTextSurname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Surname" />
-
-    <EditText
-        android:id="@+id/editTel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="TelephoneNumber" />
 
     <Button
         android:id="@+id/buttonRegister"
@@ -51,6 +34,6 @@
         android:id="@+id/buttonSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back" />
+        android:text="Save" />
 
 </LinearLayout>

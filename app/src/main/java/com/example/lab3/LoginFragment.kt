@@ -5,15 +5,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.RatingBar
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.lab3.database.entity.SportDetail
-import com.example.lab3.databinding.FragmentProfileDetailBinding
-import com.example.lab3.viewmodel.SignUpViewModel
+
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -26,11 +22,8 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ProfileFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
-    private lateinit var binding: FragmentProfileDetailBinding
+class LoginFragment : BaseFragment(R.layout.fragment_login) {
 
-
-    private val vm : SignUpViewModel by activityViewModels()
     private val vmMain : MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,44 +35,17 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val emailText = view.findViewById<EditText>(R.id.editTextEmail)
-        val nameText = view.findViewById<EditText>(R.id.editTextName)
-        val surnameText = view.findViewById<EditText>(R.id.editTextSurname)
-        val telText = view.findViewById<EditText>(R.id.editTel)
         val passwordText = view.findViewById<EditText>(R.id.editTextPassword)
         val sButton = view.findViewById<Button>(R.id.buttonSave)
-        val saveButton = view.findViewById<Button>(R.id.buttonRegister)
+        val rButton = view.findViewById<Button>(R.id.buttonRegister)
 
         val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
-        saveButton.setOnClickListener{
+        sButton.setOnClickListener{
             when{
                 emailText.text.isNullOrEmpty() -> {
                     val alertDialog = AlertDialog.Builder(context)
                         .setTitle("Email empty!")
                         .setMessage("Email address cannot be empty")
-                        .setPositiveButton("OK", null)
-                        .create()
-                    alertDialog.show()
-                }
-                nameText.text.isNullOrEmpty() -> {
-                    val alertDialog = AlertDialog.Builder(context)
-                        .setTitle("Name empty!")
-                        .setMessage("Name cannot be empty")
-                        .setPositiveButton("OK", null)
-                        .create()
-                    alertDialog.show()
-                }
-                surnameText.text.isNullOrEmpty() -> {
-                    val alertDialog = AlertDialog.Builder(context)
-                        .setTitle("Surname empty")
-                        .setMessage("Surname cannot be empty")
-                        .setPositiveButton("OK", null)
-                        .create()
-                    alertDialog.show()
-                }
-                telText.text.isNullOrEmpty() -> {
-                    val alertDialog = AlertDialog.Builder(context)
-                        .setTitle("Phone number empty")
-                        .setMessage("Phone number can not be empty")
                         .setPositiveButton("OK", null)
                         .create()
                     alertDialog.show()
@@ -102,13 +68,7 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
                 }
                 else->{
                     if(emailText.text.toString().matches(emailPattern.toRegex())){
-                        vm.signUp(this.requireActivity().application,emailText.text.toString(), passwordText.text.toString(),nameText.text.toString(),surnameText.text.toString(),telText.text.toString())
-                            vm.operationResult.observe(viewLifecycleOwner) {
-                                if (it==true){
-                                    Toast.makeText(this.requireContext(), "Sign up success!.", Toast.LENGTH_SHORT).show()
-                                    findNavController().navigate(R.id.to_loginFragment)
-                                }
-                            }
+                        vmMain.login(this.requireActivity().application,emailText.text.toString(), passwordText.text.toString())
                     }else{
                         val alertDialog = AlertDialog.Builder(context)
                             .setTitle("Email invalid")
@@ -120,8 +80,8 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
                 }
             }
         }
-        sButton.setOnClickListener{
-            findNavController().navigate(R.id.to_loginFragment)
+        rButton.setOnClickListener{
+            findNavController().navigate(R.id.to_SignUpFragment)
         }
     }
 
