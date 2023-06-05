@@ -23,6 +23,11 @@
     <string name="profile">Profile</string>
     <string name="court_detail_title">Court Ranking</string>
     <string name="main_page">Main Page</string>
+    <string name="text_email">Email</string>
+    <string name="text_tel">Tel</string>
+    <string name="text_password">Password</string>
+    <string name="text_name">Name</string>
+    <string name="text_surname">Surname</string>
+    <string name="helper_text">At least 6 numbers</string>
 
-    <string name="layout_margin">16dp</string>
 </resources>
