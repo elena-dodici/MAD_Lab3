@@ -92,7 +92,8 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
                 // Animation repeat
             }
         })
-        arrowImageView.startAnimation(animationSet)
+            arrowImageView.startAnimation(animationSet)
+
         Handler().postDelayed({
             arrowImageView.clearAnimation()
             arrowImageView.visibility = View.GONE
@@ -100,21 +101,24 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
         }, disappearDelay.toLong())
         // END ANIMATIONS //
 
-//        viewModel = ViewModelProvider(this).get(AddReservationViewModel::class.java)
         var dateString : String? = arguments?.getString("date")
         dateDisplayed.setText(dateString)
         var sport : String? = arguments?.getString("sport")
         sportDisplayed.setText(sport)
         var dateLD : LocalDate = LocalDate.parse(dateString)
 
-        viewModel.getTimeSlots(this.requireActivity().application,sport!!,dateLD)
+       viewModel.getTimeSlots(this.requireActivity().application,sport!!,dateLD)
 
         recyclerView.apply {
             recyclerView.layoutManager = LinearLayoutManager(context)
-           // recyclerView.adapter = MyAdapter1(ct)
         }
 
         val ctLiveData = viewModel.timeSlots
+        if(ctLiveData.value?.size == 0){
+            arrowImageView.clearAnimation()
+            arrowImageView.visibility = View.GONE
+            arrowVisible = false
+        }
         ctLiveData.observe(viewLifecycleOwner){
             recyclerView.apply {
                 recyclerView.adapter = MyAdapter1(ctLiveData.value?.keys?.toList()?.sorted()!!)
@@ -129,8 +133,8 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
                         // User clicked OK button
                         val splittedDate =
                             dateString?.split("-")
-                        println("DATE FROM CALENDAR : ${dateString}")
-                        println("SPLITTED DATE = ${splittedDate!![0]}  ")
+                        //println("DATE FROM CALENDAR : ${dateString}")
+                       // println("SPLITTED DATE = ${splittedDate!![0]}  ")
                         val startTime = Timestamp(splittedDate!![0].toInt() -1900,
                             splittedDate!![1].toInt()-1,
                             splittedDate!![2].toInt(),
@@ -139,8 +143,9 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
                             splittedDate!![1].toInt()-1,
                             splittedDate!![2].toInt(),
                             selectedSlot.toInt()+1,0,0,0)
-                        println("START TIME = ${startTime}")
-                        println("END TIME = ${endTime}")
+                        //println("START TIME = ${startTime}")
+                        //println("END TIME = ${endTime}")
+                        println("TIME SLOT VALUE = ${selectedSlot}")
                         val courtName = viewModel.getCourtNameBySport(application, sport)
                         val resDescription = description.editText?.text.toString()
                         val newReservation : ReservationFirebase =
@@ -182,6 +187,7 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
                 //println("SELECT A SLOT FIRST !")
                 Toast.makeText(this.context,"SELECT A SLOT FIRST !",Toast.LENGTH_SHORT).show()
             } else {
+                alertDialog?.setMessage("${sport} court on day '${dateString}' in slot $selectedSlot:00 - ${selectedSlot.toInt()+1}:00")
                 alertDialog?.show()
                 /*val splittedSelectedSlot =
                     selectedSlot.split(":") // GET THE (ex) "10" in "10:00:00" - the only thing needed for later are the two first digits
@@ -204,6 +210,7 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
 }
 
 var selectedSlot : String = ""
+
 class MyAdapter1(val l: List<Int>) : RecyclerView.Adapter<MyAdapter1.MyViewHolder1>(){
     var singleItemSelectionPosition = -1
 
@@ -211,12 +218,15 @@ class MyAdapter1(val l: List<Int>) : RecyclerView.Adapter<MyAdapter1.MyViewHolde
         val tv = v.findViewById<TextView>(R.id.item_time_slot_text)
 
         init {
-            tv.setOnClickListener {
-                setSingleSelection(adapterPosition)
-                selectedSlot = l[adapterPosition].toString()
-                //println(l[adapterPosition].startTime.toString())
+            if(getItemViewType(adapterPosition) == VIEW_TYPE_NORMAL) {
+                tv.setOnClickListener {
+                    setSingleSelection(adapterPosition)
+                    selectedSlot = l[adapterPosition].toString()
+                    //println(l[adapterPosition].startTime.toString())
+                }
             }
         }
+
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder1{
         val v=LayoutInflater.from(parent.context)
@@ -225,18 +235,31 @@ class MyAdapter1(val l: List<Int>) : RecyclerView.Adapter<MyAdapter1.MyViewHolde
     }
 
     override fun getItemCount(): Int {
-        return l.size
+        return if(l.isEmpty()) 1 else l.size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder1, position: Int){
+        if (getItemViewType(position) == VIEW_TYPE_EMPTY) {
+            holder.tv.text = "No available slots"
+            holder.tv.setBackgroundColor(0) // or set a specific background color
+        } else {
             holder.tv.text =
-                "${l[position].toString() + ":00"}" + " - " + "${(l[position]+1).toString() + ":00"}"
+                "${l[position].toString() + ":00"}" + " - " + "${(l[position] + 1).toString() + ":00"}"
             if (singleItemSelectionPosition == position) {
                 holder.tv.setBackgroundColor(holder.tv.resources.getColor(R.color.blue))
             } else {
                 holder.tv.setBackgroundColor(0)
             }
+        }
+    }
 
+    override fun getItemViewType(position: Int): Int {
+        return if (l.isEmpty()) VIEW_TYPE_EMPTY else VIEW_TYPE_NORMAL
+    }
+
+    companion object {
+        private const val VIEW_TYPE_EMPTY = 0
+        private const val VIEW_TYPE_NORMAL = 1
     }
 
     private fun setSingleSelection(adapterPosition: Int){
