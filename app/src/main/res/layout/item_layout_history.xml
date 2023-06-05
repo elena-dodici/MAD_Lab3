@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginVertical="8dp"
     >
 
     <LinearLayout
@@ -16,36 +18,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:textSize="28sp"
             android:text="1"
             android:layout_weight="4"
             android:textAlignment="textStart"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
         <TextView
             android:id="@+id/item_text_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:textSize="28sp"
             android:text="2023-06-01"
             android:layout_weight="3"
-
             android:textAlignment="center"
-
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
         <TextView
             android:id="@+id/item_text_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:textSize="28sp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:text="court1"
             android:layout_weight="3"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+            />
     </LinearLayout>
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:background="@color/teal_700" />
+        android:background="@color/sep_line" />
 </LinearLayout>

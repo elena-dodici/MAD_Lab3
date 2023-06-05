@@ -13,12 +13,12 @@
     <string name="sport_hint">Input your award!</string>
     <string name="ownRev">Review</string>
     <string name="res_date">Date</string>
-    <string name="_default">Deafult</string>
+    <string name="_default">Default</string>
 
     <string name="email">s300570@studenti.polito.it</string>
     <string name="phone">+39 173458888</string>
     <string name="job">Full stack Developer</string>
-    <string name="review_detail">Reservation Detail</string>
+    <string name="review_detail">Review Detail</string>
     <string name="sport_detail">Sport Detail</string>
     <string name="profile">Profile</string>
     <string name="court_detail_title">Court Ranking</string>

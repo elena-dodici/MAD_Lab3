@@ -67,13 +67,15 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_timePicker"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
+
             android:textAppearance="?attr/textAppearanceButton"
             android:textColor="@android:color/white"
             android:background="@drawable/custom_sports"
             android:drawableTint="@color/white"
             android:drawableStart="@drawable/baseline_edit_calendar_24"
+
             android:text="Pick"
             />
     </LinearLayout>

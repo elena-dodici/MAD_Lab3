@@ -32,6 +32,10 @@ class ScoreAdapter(val onTap:(CourtInfo)->Unit):RecyclerView.Adapter<ScoreAdapte
             binding.itemTextCourt.text = courtInfo.courtname
             courtInfo.avg_rating = ((courtInfo.avg_rating *100.0).roundToInt() / 100.0).toFloat()
             binding.itemTextScore.text =  courtInfo.avg_rating.toString()
+
+            binding.itemTextSport.text = courtInfo.sport
+
+
         }
     }
     val courtInfoList = mutableListOf<CourtInfo>()

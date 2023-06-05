@@ -42,40 +42,56 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp">
 
-            <TextView
+<!--            <TextView-->
 
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="CourtName:"
-                android:textColor="@color/black"
-               android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:text="CourtName:"-->
+<!--                android:textColor="@color/black"-->
+<!--               android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />-->
 
             <TextView
                 android:id="@+id/showCourtName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-
+                android:layout_weight="2"
+                android:text="@string/_default"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
 
+
+            <TextView
+                android:id="@+id/show_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/_default"
+                android:textColor="@color/md_theme_light_secondary"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"  />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
-            <TextView
+            android:layout_marginTop="30dp"
+            android:gravity="right">
+<!--            <TextView-->
 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
 
-                android:text="Rate:"
-                android:textColor="@color/black"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+<!--                android:text="Rate:"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />-->
 
             <RatingBar
                 android:id="@+id/ratingBar"
@@ -84,12 +100,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numStars="5"
+                android:scaleY="0.8"
+                android:scaleX="0.8"
                 android:rating="@{vm.avgRating}"
                 android:stepSize="1"
                 android:isIndicator="true"/>
 
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Detail:"
+                android:textColor="@color/md_theme_light_secondary"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+        </LinearLayout>
+
+
+<!--        <com.google.android.material.divider.MaterialDivider-->
+<!--            android:layout_marginVertical="10dp"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:id="@+id/sepLine"-->
+<!--            android:background="@color/sep_line"/>-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginTop="20dp"

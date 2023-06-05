@@ -59,6 +59,7 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToo
         super.onViewCreated(view, savedInstanceState)
          binding = FragmentCourtDetailBinding.bind(view)
         binding.showCourtName.text = sharedvm.courtName.value
+        binding.showAddress.text = sharedvm.courtAddress
         newRecyclerview = binding.recycleView
         newRecyclerview.layoutManager = LinearLayoutManager(context,RecyclerView.VERTICAL,false)
         //newList = sharedvm.courtReviews.value!!

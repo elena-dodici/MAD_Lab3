@@ -40,7 +40,7 @@ class CourtViewModel : ViewModel( ) {
                 }
                 dataList.forEach{res-> // 遍历每一个reservation
 //                    println(res)
-                    tempList.add(CourtInfo(res["name"].toString(), res["avg_rating"].toString().toFloat()))
+                    tempList.add(CourtInfo(res["name"].toString(), res["avg_rating"].toString().toFloat(),res["address"].toString(),res["sport"].toString()))
                 }
 //                _reservations.value = dataList
                 _courtInfo.value = tempList
@@ -71,6 +71,8 @@ class CourtViewModel : ViewModel( ) {
     private var _courtName = MutableLiveData<String>()
     val courtName : LiveData<String> = _courtName
 
+    lateinit var courtAddress :String
+
     private var _review = MutableLiveData<String>()
     val review : LiveData<String> = _review
 
@@ -93,6 +95,7 @@ class CourtViewModel : ViewModel( ) {
             if (r.courtname == courtName) {
                 _courtName.value = r.courtname
                 _avgRating.value = avg_Rate
+                courtAddress = r.address
                 db1.collection("court").document(courtName).get()
                     .addOnSuccessListener { result ->
                        // result.data

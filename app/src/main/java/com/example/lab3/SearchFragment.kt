@@ -26,6 +26,7 @@ import com.example.lab3.databinding.CalendarDayLayoutBinding
 import com.example.lab3.databinding.FragmentCalendarViewBinding
 
 import com.example.lab3.databinding.ItemLayoutBinding
+import com.example.lab3.databinding.ItemSearchBinding
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -50,17 +51,17 @@ import java.time.YearMonth
 
 
 class CourtAdapter(): RecyclerView.Adapter<CourtAdapter.CourtViewHolder>(){
-    inner class CourtViewHolder(private val binding:ItemLayoutBinding):RecyclerView.ViewHolder(binding.root){
+    inner class CourtViewHolder(private val binding:ItemSearchBinding):RecyclerView.ViewHolder(binding.root){
         init {        }
         fun bind(event: FreeCourt){ // 显示到recyclerview
-            binding.title.text = "${event.name}  ${event.sport} "
-            binding.content.text = "${event.startTime}--${event.endTime}"
+            //binding.title.text = "${event.name}  ${event.sport} "
+            binding.content.text = "${event.startTime} -- ${event.endTime}"
         }
 
     }
     val events = mutableListOf<FreeCourt>() // 内部变量，要显示的FreeCourt存在这个数组中
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourtViewHolder {
-        val b = ItemLayoutBinding.inflate(parent.context.layoutInflater, parent, false)
+        val b = ItemSearchBinding.inflate(parent.context.layoutInflater, parent, false)
         return CourtViewHolder(b)
     }
 
@@ -97,6 +98,11 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     private val allReserved = mutableMapOf<LocalDate,Boolean>() // 某一天是否完全被预定了
     private val availableDateList = mutableListOf<LocalDate>() // 所有可用日期
     val adapterC = CourtAdapter()
+
+//    private var gridView:GridView ?= null
+//    private var arrayList:ArrayList<String> ?= null
+//    private var startTimeAdapter: startTimeAdapter ?= null
+//
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -146,6 +152,30 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = adapterC
         recyclerView.layoutManager =  LinearLayoutManager(this.context, RecyclerView.VERTICAL,false )
+
+
+//        gridView = view.findViewById(R.id.gridView)
+//        startTimeAdapter = startTimeAdapter(requireContext(), arrayList!!)
+//        gridView?.adapter = startTimeAdapter
+
+
+
+
+//       freeCourts.forEach {res ->
+//
+//           println("res: ${res}")
+//       }
+//        arrayList!!.add("1")
+//        arrayList!!.add("1")
+//        arrayList!!.add("1")
+//        arrayList!!.add("1")
+//        arrayList!!.add("1")
+//        arrayList!!.add("1")
+
+
+
+
+
 
         // 下拉菜单
         val spinnerSports = view.findViewById<Spinner>(R.id.sportSpinner)
@@ -302,6 +332,12 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
             notifyDataSetChanged()
 
         }
+//        startTimeAdapter?.apply {
+//            arrayList.clear()
+//            arrayList.addAll(this@SearchFragment.freeCourts[date].orEmpty())
+//            notifyDataSetChanged()
+//
+//        }
 
     }
     private fun configureBinders() {
@@ -442,7 +478,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 
                 }
                 getFreeSlot(selectedSport, date)
-//            println(freeCourts[date])
+
                 updateAdapterForDate(date) // 将当前date的空闲时间段的内容显示在下面列表
             }
 
@@ -536,7 +572,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 }
             }
             this.freeCourts[date]=fc
-
+            println("greefreesliot :  ${freeCourts[date]}")
             updateAdapterForDate(date)
         }
 

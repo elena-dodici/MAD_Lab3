@@ -24,6 +24,7 @@
             android:layout_marginLeft="16dp"
             android:gravity="right"
             android:text="text"
+            android:padding="5dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textColor="@color/black"/>
 

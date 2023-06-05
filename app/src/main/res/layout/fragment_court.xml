@@ -25,7 +25,8 @@
     <LinearLayout
         android:id="@+id/courtTitle"
         android:layout_width="match_parent"
-        android:layout_height="45sp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
         android:orientation="horizontal"
         >
 
@@ -33,32 +34,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="#"
-            android:textSize="35sp"
-            android:textColor="#000000"
+            android:text="Leaderboard"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:textColor="@color/md_theme_light_tertiary"
             android:paddingStart="5dp"
             />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Court"
-            android:textColor="#000000"
-            android:textSize="35sp"
-            tools:fontFamily="@font/roboto" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="2"-->
+<!--            android:text="Court"-->
+<!--            android:textColor="#000000"-->
+<!--            android:textSize="35sp"-->
+<!--            tools:fontFamily="@font/roboto" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/roboto"
-            android:text="Rating"
-            android:textAlignment="center"
-            android:textColor="#000000"
-
-
-            android:textSize="35sp" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:fontFamily="@font/roboto"-->
+<!--            android:text="Rating"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="#000000"-->
+<!--            android:textSize="35sp" />-->
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
