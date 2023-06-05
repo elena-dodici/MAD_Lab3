@@ -18,13 +18,11 @@ class SignUpViewModel : ViewModel() {
 
     lateinit var db: AppDatabase
     val db1 = Firebase.firestore
-    private lateinit var auth: FirebaseAuth
+    private var auth: FirebaseAuth=FirebaseAuth.getInstance()
     val storage = Firebase.storage
 
 
     fun signUp(application: Application, email:String,password:String){
-        // Initialize Firebase Auth
-        val auth = FirebaseAuth.getInstance()
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -49,28 +47,21 @@ class SignUpViewModel : ViewModel() {
 
 
     }
-    fun newUser(application: Application, name:String,surname:String,tel:String){
-        val userid = FirebaseAuth.getInstance().currentUser?.uid
-        println(userid)
+    fun newUser(application: Application, name:String,surname:String,tel:String,email: String){
+        val userid = auth.currentUser?.uid
         val u = hashMapOf(
             "name" to name,
             "photo" to "",
             "surname" to surname,
             "tel" to tel)
-        val emptyOrders = hashMapOf<String, Any?>()
-        println("name="+name)
-        db1.collection("users").document("u4").set(u)
+
+        db1.collection("users").document("u${userid}").set(u)
             .addOnSuccessListener {
                 println("addsuccess")
             }
             .addOnFailureListener { exception ->
                 println("add failed: ${exception.message}")
             }
-
-                db1.collection("users").document("u5").collection("sports")
-                db1.collection("users").document("u6").collection("reservation")
-
-
 
     }
 

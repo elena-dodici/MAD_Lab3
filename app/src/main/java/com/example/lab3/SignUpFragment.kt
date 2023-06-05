@@ -39,6 +39,7 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val emailText = view.findViewById<EditText>(R.id.editTextEmail)
         val nameText = view.findViewById<EditText>(R.id.editTextName)
         val surnameText = view.findViewById<EditText>(R.id.editTextSurname)
@@ -46,13 +47,77 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
         val passwordText = view.findViewById<EditText>(R.id.editTextPassword)
         val sButton = view.findViewById<Button>(R.id.buttonSave)
         val saveButton = view.findViewById<Button>(R.id.buttonRegister)
-        super.onViewCreated(view, savedInstanceState)
+
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
         saveButton.setOnClickListener{
-            vm.signUp(this.requireActivity().application,emailText.text.toString(), passwordText.text.toString())
+            when{
+                emailText.text.isNullOrEmpty() -> {
+                    val alertDialog = AlertDialog.Builder(context)
+                        .setTitle("Email empty!")
+                        .setMessage("Email address cannot be empty")
+                        .setPositiveButton("OK", null)
+                        .create()
+                    alertDialog.show()
+                }
+                nameText.text.isNullOrEmpty() -> {
+                    val alertDialog = AlertDialog.Builder(context)
+                        .setTitle("Name empty!")
+                        .setMessage("Name cannot be empty")
+                        .setPositiveButton("OK", null)
+                        .create()
+                    alertDialog.show()
+                }
+                surnameText.text.isNullOrEmpty() -> {
+                    val alertDialog = AlertDialog.Builder(context)
+                        .setTitle("Surname empty")
+                        .setMessage("Surname cannot be empty")
+                        .setPositiveButton("OK", null)
+                        .create()
+                    alertDialog.show()
+                }
+                telText.text.isNullOrEmpty() -> {
+                    val alertDialog = AlertDialog.Builder(context)
+                        .setTitle("Phone number empty")
+                        .setMessage("Phone number can not be empty")
+                        .setPositiveButton("OK", null)
+                        .create()
+                    alertDialog.show()
+                }
+                passwordText.text.isNullOrEmpty() -> {
+                    val alertDialog = AlertDialog.Builder(context)
+                        .setTitle("Password empty")
+                        .setMessage("Password cannot be empty")
+                        .setPositiveButton("OK", null)
+                        .create()
+                    alertDialog.show()
+                }
+                passwordText.text.length < 6 -> {
+                    val alertDialog = AlertDialog.Builder(context)
+                        .setTitle("Password invalid")
+                        .setMessage("Password length must not less than 6")
+                        .setPositiveButton("OK", null)
+                        .create()
+                    alertDialog.show()
+                }
+                else->{
+                    if(emailText.text.toString().matches(emailPattern.toRegex())){
+                        vm.signUp(this.requireActivity().application,emailText.text.toString(), passwordText.text.toString())
+                        vm.newUser(this.requireActivity().application,nameText.text.toString(),surnameText.text.toString(),telText.text.toString(),emailText.text.toString())
+                    }else{
+                        val alertDialog = AlertDialog.Builder(context)
+                            .setTitle("Email invalid")
+                            .setMessage("Please input a valid email address")
+                            .setPositiveButton("OK", null)
+                            .create()
+                        alertDialog.show()
+                    }
+                }
+            }
         }
         sButton.setOnClickListener{
-            vm.newUser(this.requireActivity().application,nameText.text.toString(),surnameText.text.toString(),telText.text.toString())
         }
     }
+
+
 
 }
