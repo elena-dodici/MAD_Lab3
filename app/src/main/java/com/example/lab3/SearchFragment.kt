@@ -18,6 +18,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab3.database.entity.FreeCourt
@@ -152,7 +153,8 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.adapter = adapterC
-        recyclerView.layoutManager =  LinearLayoutManager(this.context, RecyclerView.VERTICAL,false )
+//        recyclerView.layoutManager =  LinearLayoutManager(this.context, RecyclerView.VERTICAL,false )
+        recyclerView.layoutManager =  GridLayoutManager(this.context,2)
 
         println("thisi s test ${freeCourts[selectedDate]}")
         println("thisi s test ${selectedDate}")
