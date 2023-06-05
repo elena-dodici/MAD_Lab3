@@ -6,10 +6,25 @@
         <item name="android:statusBarColor">#FFFFFF</item>
         <item name="colorPrimaryDark">#63D3FF</item>
         <item name="colorAccent">@color/colorAccent</item>
-        style="@android:style/Widget.Material.Light.Button"
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.App.TitleMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.App.BodySmall</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
 
     </style>
+    <style name="TextAppearance.App.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
 
+    <style name="TextAppearance.App.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="fontFamily">@font/roboto</item>
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">4dp</item>
+    </style>
 
 <!--    <style name="Widget.App.TextInputLayout" parent="Widget.Material3.TextInputLayout.*">-->
 <!--        <item name="materialThemeOverlay">@style/ThemeOverlay.App.TextInputLayout</item>-->
