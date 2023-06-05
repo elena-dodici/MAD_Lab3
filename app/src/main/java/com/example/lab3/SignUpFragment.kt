@@ -122,9 +122,9 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
 
 
         }
-        sButton.setOnClickListener{
-            findNavController().navigate(R.id.to_loginFragment)
-        }
+//        sButton.setOnClickListener{
+//            findNavController().navigate(R.id.to_loginFragment)
+//        }
     }
 
 

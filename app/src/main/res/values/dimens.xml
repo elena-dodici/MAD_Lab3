@@ -4,5 +4,6 @@
     <dimen name="margin_right">16dp</dimen>
     <dimen name="custom_min_width">56dp</dimen>
     <dimen name="custom_max_width">488dp</dimen>
+    <dimen name="default_button_length">245dp</dimen>
 
 </resources>
