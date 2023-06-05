@@ -329,6 +329,8 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         adapterC.apply {
             events.clear()
             events.addAll(this@SearchFragment.freeCourts[date].orEmpty())
+
+
             notifyDataSetChanged()
 
         }
@@ -572,7 +574,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 }
             }
             this.freeCourts[date]=fc
-            println("greefreesliot :  ${freeCourts[date]}")
+
             updateAdapterForDate(date)
         }
 
