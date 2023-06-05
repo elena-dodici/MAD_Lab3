@@ -48,6 +48,7 @@ import java.sql.Time
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.temporal.TemporalAdjusters
 
 
 class CourtAdapter(): RecyclerView.Adapter<CourtAdapter.CourtViewHolder>(){
@@ -224,11 +225,19 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
             binding.calendarView.findFirstVisibleMonth()?.let {
                 binding.calendarView.smoothScrollToMonth(it.yearMonth.nextMonth)
             }
+            binding.weekCalendar.findFirstVisibleDay()?.let {
+                val nextWeekFirstDay = ( it.date.with(TemporalAdjusters.next(DayOfWeek.SUNDAY)) )
+                binding.weekCalendar.smoothScrollToWeek(nextWeekFirstDay)
+            }
         }
         // 箭头 上一个月
         binding.previousMonthImage.setOnClickListener {
             binding.calendarView.findFirstVisibleMonth()?.let {
                 binding.calendarView.smoothScrollToMonth(it.yearMonth.previousMonth)
+            }
+            binding.weekCalendar.findFirstVisibleDay()?.let {
+                val previousWeekFirstDay = ( it.date.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)).minusWeeks(1) )
+                binding.weekCalendar.smoothScrollToWeek(previousWeekFirstDay)
             }
         }
 
