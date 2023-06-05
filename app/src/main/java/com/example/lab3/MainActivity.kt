@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
 
 //       initDatabase(db) // add some initial data
-       initFirebase()
+       //initFirebase()
 
 
 

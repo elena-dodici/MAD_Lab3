@@ -21,12 +21,12 @@
             android:layout_height="?attr/actionBarSize"
             />
     </com.google.android.material.appbar.AppBarLayout>
-<!--<ScrollView-->
+    <!--<ScrollView-->
 
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="wrap_content"-->
-<!--    android:background="@color/white"-->
-<!--    tools:context=".ProfileFragment">-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:background="@color/white"-->
+    <!--    tools:context=".ProfileFragment">-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,137 +37,148 @@
             android:id="@+id/userSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/TOP"
+            app:layout_constraintTop_toBottomOf="@id/View"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-        <LinearLayout
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginHorizontal="16dp"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            >
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/TOP"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:contentDescription="@string/user_profile"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/user_profile"
-                app:shapeAppearanceOverlay="@style/RoundCorner"/>
-<!--            <ImageView-->
-<!--                android:id="@+id/TOP"-->
-<!--                android:layout_width="200dp"-->
-<!--                android:layout_height="200dp"-->
-<!--                android:background="#DCDCDC"-->
-<!--                android:contentDescription="@string/user_profile"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:srcCompat="@drawable/user_profile" />-->
 
-        </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/View"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="16dp"
+            android:layout_marginHorizontal="8dp"
             android:layout_weight="2"
             android:orientation="vertical">
 
-            <!--            name-->
-            <LinearLayout
-                android:id="@+id/showName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp"
-                >
-                <ImageView
-                    android:id="@+id/person_icon"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="40dp"
-                    android:contentDescription="phone"
-                    android:src="@drawable/baseline_person_24" />
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="0dp"
-                    android:layout_weight="5"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/full_name"
-                    android:textColor="#000000"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/person_icon"
-                  />
-            </LinearLayout>
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/sep_line"/>
-            <!--            phone-->
-            <LinearLayout
-                android:id="@+id/layoutEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp">
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_phone" />
-
-                <TextView
-                    android:id="@+id/tv_phone"
-                    android:layout_width="0dp"
-                    android:layout_weight="5"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/phone"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
-
-            </LinearLayout>
-<!--            sport-->
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                app:dividerInsetStart="100dp"
-                app:dividerInsetEnd="100dp"
-                android:layout_height="wrap_content"
-                android:background="@color/sep_line"/>
-
-            <TextView
-                android:id="@+id/mySport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="SKILL:"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-                android:textStyle="bold"
-                />
 
 
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp">
+                android:layout_marginHorizontal="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!--            button-->
+                    <LinearLayout
+                        android:id="@+id/imageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="16dp"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        >
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/TOP"
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="@string/user_profile"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/user_profile"
+                            app:shapeAppearanceOverlay="@style/RoundCorner"/>
+                        <!--            <ImageView-->
+                        <!--                android:id="@+id/TOP"-->
+                        <!--                android:layout_width="200dp"-->
+                        <!--                android:layout_height="200dp"-->
+                        <!--                android:background="#DCDCDC"-->
+                        <!--                android:contentDescription="@string/user_profile"-->
+                        <!--                app:layout_constraintEnd_toEndOf="parent"-->
+                        <!--                app:layout_constraintStart_toStartOf="parent"-->
+                        <!--                app:layout_constraintTop_toTopOf="parent"-->
+                        <!--                app:srcCompat="@drawable/user_profile" />-->
+
+                    </LinearLayout>
+                    <!--            name-->
+                    <LinearLayout
+                        android:id="@+id/showName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_horizontal"
+
+                        >
+                        <ImageView
+                            android:id="@+id/person_icon"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:contentDescription="phone"
+                            android:src="@drawable/baseline_person_24" />
+                        <TextView
+                            android:id="@+id/tv_name"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/full_name"
+                            android:textColor="#000000"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/person_icon"
+                            />
+                    </LinearLayout>
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/sep_line"/>
+
+                    <LinearLayout
+                        android:id="@+id/layoutEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_phone" />
+
+                        <TextView
+                            android:id="@+id/tv_phone"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/phone"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+
+                    </LinearLayout>
+
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        app:dividerInsetStart="100dp"
+                        app:dividerInsetEnd="100dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/sep_line"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="start"
+                        >
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                           android:layout_gravity="start"
+                            android:src="@drawable/baseline_sports_gymnastics_24" />
+
+
+
+
+                    </LinearLayout>
+
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewS"
                         android:layout_width="match_parent"
@@ -183,9 +194,8 @@
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btE"
-                        android:layout_width="150dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
-
                         android:layout_gravity="center_horizontal"
                         android:layout_marginVertical="20dp"
                         android:background="@drawable/custom_sports"
@@ -209,19 +219,11 @@
                         />
 
                 </LinearLayout>
-
-
-
             </ScrollView>
-
-
-
-
-
 
         </LinearLayout>
 
     </LinearLayout>
 
-<!--</ScrollView>-->
+    <!--</ScrollView>-->
 </LinearLayout>

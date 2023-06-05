@@ -51,7 +51,7 @@
         <color name="md_theme_light_onPrimary">#FFFFFF</color>
         <color name="md_theme_light_primaryContainer">#BCE9FF</color>
         <color name="md_theme_light_onPrimaryContainer">#001F2A</color>
-        <color name="md_theme_light_secondary">#4D616B</color>
+        <color name="md_theme_light_secondary">#607D8B</color>
         <color name="md_theme_light_onSecondary">#FFFFFF</color>
         <color name="md_theme_light_secondaryContainer">#D0E6F2</color>
         <color name="md_theme_light_onSecondaryContainer">#081E27</color>

@@ -50,7 +50,7 @@
                 android:adjustViewBounds="true"
                 android:scaleX="0.5"
                 android:scaleY="0.5"
-                android:src="@drawable/baseline_info_24" />
+                android:src="@drawable/baseline_keyboard_double_arrow_right_24" />
 
 
         </LinearLayout>
