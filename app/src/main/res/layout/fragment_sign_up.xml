@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
+
 <!--    <EditText-->
 <!--        android:id="@+id/nothing"-->
 <!--        android:layout_width="match_parent"-->
@@ -17,10 +18,17 @@
 <!--        android:layout_height="wrap_content"-->
 <!--        android:hint="" />-->
 
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/Registration"
+    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4">
+
+</TextView>
 
     <com.google.android.material.textfield.TextInputLayout
         style="?attr/textInputFilledStyle"
-        android:id="@+id/editTextName"
+        android:layout_marginTop="80dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/text_name"
@@ -28,6 +36,7 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
@@ -40,13 +49,14 @@
 
     <com.google.android.material.textfield.TextInputLayout
         style="?attr/textInputFilledStyle"
-        android:id="@+id/editTextSurname"
+        android:layout_marginVertical="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/text_surname"
         app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextSurname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
@@ -58,15 +68,15 @@
 
     <com.google.android.material.textfield.TextInputLayout
         style="?attr/textInputFilledStyle"
-        android:id="@+id/editTextEmail"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
         android:hint="@string/text_email"
         app:endIconMode="clear_text"
-        android:minWidth="@dimen/custom_min_width"
-        android:maxWidth="@dimen/custom_max_width">
+       >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
@@ -74,15 +84,9 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-
-
-
-
-
-
     <com.google.android.material.textfield.TextInputLayout
         style="?attr/textInputFilledStyle"
-        android:id="@+id/editTextPassword"
+        android:layout_marginVertical="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/text_password"
@@ -91,6 +95,8 @@
         app:helperText="@string/helper_text">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextPassword"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -126,13 +132,14 @@
 
     <com.google.android.material.textfield.TextInputLayout
         style="?attr/textInputFilledStyle"
-        android:id="@+id/editTel"
+        android:layout_marginVertical="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/text_tel"
         app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
@@ -146,6 +153,7 @@
         android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
         android:text="Register"
         android:textAppearance="?attr/textAppearanceButton"
         android:textColor="@android:color/white"
@@ -153,10 +161,10 @@
         android:layout_gravity="center_horizontal"
         />
 
-    <Button
-        android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save" />
+<!--    <Button-->
+<!--        android:id="@+id/buttonSave"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Back to main " />-->
 
 </LinearLayout>

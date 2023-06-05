@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RatingBar
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -101,8 +102,13 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
                 }
                 else->{
                     if(emailText.text.toString().matches(emailPattern.toRegex())){
-                        vm.signUp(this.requireActivity().application,emailText.text.toString(), passwordText.text.toString())
-                        vm.newUser(this.requireActivity().application,nameText.text.toString(),surnameText.text.toString(),telText.text.toString(),emailText.text.toString())
+                        vm.signUp(this.requireActivity().application,emailText.text.toString(), passwordText.text.toString(),nameText.text.toString(),surnameText.text.toString(),telText.text.toString())
+                            vm.operationResult.observe(viewLifecycleOwner) {
+                                if (it==true){
+                                    Toast.makeText(this.requireContext(), "Sign up success!.", Toast.LENGTH_SHORT).show()
+                                    //go to profile page and let it add their information!!!
+                                }
+                            }
                     }else{
                         val alertDialog = AlertDialog.Builder(context)
                             .setTitle("Email invalid")
@@ -113,8 +119,11 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
                     }
                 }
             }
+
+
         }
         sButton.setOnClickListener{
+            findNavController().navigate(R.id.to_loginFragment)
         }
     }
 

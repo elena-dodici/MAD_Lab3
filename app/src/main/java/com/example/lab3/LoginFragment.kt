@@ -3,49 +3,47 @@ package com.example.lab3
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.lab3.databinding.FragmentMainBinding
 
 
-class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
+
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+
+/**
+ * A simple [Fragment] subclass.
+ * Use the [ProfileFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ */
+class LoginFragment : BaseFragment(R.layout.fragment_login) {
+
     private val vmMain : MainViewModel by activityViewModels()
-    companion object {
-        fun newInstance() = MainFragment()
-    }
-    private lateinit var binding: FragmentMainBinding
-    override val toolbar: Toolbar?
-        get() = binding.activityToolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentMainBinding.bind(view)
+        val emailText = view.findViewById<EditText>(R.id.editTextEmail)
+        val passwordText = view.findViewById<EditText>(R.id.editTextPassword)
+        val sButton = view.findViewById<Button>(R.id.buttonSave)
+        val rButton = view.findViewById<Button>(R.id.buttonRegister)
 
-        val inputEmail = binding.editTextEmail.editText?.text
-        val inputPassword = binding.editTextPassword.editText?.text
         val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
-
-        binding.editTextEmail.editText?.doOnTextChanged { inputText, _, _, _ ->
-            // Respond to input text change
-            println("change activate: ${inputText}")
-        }
-
-        binding.buttonSave.setOnClickListener {
-//            println("I got inputEmail!: ${inputEmail.toString()}")
-//            println("I got input password!: ${inputPassword.toString()}")
-
-
+        sButton.setOnClickListener{
             when{
-                inputEmail.toString().isNullOrEmpty() -> {
+                emailText.text.isNullOrEmpty() -> {
                     val alertDialog = AlertDialog.Builder(context)
                         .setTitle("Email empty!")
                         .setMessage("Email address cannot be empty")
@@ -53,15 +51,15 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
                         .create()
                     alertDialog.show()
                 }
-                inputPassword.toString().isNullOrEmpty() -> {
+                passwordText.text.isNullOrEmpty() -> {
                     val alertDialog = AlertDialog.Builder(context)
-                        .setTitle("Password empty !")
+                        .setTitle("Password empty")
                         .setMessage("Password cannot be empty")
                         .setPositiveButton("OK", null)
                         .create()
                     alertDialog.show()
                 }
-                inputPassword.toString().length < 6 -> {
+                passwordText.text.length < 6 -> {
                     val alertDialog = AlertDialog.Builder(context)
                         .setTitle("Password invalid")
                         .setMessage("Password length must not less than 6")
@@ -70,12 +68,10 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
                     alertDialog.show()
                 }
                 else->{
-                    if(inputEmail.toString().matches(emailPattern.toRegex())){
-                        vmMain.login(this.requireActivity().application,inputEmail.toString(), inputPassword.toString())
+                    if(emailText.text.toString().matches(emailPattern.toRegex())){
+                        vmMain.login(this.requireActivity().application,emailText.text.toString(), passwordText.text.toString())
                         if(!vmMain.UID.isNullOrEmpty()){
                             Toast.makeText(this.requireContext(), "Login success!.", Toast.LENGTH_SHORT).show()
-                            //go to profile page!!!!
-
                         }
                     }else{
                         val alertDialog = AlertDialog.Builder(context)
@@ -87,14 +83,13 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
                     }
                 }
             }
-
-
         }
-
-        binding.register.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment2_to_SignUpFragment)
+        rButton.setOnClickListener{
+            //findNavController().navigate(R.id.to_SignUpFragment)
+            //findNavController().navigate(R.id.action_courtFragment_to_courtDetailFragment)
         }
-
-
     }
+
+
+
 }

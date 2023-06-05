@@ -29,5 +29,6 @@
     <string name="text_name">Name</string>
     <string name="text_surname">Surname</string>
     <string name="helper_text">At least 6 numbers</string>
+    <string name="Registration">Let\'s start the journey!</string>
 
 </resources>

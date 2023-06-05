@@ -53,6 +53,11 @@
             app:destination="@id/profileFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_mainFragment2_to_SignUpFragment"
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -109,7 +114,23 @@
         android:name="com.example.lab3.SignUpFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.lab3.LoginFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/to_SignUpFragment"
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.lab3.ProfileFragment"
@@ -132,7 +153,7 @@
             app:exitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/to_SignUpFragment"
-            app:destination="@id/signUpFragment"
+            app:destination="@id/loginFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
