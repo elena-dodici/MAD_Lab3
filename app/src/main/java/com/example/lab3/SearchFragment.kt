@@ -154,28 +154,8 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         recyclerView.adapter = adapterC
         recyclerView.layoutManager =  LinearLayoutManager(this.context, RecyclerView.VERTICAL,false )
 
-
-//        gridView = view.findViewById(R.id.gridView)
-//        startTimeAdapter = startTimeAdapter(requireContext(), arrayList!!)
-//        gridView?.adapter = startTimeAdapter
-
-
-
-
-//       freeCourts.forEach {res ->
-//
-//           println("res: ${res}")
-//       }
-//        arrayList!!.add("1")
-//        arrayList!!.add("1")
-//        arrayList!!.add("1")
-//        arrayList!!.add("1")
-//        arrayList!!.add("1")
-//        arrayList!!.add("1")
-
-
-
-
+        println("thisi s test ${freeCourts[selectedDate]}")
+        println("thisi s test ${selectedDate}")
 
 
         // 下拉菜单
