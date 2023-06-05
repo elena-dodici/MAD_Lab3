@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -69,6 +70,9 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
                 else->{
                     if(emailText.text.toString().matches(emailPattern.toRegex())){
                         vmMain.login(this.requireActivity().application,emailText.text.toString(), passwordText.text.toString())
+                        if(!vmMain.UID.isNullOrEmpty()){
+                            Toast.makeText(this.requireContext(), "Login success!.", Toast.LENGTH_SHORT).show()
+                        }
                     }else{
                         val alertDialog = AlertDialog.Builder(context)
                             .setTitle("Email invalid")
