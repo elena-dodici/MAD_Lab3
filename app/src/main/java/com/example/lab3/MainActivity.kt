@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
@@ -62,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         }
         db = AppDatabase.getDatabase(application)
 
-
+        vm.updateCourtTimesDates()
 
 //       initDatabase(db) // add some initial data
      //   initFirebase()

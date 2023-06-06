@@ -23,6 +23,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,9 +34,11 @@ import com.example.lab3.databinding.FragmentAddReservationBinding
 import com.example.lab3.databinding.FragmentProfileDetailBinding
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import java.sql.Time
 import java.sql.Timestamp
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),HasToolbar {
@@ -198,6 +201,7 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
                         //println("START TIME = ${startTime}")
                         //println("END TIME = ${endTime}")
                         println("TIME SLOT VALUE = ${selectedSlot}")
+
                         val courtName = viewModel.getCourtNameBySport(application, sport)
                         val resDescription = description.editText?.text.toString()
                         val newReservation : ReservationFirebase =
@@ -206,12 +210,13 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
                         try {
                             viewModel.addNewReservation(application,
                                 newReservation,
-                                mainVm.user,
+                                mainVm.UID,
                                 dateString,
                                 selectedSlot)
                         }
                         catch (e : Exception){
                             failed = true;
+                            println("Exception : ${e}")
                             Toast.makeText(this.context,"Operation failed , retry later!",Toast.LENGTH_SHORT).show()
                         }
                         if(failed == false) {
