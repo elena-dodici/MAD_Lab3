@@ -126,6 +126,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
 //        loadImageFromStorage(profilePicturePath)
         val editButton = view.findViewById<Button>(R.id.btE)
         val historyButton = view.findViewById<Button>(R.id.btHis)
+        val friendButton = view.findViewById<Button>(R.id.btFriends)
         val fullName = view.findViewById<TextView>(R.id.tv_name)
         val tel = view.findViewById<TextView>(R.id.tv_phone)
         val photoView = view.findViewById<ImageView>(R.id.TOP)
@@ -199,6 +200,10 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
 //        }
         //需把action_profileFragment_to_historyFragment的destination改成正确的跳转目的地
         historyButton.setOnClickListener{
+            vmMain.setShowNav(false)
+            findNavController().navigate(R.id.action_profileFragment_to_historyFragment)
+        }
+        friendButton.setOnClickListener{
             vmMain.setShowNav(false)
             findNavController().navigate(R.id.action_profileFragment_to_historyFragment)
         }

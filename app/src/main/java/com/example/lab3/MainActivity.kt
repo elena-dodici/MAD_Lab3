@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         }
         db = AppDatabase.getDatabase(application)
 
-        vm.updateCourtTimesDates()
+//        vm.updateCourtTimesDates()
 
 //       initDatabase(db) // add some initial data
      //   initFirebase()
