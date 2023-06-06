@@ -281,7 +281,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
                 vm.updateUser(this.requireActivity().application,u,vmMain.UID)
             }
 
-            var bundle = bundleOf("Path" to profilePicturePath)
+            var bundle = bundleOf("Path" to "user${vmMain.UID}/images/user${vmMain.UID}.jpg")
             vmMain.setShowNav(true)
 
             SportDetail.forEach{

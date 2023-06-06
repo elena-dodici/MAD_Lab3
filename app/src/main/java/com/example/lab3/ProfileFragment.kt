@@ -162,6 +162,15 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
                 .load(it)
                 .into(photoView)
         }
+        val p  = arguments?.getString("Path")
+        if (!p.isNullOrEmpty()) {
+            vm.readPhoto(this.requireActivity().application, p)
+            vm.photoUri.observe(viewLifecycleOwner) {
+                Glide.with(this)
+                    .load(it)
+                    .into(photoView)
+            }
+        }
 //        println(vmMain.user)
 //        spinnerUser.setSelection(vmMain.user-1)
 //        spinnerUser.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
