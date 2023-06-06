@@ -7,21 +7,21 @@
     tools:context=".CourtFragment"
     android:orientation="vertical"
     >
-<!--    <com.google.android.material.appbar.AppBarLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@color/deeper_toolbar_color2"-->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/deeper_toolbar_color2"
 
-<!--        android:theme="@style/AppTheme.AppBarOverlay">-->
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-<!--        <androidx.appcompat.widget.Toolbar-->
-<!--            android:id="@+id/activityToolbar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            app:title="@string/court_detail_title"-->
-<!--            android:layout_height="?attr/actionBarSize"-->
-<!--            />-->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/activityToolbar"
+            android:layout_width="match_parent"
+            app:title="@string/court_detail_title"
+            android:layout_height="?attr/actionBarSize"
+            />
 
-<!--    </com.google.android.material.appbar.AppBarLayout>-->
+    </com.google.android.material.appbar.AppBarLayout>
     <LinearLayout
         android:id="@+id/courtTitle"
         android:layout_width="match_parent"

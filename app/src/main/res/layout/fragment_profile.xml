@@ -8,19 +8,19 @@
     android:orientation="vertical"
     >
 
-<!--    <com.google.android.material.appbar.AppBarLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@color/deeper_toolbar_color2"-->
-<!--        android:theme="@style/AppTheme.AppBarOverlay">-->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/deeper_toolbar_color2"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-<!--        <androidx.appcompat.widget.Toolbar-->
-<!--            android:id="@+id/activityToolbar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            app:title="@string/profile"-->
-<!--            android:layout_height="?attr/actionBarSize"-->
-<!--            />-->
-<!--    </com.google.android.material.appbar.AppBarLayout>-->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/activityToolbar"
+            android:layout_width="match_parent"
+            app:title="@string/profile"
+            android:layout_height="?attr/actionBarSize"
+            />
+    </com.google.android.material.appbar.AppBarLayout>
     <!--<ScrollView-->
 
     <!--    android:layout_width="match_parent"-->
