@@ -59,10 +59,16 @@ import java.time.temporal.TemporalAdjusters
 class CourtAdapter(): RecyclerView.Adapter<CourtAdapter.CourtViewHolder>(){
     inner class CourtViewHolder(private val binding:ItemSearchBinding):RecyclerView.ViewHolder(binding.root){
         init {        }
-        fun bind(event: FreeCourt){ // 显示到recyclerview
+
+        fun bind(event: FreeCourt) { // 显示到recyclerview
             //binding.title.text = "${event.name}  ${event.sport} "
-            binding.content.text = "${event.startTime} -- ${event.endTime}"
+
+
+            binding.content.text = "${event.startTime.hours}:00 -- ${event.endTime.hours}:00"
         }
+
+
+
 
     }
     val events = mutableListOf<FreeCourt>() // 内部变量，要显示的FreeCourt存在这个数组中
@@ -621,7 +627,10 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 this.freeCourts[date] = fc
                 numberOfFreeSlots = fc.size
                 updateAdapterForDate(date)
-//                println(freeCourts[date]!![0].name)
+//                println("courtName ${freeCourts[date]!![0].name}")
+                val CN = view?.findViewById<TextView>(R.id.showCN)
+                CN?.text=freeCourts[date]!![0].name
+
             }
         }
 
