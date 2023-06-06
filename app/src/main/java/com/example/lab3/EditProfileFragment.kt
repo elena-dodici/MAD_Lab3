@@ -57,8 +57,8 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
     var hasPhotoChanged : Boolean = false
     var profilePicturePath : String? = null
     private var _sportList = listOf("running", "basketball", "swimming","tennis","pingpong")
-    private  var SportDetail = mutableMapOf<String,SportDetail?>()
-    private  var DELETESportDetail = mutableMapOf<String,SportDetail?>()
+    private  var SportDetail = mutableMapOf<String,ProfileViewModel.SportDetail?>()
+    private  var DELETESportDetail = mutableMapOf<String,ProfileViewModel.SportDetail?>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -106,11 +106,14 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
         tele = arguments?.getString("phone")
         var img = view.findViewById<ImageView>(R.id.imageViewE)
         println("this _"+profilePicturePath)
-        img.setImageURI(Uri.parse(profilePicturePath))
+        if(!profilePicturePath.isNullOrEmpty()){
+            img.setImageURI(Uri.parse(profilePicturePath))
             Glide.with(this)
                 .load(profilePicturePath)
                 .override(img.width, img.height)
                 .into(img)
+        }
+
 
 //        if(profilePicturePath != "NAN" && profilePicturePath != null && hasPhotoChanged == false ) {
 //            println("LOADING PROFILE PICTURE FROM : $profilePicturePath")
@@ -248,7 +251,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
         saveButton.setOnClickListener {
             vmMain.setShowNav(true)
             if(imageBitmap == null && image_uri != null){
-                vm.uploadPhoto(this.requireActivity().application, image_uri!!,vmMain.user)
+                vm.uploadPhoto(this.requireActivity().application, image_uri!!,vmMain.UID)
                 //val bitmap = uriToBitmap(image_uri!!)
                 val bitmap= frame?.drawable?.toBitmap()
                 imageBitmap = bitmap;
@@ -256,7 +259,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
             if(imageBitmap != null) {
                 // imageBitmap will be null the first time we try to edit the profile and will remain
                 // null if we don't select a profile picture
-                vm.uploadPhoto(this.requireActivity().application, image_uri!!,vmMain.user)
+                vm.uploadPhoto(this.requireActivity().application, image_uri!!,vmMain.UID)
                 println("Saving new path for the new picture... ")
                 //profilePicturePath = saveToInternalStorage(imageBitmap!!)
                 profilePicturePath = saveToInternalStorage(frame?.drawable?.toBitmap()!!)
@@ -270,10 +273,10 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
                 editName.text.toString(),
                 editSurname.text.toString(),
                 editTel.text.toString(),
-                "user${vmMain.user}/images/user${vmMain.user}.jpg"
+                "user${vmMain.UID}/images/user${vmMain.UID}.jpg"
             )
             if (u != null) {
-                vm.updateUser(this.requireActivity().application,u,vmMain.user)
+                vm.updateUser(this.requireActivity().application,u,vmMain.UID)
             }
 
             var bundle = bundleOf("Path" to profilePicturePath)
@@ -356,7 +359,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
             val color = ContextCompat.getColor(requireContext(), R.color.grey)
             bt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_check_24, 0, 0, 0);
             bt.setBackgroundColor(color)
-            val sp = SportDetail(vmMain.user,sportType,0,"")
+            val sp = ProfileViewModel.SportDetail(vmMain.UID,sportType,0,"")
             SportDetail[sportType]=sp
             DELETESportDetail[sportType]=null
         }

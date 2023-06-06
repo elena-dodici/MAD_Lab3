@@ -33,13 +33,22 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
-        <Spinner
-            android:id="@+id/userSpinner"
+        <Button
+            android:id="@+id/Logout"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableTint="@color/button_color"
+            android:gravity="left"
+            android:text="Log out"
+            android:textColor="@color/button_color"
+            android:textSize="13dp"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/View"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+
+            />
 
 
         <LinearLayout

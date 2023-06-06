@@ -106,6 +106,7 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
                             vm.operationResult.observe(viewLifecycleOwner) {
                                 if (it==true){
                                     Toast.makeText(this.requireContext(), "Sign up success!.", Toast.LENGTH_SHORT).show()
+                                    findNavController().navigate(R.id.to_loginFragment)
                                     //go to profile page and let it add their information!!!
                                 }
                             }

@@ -113,39 +113,42 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-<LinearLayout
-    android:id="@+id/sportChoice"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintTop_toBottomOf="@+id/calendarView">
-    <TextView
-        android:id="@+id/cyclerTitle"
-        android:layout_marginTop="20dp"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-        android:text=" Sport  Type"
-        android:gravity="right"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        <LinearLayout
+            android:id="@+id/sportChoice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/calendarView"
+            app:layout_constraintBottom_toTopOf="@+id/textFreeSlot"
+            >
 
-        />
+            <TextView
+                android:id="@+id/cyclerTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text=" Sport  Type"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
 
-    <Spinner
-        android:layout_weight="1"
-        android:layout_marginTop="20dp"
-        android:id="@+id/sportSpinner"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+                />
 
-        android:scrollbarSize="80dp"
-        />
+            <Spinner
+                android:id="@+id/sportSpinner"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:scrollbarSize="80dp"
+
+                android:textAlignment="center" />
 
 
-</LinearLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textFreeSlot"
@@ -157,10 +160,8 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             app:layout_constraintBottom_toTopOf="@+id/recyclerView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sportChoice"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/sportChoice" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

@@ -82,7 +82,10 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     val allStartTime = mutableListOf<Time>()
     val vm : CalendarViewModel by activityViewModels()
     private val mainVm: MainViewModel by activityViewModels()
-
+    // Avoid registering observer multiple times
+    var observeFreeSlot = false
+    var observeDate = false
+    var observeCalender = false
     override val toolbar: Toolbar?
         get() = null
     companion object {
@@ -118,20 +121,23 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         allStartTime.clear()
         availableDateList.clear()
         vm.getAllDate(this.requireActivity().application)
-        vm.allDate.observe(viewLifecycleOwner){
-            it.forEach{date->
-                if (!availableDateList.contains(date)){
-                    availableDateList.add(date)
+        vm.getDateFull(this.requireActivity().application,selectedSport,availableDateList) // 当前运动所有预定信息
+        if (observeDate == false) {
+            observeDate = true
+            vm.allDate.observe(viewLifecycleOwner) {
+                it.forEach { date ->
+                    if (!availableDateList.contains(date)) {
+                        availableDateList.add(date)
+                    }
                 }
             }
-        }
-        vm.getDateFull(this.requireActivity().application,selectedSport,availableDateList) // 当前运动所有预定信息
-        vm.FullDate.observe(viewLifecycleOwner){// 为啥被调用2次？？？
-            // 所有的预约信息
-            for (res in it){
+            vm.FullDate.observe(viewLifecycleOwner) {// 为啥被调用2次？？？
+                // 所有的预约信息
+                for (res in it) {
 //                reservations[res.date] = reservations[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
-                allReserved[res.key] = res.value // 若所有时间段数== 当前运动这一天的预定数，说明这一天被预定满了
+                    allReserved[res.key] = res.value // 若所有时间段数== 当前运动这一天的预定数，说明这一天被预定满了
 
+                }
             }
         }
 
@@ -174,9 +180,11 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 // 获取当前选中的字符串
                 selectedSport = parent.getItemAtPosition(position).toString()
                 updateCalendar(selectedSport) // 拿到了新的预定信息  某个date如果满了就不能点了(在bind实现
-                if(selectedDate != null)
-                    getFreeSlot(selectedSport,selectedDate)  // 拿到当前天的free slot
-                updateAdapterForDate(selectedDate)
+                if(selectedDate != null) {
+                    getFreeSlot(selectedSport, selectedDate)  // 拿到当前天的free slot
+
+                }
+//                updateAdapterForDate(selectedDate)
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
@@ -470,9 +478,10 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                     weekCalendarView.notifyDateChanged(it)
 
                 }
+
                 getFreeSlot(selectedSport, date)
 
-                updateAdapterForDate(date) // 将当前date的空闲时间段的内容显示在下面列表
+//                updateAdapterForDate(date) // 将当前date的空闲时间段的内容显示在下面列表
             }
 
         }
@@ -524,25 +533,27 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     }
 
     private fun updateCalendar(sport:String) { // 获取新的运动的预定信息-> 调用日历的bind
-        vm.FullDate.observe(viewLifecycleOwner){
-            val oldDate=reservations.keys
-            oldDate.forEach(){
-                monthCalendarView.notifyDateChanged(it) // 调用monthCalendarView的bind
-                weekCalendarView.notifyDateChanged(it)
-            }
+        if (observeCalender == false) {
+            observeCalender = true
+            vm.FullDate.observe(viewLifecycleOwner) {
+                val oldDate = reservations.keys
+                oldDate.forEach() {
+                    monthCalendarView.notifyDateChanged(it) // 调用monthCalendarView的bind
+                    weekCalendarView.notifyDateChanged(it)
+                }
 
-            reservations.clear()
-            allReserved.clear()
-            for (res in it){
+                reservations.clear()
+                allReserved.clear()
+                for (res in it) {
 //                reservations[res.date] = reservations[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
-                monthCalendarView.notifyDateChanged(res.key)
-                weekCalendarView.notifyDateChanged(res.key)
-                allReserved[res.key] = res.value // 若所有时间段数== 当前运动这一天的预定数，说明这一天被预定满了
+                    monthCalendarView.notifyDateChanged(res.key)
+                    weekCalendarView.notifyDateChanged(res.key)
+                    allReserved[res.key] = res.value // 若所有时间段数== 当前运动这一天的预定数，说明这一天被预定满了
+
+                }
 
             }
-
         }
-
     }
 
     private fun getFreeSlot(sport: String, date: LocalDate?){
@@ -552,24 +563,34 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         vm.getFreeSlotByDateAndSport(this.requireActivity().application,sport, date!!)
 
         val fc = mutableListOf<FreeCourt>()
-        vm.FreeSlotsOneDay.observe(this){
-            fc.clear()
-            it.forEach{m1->
-                m1.value.forEach{m2->
-                    if(m2.value==true){
-                        val startTime = m2.key.toInt()
-                        val endTime = m2.key.toInt()+1
-                        fc.add(
-                            FreeCourt(m1.key,"",sport,Time.valueOf("${startTime}:00:00"),Time.valueOf("${endTime}:00:00"),0,0)
-                        )
+        if (observeFreeSlot == false) {
+            observeFreeSlot = true
+            vm.FreeSlotsOneDay.observe(this) {
+                fc.clear()
+                it.forEach { m1 ->
+                    m1.value.forEach { m2 ->
+                        if (m2.value == true) {
+                            val startTime = m2.key.toInt()
+                            val endTime = m2.key.toInt() + 1
+                            fc.add(
+                                FreeCourt(
+                                    m1.key,
+                                    "",
+                                    sport,
+                                    Time.valueOf("${startTime}:00:00"),
+                                    Time.valueOf("${endTime}:00:00"),
+                                    0,
+                                    0
+                                )
+                            )
+                        }
                     }
                 }
+                this.freeCourts[date] = fc
+                updateAdapterForDate(date)
+                println(freeCourts[date]!![0].name)
             }
-            this.freeCourts[date]=fc
-
-            updateAdapterForDate(date)
         }
-
 
     }
 
