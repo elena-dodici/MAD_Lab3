@@ -21,7 +21,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
     private lateinit var binding: FragmentMainBinding
     override val toolbar: Toolbar?
         get() = binding.activityToolbar
-
+    override val titleRes: Int = R.string.main_page
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

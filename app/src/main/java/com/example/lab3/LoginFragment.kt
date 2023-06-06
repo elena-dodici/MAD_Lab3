@@ -23,8 +23,10 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ProfileFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class LoginFragment : BaseFragment(R.layout.fragment_login) {
-
+class LoginFragment : BaseFragment(R.layout.fragment_login),HasToolbar {
+    override val toolbar: Toolbar?
+        get() = null
+    override val titleRes: Int? = null
     private val vmMain : MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {

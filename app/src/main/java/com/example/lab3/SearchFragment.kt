@@ -88,6 +88,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     var observeCalender = false
     override val toolbar: Toolbar?
         get() = null
+    override val titleRes: Int? = null
     companion object {
         fun newInstance() = SearchFragment()
     }

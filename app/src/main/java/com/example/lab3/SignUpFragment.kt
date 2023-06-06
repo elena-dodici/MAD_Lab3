@@ -27,12 +27,12 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ProfileFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SignUpFragment : BaseFragment(R.layout.fragment_sign_up),HasToolbar{
-    companion object {
-        fun newInstance() = SignUpFragment()
-    }
 
+class SignUpFragment : BaseFragment(R.layout.fragment_sign_up),HasBackButton {
     private lateinit var binding: FragmentSignUpBinding
+
+    override val titleRes: Int = R.string.signup
+
     private val vm : SignUpViewModel by activityViewModels()
     private val vmMain : MainViewModel by activityViewModels()
 
@@ -40,8 +40,6 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up),HasToolbar{
         super.onCreate(savedInstanceState)
     }
 
-    override val toolbar: Toolbar?
-        get() = binding.activityToolbar
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

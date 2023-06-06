@@ -75,7 +75,8 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                supportFragmentManager.popBackStack()
+//                supportFragmentManager.popBackStack()
+                onBackPressed()
                 return true
             }
         }
@@ -86,6 +87,7 @@ class MainActivity : AppCompatActivity() {
         super.onBackPressed()
         vm.setShowNav(true)
     }
+
 
 //    override fun onSupportNavigateUp(): Boolean {
 //        onBackPressed()

@@ -26,7 +26,7 @@ import com.example.lab3.databinding.FragmentCourtDetailBinding
  * Use the [CourtDetailFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToolbar  {
+class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasBackButton  {
 
     companion object {
         fun newInstance() = CourtDetailFragment()
@@ -40,9 +40,9 @@ class CourtDetailFragment : BaseFragment(R.layout.fragment_court_detail), HasToo
 
 //    lateinit var rating: Array<Int>
 //    lateinit var review: Array<String>
-    override val toolbar: Toolbar?
-        get() = binding.activityToolbar
-
+//    override val toolbar: Toolbar?
+//        get() = binding.activityToolbar
+    override val titleRes: Int = R.string.review_detail
 //    override fun onCreateView(
 //        inflater: LayoutInflater, container: ViewGroup?,
 //        savedInstanceState: Bundle?
