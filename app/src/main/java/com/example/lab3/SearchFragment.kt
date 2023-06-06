@@ -162,8 +162,6 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 //        recyclerView.layoutManager =  LinearLayoutManager(this.context, RecyclerView.VERTICAL,false )
         recyclerView.layoutManager =  GridLayoutManager(this.context,2)
 
-        println("thisi s test ${freeCourts[selectedDate]}")
-        println("thisi s test ${selectedDate}")
 
 
         // 下拉菜单
@@ -232,6 +230,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         }
 
         binding.weekModeCheckBox.isChecked = true
+        println(binding.weekModeCheckBox.isChecked)
         monthCalendarView.isInvisible = binding.weekModeCheckBox.isChecked
         weekCalendarView.isInvisible = !binding.weekModeCheckBox.isChecked
         binding.weekModeCheckBox.setOnCheckedChangeListener(weekModeToggled)
@@ -268,7 +267,10 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 
     }
 
-
+    override fun onStop() {
+        super.onStop()
+        binding.weekModeCheckBox.isChecked = true
+    }
     private val weekModeToggled = object :CompoundButton.OnCheckedChangeListener{
         override fun onCheckedChanged(buttonView: CompoundButton, monthToWeek: Boolean) {
             if (monthToWeek) {
@@ -318,6 +320,10 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                         ViewGroup.LayoutParams.WRAP_CONTENT
                     }
                 }
+                if(selectedDate != null){
+                    val firstDayOfWeek = selectedDate!!.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY))
+                    binding.weekCalendar.smoothScrollToWeek(firstDayOfWeek)
+                }
                 updateMonthTitle()
             }
             animator.duration = 250
@@ -329,16 +335,8 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
             events.clear()
             events.addAll(this@SearchFragment.freeCourts[date].orEmpty())
 
-
             notifyDataSetChanged()
-
         }
-//        startTimeAdapter?.apply {
-//            arrayList.clear()
-//            arrayList.addAll(this@SearchFragment.freeCourts[date].orEmpty())
-//            notifyDataSetChanged()
-//
-//        }
 
     }
     private fun configureBinders() {
@@ -367,20 +365,11 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 val layout = container.binding.dayLayout
                 val dotView = container.binding.DotView
                 bindDate(data.date, textView, dotView, layout, data.position == DayPosition.MonthDate)
-//                bindDate(data.date, textView, layout, data.position == DayPosition.MonthDate)
-//                textView.text = data.date.dayOfMonth.toString()
-//                if (data.position == DayPosition.MonthDate) {
-//                    textView.setTextColor(Color.BLACK)
-//                } else {
-//                    textView.setTextColor(Color.GRAY)
-//                }
             }
         }
         // 显示当前月 update title
-        monthCalendarView.monthScrollListener = {updateMonthTitle();clearBackground()}
-        //        binding.calendarView.monthScrollListener = { month->
-//            binding.monthYearText.text = month.yearMonth.displayText()
-//        }
+        monthCalendarView.monthScrollListener = {updateMonthTitle();}
+
         class WeekDayViewContainer(view:View):ViewContainer(view) {
             lateinit var day:WeekDay
             val binding = CalendarDayLayoutBinding.bind(view)
@@ -412,7 +401,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 //                textView.setTextSize(16f)
             }
         }
-        weekCalendarView.weekScrollListener = { updateMonthTitle();clearBackground() }
+        weekCalendarView.weekScrollListener = { updateMonthTitle(); }
 
 
     }
@@ -420,12 +409,6 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         textView.text = date.dayOfMonth.toString()
         dotView.makeInVisible()
         if (isSelectable){
-//            print("date is " + date)
-//            println(!availableDateList.contains(date))
-            //availableDateList，如果数据库不存在对应日期则证明不可选择对应日期
-//            if (availableDateList.contains(date)==false){
-//                textView.setBackgroundResource(R.drawable.forbid_bg)
-//            }
 
             if (allReserved[date] == false){
                 // 已经都被预约了
@@ -452,7 +435,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         }else{
             textView.background = null
 //            dotView.makeInVisible()
-            textView.setBackgroundColor(Color.WHITE)
+            textView.setTextColor(Color.GRAY)
 
 
         }
@@ -467,6 +450,10 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 //                println("这一天都被预定了！")
                 Toast.makeText(context, "All reserved", Toast.LENGTH_LONG).show()
             }else{
+                if (!binding.weekModeCheckBox.isChecked) {
+                    binding.weekModeCheckBox.isChecked = true
+                }
+
                 val oldDate = selectedDate
                 selectedDate = date
 //                        println(day.date) // day.date就是点击的日期
@@ -491,8 +478,8 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 
 
     private fun updateMonthTitle() { // 更新月份
-
         val isMonthMode = !binding.weekModeCheckBox.isChecked
+        println(isMonthMode)
         if (isMonthMode) {
             val month = monthCalendarView.findFirstVisibleMonth()?.yearMonth ?: return
             binding.yearText.text = month.year.toString()
@@ -588,7 +575,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 }
                 this.freeCourts[date] = fc
                 updateAdapterForDate(date)
-                println(freeCourts[date]!![0].name)
+//                println(freeCourts[date]!![0].name)
             }
         }
 

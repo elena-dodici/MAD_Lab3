@@ -43,6 +43,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.temporal.TemporalAdjusters
+import java.time.temporal.WeekFields
 import java.util.*
 
 //data class Event(val resId: Int, val id: String, val courtName:String, val sportName:String, val startTime: Time, val date: LocalDate)
@@ -272,6 +273,10 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                         ViewGroup.LayoutParams.WRAP_CONTENT
                     }
                 }
+                if(selectedDate != null){
+                    val firstDayOfWeek = selectedDate!!.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY))
+                    binding.weekCalendar.smoothScrollToWeek(firstDayOfWeek)
+                }
                 updateMonthTitle()
             }
             animator.duration = 250
@@ -279,7 +284,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         }
     }
     private fun updateAdapterForDate(date: LocalDate?) { // 填充会被展示在recyclerview的events数组
-        println("init ${events}")
+//        println("init ${events}")
         eventsAdapter.apply {
             events.clear()
             events.addAll(this@Calendar.events[date].orEmpty())
@@ -318,7 +323,8 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
             }
         }
         // 显示当前月 update title
-        monthCalendarView.monthScrollListener = {updateMonthTitle();clearBackground()}
+//        monthCalendarView.monthScrollListener = {updateMonthTitle();clearBackground()}
+        monthCalendarView.monthScrollListener = {updateMonthTitle();}
 
         class WeekDayViewContainer(view:View):ViewContainer(view) {
             lateinit var day:WeekDay
@@ -345,15 +351,11 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                 val layout = container.binding.dayLayout
                 val dotView = container.binding.DotView
                 bindDate(data.date, textView, dotView, layout, data.position == WeekDayPosition.RangeDate)
-//                textView.text = data.date.dayOfMonth.toString()
-//                textView.setTextColor(Color.BLACK)
-////                textView.setTextSize(16f)
-//                if (availableDateList.isNotEmpty() && !availableDateList.contains(data.date) ){ // 范围外的日期即使是MonthDate设为深灰色
-//                    textView.setTextColor(Color.LTGRAY)
-//                }
+
             }
         }
-        weekCalendarView.weekScrollListener = { updateMonthTitle();clearBackground() }
+//        weekCalendarView.weekScrollListener = { updateMonthTitle();clearBackground() }
+        weekCalendarView.weekScrollListener = { updateMonthTitle(); }
 
 
     }
@@ -401,6 +403,9 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
             }
             else{
+                if (!binding.weekModeCheckBox.isChecked) {
+                    binding.weekModeCheckBox.isChecked = true
+                }
 
                 val oldDate = selectedDate
                 selectedDate = date
