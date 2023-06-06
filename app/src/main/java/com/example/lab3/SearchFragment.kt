@@ -71,7 +71,7 @@ class CourtAdapter(): RecyclerView.Adapter<CourtAdapter.CourtViewHolder>(){
         holder.bind(events[position]) // 将events[position]显示出来
     }
 }
-
+var numberOfFreeSlots = 0
 class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 
     val sports = listOf("running", "basketball", "swimming","pingpong","tennis")
@@ -210,7 +210,8 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
             if(selectedDate != null){
                 sD = selectedDate.toString()
             } else sD = LocalDate.now().toString()
-            var bundle = bundleOf("date" to sD, "sport" to selectedSport)
+            var bundle = bundleOf("date" to sD, "sport" to selectedSport,
+                "numberOfFreeCt" to numberOfFreeSlots.toString())
             findNavController().navigate(R.id.action_searchFragment_to_addReservationFragment,bundle)
             mainVm.setShowNav(false)
         }
@@ -550,7 +551,8 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 }
             }
             this.freeCourts[date]=fc
-
+            println("FREE SLOTS <<<<<<<<<<<<<<<<<< ${fc.size}")
+            numberOfFreeSlots = fc.size
             updateAdapterForDate(date)
         }
 

@@ -119,6 +119,14 @@
                 android:src="@drawable/baseline_keyboard_double_arrow_down_24"
                 android:layout_gravity="center|bottom"
                 android:padding="0dp" />
+            <ImageView
+                android:id="@+id/refreshSymbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_refresh_24"
+                android:layout_gravity="center|bottom"
+                android:padding="0dp"
+                android:layout_marginBottom="5dp"/>
         </FrameLayout>
         <com.google.android.material.divider.MaterialDivider
             android:layout_marginTop="10dp"

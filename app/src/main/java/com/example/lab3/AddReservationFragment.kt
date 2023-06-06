@@ -2,6 +2,7 @@ package com.example.lab3
 
 import android.app.Application
 import android.content.DialogInterface
+import android.media.Image
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -10,6 +11,8 @@ import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
 import android.view.animation.ScaleAnimation
 import android.view.animation.TranslateAnimation
 import android.widget.Button
@@ -58,13 +61,30 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
         val dateDisplayed = view.findViewById<TextView>(R.id.textView6)
         val sportDisplayed = view.findViewById<TextView>(R.id.textView11)
         val arrowImageView = view.findViewById<ImageView>(R.id.doubleArrowDownImageView)
+        val refreshSymbol = view.findViewById<ImageView>(R.id.refreshSymbol)
         val application : Application =  this.requireActivity().application
         var arrowVisible : Boolean = true
         var failed = false;
+        var inFragmentAlready = false
         selectedSlot = ""
 
         // ANIMATIONS //
+        val rotate = RotateAnimation(
+            0f,
+            180f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f,
+            Animation.RELATIVE_TO_SELF,
+            0.5f
+        )
+        rotate.duration = 1000
+        rotate.interpolator = LinearInterpolator()
+        refreshSymbol.visibility = View.GONE
+        val disappearDelayRefresh = 1000
+        //refreshSymbol.startAnimation(rotate)
+
         val animationSet = AnimationSet(true)
+
 // Scale animation
         val shrinkAnimation = ScaleAnimation(1f, 0.5f, 1f, 0.5f,
             Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
@@ -74,9 +94,9 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
         val translateAnimation = TranslateAnimation(
             Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f,
             Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0.25f)
-        translateAnimation.duration = 1000
+        translateAnimation.duration = 800
         animationSet.addAnimation(translateAnimation)
-        val disappearDelay = 3000 // Delay in milliseconds before arrow disappears
+        val disappearDelay = 2500 // Delay in milliseconds before arrow disappears
         animationSet.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {
                 // Animation start
@@ -95,10 +115,13 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
             arrowImageView.startAnimation(animationSet)
 
         Handler().postDelayed({
+            inFragmentAlready = true
             arrowImageView.clearAnimation()
             arrowImageView.visibility = View.GONE
             arrowVisible = false
         }, disappearDelay.toLong())
+
+
         // END ANIMATIONS //
 
         var dateString : String? = arguments?.getString("date")
@@ -114,14 +137,43 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
         }
 
         val ctLiveData = viewModel.timeSlots
-        if(ctLiveData.value?.size == 0){
-            arrowImageView.clearAnimation()
+        /*if(arguments?.getString("numberOfFreeCt")?.toInt() == 0){
+            println("EXECUTING ANIMATION DELETION")
             arrowImageView.visibility = View.GONE
             arrowVisible = false
-        }
+        }*/
         ctLiveData.observe(viewLifecycleOwner){
             recyclerView.apply {
                 recyclerView.adapter = MyAdapter1(ctLiveData.value?.keys?.toList()?.sorted()!!)
+            }
+            if(!inFragmentAlready) {
+                if (arguments?.getString("numberOfFreeCt")?.toInt() == 0) {
+                    println("STOPPING ANIMATION ")
+                    arrowImageView.visibility = View.GONE
+                    arrowVisible = false
+                }
+                if (ctLiveData.value?.size == 0) {
+                    println("STOPPING ANIMATION ")
+                    arrowImageView.visibility = View.GONE
+                    arrowVisible = false
+                } else {
+                    println("STARTING ANIMATION ")
+                    arrowImageView.visibility = View.VISIBLE
+                    arrowVisible = true
+                    arrowImageView.startAnimation(animationSet)
+                    Handler().postDelayed({
+                        arrowImageView.clearAnimation()
+                        arrowImageView.visibility = View.GONE
+                        arrowVisible = false
+                    }, disappearDelay.toLong())
+                }
+            }else {
+                refreshSymbol.visibility = View.VISIBLE
+                refreshSymbol.startAnimation(rotate)
+                Handler().postDelayed({
+                    refreshSymbol.clearAnimation()
+                    refreshSymbol.visibility = View.GONE
+                }, disappearDelayRefresh.toLong())
             }
         }
 
@@ -182,29 +234,30 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
             builder.create()
         }
 
-        doneButton.setOnClickListener {
-            if(selectedSlot == ""){
-                //println("SELECT A SLOT FIRST !")
-                Toast.makeText(this.context,"SELECT A SLOT FIRST !",Toast.LENGTH_SHORT).show()
-            } else {
-                alertDialog?.setMessage("${sport} court on day '${dateString}' in slot $selectedSlot:00 - ${selectedSlot.toInt()+1}:00")
-                alertDialog?.show()
-                /*val splittedSelectedSlot =
-                    selectedSlot.split(":") // GET THE (ex) "10" in "10:00:00" - the only thing needed for later are the two first digits
-                val timeParameters: List<Int> =
-                    listOf(splittedSelectedSlot[0].toString().toInt(), 0, 0)*/
+
+            doneButton.setOnClickListener {
+                if(selectedSlot == ""){
+                    //println("SELECT A SLOT FIRST !")
+                    Toast.makeText(this.context,"SELECT A SLOT FIRST !",Toast.LENGTH_SHORT).show()
+                } else {
+                    alertDialog?.setMessage("${sport} court on day '${dateString}' in slot $selectedSlot:00 - ${selectedSlot.toInt()+1}:00")
+                    alertDialog?.show()
+                    /*val splittedSelectedSlot =
+                        selectedSlot.split(":") // GET THE (ex) "10" in "10:00:00" - the only thing needed for later are the two first digits
+                    val timeParameters: List<Int> =
+                        listOf(splittedSelectedSlot[0].toString().toInt(), 0, 0)*/
+                }
+                /*
+                println("NEW RESERVATION : $newReservation")
+                println("DESCRIPTION : ${description.editText?.text.toString()}")
+                println("COURT ID : ${courtId} - COURTTIMEID : ${courtTimeId}")
+                println("SELECTED SLOT : " + selectedSlot)
+                println("SELECTED DATE : " + dateString)
+                println("DATELD : " + dateLD.toString())
+                println("SELECTED SPORT : " + sport)
+                println("TIME START : " + startTime)
+    */
             }
-            /*
-            println("NEW RESERVATION : $newReservation")
-            println("DESCRIPTION : ${description.editText?.text.toString()}")
-            println("COURT ID : ${courtId} - COURTTIMEID : ${courtTimeId}")
-            println("SELECTED SLOT : " + selectedSlot)
-            println("SELECTED DATE : " + dateString)
-            println("DATELD : " + dateLD.toString())
-            println("SELECTED SPORT : " + sport)
-            println("TIME START : " + startTime)
-*/
-        }
 
     }
 }
