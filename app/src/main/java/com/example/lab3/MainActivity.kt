@@ -1,11 +1,13 @@
 package com.example.lab3
 
-
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -14,12 +16,18 @@ import com.example.lab3.database.AppDatabase
 import com.example.lab3.database.entity.*
 import com.example.lab3.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
+import java.time.LocalDate
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.sql.Time
 import java.util.*
 
+
+import kotlin.math.log
+import java.time.LocalTime
 
 class MainActivity : AppCompatActivity() {
     internal lateinit var binding: ActivityMainBinding
@@ -43,14 +51,9 @@ class MainActivity : AppCompatActivity() {
         bottonNavigationView.uncheckAllItems()
         setupWithNavController(bottonNavigationView, navController)
         setSupportActionBar(binding.activityToolbar)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
-        //supportActionBar?.setDisplayShowHomeEnabled(true);
 
-//        if (supportActionBar != null){
-//            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//            supportActionBar?.setDisplayShowHomeEnabled(true);
-//        }
+
 
         vm.showNav.observe(this){
                 show ->
@@ -63,10 +66,10 @@ class MainActivity : AppCompatActivity() {
         }
         db = AppDatabase.getDatabase(application)
 
-
+        vm.updateCourtTimesDates()
 
 //       initDatabase(db) // add some initial data
-       //initFirebase()
+     //   initFirebase()
 
 
 
@@ -86,13 +89,9 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         vm.setShowNav(true)
+
+
     }
-
-
-//    override fun onSupportNavigateUp(): Boolean {
-//        onBackPressed()
-//        return true
-//    }
 
     data class reservation(val name:String,val ct: courtTime,val description: String, val rating:Int, val review:String, val status:Int, val sport: String)
     data class courtTime(
