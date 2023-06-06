@@ -98,7 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:text="Name"
+                        android:text="Name: "
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                         android:textColor="#000000" />
 
@@ -107,7 +107,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:hint="Name"
+                        android:hint="Name : "
+                        android:gravity="center"
                         android:inputType="textPersonName"
                         android:selectAllOnFocus="true"
                         android:text="@string/full_name"
@@ -129,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:text="Surname"
+                        android:text="Surname: "
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                         android:textColor="#000000" />
 
@@ -138,6 +139,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
+                        android:gravity="center"
                         android:hint="Surname"
                         android:inputType="textPersonName"
                         android:selectAllOnFocus="true"
@@ -156,7 +158,6 @@
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_weight="1"
-
                         android:contentDescription="phone"
                         android:src="@drawable/ic_phone" />
 
@@ -167,8 +168,7 @@
                         android:layout_weight="2"
                         android:hint="phone"
                         android:inputType="phone"
-
-                        android:selectAllOnFocus="true"
+                        android:gravity="center"
                         android:text="@string/phone"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                         android:textColor="#000000" />

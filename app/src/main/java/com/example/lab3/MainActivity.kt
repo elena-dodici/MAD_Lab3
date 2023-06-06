@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 //        vm.updateCourtTimesDates()
 
 //       initDatabase(db) // add some initial data
-        initFirebase()
+     //   initFirebase()
 
 
 
@@ -103,13 +103,11 @@ class MainActivity : AppCompatActivity() {
     data class court(val address:String, val avg_rating: Float, val review:List<review>, val sport:String)
 
     fun initFirebase(){
-//        println(12)
         val user = hashMapOf(
             "name" to "Ann",
             "surname" to "Johnson",
             "tel" to "2598498759"
         )
-//        db1.collection("users").document("u1").set(user)
 
 
 

@@ -91,7 +91,7 @@ class CalendarViewModel : ViewModel() {
 
 
     fun test(uuid: String) {
-        val colRef = db1.collection("users").document(uuid)
+        val colRef = db1.collection("users").document("u$uuid")
         colRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w(TAG, "Listen failed.", e)
@@ -105,7 +105,9 @@ class CalendarViewModel : ViewModel() {
 
     fun getAllRes(uuid:String){
 //        db = AppDatabase.getDatabase(application)
+
         db1.collection("users").document("u$uuid").collection("reservation").get()
+
             .addOnSuccessListener { result ->
                 val dataList = result.map { document ->
                     val mapId = mapOf(
@@ -146,6 +148,7 @@ class CalendarViewModel : ViewModel() {
                 }
                 _reservations.value = myres
 //                _reservations.value = dataList
+                Log.d(TAG, "_reservations in getallRes is : ${_reservations.value}")
             }
             .addOnFailureListener { exception ->
                 // 处理错误
@@ -413,7 +416,7 @@ class CalendarViewModel : ViewModel() {
         )
 
                 //set new reservation
-        db1.collection("users").document(uuid).collection("reservation")
+        db1.collection("users").document("u$uuid").collection("reservation")
             .document(selectedRes.value!!.resId)
             .set(newRes)
             .addOnSuccessListener {
@@ -468,7 +471,7 @@ class CalendarViewModel : ViewModel() {
     fun deleteRes(uuid: String, resId: String) {
 
 
-        db1.collection("users").document(uuid).collection("reservation").document("$resId")
+        db1.collection("users").document("u$uuid").collection("reservation").document("$resId")
             .update("status", 1).addOnSuccessListener {
 
                 Log.d(TAG, "delete successfully")
