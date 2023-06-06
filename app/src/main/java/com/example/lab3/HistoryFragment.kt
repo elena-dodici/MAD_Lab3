@@ -67,7 +67,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),HasToolbar{
     override val toolbar: Toolbar
         get() = binding.activityToolbar
     val adapter = HistoryAdapter{
-        println("active ${it}")
+
         gotoRevDetailFrag(it.resId)
     }
     private fun gotoRevDetailFrag(resId: String){
@@ -78,7 +78,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),HasToolbar{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedvm.getHistoryResbyUser(vmMain.user)
+        sharedvm.getHistoryResbyUser(vmMain.UID)
         sharedvm.reservations.observe(this){
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
             events.clear()

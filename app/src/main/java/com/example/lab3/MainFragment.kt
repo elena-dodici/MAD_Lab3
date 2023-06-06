@@ -31,8 +31,10 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
         vmMain.setShowNav(false)
         binding = FragmentMainBinding.bind(view)
 
-        val inputEmail = binding.editTextEmail.editText?.text
-        val inputPassword = binding.editTextPassword.editText?.text
+//        val inputEmail = binding.editTextEmail.editText?.text
+//        val inputPassword = binding.editTextPassword.editText?.text
+        val emailText =  view.findViewById<EditText>(R.id.editTextEmail1)
+        val passwordText = view.findViewById<EditText>(R.id.editTextPassword1)
         val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
 
         binding.editTextEmail.editText?.doOnTextChanged { inputText, _, _, _ ->
@@ -41,12 +43,12 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
         }
 
         binding.buttonSave.setOnClickListener {
-//            println("I got inputEmail!: ${inputEmail.toString()}")
-//            println("I got input password!: ${inputPassword.toString()}")
+            println("I got inputEmail!: ${emailText.text}")
+            println("I got input password!: ${passwordText.text}")
 
 
             when{
-                inputEmail.toString().isNullOrEmpty() -> {
+                emailText.text.toString().isNullOrEmpty() -> {
                     val alertDialog = AlertDialog.Builder(context)
                         .setTitle("Email empty!")
                         .setMessage("Email address cannot be empty")
@@ -54,7 +56,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
                         .create()
                     alertDialog.show()
                 }
-                inputPassword.toString().isNullOrEmpty() -> {
+                passwordText.text.toString().isNullOrEmpty() -> {
                     val alertDialog = AlertDialog.Builder(context)
                         .setTitle("Password empty !")
                         .setMessage("Password cannot be empty")
@@ -62,7 +64,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
                         .create()
                     alertDialog.show()
                 }
-                inputPassword.toString().length < 6 -> {
+                passwordText.text.toString().length < 6 -> {
                     val alertDialog = AlertDialog.Builder(context)
                         .setTitle("Password invalid")
                         .setMessage("Password length must not less than 6")
@@ -72,8 +74,8 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
                 }
                 else->{
                     val callback = MyLoginCallback()
-                    if(inputEmail.toString().matches(emailPattern.toRegex())){
-                        vmMain.login(this.requireActivity().application, inputEmail.toString(), inputPassword.toString(), callback)
+                    if(emailText.text.toString().matches(emailPattern.toRegex())){
+                        vmMain.login(this.requireActivity().application, emailText.text.toString(), passwordText.text.toString(), callback)
                     }else{
                         val alertDialog = AlertDialog.Builder(context)
                             .setTitle("Email invalid")

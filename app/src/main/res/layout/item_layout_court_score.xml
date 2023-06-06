@@ -17,7 +17,7 @@
             android:layout_height="50dp"
             android:textColor="@color/black"
             android:text="1"
-            android:layout_weight="0.5"
+            android:layout_weight="0.3"
             android:gravity="center_horizontal"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
@@ -33,7 +33,7 @@
         <TextView
             android:id="@+id/item_text_court"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:gravity="left"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
@@ -77,16 +77,15 @@
             android:layout_height="match_parent"
             android:textColor="@color/black"
             android:text="4"
-            android:layout_weight="0.5"
+            android:layout_weight="0.4"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/title_image"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:scaleY="0.6"
-            android:scaleX="0.6"
+            android:layout_weight="0.5"
+
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:src="@drawable/baseline_keyboard_double_arrow_right_24"

@@ -23,12 +23,14 @@
     <string name="profile">Profile</string>
     <string name="court_detail_title">Court Ranking</string>
     <string name="main_page">Main Page</string>
+    <string name="new_user">New User</string>
     <string name="text_email">Email</string>
     <string name="text_tel">Tel</string>
     <string name="text_password">Password</string>
     <string name="text_name">First name</string>
     <string name="text_surname">Last name</string>
     <string name="helper_text">At least 6 numbers</string>
+    <string name="helper_email">Please input a valid email, we will send a verification message.</string>
     <string name="Registration">Let\'s start the journey!</string>
 
 </resources>

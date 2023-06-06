@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.lab3.database.entity.SportDetail
 import com.example.lab3.databinding.FragmentProfileDetailBinding
+import com.example.lab3.databinding.FragmentSignUpBinding
 import com.example.lab3.viewmodel.SignUpViewModel
 
 
@@ -26,10 +27,12 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ProfileFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
-    private lateinit var binding: FragmentProfileDetailBinding
+class SignUpFragment : BaseFragment(R.layout.fragment_sign_up),HasToolbar{
+    companion object {
+        fun newInstance() = SignUpFragment()
+    }
 
-
+    private lateinit var binding: FragmentSignUpBinding
     private val vm : SignUpViewModel by activityViewModels()
     private val vmMain : MainViewModel by activityViewModels()
 
@@ -37,20 +40,22 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
         super.onCreate(savedInstanceState)
     }
 
-
+    override val toolbar: Toolbar?
+        get() = binding.activityToolbar
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding = FragmentSignUpBinding.bind(view)
         val emailText = view.findViewById<EditText>(R.id.editTextEmail)
         val nameText = view.findViewById<EditText>(R.id.editTextName)
         val surnameText = view.findViewById<EditText>(R.id.editTextSurname)
         val telText = view.findViewById<EditText>(R.id.editTel)
         val passwordText = view.findViewById<EditText>(R.id.editTextPassword)
-        val sButton = view.findViewById<Button>(R.id.buttonSave)
         val saveButton = view.findViewById<Button>(R.id.buttonRegister)
-
         val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
         saveButton.setOnClickListener{
+
             when{
                 emailText.text.isNullOrEmpty() -> {
                     val alertDialog = AlertDialog.Builder(context)
@@ -106,6 +111,10 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up) {
                             vm.operationResult.observe(viewLifecycleOwner) {
                                 if (it==true){
                                     Toast.makeText(this.requireContext(), "Sign up success!.", Toast.LENGTH_SHORT).show()
+                                    val alertDialog = AlertDialog.Builder(context)
+                                        .setTitle("Almost done...")
+                                        .setMessage("We'll send an email to ${emailText} in 2 minutes. Open it up to activate your account.")
+                                    alertDialog.show()
                                     findNavController().navigate(R.id.to_loginFragment)
                                     //go to profile page and let it add their information!!!
                                 }

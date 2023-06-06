@@ -39,7 +39,7 @@ class OwnRevFragment : BaseFragment(R.layout.fragment_own_rev), HasToolbar {
         binding.saveBtn.setOnClickListener {
             //add limitation for rating and review
 
-            sharedvm.addRev(ratingBar.rating.toInt(), mainvm.user)
+            sharedvm.addRev(ratingBar.rating.toInt(), mainvm.UID)
             gobackCal("Update successfully")
 
         }

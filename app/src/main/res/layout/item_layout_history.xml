@@ -15,16 +15,16 @@
 
         <TextView
             android:id="@+id/item_text_rank"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:text="1"
-            android:layout_weight="4"
+            android:layout_weight="1"
             android:textAlignment="textStart"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
         <TextView
             android:id="@+id/item_text_date"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:text="2023-06-01"
@@ -33,13 +33,24 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
         <TextView
             android:id="@+id/item_text_name"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:text="court1"
             android:layout_weight="3"
             android:textAlignment="center"
+            />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/title_image"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:scaleY="0.6"
+            android:scaleX="0.6"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:src="@drawable/baseline_keyboard_double_arrow_right_24"
             />
     </LinearLayout>
     <com.google.android.material.divider.MaterialDivider

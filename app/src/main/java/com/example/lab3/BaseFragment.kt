@@ -24,8 +24,8 @@ abstract class BaseFragment(@LayoutRes layoutRes: Int) : Fragment(layoutRes) {
         if (this is HasToolbar) {
             activityToolbar.makeGone()
             (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
-            (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(false)
-            (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+//            (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(false)
+//            (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         }
 
 
@@ -36,8 +36,8 @@ abstract class BaseFragment(@LayoutRes layoutRes: Int) : Fragment(layoutRes) {
         if (this is HasToolbar) {
             activityToolbar.makeVisible()
             (requireActivity() as AppCompatActivity).setSupportActionBar(activityToolbar)
-            (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
-            (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//            (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
+//            (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
 
     }
