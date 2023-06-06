@@ -1,13 +1,12 @@
 package com.example.lab3
 
+
 import android.os.Bundle
-import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
@@ -15,17 +14,12 @@ import com.example.lab3.database.AppDatabase
 import com.example.lab3.database.entity.*
 import com.example.lab3.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.sql.Time
-import java.time.LocalDate
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.sql.Time
 import java.util.*
 
-
-import kotlin.math.log
-import java.time.LocalTime
 
 class MainActivity : AppCompatActivity() {
     internal lateinit var binding: ActivityMainBinding
@@ -49,9 +43,14 @@ class MainActivity : AppCompatActivity() {
         bottonNavigationView.uncheckAllItems()
         setupWithNavController(bottonNavigationView, navController)
         setSupportActionBar(binding.activityToolbar)
+
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        //supportActionBar?.setDisplayShowHomeEnabled(true);
 
-
+//        if (supportActionBar != null){
+//            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//            supportActionBar?.setDisplayShowHomeEnabled(true);
+//        }
 
         vm.showNav.observe(this){
                 show ->
@@ -73,12 +72,25 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                supportFragmentManager.popBackStack()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
         vm.setShowNav(true)
-
-
     }
+
+//    override fun onSupportNavigateUp(): Boolean {
+//        onBackPressed()
+//        return true
+//    }
 
     data class reservation(val name:String,val ct: courtTime,val description: String, val rating:Int, val review:String, val status:Int, val sport: String)
     data class courtTime(
@@ -179,12 +191,17 @@ class MainActivity : AppCompatActivity() {
         // court
         val courts = listOf<court>(
             court("Via Po 25, Torino, Italy", 4.0f, listOf(
-                review("u1",
+                review(
+                    "u1",
                     "The Sport Court's facility is a fun and competitive hub for sports enthusiasts. With its well-maintained courts, modern equipment, and opportunities for organized leagues and tournaments, it offers an exhilarating experience for those seeking both recreation and healthy competition.",
-                    4),
-                review("u2",
+                    4
+                ),
+                review(
+                    "u2",
                     "The Sport Court's facility is conveniently located and fosters a sense of community. With ample parking, accessible entrances, and organized sports events, it brings people together and encourages a healthy and active lifestyle.",
-                    4),),
+                    4
+                ),
+            ),
                 "running"),
             court("Corso Re Umberto 31, Turin, Italy", 5.0f, listOf(
                 review("u1",
@@ -215,7 +232,8 @@ class MainActivity : AppCompatActivity() {
             db1.collection("court").document("court${i+1}").set(c)
         }
         // court time
-        val dates = listOf<String>("2023-05-27", "2023-05-28", "2023-05-29", "2023-05-30", "2023-05-31",
+        val dates = listOf<String>(
+            "2023-05-27", "2023-05-28", "2023-05-29", "2023-05-30", "2023-05-31",
             "2023-06-01", "2023-06-02", "2023-06-03", "2023-06-04", "2023-06-05",
             "2023-06-06", "2023-06-07", "2023-06-08", "2023-06-09", "2023-06-10",
             "2023-06-11", "2023-06-12", "2023-06-13", "2023-06-14", "2023-06-15",

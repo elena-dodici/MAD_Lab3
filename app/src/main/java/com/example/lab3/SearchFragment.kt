@@ -546,6 +546,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     }
 
     private fun getFreeSlot(sport: String, date: LocalDate?){
+        //println("active free ${sport}slow${date}!!!!!!")
 //        freeCourts.clear() // 清除旧的
 //        freeCourts[date!!] = listOf() // 清空这一天原本的free slot
         vm.getFreeSlotByDateAndSport(this.requireActivity().application,sport, date!!)

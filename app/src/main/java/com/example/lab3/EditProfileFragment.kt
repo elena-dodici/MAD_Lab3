@@ -18,6 +18,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.CheckBox
+import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -31,7 +33,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.lab3.database.entity.SportDetail
-import com.example.lab3.database.entity.User
 import com.example.lab3.databinding.FragmentProfileEditBinding
 import java.io.File
 import java.io.FileDescriptor
@@ -60,6 +61,9 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
     private  var DELETESportDetail = mutableMapOf<String,SportDetail?>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
         _sportList.forEach{
             SportDetail[it]=null
         }
@@ -114,11 +118,11 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
 //        }
         val cancelButton = view.findViewById<Button>(R.id.btC)
         val saveButton = view.findViewById<Button>(R.id.btS)
-        val bskbt =view.findViewById<Button>(R.id.btbasketball)
-        val swbt = view.findViewById<Button>(R.id.btswimming)
-        val pingbt = view.findViewById<Button>(R.id.btpingpong)
-        val tennisbt = view.findViewById<Button>(R.id.bttennis)
-        val runbt = view.findViewById<Button>(R.id.btrunning)
+//        val bskbt =view.findViewById<Button>(R.id.btbasketball)
+//        val swbt = view.findViewById<Button>(R.id.btswimming)
+//        val pingbt = view.findViewById<Button>(R.id.btpingpong)
+//        val tennisbt = view.findViewById<Button>(R.id.bttennis)
+//        val runbt = view.findViewById<Button>(R.id.btrunning)
         val editName = view.findViewById<EditText>(R.id.ed_name)
         val editSurname = view.findViewById<EditText>(R.id.ed_surname)
         val editTel = view.findViewById<EditText>(R.id.ed_phone)
@@ -179,50 +183,62 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
                 val color = ContextCompat.getColor(requireContext(), R.color.grey)
                 when(it.sportType){
                     "running"->{
-                        runbt.setBackgroundColor(color)
-
+//                        runbt.setBackgroundColor(color)
+//                        runbt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_check_24, 0, 0, 0);
+                        binding.cbrun.isChecked = true
                     }
 
                     "basketball"->{
-                        bskbt.setBackgroundColor(color)
+//                        bskbt.setBackgroundColor(color)
+//                        bskbt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_check_24, 0, 0, 0);
+                        binding.cbbb.isChecked = true
                     }
 
                     "pingpong"->{
-                        pingbt.setBackgroundColor(color)
+//                        pingbt.setBackgroundColor(color)
+//                        pingbt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_check_24, 0, 0, 0);
+                        binding.cbpp.isChecked = true
                     }
 
                     "tennis"->{
-                        tennisbt.setBackgroundColor(color)
+//                        tennisbt.setBackgroundColor(color)
+//                        tennisbt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_check_24, 0, 0, 0);
+                        binding.cbtennis.isChecked = true
                     }
 
                     "swimming"->{
-                        swbt.setBackgroundColor(color)
+//                        swbt.setBackgroundColor(color)
+//                        swbt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_check_24, 0, 0, 0);
+                        binding.cbswim.isChecked = true
                     }
                 }
             }
 
         }
 
+
+
         //5个添加运动按键
-        bskbt.setOnClickListener {
-            addSportBtn(bskbt,"basketball")
-        }
-        runbt.setOnClickListener {
-
-            addSportBtn( runbt,"running")
-        }
-        tennisbt.setOnClickListener {
-
-            addSportBtn(tennisbt,"tennis")
-        }
-        swbt.setOnClickListener {
-
-            addSportBtn(swbt,"swimming")
-        }
-        pingbt.setOnClickListener {
-
-            addSportBtn(pingbt,"pingpong")
-        }
+//        bskbt.setOnClickListener {
+//            addSportBtn(bskbt,"basketball")
+//
+//        }
+//        runbt.setOnClickListener {
+//
+//            addSportBtn( runbt,"running")
+//        }
+//        tennisbt.setOnClickListener {
+//
+//            addSportBtn(tennisbt,"tennis")
+//        }
+//        swbt.setOnClickListener {
+//
+//            addSportBtn(swbt,"swimming")
+//        }
+//        pingbt.setOnClickListener {
+//
+//            addSportBtn(pingbt,"pingpong")
+//        }
         //cancelButton
         cancelButton.setOnClickListener {
             vmMain.setShowNav(true)
@@ -278,24 +294,67 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
 
             findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment,bundle)
         }
+
+        binding.cbrun.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            val sportType = "running"
+            if (isChecked) {
+                val sp = SportDetail(vmMain.user,sportType,0,"")
+                SportDetail[sportType]=sp
+                DELETESportDetail[sportType]=null
+            } else {
+                SportDetail[sportType]=null
+                vm.userSports.value?.forEach {vit->
+                    if (vit.sportType==sportType){
+                        DELETESportDetail[sportType]=vit
+                    }
+                }
+            }
+        })
+
+        binding.cbbb.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            val sportType = "basketball"
+            if (isChecked) {
+                val sp = SportDetail(vmMain.user,sportType,0,"")
+                SportDetail[sportType]=sp
+                DELETESportDetail[sportType]=null
+            } else {
+                SportDetail[sportType]=null
+                vm.userSports.value?.forEach {vit->
+                    if (vit.sportType==sportType){
+                        DELETESportDetail[sportType]=vit
+                    }
+                }
+            }
+        })
+
+
+        onclicklistener( binding.cbswim, "swimming")
+        onclicklistener( binding.cbpp, "pingpong")
+        onclicklistener( binding.cbtennis, "tennis")
     }
-    //确认提示弹窗
-//    fun Dialog(bt:Button){
-//        val builder = AlertDialog.Builder(context)
-//        builder.setTitle("Add to Your Interested")
-//        builder.setMessage("Are you sure you want to add this sport to your interested sports?")
-//        builder.setPositiveButton("yes") { dialog, which ->
-//            //点击确认的情况，添加对应数据到db并设置按钮不可选
-//            vm.addUserSport(this.requireActivity().application,SportDetail)
-//            bt.isEnabled
-//        }
-//        builder.setNegativeButton("no", null)
-//        val dialog = builder.create()
-//        dialog.show()
-//    }
+
+     fun onclicklistener(cb: CheckBox, sportType: String){
+        cb.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+             val sportType = sportType
+             if (isChecked) {
+                 val sp = SportDetail(vmMain.user,sportType,0,"")
+                 SportDetail[sportType]=sp
+                 DELETESportDetail[sportType]=null
+             } else {
+                 SportDetail[sportType]=null
+                 vm.userSports.value?.forEach {vit->
+                     if (vit.sportType==sportType){
+                         DELETESportDetail[sportType]=vit
+                     }
+                 }
+             }
+         })
+     }
+
     fun addSportBtn(bt:Button,sportType:String){
         if(SportDetail[sportType]==null){
             val color = ContextCompat.getColor(requireContext(), R.color.grey)
+            bt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_check_24, 0, 0, 0);
             bt.setBackgroundColor(color)
             val sp = SportDetail(vmMain.user,sportType,0,"")
             SportDetail[sportType]=sp
@@ -304,6 +363,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
         else{
             SportDetail[sportType]=null
             val color = ContextCompat.getColor(requireContext(), R.color.lighter_toolbar_color)
+            bt.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             bt.setBackgroundColor(color)
             vm.userSports.value?.forEach {vit->
                 if (vit.sportType==sportType){
@@ -391,3 +451,18 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
         }
     }
 }
+
+//确认提示弹窗
+//    fun Dialog(bt:Button){
+//        val builder = AlertDialog.Builder(context)
+//        builder.setTitle("Add to Your Interested")
+//        builder.setMessage("Are you sure you want to add this sport to your interested sports?")
+//        builder.setPositiveButton("yes") { dialog, which ->
+//            //点击确认的情况，添加对应数据到db并设置按钮不可选
+//            vm.addUserSport(this.requireActivity().application,SportDetail)
+//            bt.isEnabled
+//        }
+//        builder.setNegativeButton("no", null)
+//        val dialog = builder.create()
+//        dialog.show()
+//    }
