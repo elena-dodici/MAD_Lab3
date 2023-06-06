@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
@@ -30,6 +31,9 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
         super.onViewCreated(view, savedInstanceState)
         vmMain.setShowNav(false)
         binding = FragmentMainBinding.bind(view)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            requireActivity().finish()
+        }
 
 //        val inputEmail = binding.editTextEmail.editText?.text
 //        val inputPassword = binding.editTextPassword.editText?.text
