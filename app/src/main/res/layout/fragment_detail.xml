@@ -31,11 +31,19 @@
         android:layout_height="match_parent"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="50dp"
         android:orientation="vertical">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_marginTop="80dp"
+        <LinearLayout
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -83,7 +91,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/sep_line"/>
-
         <LinearLayout
             android:layout_marginTop="30dp"
             android:layout_width="match_parent"
@@ -106,13 +113,10 @@
                 android:layout_height="40dp"
                 android:switchTextAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
         </LinearLayout>
-
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/sep_line"/>
-
-
         <LinearLayout
             android:layout_marginTop="30dp"
             android:layout_width="match_parent"
@@ -199,7 +203,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/sep_line"/>
-
         <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -241,8 +244,6 @@
 <!--                android:textSize="20sp"-->
 <!--                tools:textAppearance="@style/TextAppearance.AppCompat.Body2" />-->
     </LinearLayout>
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -292,8 +293,11 @@
 
                         />
         </LinearLayout>
-    </LinearLayout>
 
+</LinearLayout>
+</ScrollView>
+
+    </LinearLayout>
 
 
 </FrameLayout>

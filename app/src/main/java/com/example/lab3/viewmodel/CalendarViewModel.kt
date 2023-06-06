@@ -90,23 +90,23 @@ class CalendarViewModel : ViewModel() {
 
 
 
-    fun test(userid: Int) {
-        val colRef = db1.collection("users").document("u${userid}")
+    fun test(uuid: String) {
+        val colRef = db1.collection("users").document(uuid)
         colRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.w(TAG, "Listen failed.", e)
                 return@addSnapshotListener
             }
-            getAllRes(userid)
+            getAllRes(uuid)
 
         }
     }
 
 
-    fun getAllRes(userid:Int){
+    fun getAllRes(uuid:String){
 //        db = AppDatabase.getDatabase(application)
 
-        db1.collection("users").document("u${userid}").collection("reservation").get()
+        db1.collection("users").document(uuid).collection("reservation").get()
             .addOnSuccessListener { result ->
                 val dataList = result.map { document ->
                     val mapId = mapOf(
@@ -375,7 +375,7 @@ class CalendarViewModel : ViewModel() {
     }
 
 
-    fun addOrUpdateRes(userId: Int) {
+    fun addOrUpdateRes(uuid: String) {
 
 
         var startTimeDay = Timestamp(
@@ -414,7 +414,7 @@ class CalendarViewModel : ViewModel() {
         )
 
                 //set new reservation
-        db1.collection("users").document("u$userId").collection("reservation")
+        db1.collection("users").document(uuid).collection("reservation")
             .document(selectedRes.value!!.resId)
             .set(newRes)
             .addOnSuccessListener {
@@ -466,10 +466,10 @@ class CalendarViewModel : ViewModel() {
 //            .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
     }
 
-    fun deleteRes(userid: Int, resId: String) {
+    fun deleteRes(uuid: String, resId: String) {
 
 
-        db1.collection("users").document("u$userid").collection("reservation").document("$resId")
+        db1.collection("users").document(uuid).collection("reservation").document("$resId")
             .update("status", 1).addOnSuccessListener {
 
                 Log.d(TAG, "delete successfully")

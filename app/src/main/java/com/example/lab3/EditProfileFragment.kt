@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -56,6 +57,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
     var imageBitmap : Bitmap?  = null
     var hasPhotoChanged : Boolean = false
     var profilePicturePath : String? = null
+
     private var _sportList = listOf("running", "basketball", "swimming","tennis","pingpong")
     private  var SportDetail = mutableMapOf<String,ProfileViewModel.SportDetail?>()
     private  var DELETESportDetail = mutableMapOf<String,ProfileViewModel.SportDetail?>()
@@ -183,7 +185,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
 
         SportDetail.values.forEach(){
             if (it != null) {
-                val color = ContextCompat.getColor(requireContext(), R.color.grey)
+                //val color = ContextCompat.getColor(requireContext(), R.color.grey)
                 when(it.sportType){
                     "running"->{
 //                        runbt.setBackgroundColor(color)
@@ -284,12 +286,14 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
 
             SportDetail.forEach{
                 if (it.value!=null){
-                    vm.addUserSport(this.requireActivity().application, it.value!!)
+                    Log.w("ProfileVM", "check sportdetail befoew save:${it.value} ")
+                    vm.addUserSport(it.value!!)
                 }
             }
 
             DELETESportDetail.forEach{
                 if (it.value!=null){
+                    //println("test deleteSportDet: ${it.value}")
                     vm.deleteUserSport(this.requireActivity().application,it.value!!)
                 }
             }
@@ -298,26 +302,13 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
             findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment,bundle)
         }
 
-        binding.cbrun.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            val sportType = "running"
-            if (isChecked) {
-                val sp = SportDetail(vmMain.user,sportType,0,"")
-                SportDetail[sportType]=sp
-                DELETESportDetail[sportType]=null
-            } else {
-                SportDetail[sportType]=null
-                vm.userSports.value?.forEach {vit->
-                    if (vit.sportType==sportType){
-                        DELETESportDetail[sportType]=vit
-                    }
-                }
-            }
-        })
+
 
         binding.cbbb.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             val sportType = "basketball"
             if (isChecked) {
-                val sp = SportDetail(vmMain.user,sportType,0,"")
+
+                val sp = vm.setSportDetail(vmMain.UID,sportType,0,"")
                 SportDetail[sportType]=sp
                 DELETESportDetail[sportType]=null
             } else {
@@ -330,7 +321,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
             }
         })
 
-
+        onclicklistener( binding.cbrun, "running")
         onclicklistener( binding.cbswim, "swimming")
         onclicklistener( binding.cbpp, "pingpong")
         onclicklistener( binding.cbtennis, "tennis")
@@ -340,8 +331,9 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasTool
         cb.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
              val sportType = sportType
              if (isChecked) {
-                 val sp = SportDetail(vmMain.user,sportType,0,"")
+                 val sp = vm.setSportDetail(vmMain.UID,sportType,0,"")
                  SportDetail[sportType]=sp
+
                  DELETESportDetail[sportType]=null
              } else {
                  SportDetail[sportType]=null

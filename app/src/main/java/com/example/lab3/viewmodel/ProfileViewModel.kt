@@ -2,6 +2,7 @@ package com.example.lab3
 
 import android.app.Application
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,7 +17,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
 class ProfileViewModel : ViewModel() {
-
+    private val TAG = "ProfileVM"
     lateinit var db: AppDatabase
     val db1 = Firebase.firestore
     val storage = Firebase.storage
@@ -113,7 +114,14 @@ data class SportDetail(
 
     var achievement:String
 )
+    private val sportDetailInstance = SportDetail("uxxxxx", "running",0,"")
+    fun getSportDetail(): SportDetail {
+        return sportDetailInstance
+    }
 
+    fun setSportDetail(uid:String,sportType: String,level:Long,achi:String): SportDetail {
+      return  SportDetail("${uid}", sportType,level,achi)
+    }
 
     fun getUserSportsById(application: Application, id:String){
     db1.collection("users").document("u${id}").collection("sports").get()
@@ -149,15 +157,17 @@ data class SportDetail(
         }
     }
 
-    fun addUserSport(application: Application, sd:SportDetail){
+    fun addUserSport(sd:SportDetail){
+
         val id:String=sd.userId
         val data = hashMapOf(
             "achievement" to sd.achievement,
             "level" to sd.masteryLevel
         )
+
         val newD=db1.collection("users").document("u${id}").collection("sports").document("${sd.sportType}")
         newD.set(data)
-                .addOnSuccessListener {        }
+            .addOnSuccessListener { Log.w(TAG, "add successfukllt the user u +:${id} with its ,${sd.sportType}")    }
             .addOnFailureListener { exception ->
                 println("Error getting documents: ${exception.message}")
             }
@@ -170,7 +180,7 @@ data class SportDetail(
         )
         val newD=db1.collection("users").document("u${id}").collection("sports").document("${sd.sportType}")
         newD.update(data as Map<String, Any>)
-            .addOnSuccessListener {        }
+            .addOnSuccessListener {}
             .addOnFailureListener { exception ->
                 println("Error getting documents: ${exception.message}")
             }
@@ -180,7 +190,7 @@ data class SportDetail(
         val id:String=sd.userId
         val newD=db1.collection("users").document("u${id}").collection("sports").document("${sd.sportType}")
         newD.delete()
-            .addOnSuccessListener {        }
+            .addOnSuccessListener {    Log.w(TAG, "delete successfuklly the user u +:${id} with its ,${sd.sportType}")       }
             .addOnFailureListener { exception ->
                 println("Error getting documents: ${exception.message}")
             }
