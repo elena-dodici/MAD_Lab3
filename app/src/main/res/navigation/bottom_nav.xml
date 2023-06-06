@@ -116,7 +116,7 @@
         tools:layout="@layout/fragment_sign_up" >
         <action
             android:id="@+id/to_loginFragment"
-            app:destination="@id/loginFragment"
+            app:destination="@id/mainFragment2"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right" />
     </fragment>>
