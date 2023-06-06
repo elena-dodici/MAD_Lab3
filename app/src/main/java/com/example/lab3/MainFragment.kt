@@ -28,6 +28,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        vmMain.setShowNav(false)
         binding = FragmentMainBinding.bind(view)
 
         val inputEmail = binding.editTextEmail.editText?.text
@@ -70,13 +71,9 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
                     alertDialog.show()
                 }
                 else->{
+                    val callback = MyLoginCallback()
                     if(inputEmail.toString().matches(emailPattern.toRegex())){
-                        vmMain.login(this.requireActivity().application,inputEmail.toString(), inputPassword.toString())
-                        if(!vmMain.UID.isNullOrEmpty()){
-                            Toast.makeText(this.requireContext(), "Login success!.", Toast.LENGTH_SHORT).show()
-                            //go to profile page!!!!
-
-                        }
+                        vmMain.login(this.requireActivity().application, inputEmail.toString(), inputPassword.toString(), callback)
                     }else{
                         val alertDialog = AlertDialog.Builder(context)
                             .setTitle("Email invalid")
@@ -96,5 +93,18 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
         }
 
 
+    }
+    inner class MyLoginCallback : MainViewModel.LoginCallback {
+        override fun onLoginSuccess(uid: String) {
+            // 登录成功处理逻辑
+            vmMain.setShowNav(true)
+            Toast.makeText(this@MainFragment.requireContext(), "Login success!", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_mainFragment2_to_profileFragment)
+
+        }
+        override fun onLoginFailure() {
+            // 登录失败处理逻辑
+            Toast.makeText(this@MainFragment.requireContext(), "Login failed. Check your password and email.", Toast.LENGTH_SHORT).show()
+        }
     }
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.room.ColumnInfo
+import androidx.room.PrimaryKey
 import com.example.lab3.database.AppDatabase
 import com.example.lab3.database.entity.CourtInfo
 import com.example.lab3.database.entity.SportDetail
@@ -34,7 +35,7 @@ public data class UserProfile(
     var tel:String?,
     var photo:String?
 )
-    fun getUserById(application: Application, id:Int){
+    fun getUserById(application: Application, id:String){
 
     db1.collection("users").document("u${id}").get()
         .addOnSuccessListener { result ->
@@ -46,7 +47,7 @@ public data class UserProfile(
         }
 
 }
-    fun uploadPhoto(application: Application, photo: Uri,id:Int){
+    fun uploadPhoto(application: Application, photo: Uri,id:String){
         val storageRef = storage.reference
         val storagePath = "user${id}/images/" // 存储路径，可以根据自己的需要进行调整
         val fileName = "user${id}.jpg" // 图片文件名，可以根据自己的需要进行调整
@@ -80,7 +81,7 @@ public data class UserProfile(
 
     }
 
-    fun updateUser(application: Application, user: UserProfile,id: Int){
+    fun updateUser(application: Application, user: UserProfile,id: String){
         val data = hashMapOf(
             "name" to user.name,
             "surname" to user.surname,
@@ -102,7 +103,19 @@ public data class UserProfile(
 //        db = AppDatabase.getDatabase(application)
 //        _userSports.value=db.sportDetailDao().getSportDetailsByUserId(id)
 //    }
-    fun getUserSportsById(application: Application, id:Int){
+data class SportDetail(
+
+    var userId:String,
+
+    var sportType:String,
+
+    var masteryLevel: Long?,
+
+    var achievement:String
+)
+
+
+    fun getUserSportsById(application: Application, id:String){
     db1.collection("users").document("u${id}").collection("sports").get()
         .addOnSuccessListener { result ->
             val tempList:MutableList<SportDetail> = mutableListOf()
@@ -137,7 +150,7 @@ public data class UserProfile(
     }
 
     fun addUserSport(application: Application, sd:SportDetail){
-        val id:Int=sd.userId
+        val id:String=sd.userId
         val data = hashMapOf(
             "achievement" to sd.achievement,
             "level" to sd.masteryLevel
@@ -150,7 +163,7 @@ public data class UserProfile(
             }
     }
 
-    fun updateUserSport(application: Application, sd: SportDetail,id:Int){
+    fun updateUserSport(application: Application, sd: SportDetail,id:String){
         val data = hashMapOf(
             "achievement" to sd.achievement,
             "level" to sd.masteryLevel
@@ -164,7 +177,7 @@ public data class UserProfile(
     }
 
     fun deleteUserSport(application: Application, sd: SportDetail){
-        val id:Int=sd.userId
+        val id:String=sd.userId
         val newD=db1.collection("users").document("u${id}").collection("sports").document("${sd.sportType}")
         newD.delete()
             .addOnSuccessListener {        }

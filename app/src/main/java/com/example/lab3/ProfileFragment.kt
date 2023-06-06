@@ -25,7 +25,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.lab3.database.entity.SportDetail
 import com.example.lab3.databinding.FragmentCourtDetailBinding
 import com.example.lab3.databinding.FragmentProfileBinding
 import java.io.File
@@ -55,7 +54,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
     private  var tele :String? = null
     private val vm : ProfileViewModel by activityViewModels()
     private val vmMain : MainViewModel by activityViewModels()
-    private  var sportList : List<SportDetail>? = null
+    private  var sportList : List<ProfileViewModel.SportDetail>? = null
     private  var path :String?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,8 +71,8 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        vm.getUserById(this.requireActivity().application, vmMain.user)
-        vm.getUserSportsById(this.requireActivity().application, vmMain.user)
+        vm.getUserById(this.requireActivity().application, vmMain.UID)
+        vm.getUserSportsById(this.requireActivity().application, vmMain.UID)
 //        vm.User.observe(viewLifecycleOwner){
 //            println("user:"+ (vm.User.value?.surname ))
 //        }
@@ -100,11 +99,11 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
 //        val savedPath = sharedPreferences.getString("path", null)
 
         val users = listOf("user1", "user2", "user3")
-        val spinnerUser = view.findViewById<Spinner>(R.id.userSpinner)
+//        val spinnerUser = view.findViewById<Spinner>(R.id.userSpinner)
 //        spinnerUser.setSelection(vmMain.user-1)
         val adapterU = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, users)
         adapterU.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerUser.adapter = adapterU
+//        spinnerUser.adapter = adapterU
         vm.userSports.observe(viewLifecycleOwner){
             sportList= it
 //            println("this"+sportList)
@@ -129,6 +128,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         val fullName = view.findViewById<TextView>(R.id.tv_name)
         val tel = view.findViewById<TextView>(R.id.tv_phone)
         val photoView = view.findViewById<ImageView>(R.id.TOP)
+        val logout = view.findViewById<Button>(R.id.Logout)
 
 
         // 设置布局管理器
@@ -151,7 +151,8 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
             tele = it.tel
             fullName.setText(full_name)
             tel.setText(tele)
-            it.photo?.let { it1 -> vm.readPhoto(this.requireActivity().application, it1) }
+            if(!it.photo.isNullOrEmpty())
+            {  vm.readPhoto(this.requireActivity().application, it.photo!!) }
         }
 
         //读取头像URI加载到imageview
@@ -162,34 +163,40 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
                 .into(photoView)
         }
 //        println(vmMain.user)
-        spinnerUser.setSelection(vmMain.user-1)
-        spinnerUser.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                updateUser(parent.getItemAtPosition(position).toString())
-                vm.User.observe(viewLifecycleOwner){
-                    _name=it.name
-                    _surname=it.surname
-                    full_name="${it.name}"+"  "+"${it.surname}"
-                    tele = it.tel
-                    fullName.setText(full_name)
-                    tel.setText(tele)
-                    vmMain.user = (position + 1)
-                    println("this is new user position !!! ${position}")
-                }
-                adapter = SportsAdapter(sportList ?: emptyList())
-                recyclerViewSports.adapter = adapter
-                adapter.setOnItemClickListener {
-                    var bundle = bundleOf("sportName" to it)
-                    vmMain.setShowNav(false)
-                    findNavController().navigate(R.id.action_profileFragment_to_sportsDetail,bundle)
-                }
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
+//        spinnerUser.setSelection(vmMain.user-1)
+//        spinnerUser.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+//                updateUser(parent.getItemAtPosition(position).toString())
+//                vm.User.observe(viewLifecycleOwner){
+//                    _name=it.name
+//                    _surname=it.surname
+//                    full_name="${it.name}"+"  "+"${it.surname}"
+//                    tele = it.tel
+//                    fullName.setText(full_name)
+//                    tel.setText(tele)
+//                    vmMain.user = (position + 1)
+//                    println("this is new user position !!! ${position}")
+//                }
+//                adapter = SportsAdapter(sportList ?: emptyList())
+//                recyclerViewSports.adapter = adapter
+//                adapter.setOnItemClickListener {
+//                    var bundle = bundleOf("sportName" to it)
+//                    vmMain.setShowNav(false)
+//                    findNavController().navigate(R.id.action_profileFragment_to_sportsDetail,bundle)
+//                }
+//            }
+//            override fun onNothingSelected(parent: AdapterView<*>?) {}
+//        }
         //需把action_profileFragment_to_historyFragment的destination改成正确的跳转目的地
         historyButton.setOnClickListener{
             vmMain.setShowNav(false)
             findNavController().navigate(R.id.action_profileFragment_to_historyFragment)
+        }
+        //登出
+        logout.setOnClickListener{
+            vmMain.logOut(this.requireActivity().application)
+            vmMain.setShowNav(false)
+            findNavController().navigate(R.id.action_profileFragment_to_main)
         }
         editButton.setOnClickListener {
             var bundle = bundleOf("name" to _name,"surname" to _surname,"phone" to tele,"path" to path)
@@ -199,23 +206,23 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         }
     }
 
-    private fun updateUser(User: String) {
-        when(User){
-            ("user1")->{
-                vmMain.user = 1
-            }
-            ("user2")->{
-                vmMain.user = 2
-            }
-            ("user3")->{
-                vmMain.user = 3
-            }
-
-        }
-        vm.getUserById(this.requireActivity().application, vmMain.user)
-        vm.getUserSportsById(this.requireActivity().application, vmMain.user)
-
-    }
+//    private fun updateUser(User: String) {
+//        when(User){
+//            ("user1")->{
+//                vmMain.user = 1
+//            }
+//            ("user2")->{
+//                vmMain.user = 2
+//            }
+//            ("user3")->{
+//                vmMain.user = 3
+//            }
+//
+//        }
+//        vm.getUserById(this.requireActivity().application, vmMain.user)
+//        vm.getUserSportsById(this.requireActivity().application, vmMain.user)
+//
+//    }
 
     private fun loadImageFromStorage(path: String?) {
         try {
@@ -228,7 +235,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         }
     }
 }
-class SportsAdapter(private val sportsList: List<SportDetail>) : RecyclerView.Adapter<SportsAdapter.SportsViewHolder>() {
+class SportsAdapter(private val sportsList: List<ProfileViewModel.SportDetail>) : RecyclerView.Adapter<SportsAdapter.SportsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SportsViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout_my_sports, parent, false)

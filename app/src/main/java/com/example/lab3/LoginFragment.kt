@@ -69,7 +69,6 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
                 }
                 else->{
                     if(emailText.text.toString().matches(emailPattern.toRegex())){
-                        vmMain.login(this.requireActivity().application,emailText.text.toString(), passwordText.text.toString())
                         if(!vmMain.UID.isNullOrEmpty()){
                             Toast.makeText(this.requireContext(), "Login success!.", Toast.LENGTH_SHORT).show()
                         }

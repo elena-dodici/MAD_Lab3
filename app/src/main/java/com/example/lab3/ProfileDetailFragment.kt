@@ -10,7 +10,6 @@ import android.widget.RatingBar
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.lab3.database.entity.SportDetail
 import com.example.lab3.databinding.FragmentProfileDetailBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -31,13 +30,13 @@ class ProfileDetailFragment : BaseFragment(R.layout.fragment_profile_detail),Has
     private var sportName:String? = null
     private var achievement:String? = null
     private var Level:Long = 0
-    private var SportDetail = SportDetail(1,"running",0,"")
+    private var SportDetail = ProfileViewModel.SportDetail("","running",0,"")
     private val vm : ProfileViewModel by activityViewModels()
     private val vmMain : MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SportDetail.userId=vmMain.user
+        SportDetail.userId=vmMain.UID
     }
 
 
@@ -76,7 +75,7 @@ class ProfileDetailFragment : BaseFragment(R.layout.fragment_profile_detail),Has
             SportDetail.sportType= sportText.text.toString()
             SportDetail.masteryLevel= ratingBar.rating.toLong()
             SportDetail.achievement= achText.text.toString()
-            vm.updateUserSport(this.requireActivity().application,SportDetail,vmMain.user)
+            vm.updateUserSport(this.requireActivity().application,SportDetail,vmMain.UID)
             vmMain.setShowNav(true)
             findNavController().navigate(R.id.action_ProfileDetailFragment_to_profileFragment)
         }
