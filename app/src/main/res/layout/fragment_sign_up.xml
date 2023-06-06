@@ -3,9 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_marginHorizontal="@dimen/margin_left"
-    android:padding="16dp">
+    android:orientation="vertical">
 
 <!--    <EditText-->
 <!--        android:id="@+id/nothing"-->
@@ -19,9 +17,41 @@
 <!--        android:layout_height="wrap_content"-->
 <!--        android:hint="" />-->
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/deeper_toolbar_color2"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        >
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/activityToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/new_user" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="16dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
 <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
     android:text="@string/Registration"
     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4">
 
@@ -30,10 +60,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal">
-
+       >
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/title_image"
@@ -42,13 +69,16 @@
             android:adjustViewBounds="true"
             android:layout_gravity="center"
             android:src="@drawable/baseline_person_24"
-          />
+            />
+
 
         <com.google.android.material.textfield.TextInputLayout
             style="?attr/textInputFilledStyle"
-            android:layout_marginEnd="60dp"
+
             android:layout_width="0dp"
+            android:layout_marginTop="60dp"
             android:layout_weight="0.8"
+            android:layout_marginVertical="20dp"
             android:layout_marginStart="5dp"
             android:layout_height="wrap_content"
             android:hint="@string/text_name"
@@ -63,15 +93,27 @@
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+
+
+
+
 
 
 
         <com.google.android.material.textfield.TextInputLayout
             style="?attr/textInputFilledStyle"
-
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
             android:hint="@string/text_surname"
             app:endIconMode="clear_text">
 
@@ -109,6 +151,8 @@
            android:layout_marginStart="5dp"
            android:hint="@string/text_email"
            app:endIconMode="clear_text"
+           app:helperTextEnabled="true"
+           app:helperText="@string/helper_email"
            >
 
 
@@ -118,6 +162,7 @@
                android:inputType="textEmailAddress"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
+
                />
 
        </com.google.android.material.textfield.TextInputLayout>
@@ -240,11 +285,13 @@
         android:background="@drawable/custom_sports"
         android:layout_gravity="center_horizontal"
         />
+</LinearLayout>
 
+        </ScrollView>
 <!--    <Button-->
 <!--        android:id="@+id/buttonSave"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->
 <!--        android:text="Back to main " />-->
-
+    </LinearLayout>
 </LinearLayout>

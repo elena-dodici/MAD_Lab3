@@ -12,7 +12,9 @@ import com.example.lab3.database.Repository.AddReservationRepository
 import com.example.lab3.database.entity.Reservation
 import com.example.lab3.database.entity.ReservationFirebase
 import com.google.firebase.firestore.AggregateSource
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
@@ -56,7 +58,7 @@ class AddReservationViewModel : ViewModel() {
     }
 
 
-     fun addNewReservation(application: Application, reservation: ReservationFirebase, user : Int,date : String?,selectedSlot : String){
+     fun addNewReservation(application: Application, reservation: ReservationFirebase, UID : String,date : String?,selectedSlot : String){
         /*try {
             db = AppDatabase.getDatabase(application)
             val newRes = db.reservationDao().addReservation(reservation)
@@ -67,11 +69,10 @@ class AddReservationViewModel : ViewModel() {
         // FIND NUMBER OF RESERVATIONS (NEEDED FOR THE NAME IN THE DB) AND START TRANSACTION TO CREATE
          // THE NEW RES AND UPDATE THE TIME SLOT STATUS TO "FALSE" ( BUSY )
          viewModelScope.launch {
-             val numberOfReservations = repo.getNumberOfUserReservations(user)
-             println("NUMBER OF RESERVATIONS ${numberOfReservations} (USER ${user})")
-             repo.addResWithTransaction(reservation,user,reservation.sport,date, selectedSlot,numberOfReservations)
+             val numberOfReservations = repo.getNumberOfUserReservations(UID)
+             println("NUMBER OF RESERVATIONS ${numberOfReservations} (USER ${UID})")
+             repo.addResWithTransaction(reservation,UID,reservation.sport,date, selectedSlot,numberOfReservations)
          }
-
          // SAME OPERATIONS BUT WITHOUT TRANSACTION
         /* viewModelScope.launch {
              val numberOfReservations = repo.getNumberOfUserReservations(user)
@@ -80,9 +81,8 @@ class AddReservationViewModel : ViewModel() {
              repo.updateTimeSlot(reservation.sport,date, selectedSlot)
          }*/
 
-
-
     }
+
 
     fun getCourtNameBySport(application: Application, sport: String) : String{
         /*val courtId = db.courtDao().getCourtIdBySport(sport)

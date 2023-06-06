@@ -23,8 +23,10 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ProfileFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class LoginFragment : BaseFragment(R.layout.fragment_login) {
-
+class LoginFragment : BaseFragment(R.layout.fragment_login),HasToolbar {
+    override val toolbar: Toolbar?
+        get() = null
+    override val titleRes: Int? = null
     private val vmMain : MainViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +44,8 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
 
         val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
         sButton.setOnClickListener{
+            println("i got email in login ${emailText.text}")
+            println("i got password in login ${passwordText.text}")
             when{
                 emailText.text.isNullOrEmpty() -> {
                     val alertDialog = AlertDialog.Builder(context)

@@ -86,7 +86,9 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
     override val toolbar: Toolbar?
         get() = null
-    //    override val titleRes: Int? = null
+    override val titleRes: Int? = null
+//    override val titleRes: Int = R.string.example_1_title
+
     companion object {
         fun newInstance() = Calendar()
     }
@@ -468,4 +470,8 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
     }
 
+    override fun onStop() {
+        super.onStop()
+        binding.weekModeCheckBox.isChecked = false
+    }
 }

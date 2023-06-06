@@ -60,6 +60,7 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
     }
     override val toolbar: Toolbar
         get() = binding.activityToolbar
+    override val titleRes: Int = R.string.court_detail_title
     private lateinit var binding:FragmentCourtBinding
     private val sharedvm : CourtViewModel by activityViewModels()
     private val mainVm: MainViewModel by activityViewModels()

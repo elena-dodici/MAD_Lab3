@@ -18,14 +18,15 @@ import java.time.*
  * Use the [DetailFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DetailFragment : BaseFragment(R.layout.fragment_detail), HasToolbar  {
+class DetailFragment : BaseFragment(R.layout.fragment_detail), HasBackButton  {
 
     private lateinit var binding: FragmentDetailBinding
     private val sharedvm : CalendarViewModel by activityViewModels()
     private val mainvm: MainViewModel by activityViewModels()
 //    private var Level:Int = 0
-    override val toolbar: Toolbar?
-        get() = binding.activityToolbar
+//    override val toolbar: Toolbar?
+//        get() = binding.activityToolbar
+    override val titleRes: Int = R.string.reservation_detail
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

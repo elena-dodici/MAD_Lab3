@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:title="My Booking"
-        android:icon="@drawable/baseline_star_24"
+        android:icon="@drawable/baseline_edit_calendar_24"
         android:id="@+id/calendar"/>
     <item android:title="Search"
         android:icon="@drawable/baseline_search_24"
@@ -13,7 +13,7 @@
     <item android:title="Court Info"
         android:icon="@drawable/baseline_golf_course_24"
         android:id="@+id/courtFragment"/>
-    <item android:title="my frag"
-        android:icon="@drawable/baseline_golf_course_24"
-        android:id="@+id/myFragment"/>
+<!--    <item android:title="my frag"-->
+<!--        android:icon="@drawable/baseline_golf_course_24"-->
+<!--        android:id="@+id/myFragment"/>-->
 </menu>

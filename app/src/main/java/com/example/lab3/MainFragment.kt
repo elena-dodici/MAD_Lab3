@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
@@ -20,7 +21,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
     private lateinit var binding: FragmentMainBinding
     override val toolbar: Toolbar?
         get() = binding.activityToolbar
-
+    override val titleRes: Int = R.string.main_page
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -30,9 +31,14 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
         super.onViewCreated(view, savedInstanceState)
         vmMain.setShowNav(false)
         binding = FragmentMainBinding.bind(view)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            requireActivity().finish()
+        }
 
-        val inputEmail = binding.editTextEmail.editText?.text
-        val inputPassword = binding.editTextPassword.editText?.text
+//        val inputEmail = binding.editTextEmail.editText?.text
+//        val inputPassword = binding.editTextPassword.editText?.text
+        val emailText =  view.findViewById<EditText>(R.id.editTextEmail1)
+        val passwordText = view.findViewById<EditText>(R.id.editTextPassword1)
         val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
 
         binding.editTextEmail.editText?.doOnTextChanged { inputText, _, _, _ ->
@@ -41,12 +47,12 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
         }
 
         binding.buttonSave.setOnClickListener {
-//            println("I got inputEmail!: ${inputEmail.toString()}")
-//            println("I got input password!: ${inputPassword.toString()}")
+            println("I got inputEmail!: ${emailText.text}")
+            println("I got input password!: ${passwordText.text}")
 
 
             when{
-                inputEmail.toString().isNullOrEmpty() -> {
+                emailText.text.toString().isNullOrEmpty() -> {
                     val alertDialog = AlertDialog.Builder(context)
                         .setTitle("Email empty!")
                         .setMessage("Email address cannot be empty")
@@ -54,7 +60,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
                         .create()
                     alertDialog.show()
                 }
-                inputPassword.toString().isNullOrEmpty() -> {
+                passwordText.text.toString().isNullOrEmpty() -> {
                     val alertDialog = AlertDialog.Builder(context)
                         .setTitle("Password empty !")
                         .setMessage("Password cannot be empty")
@@ -62,7 +68,7 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
                         .create()
                     alertDialog.show()
                 }
-                inputPassword.toString().length < 6 -> {
+                passwordText.text.toString().length < 6 -> {
                     val alertDialog = AlertDialog.Builder(context)
                         .setTitle("Password invalid")
                         .setMessage("Password length must not less than 6")
@@ -72,8 +78,8 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
                 }
                 else->{
                     val callback = MyLoginCallback()
-                    if(inputEmail.toString().matches(emailPattern.toRegex())){
-                        vmMain.login(this.requireActivity().application, inputEmail.toString(), inputPassword.toString(), callback)
+                    if(emailText.text.toString().matches(emailPattern.toRegex())){
+                        vmMain.login(this.requireActivity().application, emailText.text.toString(), passwordText.text.toString(), callback)
                     }else{
                         val alertDialog = AlertDialog.Builder(context)
                             .setTitle("Email invalid")

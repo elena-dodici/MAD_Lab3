@@ -88,6 +88,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     var observeCalender = false
     override val toolbar: Toolbar?
         get() = null
+    override val titleRes: Int? = null
     companion object {
         fun newInstance() = SearchFragment()
     }
@@ -103,11 +104,6 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     private val allReserved = mutableMapOf<LocalDate,Boolean>() // 某一天是否完全被预定了
     private val availableDateList = mutableListOf<LocalDate>() // 所有可用日期
     val adapterC = CourtAdapter()
-
-//    private var gridView:GridView ?= null
-//    private var arrayList:ArrayList<String> ?= null
-//    private var startTimeAdapter: startTimeAdapter ?= null
-//
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -335,7 +331,6 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         adapterC.apply {
             events.clear()
             events.addAll(this@SearchFragment.freeCourts[date].orEmpty())
-
             notifyDataSetChanged()
         }
 
@@ -545,12 +540,14 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
     }
 
     private fun getFreeSlot(sport: String, date: LocalDate?){
-        //println("active free ${sport}slow${date}!!!!!!")
 //        freeCourts.clear() // 清除旧的
 //        freeCourts[date!!] = listOf() // 清空这一天原本的free slot
         vm.getFreeSlotByDateAndSport(this.requireActivity().application,sport, date!!)
 
         val fc = mutableListOf<FreeCourt>()
+        if(observeFreeSlot == false){
+
+        }
         if (observeFreeSlot == false) {
             observeFreeSlot = true
             vm.FreeSlotsOneDay.observe(this) {
@@ -575,13 +572,10 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                     }
                 }
                 this.freeCourts[date] = fc
+                numberOfFreeSlots = fc.size
                 updateAdapterForDate(date)
 //                println(freeCourts[date]!![0].name)
             }
-            this.freeCourts[date]=fc
-            println("FREE SLOTS <<<<<<<<<<<<<<<<<< ${fc.size}")
-            numberOfFreeSlots = fc.size
-            updateAdapterForDate(date)
         }
 
     }

@@ -31,7 +31,7 @@ class HistoryViewModel : ViewModel() {
 
     private var _originRating = 0
 
-    fun getHistoryResbyUser(userid: Int) { // 只拿今天之前的！
+    fun getHistoryResbyUser(userid: String) { // 只拿今天之前的！
         db1.collection("users").document("u${userid}").collection("reservation").get()
             .addOnSuccessListener { result ->
                 val dataList = result.map { document ->
@@ -93,7 +93,7 @@ class HistoryViewModel : ViewModel() {
         }
     }
 
-    fun addRev(rating: Int, userId: Int) {
+    fun addRev(rating: Int, userId: String) {
         val docRef = db1.collection("users").document("u${userId}").collection("reservation")
             .document("${selRev.value!!.resId}")
         docRef.update("rating", rating, "review", _selRev.value!!.review).addOnSuccessListener {

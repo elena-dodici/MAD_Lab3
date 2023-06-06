@@ -54,7 +54,7 @@ class HistoryAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<HistoryA
 }
 
 var ranking: Int = 1
-class HistoryFragment : BaseFragment(R.layout.fragment_history),HasToolbar{
+class HistoryFragment : BaseFragment(R.layout.fragment_history),HasBackButton{
     private lateinit var  binding: FragmentHistoryBinding
     private val sharedvm : HistoryViewModel by activityViewModels()
     private val vmMain : MainViewModel by activityViewModels()
@@ -64,10 +64,12 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),HasToolbar{
     companion object {
         fun newInstance() = HistoryFragment()
     }
-    override val toolbar: Toolbar
-        get() = binding.activityToolbar
+//    override val toolbar: Toolbar
+//        get() = binding.activityToolbar
+    override val titleRes: Int = R.string.history_title
+
     val adapter = HistoryAdapter{
-        println("active ${it}")
+
         gotoRevDetailFrag(it.resId)
     }
     private fun gotoRevDetailFrag(resId: String){
@@ -78,7 +80,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),HasToolbar{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedvm.getHistoryResbyUser(vmMain.user)
+        sharedvm.getHistoryResbyUser(vmMain.UID)
         sharedvm.reservations.observe(this){
             // 从viewmodel获取数据（viewmodel从数据库拿到数据）
             events.clear()

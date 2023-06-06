@@ -45,10 +45,10 @@ class AddReservationRepository {
             }
         }
 
-    suspend fun getNumberOfUserReservations(user : Int) : Int =
+    suspend fun getNumberOfUserReservations(UID : String) : Int =
         withContext(Dispatchers.IO) {
             val query = db1.collection("users")
-                .document("u${user}")
+                .document("u${UID}")
                 .collection("reservation").count()
                 .get(AggregateSource.SERVER)
                 .addOnSuccessListener { res ->
@@ -66,7 +66,7 @@ class AddReservationRepository {
             }
         }
 
-    suspend fun addNewReservation(reservation : ReservationFirebase, user : Int, numberOfRes : Int) : Int =
+    suspend fun addNewReservation(reservation : ReservationFirebase, UID : String, numberOfRes : Int) : Int =
         withContext(Dispatchers.IO) {
             val res = hashMapOf(
                 "ct" to mapOf(
@@ -81,7 +81,7 @@ class AddReservationRepository {
                 "status" to reservation.status
             )
             val query = db1.collection("users")
-                .document("u${user.toString()}")
+                .document("u${UID}")
                 .collection("reservation")
                 .document("res${numberOfRes.toString()}")
                 .set(res)
@@ -94,7 +94,7 @@ class AddReservationRepository {
                 }
             try {
                 val result = query.await()
-                println("ADDING res${numberOfRes} for u${user}")
+                println("ADDING res${numberOfRes} for u${UID}")
                 return@withContext 1
             }catch (error : Throwable){
                 println("Error : ${error}")
@@ -102,7 +102,7 @@ class AddReservationRepository {
             }
         }
 
-    fun addResWithTransaction(reservation: ReservationFirebase, user: Int, sport: String, date: String?, timeSlot: String, numberOfRes: Int) {
+    fun addResWithTransaction(reservation: ReservationFirebase, UID : String, sport: String, date: String?, timeSlot: String, numberOfRes: Int) {
         lateinit var courtName: String
 
         db1.runTransaction { transaction ->
@@ -137,7 +137,7 @@ class AddReservationRepository {
 
                 transaction.set(
                     db1.collection("users")
-                        .document("u$user")
+                        .document("u$UID")
                         .collection("reservation")
                         .document("res$numberOfRes")
                     , res)

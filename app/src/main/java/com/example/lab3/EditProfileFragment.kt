@@ -43,11 +43,12 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 
-class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasToolbar {
+class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBackButton {
 
     private lateinit var binding: FragmentProfileEditBinding
-    override val toolbar: Toolbar?
-        get() = binding.activityToolbar
+//    override val toolbar: Toolbar?
+//        get() = binding.activityToolbar
+    override val titleRes: Int = R.string.profile
     private  var _name :String? = null
     private  var _surname :String? = null
     private  var tele :String? = null
