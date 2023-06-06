@@ -50,7 +50,7 @@ class MainRepository {
                 .document("${day}")
                 .set(timeSlots)
                 .addOnSuccessListener {
-                    println("Data added successfully")
+//                    println("Data added successfully")
                 }
                 .addOnFailureListener {
                         exception ->
@@ -58,7 +58,7 @@ class MainRepository {
                 }
             try {
                 val result = query.await()
-                println("ADDING day${day}")
+//                println("ADDING day${day}")
                 return@withContext 1
             }catch (error : Throwable){
                 println("Error : ${error}")
