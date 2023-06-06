@@ -111,7 +111,7 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up),HasBackButton {
                                     Toast.makeText(this.requireContext(), "Sign up success!.", Toast.LENGTH_SHORT).show()
                                     val alertDialog = AlertDialog.Builder(context)
                                         .setTitle("Almost done...")
-                                        .setMessage("We'll send an email to ${emailText} in 2 minutes. Open it up to activate your account.")
+                                        .setMessage("We'll send an email to ${emailText.text} in 2 minutes. Open it up to activate your account.")
                                     alertDialog.show()
                                     findNavController().navigate(R.id.to_loginFragment)
                                     //go to profile page and let it add their information!!!
