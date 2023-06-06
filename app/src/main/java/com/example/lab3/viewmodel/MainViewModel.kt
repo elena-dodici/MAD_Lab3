@@ -20,7 +20,7 @@ class MainViewModel: ViewModel() {
     val showNav : LiveData<Boolean> = _showNav
     val repo : MainRepository = MainRepository()
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
-
+    lateinit var currentToast : Toast
     var user:Int=1
     var UID = ""
 

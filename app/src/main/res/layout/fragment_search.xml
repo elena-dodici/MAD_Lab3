@@ -123,6 +123,7 @@
             app:layout_constraintBottom_toTopOf="@+id/textFreeSlot"
             >
 
+
             <TextView
                 android:id="@+id/cyclerTitle"
                 android:layout_width="0dp"

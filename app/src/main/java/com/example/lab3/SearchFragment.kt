@@ -1,11 +1,14 @@
 package com.example.lab3
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -49,6 +52,7 @@ import java.sql.Time
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
 
 
@@ -251,21 +255,64 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 
 
         val floatingButton = view.findViewById<FloatingActionButton>(R.id.floatingAddButton)
+        mainVm.currentToast = Toast.makeText(this.context,"Tap on '+' to add a reservation after selecting a day",Toast.LENGTH_SHORT)
+        mainVm.currentToast.show()
+        // FLOATING BUTTON ANIMATION //
+        val scaleXAnimator = ObjectAnimator.ofFloat(floatingButton, "scaleX", 1f, 0.8f)
+        scaleXAnimator.repeatCount = ObjectAnimator.INFINITE
+        scaleXAnimator.repeatMode = ObjectAnimator.REVERSE
+
+        val scaleYAnimator = ObjectAnimator.ofFloat(floatingButton, "scaleY", 1f, 0.8f)
+        scaleYAnimator.repeatCount = ObjectAnimator.INFINITE
+        scaleYAnimator.repeatMode = ObjectAnimator.REVERSE
+
+        val animatorSet = AnimatorSet()
+        animatorSet.playTogether(scaleXAnimator, scaleYAnimator)
+        animatorSet.duration = 1000 // Adjust the duration as desired
+        animatorSet.interpolator = AccelerateDecelerateInterpolator()
+        animatorSet.start()
+        //
+
         floatingButton.setOnClickListener {
-            var sD : String? = null
-            if(selectedDate != null){
-                sD = selectedDate.toString()
-            } else sD = LocalDate.now().toString()
-            var bundle = bundleOf("date" to sD, "sport" to selectedSport,
-                "numberOfFreeCt" to numberOfFreeSlots.toString())
-            findNavController().navigate(R.id.action_searchFragment_to_addReservationFragment,bundle)
-            mainVm.setShowNav(false)
+            val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            // MANIPULATION OF DATES TO MAKE SURE THEY ARE IN THE SAME FORMAT //
+            val currentDateString : String = LocalDate.now().format(formatter)
+            val selectedDateString : String = selectedDate!!.format(formatter)
+            val cDld : LocalDate = LocalDate.parse(currentDateString,formatter)
+            val sDld : LocalDate = LocalDate.parse(selectedDateString,formatter)
+            println("CDLD : ${cDld}")
+            println("SDLD : ${sDld}")
+
+            if(sDld.isBefore(cDld)){
+                mainVm.currentToast = Toast.makeText(this.context,"The date you chose is not valid!",Toast.LENGTH_SHORT)
+                mainVm.currentToast.show()
+            } else {
+                var sD: String? = null
+                if (selectedDate != null) {
+                    sD = selectedDate.toString()
+                } else sD = LocalDate.now().toString()
+                var bundle = bundleOf(
+                    "date" to sD, "sport" to selectedSport,
+                    "numberOfFreeCt" to numberOfFreeSlots.toString()
+                )
+                findNavController().navigate(
+                    R.id.action_searchFragment_to_addReservationFragment,
+                    bundle
+                )
+                mainVm.setShowNav(false)
+            }
         }
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        mainVm.currentToast.cancel()
+    }
+
     override fun onStop() {
         super.onStop()
+        mainVm.currentToast.cancel()
         binding.weekModeCheckBox.isChecked = true
     }
     private val weekModeToggled = object :CompoundButton.OnCheckedChangeListener{

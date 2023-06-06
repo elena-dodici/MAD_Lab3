@@ -50,6 +50,16 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
         fun newInstance() = AddReservationFragment()
     }
 
+    override fun onPause() {
+        super.onPause()
+        mainVm.currentToast.cancel()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mainVm.currentToast.cancel()
+    }
+
     private var layoutManager : RecyclerView.LayoutManager ?= null
     private var  adapter : MyAdapter1 ?= null
     //private lateinit var viewModel: AddReservationViewModel
@@ -244,7 +254,8 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
             doneButton.setOnClickListener {
                 if(selectedSlot == ""){
                     //println("SELECT A SLOT FIRST !")
-                    Toast.makeText(this.context,"SELECT A SLOT FIRST !",Toast.LENGTH_SHORT).show()
+                    mainVm.currentToast = Toast.makeText(this.context,"SELECT A SLOT FIRST !",Toast.LENGTH_SHORT)
+                    mainVm.currentToast.show()
                 } else {
                     alertDialog?.setMessage("${sport} court on day '${dateString}' in slot $selectedSlot:00 - ${selectedSlot.toInt()+1}:00")
                     alertDialog?.show()

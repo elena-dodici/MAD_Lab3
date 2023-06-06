@@ -51,6 +51,7 @@ class ProfileDetailFragment : BaseFragment(R.layout.fragment_profile_detail),Has
         val sportText = view.findViewById<EditText>(R.id.SportName)
         val ratingBar = view.findViewById<RatingBar>(R.id.ratingBar)
         val achText = view.findViewById<EditText>(R.id.ed_achievement)
+
         //初始化数据
         sportName = arguments?.getString("sportName")
         vm.userSports.value?.forEach{
