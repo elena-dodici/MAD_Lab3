@@ -587,6 +587,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 }
                 this.freeCourts[date] = fc
                 updateAdapterForDate(date)
+                println(freeCourts[date]!![0].name)
             }
         }
 
