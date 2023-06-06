@@ -105,8 +105,7 @@ class CalendarViewModel : ViewModel() {
 
     fun getAllRes(uuid:String){
 //        db = AppDatabase.getDatabase(application)
-
-        db1.collection("users").document(uuid).collection("reservation").get()
+        db1.collection("users").document("u$uuid").collection("reservation").get()
             .addOnSuccessListener { result ->
                 val dataList = result.map { document ->
                     val mapId = mapOf(

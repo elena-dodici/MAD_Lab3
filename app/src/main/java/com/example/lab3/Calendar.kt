@@ -127,7 +127,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         sharedvm.getAllDate(this.requireActivity().application)
 //        应该在viewmodel里获取数据
 
-        sharedvm.getAllRes( vmMain.UID)
+        sharedvm.getAllRes(vmMain.UID)
         sharedvm.getCourtNamesAndSport()
 
         if (observed == false) {
@@ -164,7 +164,7 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                 // 初始化下面的recyclerview
                 updateAdapterForDate(selectedDate)
 
-
+                println(events)
             }
         }
         return super.onCreateView(inflater, container, savedInstanceState)
