@@ -35,7 +35,7 @@ class MainViewModel: ViewModel() {
                 } else {
                     callback.onLoginFailure()
                     // If sign in fails, display a message to the user.
-                    Toast.makeText(application, "Login failed. Check you password and email.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(application, "Login failed. Check you password and email and make sure your email is verified.", Toast.LENGTH_SHORT).show()
                 }
             }
 
