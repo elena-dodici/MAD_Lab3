@@ -99,6 +99,8 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     private val availableDateList = mutableListOf<LocalDate>()
     private val events = mutableMapOf<LocalDate, List<Event>>()
 
+    var observed = false
+
     val eventsAdapter = MyAdapter{
         // 点击下面recyclerView调用的事件
         if(sharedvm.courtNamesSport.size>0){
@@ -120,37 +122,48 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         // 在某个日期下面 初始化 几个reservation
         availableDateList.clear()
         sharedvm.getAllDate(this.requireActivity().application)
-        sharedvm.allDate.observe(viewLifecycleOwner){
-            it.forEach{date->
-                if (!availableDateList.contains(date)){
-                    availableDateList.add(date)
-                }
-            }
-//            println("所有可用日期：$availableDateList")
-        }
 //        应该在viewmodel里获取数据
 
         sharedvm.getAllRes( vmMain.user)
         sharedvm.getCourtNamesAndSport()
 
+        if (observed == false) {
+            observed = true
+            sharedvm.allDate.observe(viewLifecycleOwner) {
+                it.forEach { date ->
+                    if (!availableDateList.contains(date)) {
+                        availableDateList.add(date)
+                    }
+                }
+//            println("所有可用日期：$availableDateList")
+            }
 
-        sharedvm.reservations.observe(viewLifecycleOwner){
-            // 从viewmodel获取数据（viewmodel从数据库拿到数据）
-            events.clear()
-            for (res in it){
+            sharedvm.reservations.observe(viewLifecycleOwner) {
+                // 从viewmodel获取数据（viewmodel从数据库拿到数据）
+                events.clear()
+                for (res in it) {
 //                events[res.date] = events[res.date].orEmpty().plus(Event(res.resId, UUID.randomUUID().toString(), res.name, res.sport, res.startTime, res.date))
 
-                events[res.date] = events[res.date].orEmpty().plus(Event(UUID.randomUUID().toString(),  res.resId , res.name, res.sport,res.startTime, res.date))
-                monthCalendarView.notifyCalendarChanged()
-                weekCalendarView.notifyCalendarChanged()
+                    events[res.date] = events[res.date].orEmpty().plus(
+                        Event(
+                            UUID.randomUUID().toString(),
+                            res.resId,
+                            res.name,
+                            res.sport,
+                            res.startTime,
+                            res.date
+                        )
+                    )
+                    monthCalendarView.notifyCalendarChanged()
+                    weekCalendarView.notifyCalendarChanged()
+
+                }
+                // 初始化下面的recyclerview
+                updateAdapterForDate(selectedDate)
+
 
             }
-            // 初始化下面的recyclerview
-            updateAdapterForDate(selectedDate)
-
-
         }
-
         return super.onCreateView(inflater, container, savedInstanceState)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
