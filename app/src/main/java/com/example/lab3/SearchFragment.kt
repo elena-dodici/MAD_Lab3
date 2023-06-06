@@ -162,8 +162,6 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 //        recyclerView.layoutManager =  LinearLayoutManager(this.context, RecyclerView.VERTICAL,false )
         recyclerView.layoutManager =  GridLayoutManager(this.context,2)
 
-        println("thisi s test ${freeCourts[selectedDate]}")
-        println("thisi s test ${selectedDate}")
 
 
         // 下拉菜单
@@ -232,6 +230,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         }
 
         binding.weekModeCheckBox.isChecked = true
+        println(binding.weekModeCheckBox.isChecked)
         monthCalendarView.isInvisible = binding.weekModeCheckBox.isChecked
         weekCalendarView.isInvisible = !binding.weekModeCheckBox.isChecked
         binding.weekModeCheckBox.setOnCheckedChangeListener(weekModeToggled)
@@ -268,7 +267,10 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 
     }
 
-
+    override fun onStop() {
+        super.onStop()
+        binding.weekModeCheckBox.isChecked = true
+    }
     private val weekModeToggled = object :CompoundButton.OnCheckedChangeListener{
         override fun onCheckedChanged(buttonView: CompoundButton, monthToWeek: Boolean) {
             if (monthToWeek) {
@@ -491,8 +493,8 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 
 
     private fun updateMonthTitle() { // 更新月份
-
         val isMonthMode = !binding.weekModeCheckBox.isChecked
+        println(isMonthMode)
         if (isMonthMode) {
             val month = monthCalendarView.findFirstVisibleMonth()?.yearMonth ?: return
             binding.yearText.text = month.year.toString()
@@ -587,7 +589,7 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 }
                 this.freeCourts[date] = fc
                 updateAdapterForDate(date)
-                println(freeCourts[date]!![0].name)
+//                println(freeCourts[date]!![0].name)
             }
         }
 
