@@ -22,10 +22,11 @@ import java.sql.Time
 import java.time.LocalDate
 
 
-class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),HasToolbar {
+class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),HasBackButton {
     private lateinit var binding: FragmentAddReservationBinding
-    override val toolbar: Toolbar?
-        get() =binding.activityToolbar
+//    override val toolbar: Toolbar?
+//        get() =binding.activityToolbar
+    override val titleRes: Int = R.string.addRes
     companion object {
         fun newInstance() = AddReservationFragment()
     }

@@ -6,25 +6,25 @@
     tools:context=".ProfileFragment"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/deeper_toolbar_color2"
-        android:id="@+id/appBar"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/deeper_toolbar_color2"-->
+<!--        android:id="@+id/appBar"-->
+<!--        android:theme="@style/AppTheme.AppBarOverlay"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        >-->
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/activityToolbar"
-            android:layout_width="match_parent"
-            app:title="@string/sport_detail"
-            android:layout_height="?attr/actionBarSize"
-            />
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:id="@+id/activityToolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            app:title="@string/sport_detail"-->
+<!--            android:layout_height="?attr/actionBarSize"-->
+<!--            />-->
 
-    </com.google.android.material.appbar.AppBarLayout>
+<!--    </com.google.android.material.appbar.AppBarLayout>-->
 
 
 

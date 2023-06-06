@@ -19,14 +19,14 @@ import java.time.LocalDateTime
  * Use the [OwnRevFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class OwnRevFragment : BaseFragment(R.layout.fragment_own_rev), HasToolbar {
+class OwnRevFragment : BaseFragment(R.layout.fragment_own_rev), HasBackButton {
 
     private lateinit var binding: FragmentOwnRevBinding
     private val sharedvm: HistoryViewModel by activityViewModels()
     private val mainvm: MainViewModel by activityViewModels()
-    override val toolbar: Toolbar?
-        get() = binding.activityToolbar
-
+//    override val toolbar: Toolbar?
+//        get() = binding.activityToolbar
+    override val titleRes: Int = R.string.ownRev
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentOwnRevBinding.bind(view, savedInstanceState)

@@ -54,7 +54,7 @@ class HistoryAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<HistoryA
 }
 
 var ranking: Int = 1
-class HistoryFragment : BaseFragment(R.layout.fragment_history),HasToolbar{
+class HistoryFragment : BaseFragment(R.layout.fragment_history),HasBackButton{
     private lateinit var  binding: FragmentHistoryBinding
     private val sharedvm : HistoryViewModel by activityViewModels()
     private val vmMain : MainViewModel by activityViewModels()
@@ -64,8 +64,10 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),HasToolbar{
     companion object {
         fun newInstance() = HistoryFragment()
     }
-    override val toolbar: Toolbar
-        get() = binding.activityToolbar
+//    override val toolbar: Toolbar
+//        get() = binding.activityToolbar
+    override val titleRes: Int = R.string.history_title
+
     val adapter = HistoryAdapter{
         println("active ${it}")
         gotoRevDetailFrag(it.resId)

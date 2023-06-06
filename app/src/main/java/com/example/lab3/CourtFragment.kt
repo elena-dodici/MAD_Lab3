@@ -54,12 +54,13 @@ class ScoreAdapter(val onTap:(CourtInfo)->Unit):RecyclerView.Adapter<ScoreAdapte
     }
 }
 var ranking1:Int = 1
-class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
+class CourtFragment : BaseFragment(R.layout.fragment_court), HasBackButton {
     companion object {
         fun newInstance() = CourtFragment()
     }
-    override val toolbar: Toolbar
-        get() = binding.activityToolbar
+//    override val toolbar: Toolbar
+//        get() = binding.activityToolbar
+    override val titleRes: Int = R.string.court_detail_title
     private lateinit var binding:FragmentCourtBinding
     private val sharedvm : CourtViewModel by activityViewModels()
     private val mainVm: MainViewModel by activityViewModels()

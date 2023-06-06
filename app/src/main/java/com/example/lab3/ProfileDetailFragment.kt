@@ -22,11 +22,11 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ProfileFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ProfileDetailFragment : BaseFragment(R.layout.fragment_profile_detail),HasToolbar {
+class ProfileDetailFragment : BaseFragment(R.layout.fragment_profile_detail),HasBackButton {
     private lateinit var binding: FragmentProfileDetailBinding
-    override val toolbar: Toolbar?
-        get() =binding.activityToolbar
-
+//    override val toolbar: Toolbar?
+//        get() =binding.activityToolbar
+    override val titleRes: Int = R.string.sport_detail
     private var sportName:String? = null
     private var achievement:String? = null
     private var Level:Long = 0
