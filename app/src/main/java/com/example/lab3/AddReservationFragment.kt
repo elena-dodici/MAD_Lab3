@@ -217,7 +217,8 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
                         val resDescription = description.editText?.text.toString()
                         val newReservation : ReservationFirebase =
                             ReservationFirebase(startTime,endTime,resDescription,courtName,sport,0,
-                                "",-1)
+                                "",-1, listOf()
+                            )
                         try {
                             viewModel.addNewReservation(application,
                                 newReservation,

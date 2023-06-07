@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         //vm.updateCourtTimesDates()
 
 //       initDatabase(db) // add some initial data
-       // initFirebase()
+        initFirebase()
 
 
 
@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    data class reservation(val name:String,val ct: courtTime,val description: String, val rating:Int, val review:String, val status:Int, val sport: String)
+    data class reservation(val name:String,val ct: courtTime,val description: String, val rating:Int, val review:String, val status:Int, val sport: String, val invitedUsers : List<String>)
     data class courtTime(
         val startTime : Timestamp,
         val endTime:Timestamp
@@ -114,68 +114,70 @@ class MainActivity : AppCompatActivity() {
         val reservations= listOf<reservation>(
             // u1
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 5, 1, 9, 0)), Timestamp(Date(2023 - 1900, 5, 1, 10, 0))),
-                            "This is the description for user1's reservation of his running ",4,"The Sport Court's facility is a fun and competitive hub for sports enthusiasts. With its well-maintained courts, modern equipment, and opportunities for organized leagues and tournaments, it offers an exhilarating experience for those seeking both recreation and healthy competition.",0,"running"),
+                            "This is the description for user1's reservation of his running ",4,"The Sport Court's facility is a fun and competitive hub for sports enthusiasts. With its well-maintained courts, modern equipment, and opportunities for organized leagues and tournaments, it offers an exhilarating experience for those seeking both recreation and healthy competition.",0,"running",
+                listOf()
+            ),
             reservation("court2", courtTime(Timestamp(Date(2023 - 1900, 5, 3, 10, 0)), Timestamp(Date(2023 - 1900, 5, 3, 11, 0))),
-                            "No specific requirement",5,"At the Sport Court's facility, the staff exhibits professionalism and friendliness. Their knowledge, approachability, and willingness to assist create a welcoming atmosphere for visitors, making the overall experience enjoyable.",0, "basketball"),
+                            "No specific requirement",5,"At the Sport Court's facility, the staff exhibits professionalism and friendliness. Their knowledge, approachability, and willingness to assist create a welcoming atmosphere for visitors, making the overall experience enjoyable.",0, "basketball",listOf()),
             reservation("court3", courtTime(Timestamp(Date(2023 - 1900, 5, 22, 16, 0)), Timestamp(Date(2023 - 1900, 5, 22, 17, 0))),
-                "No specific requirement",-1,"",0, "swimming"),
+                "No specific requirement",-1,"",0, "swimming",listOf()),
             //u2
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 5, 18, 15, 0)), Timestamp(Date(2023 - 1900, 5, 18, 16, 0))),
-                "d1 for u2",-1,"",0, "running"),
+                "d1 for u2",-1,"",0, "running",listOf()),
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 5, 19, 11, 0)), Timestamp(Date(2023 - 1900, 5, 19, 12, 0))),
-                "d2 for u2",-1,"",0, "basketball"),
+                "d2 for u2",-1,"",0, "basketball",listOf()),
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 5, 1, 10, 0)), Timestamp(Date(2023 - 1900, 5, 1, 11, 0))),
-                "Please leave some clean towels",4,"The Sport Court's facility is conveniently located and fosters a sense of community. With ample parking, accessible entrances, and organized sports events, it brings people together and encourages a healthy and active lifestyle.",0, "swimming"),
+                "Please leave some clean towels",4,"The Sport Court's facility is conveniently located and fosters a sense of community. With ample parking, accessible entrances, and organized sports events, it brings people together and encourages a healthy and active lifestyle.",0, "swimming",listOf()),
 
             //u3
             reservation("court5", courtTime(Timestamp(Date(2023 - 1900, 4, 28, 15, 0)), Timestamp(Date(2023 - 1900, 4, 28, 16, 0))),
-                "We need some tennis balls",5," The courts are immaculately aintained, with clean surfaces and properly marked boundaries, ensuring a safe and enjoyable playing experience.",0, "tennis"),
+                "We need some tennis balls",5," The courts are immaculately aintained, with clean surfaces and properly marked boundaries, ensuring a safe and enjoyable playing experience.",0, "tennis",listOf()),
             reservation("court4", courtTime(Timestamp(Date(2023 - 1900, 5, 14, 10, 0)), Timestamp(Date(2023 - 1900, 5, 14, 11, 0))),
-                "description for user3",-1,"",0, "pingpong"),
+                "description for user3",-1,"",0, "pingpong",listOf()),
             reservation("court3", courtTime(Timestamp(Date(2023 - 1900, 5, 1, 14, 0)), Timestamp(Date(2023 - 1900, 5, 1, 15, 0))),
-                "No specific requirement",4," the facility stands as a testament to its commitment to providing an exceptional environment for athletes and fitness enthusiasts.",0, "swimming"),
+                "No specific requirement",4," the facility stands as a testament to its commitment to providing an exceptional environment for athletes and fitness enthusiasts.",0, "swimming",listOf()),
 
             //Mark Ziegler - books a full day of running court on 15 of june
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 6, 15, 9, 0)), Timestamp(Date(2023 - 1900, 6, 15, 10, 0))),
-                "Could you please provide us some obstacles too?",-1,"",0, "running"),
+                "Could you please provide us some obstacles too?",-1,"",0, "running",listOf()),
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 6, 15, 10, 0)), Timestamp(Date(2023 - 1900, 6, 15, 11, 0))),
-                "Could you please provide us some obstacles too?",-1,"",0, "running"),
+                "Could you please provide us some obstacles too?",-1,"",0, "running",listOf()),
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 6, 15, 11, 0)), Timestamp(Date(2023 - 1900, 6, 15, 12, 0))),
-                "Could you please provide us some obstacles too?",-1,"",0, "running"),
+                "Could you please provide us some obstacles too?",-1,"",0, "running",listOf()),
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 6, 15, 12, 0)), Timestamp(Date(2023 - 1900, 6, 15, 13, 0))),
-                "Could you please provide us some obstacles too?",-1,"",0, "running"),
+                "Could you please provide us some obstacles too?",-1,"",0, "running",listOf()),
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 6, 15, 13, 0)), Timestamp(Date(2023 - 1900, 6, 15, 14, 0))),
-                "Could you please provide us some obstacles too?",-1,"",0, "running"),
+                "Could you please provide us some obstacles too?",-1,"",0, "running",listOf()),
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 6, 15, 14, 0)), Timestamp(Date(2023 - 1900, 6, 15, 15, 0))),
-                "Could you please provide us some obstacles too?",-1,"",0, "running"),
+                "Could you please provide us some obstacles too?",-1,"",0, "running",listOf()),
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 6, 15, 15, 0)), Timestamp(Date(2023 - 1900, 6, 15, 16, 0))),
-                "Could you please provide us some obstacles too?",-1,"",0, "running"),
+                "Could you please provide us some obstacles too?",-1,"",0, "running",listOf()),
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 6, 15, 16, 0)), Timestamp(Date(2023 - 1900, 6, 15, 17, 0))),
-                "Could you please provide us some obstacles too?",-1,"",0, "running"),
+                "Could you please provide us some obstacles too?",-1,"",0, "running",listOf()),
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 6, 15, 17, 0)), Timestamp(Date(2023 - 1900, 6, 15, 18, 0))),
-                "Could you please provide us some obstacles too?",-1,"",0, "running"),
+                "Could you please provide us some obstacles too?",-1,"",0, "running",listOf()),
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 6, 15, 18, 0)), Timestamp(Date(2023 - 1900, 6, 15, 19, 0))),
-                "Could you please provide us some obstacles too?",-1,"",0, "running"),
+                "Could you please provide us some obstacles too?",-1,"",0, "running",listOf()),
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 6, 15, 19, 0)), Timestamp(Date(2023 - 1900, 6, 15, 20, 0))),
-                "Could you please provide us some obstacles too?",-1,"",0, "running"),
+                "Could you please provide us some obstacles too?",-1,"",0, "running",listOf()),
 
             // Mark Ziegler
             reservation("court3", courtTime(Timestamp(Date(2023 - 1900, 6, 20, 9, 0)), Timestamp(Date(2023 - 1900, 6, 20, 10, 0))),
-                "",-1,"",0, "swimming"),
+                "",-1,"",0, "swimming",listOf()),
             reservation("court5", courtTime(Timestamp(Date(2023 - 1900, 6, 17, 15, 0)), Timestamp(Date(2023 - 1900, 6, 17, 16, 0))),
-                "",-1,"",0, "tennis"),
+                "",-1,"",0, "tennis",listOf()),
             reservation("court2", courtTime(Timestamp(Date(2023 - 1900, 6, 18, 11, 0)), Timestamp(Date(2023 - 1900, 6, 18, 12, 0))),
-                "",-1,"",0, "basketball"),
+                "",-1,"",0, "basketball",listOf()),
 
             // Elena
             reservation("court1", courtTime(Timestamp(Date(2023 - 1900, 6, 7, 11, 0)), Timestamp(Date(2023 - 1900, 6, 7, 12, 0))),
-                "",-1,"",0, "running"),
+                "",-1,"",0, "running",listOf()),
             reservation("court2", courtTime(Timestamp(Date(2023 - 1900, 6, 8, 11, 0)), Timestamp(Date(2023 - 1900, 6, 8, 12, 0))),
-                "",-1,"",0, "basketball"),
+                "",-1,"",0, "basketball",listOf()),
             reservation("court3", courtTime(Timestamp(Date(2023 - 1900, 6, 9, 11, 0)), Timestamp(Date(2023 - 1900, 6, 9, 12, 0))),
-                "",-1,"",0, "swimming"),
+                "",-1,"",0, "swimming",listOf()),
             reservation("court4", courtTime(Timestamp(Date(2023 - 1900, 6, 10, 11, 0)), Timestamp(Date(2023 - 1900, 6, 10, 12, 0))),
-                "",-1,"",0, "pingpong"),
+                "",-1,"",0, "pingpong",listOf()),
             )
 
 
