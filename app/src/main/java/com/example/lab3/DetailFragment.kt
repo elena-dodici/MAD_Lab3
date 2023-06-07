@@ -47,7 +47,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasBackButton  {
            binding.calBtn.visibility = View.GONE
             binding.saveBtn.visibility = View.GONE
             binding.btnTimePicker.visibility = View.GONE
-            binding.calBtn.visibility = View.GONE
+            binding.delBtn.visibility = View.GONE
         }
 
         binding.delBtn.setOnClickListener {
@@ -88,6 +88,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasBackButton  {
             newSelDate ->
             binding.showDate.text = newSelDate.toString()
             sharedvm.getFreeSlotByCourtName(sharedvm.selCourtName.value!!)
+            println("seldate changed!!!!${ sharedvm.freeStartTimes.value}!!!")
 
         }
 
@@ -96,6 +97,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasBackButton  {
 
         val avaTSpinner = binding.avaTimeSpinner1
         sharedvm.freeStartTimes.observe(viewLifecycleOwner) { newST ->
+            println("should be emoty !!!!!!!!!!${sharedvm.selDate.value}")
             var showList = mutableListOf<String>()
             for (i in newST){
                 var time =LocalTime.of(i.hours, i.minutes, i.seconds)

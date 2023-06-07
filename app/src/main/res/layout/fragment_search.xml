@@ -122,15 +122,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendarView"
             app:layout_constraintBottom_toTopOf="@+id/textFreeSlot"
+            android:background="@drawable/customborder"
             >
-            <TextView
-                android:id="@+id/showCN"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:gravity="right|center"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                android:text="default"/>
+<!--            <TextView-->
+<!--                android:id="@+id/showCN"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="right|center"-->
+<!--                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"-->
+<!--                android:text="default"/>-->
 
             <TextView
                 android:id="@+id/cyclerTitle"

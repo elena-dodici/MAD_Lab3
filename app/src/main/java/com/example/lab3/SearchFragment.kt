@@ -628,8 +628,11 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 numberOfFreeSlots = fc.size
                 updateAdapterForDate(date)
 //                println("courtName ${freeCourts[date]!![0].name}")
-                val CN = view?.findViewById<TextView>(R.id.showCN)
-                CN?.text=freeCourts[date]!![0].name
+//                val CN = view?.findViewById<TextView>(R.id.showCN)
+//                if (freeCourts.isNotEmpty() && freeCourts.size<1){
+//                    CN?.text=freeCourts[date]!![0].name
+//                }
+
 
             }
         }

@@ -42,6 +42,7 @@ class HistoryViewModel : ViewModel() {
                 }
                 val myres = mutableListOf<MyReservation>()
                 dataList.forEach { res -> // 遍历每一个reservation
+
                     val ct = res["ct"] as Map<*, *>
                     val starttimeStr = ct["startTime"].toString()
                     val endtimeStr = ct["endTime"].toString()
@@ -59,7 +60,9 @@ class HistoryViewModel : ViewModel() {
                     val endTime = Instant.ofEpochSecond(secondsEnd!!).atZone(zone)
 
                     if (res["status"].toString() == "0" && startTime.toLocalDate() < LocalDate.now()) {
+                        Log.d(TAG, "show reservaton ${startTime.toLocalDate()} ")
                         myres.add(
+
                             MyReservation(
                                 res["resId"].toString(),
                                 res["name"].toString(),
@@ -75,6 +78,7 @@ class HistoryViewModel : ViewModel() {
 
                 }
                 _reservations.value = myres
+                Log.d(TAG, "history reservaton ${_reservations.value!!} ")
             }
             .addOnFailureListener { exception ->
                 // 处理错误

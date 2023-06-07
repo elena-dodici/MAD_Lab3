@@ -38,12 +38,14 @@ class CourtViewModel : ViewModel( ) {
                     )
                     courtName + document.data
                 }
+
                 dataList.forEach{res-> // 遍历每一个reservation
-//                    println(res)
+                    println("rse is : ${res}")
                     tempList.add(CourtInfo(res["name"].toString(), res["avg_rating"].toString().toFloat(),res["address"].toString(),res["sport"].toString()))
                 }
 //                _reservations.value = dataList
                 _courtInfo.value = tempList
+                println("res??????????:${tempList}")
             }
             .addOnFailureListener { exception ->
                 // 处理错误

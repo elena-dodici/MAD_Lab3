@@ -118,6 +118,7 @@ class CalendarViewModel : ViewModel() {
                 val myres = mutableListOf<MyReservation>()
                 dataList.forEach{res-> // 遍历每一个reservation
 //                    println(res["name"].toString())
+
                     val ct = res["ct"] as Map<*,*>
                     val starttimeStr = ct["startTime"].toString()
                     val endtimeStr = ct["endTime"].toString()
@@ -137,7 +138,7 @@ class CalendarViewModel : ViewModel() {
                     val secondsEnd = matchResult?.groupValues?.get(1)?.toLongOrNull()
 //                    val endtimestamp = seconds?.let { Timestamp(it,0) }
                     val endTime = Instant.ofEpochSecond(secondsEnd!!).atZone(zone)
-
+                    //Log.d(TAG, "_reservations time in getallRes is : ${startTime.toLocalDate()}")
 //                    println(res["description"].toString())
                     if (res["status"].toString() == "0"){
                         myres.add(
@@ -148,7 +149,7 @@ class CalendarViewModel : ViewModel() {
                 }
                 _reservations.value = myres
 //                _reservations.value = dataList
-                Log.d(TAG, "_reservations in getallRes is : ${_reservations.value}")
+//                Log.d(TAG, "_reservations in getallRes is : ${_reservations.value}")
             }
             .addOnFailureListener { exception ->
                 // 处理错误

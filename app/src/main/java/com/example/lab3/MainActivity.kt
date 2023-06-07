@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         //vm.updateCourtTimesDates()
 
 //       initDatabase(db) // add some initial data
-       // initFirebase()
+       initFirebase()
 
 
 
@@ -114,22 +114,22 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-fun addres(){
-
-    db1.collection("users").document("uQOjAAjJV1pPkP8uAh1NHgprAEFI3").collection("reservation").document("res5").set(
-        reservation("court3", courtTime(Timestamp(Date(2023 - 1900, 5, 1, 9,0, 0)), Timestamp(Date(2023 - 1900, 5, 1, 10, 0))),
-            "no specific review",-1,"",0, "swimming"),
-    )
-    db1.collection("court").document("court3").collection("courtTime").document("2023-06-01")
-        .update("9",false)
-
-    val newreview = hashMapOf(
-        "user" to "u3",
-        "review" to "the facility stands as a testament to its commitment to providing an exceptional environment for athletes and fitness enthusiasts.",
-        "rating" to "1"
-    )
-    db1.collection("court").document("court3").set(newreview)
-}
+//fun addres(){
+//
+//    db1.collection("users").document("uQOjAAjJV1pPkP8uAh1NHgprAEFI3").collection("reservation").document("res5").set(
+//        reservation("court3", courtTime(Timestamp(Date(2023 - 1900, 5, 1, 9,0, 0)), Timestamp(Date(2023 - 1900, 5, 1, 10, 0))),
+//            "no specific review",-1,"",0, "swimming"),
+//    )
+//    db1.collection("court").document("court3").collection("courtTime").document("2023-06-01")
+//        .update("9",false)
+//
+//    val newreview = hashMapOf(
+//        "user" to "u3",
+//        "review" to "the facility stands as a testament to its commitment to providing an exceptional environment for athletes and fitness enthusiasts.",
+//        "rating" to "1"
+//    )
+//    db1.collection("court").document("court3").set(newreview)
+//}
 
     data class reservation(val name:String,val ct: courtTime,val description: String, val rating:Int, val review:String, val status:Int, val sport: String)
     data class courtTime(
