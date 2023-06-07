@@ -306,7 +306,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
             alertDialog?.show()
 
             val navController = findNavController()
-            var bundle = bundleOf("Path" to "user${vmMain.UID}/images/user${vmMain.UID}.jpg")
+            var bundle = bundleOf("Path" to image_uri.toString())
             if (u != null) {
                 vm.updateUser(this.requireActivity().application,u,vmMain.UID,alertDialog!!,navController, bundle)
             }
