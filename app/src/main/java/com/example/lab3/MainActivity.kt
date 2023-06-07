@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         //vm.updateCourtTimesDates()
 
 //       initDatabase(db) // add some initial data
-        initFirebase()
+       // initFirebase()
 
 
 
@@ -371,11 +371,11 @@ class MainActivity : AppCompatActivity() {
             .update("11",false)
         db1.collection("court").document("court1").collection("courtTime").document("2023-06-7")
             .update("11",false)
-        db1.collection("court").document("court1").collection("courtTime").document("2023-06-8")
+        db1.collection("court").document("court2").collection("courtTime").document("2023-06-8")
             .update("11",false)
-        db1.collection("court").document("court1").collection("courtTime").document("2023-06-9")
+        db1.collection("court").document("court3").collection("courtTime").document("2023-06-9")
             .update("11",false)
-        db1.collection("court").document("court1").collection("courtTime").document("2023-06-10")
+        db1.collection("court").document("court4").collection("courtTime").document("2023-06-10")
             .update("11",false)
 
 
