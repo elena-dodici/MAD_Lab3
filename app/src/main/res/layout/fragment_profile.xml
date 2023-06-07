@@ -99,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center_horizontal"
-
+                        android:background="@drawable/customborder"
                         >
                         <ImageView
                             android:id="@+id/person_icon"
@@ -132,7 +132,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:gravity="center_horizontal">
+                        android:gravity="center_horizontal"
+                        android:background="@drawable/customborder">
 
                         <ImageView
                             android:layout_width="40dp"
@@ -156,7 +157,12 @@
                         app:dividerInsetEnd="100dp"
                         android:layout_height="wrap_content"
                         android:background="@color/sep_line"/>
-
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/customborder"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -171,7 +177,12 @@
                             android:layout_marginStart="70dp"
                             android:src="@drawable/baseline_sports_gymnastics_24" />
 
-
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" My sports "
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Headline5"
+                            android:textSize="24sp"></TextView>
 
 
                     </LinearLayout>
@@ -189,7 +200,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/mySport" />
-
+                </LinearLayout>
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btE"
                         android:layout_width="250dp"
