@@ -205,7 +205,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         }
         friendButton.setOnClickListener{
             vmMain.setShowNav(false)
-            findNavController().navigate(R.id.action_profileFragment_to_historyFragment)
+            findNavController().navigate(R.id.action_profileFragment_to_contactFragment)
         }
         //登出
         logout.setOnClickListener{

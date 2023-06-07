@@ -161,6 +161,9 @@
             app:destination="@id/loginFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profileFragment_to_contactFragment"
+            app:destination="@id/contactFragment" />
     </fragment>
     <fragment
         android:id="@+id/ProfileDetailFragment"
@@ -212,10 +215,14 @@
         tools:layout="@layout/fragment_history">
         <action
             android:id="@+id/action_historyFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/profileFragment"
+            app:popUpTo="@+id/profileFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_historyFragment_to_ownRevFragment"
-            app:destination="@id/ownRevFragment" />
+            app:destination="@id/ownRevFragment"
+            app:popUpTo="@+id/ownRevFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/ownRevFragment"
@@ -227,6 +234,16 @@
             app:popUpTo="@+id/historyFragment"
             app:popUpToInclusive="true"
             app:destination="@id/historyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="com.example.lab3.ContactFragment"
+        android:label="ContactFragment" >
+        <action
+            android:id="@+id/action_contactFragment_to_profileFragment"
+            app:popUpTo="@+id/profileFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/profileFragment" />
     </fragment>
 
 </navigation>
