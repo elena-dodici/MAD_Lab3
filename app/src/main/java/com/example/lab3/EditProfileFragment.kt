@@ -106,8 +106,8 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
         _surname = arguments?.getString("surname")
         tele = arguments?.getString("phone")
         var img = view.findViewById<ImageView>(R.id.imageViewE)
-        println("this _"+profilePicturePath)
         if(!profilePicturePath.isNullOrEmpty()){
+            img.setImageURI(Uri.parse(profilePicturePath))
             Glide.with(this)
                 .load(profilePicturePath)
                 .override(img.width, img.height)
@@ -115,10 +115,6 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
         }
 
 
-//        if(profilePicturePath != "NAN" && profilePicturePath != null && hasPhotoChanged == false ) {
-//            println("LOADING PROFILE PICTURE FROM : $profilePicturePath")
-//            loadImageFromStorage(profilePicturePath,img)
-//        }
         val cancelButton = view.findViewById<Button>(R.id.btC)
         val saveButton = view.findViewById<Button>(R.id.btS)
 //        val bskbt =view.findViewById<Button>(R.id.btbasketball)
@@ -270,8 +266,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
                 vm.updateUser(this.requireActivity().application,u,vmMain.UID)
             }
 
-            var bundle = bundleOf("Path" to image_uri.toString())
-            println("this is :" +image_uri.toString())
+            var bundle = bundleOf("Path" to "user${vmMain.UID}/images/user${vmMain.UID}.jpg")
             vmMain.setShowNav(true)
 
             SportDetail.forEach{
@@ -283,7 +278,6 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
 
             DELETESportDetail.forEach{
                 if (it.value!=null){
-                    //println("test deleteSportDet: ${it.value}")
                     vm.deleteUserSport(this.requireActivity().application,it.value!!)
                 }
             }
@@ -356,7 +350,6 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
                 }
             }
 
-//            println("${sportType} 空")
         }
     }
 

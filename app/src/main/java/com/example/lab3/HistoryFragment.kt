@@ -24,20 +24,17 @@ class HistoryAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<HistoryA
         init {
             itemView.setOnClickListener { // 点击具体某个reservation时调用
                 onClick(events[bindingAdapterPosition])
-//                println(bindingAdapterPosition)
             }
         }
         fun bind(event: Event){
 //            binding.itemText.text = "${event.courtName}  ${event.sportName}  ${event.startTime}  ${event.date}"
-            binding.itemTextRank.text = ranking.toString()
-            ranking += 1
+            binding.itemTextRank.text = "${bindingAdapterPosition + 1}"
             binding.itemTextDate.text = event.date.toString()
             binding.itemTextName.text = event.courtName.toString()
         }
 
     }
     val events = mutableListOf<Event>()
-//    var ranking:Int = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         val b = ItemLayoutHistoryBinding.inflate(parent.context.layoutInflater, parent, false)
@@ -53,7 +50,6 @@ class HistoryAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<HistoryA
     }
 }
 
-var ranking: Int = 1
 class HistoryFragment : BaseFragment(R.layout.fragment_history),HasBackButton{
     private lateinit var  binding: FragmentHistoryBinding
     private val sharedvm : HistoryViewModel by activityViewModels()
@@ -82,9 +78,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),HasBackButton{
 
         sharedvm.getHistoryResbyUser(vmMain.UID)
         sharedvm.reservations.observe(this){
-            // 从viewmodel获取数据（viewmodel从数据库拿到数据）
             events.clear()
-            ranking = 1
             for (res in it){
                 events.add( Event(UUID.randomUUID().toString(), res.resId, res.name, res.sport,res.startTime, res.date))
             }
@@ -97,26 +91,16 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),HasBackButton{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ranking = 1
         binding = FragmentHistoryBinding.bind(view)
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
-
-//        binding.calBtn.setOnClickListener {
-//            findNavController().navigate(R.id.action_historyFragment_to_profileFragment)
-//            vmMain.setShowNav(true)
-//        }
-
-
-
 
     }
     private fun updateAdapter() {
         adapter.apply {
             events.clear()
             events.addAll(this@HistoryFragment.events)
-//            println("2 $courtInfoList")
             notifyDataSetChanged() // 通知adapter发生变化，调用bind方法
         }
     }

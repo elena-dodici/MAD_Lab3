@@ -126,6 +126,7 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
 //        loadImageFromStorage(profilePicturePath)
         val editButton = view.findViewById<Button>(R.id.btE)
         val historyButton = view.findViewById<Button>(R.id.btHis)
+        val friendButton = view.findViewById<Button>(R.id.btFriends)
         val fullName = view.findViewById<TextView>(R.id.tv_name)
         val tel = view.findViewById<TextView>(R.id.tv_phone)
         val photoView = view.findViewById<ImageView>(R.id.TOP)
@@ -154,30 +155,24 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
             tel.setText(tele)
             if(!it.photo.isNullOrEmpty())
             {  vm.readPhoto(this.requireActivity().application, it.photo!!) }
-
         }
 
-
         //读取头像URI加载到imageview
-        Glide.get(this.requireContext()).clearMemory()
+        vm.photoUri.observe(viewLifecycleOwner) {
+            path=it
+            Glide.with(this)
+                .load(it)
+                .into(photoView)
+        }
         val p  = arguments?.getString("Path")
-        println("no1 path is " +p)
-        if (!p.isNullOrEmpty()&&p!="null") {
-            println("path is "+ p)
-                path=p
-                Glide.with(this)
-                    .load(p)
-                    .into(photoView)
-
-        }else {
+        if (!p.isNullOrEmpty()) {
+            vm.readPhoto(this.requireActivity().application, p)
             vm.photoUri.observe(viewLifecycleOwner) {
-                path = it
                 Glide.with(this)
                     .load(it)
                     .into(photoView)
             }
         }
-
 //        println(vmMain.user)
 //        spinnerUser.setSelection(vmMain.user-1)
 //        spinnerUser.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -207,6 +202,10 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         historyButton.setOnClickListener{
             vmMain.setShowNav(false)
             findNavController().navigate(R.id.action_profileFragment_to_historyFragment)
+        }
+        friendButton.setOnClickListener{
+            vmMain.setShowNav(false)
+            findNavController().navigate(R.id.action_profileFragment_to_contactFragment)
         }
         //登出
         logout.setOnClickListener{

@@ -34,7 +34,7 @@ class MainViewModel: ViewModel() {
             val formattedCurrentDatePlus30: String = currentDayPlus30.format(formatter)
             if(formattedCurrentDatePlus30 == lastDay){
                 // DO NOTHING
-                println("The last day is equal to the actual day + 30 - no updated necessary")
+//                println("The last day is equal to the actual day + 30 - no updated necessary")
             } else {
                 // ADD DAYS
                 val lDofLastDay: LocalDate = LocalDate.parse(lastDay, formatter)
@@ -42,18 +42,16 @@ class MainViewModel: ViewModel() {
                 var updatedLastDayString: String = lDofLastDay.toString()
 
                 while(updatedLastDayString != formattedCurrentDatePlus30){
-//                println("adding days....")
                     updatedLastDayLD = updatedLastDayLD.plusDays(1)
                     updatedLastDayString = updatedLastDayLD.toString()
                     for(i in listOf<Int>(1,2,3,4,5)){
-//                        println(i)
                         repo.addDayInDatabase(updatedLastDayString,"court${i}")
                     }
             }
-                println("ldOfLastDay : ${lDofLastDay}")
-                println("updatedLast day : ${updatedLastDayString}")
-                println("Last Available day is : ${lastDay}")
-                println("LAST DAY + 30 : ${formattedCurrentDatePlus30}")
+//                println("ldOfLastDay : ${lDofLastDay}")
+//                println("updatedLast day : ${updatedLastDayString}")
+//                println("Last Available day is : ${lastDay}")
+//                println("LAST DAY + 30 : ${formattedCurrentDatePlus30}")
             }
 
         }
@@ -71,7 +69,6 @@ class MainViewModel: ViewModel() {
                     // Sign in success, update UI with the signed-in user's information
                     if(auth.currentUser!!.isEmailVerified){
                         UID = auth.currentUser!!.uid
-                        println("UID --"+ UID)
                         callback.onLoginSuccess(UID)
                     }else{
                         callback.onLoginFailure()

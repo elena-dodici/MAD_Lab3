@@ -43,13 +43,9 @@ class MainFragment : BaseFragment(R.layout.fragment_main), HasToolbar {
 
         binding.editTextEmail.editText?.doOnTextChanged { inputText, _, _, _ ->
             // Respond to input text change
-            println("change activate: ${inputText}")
         }
 
         binding.buttonSave.setOnClickListener {
-            println("I got inputEmail!: ${emailText.text}")
-            println("I got input password!: ${passwordText.text}")
-
 
             when{
                 emailText.text.toString().isNullOrEmpty() -> {

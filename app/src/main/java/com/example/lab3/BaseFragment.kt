@@ -37,6 +37,9 @@ abstract class BaseFragment(@LayoutRes layoutRes: Int) : Fragment(layoutRes) {
         }
 
 
+
+
+
     }
 
     override fun onStop() {

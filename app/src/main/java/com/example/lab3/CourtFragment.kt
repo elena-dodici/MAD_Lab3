@@ -27,11 +27,12 @@ class ScoreAdapter(val onTap:(CourtInfo)->Unit):RecyclerView.Adapter<ScoreAdapte
             }
         }
         fun bind(courtInfo:CourtInfo){
-            val currentPosition = bindingAdapterPosition + 1 // 获取当前项的位置
-            binding.itemTextRank.text = currentPosition.toString()
+            binding.itemTextRank.text = "${bindingAdapterPosition + 1}"
+//            ranking1+=1
             binding.itemTextCourt.text = courtInfo.courtname
             courtInfo.avg_rating = ((courtInfo.avg_rating *100.0).roundToInt() / 100.0).toFloat()
             binding.itemTextScore.text =  courtInfo.avg_rating.toString()
+
             binding.itemTextSport.text = courtInfo.sport
 
 
@@ -52,7 +53,7 @@ class ScoreAdapter(val onTap:(CourtInfo)->Unit):RecyclerView.Adapter<ScoreAdapte
         holder.bind(courtInfoList[position])
     }
 }
-var ranking1:Int = 1
+//var ranking1:Int = 1
 class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
     companion object {
         fun newInstance() = CourtFragment()
@@ -65,7 +66,6 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
     private val mainVm: MainViewModel by activityViewModels()
     private val courtInfoList = mutableListOf<CourtInfo>()
     val adapter = ScoreAdapter{
-//       println("click: ${it} ")
         //avg_rating: 0-xxx
         gotoCourtDetailFrag(it.courtname, it.avg_rating)
     }
@@ -77,11 +77,11 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ranking1 = 1
-
+//        ranking1 = 1
         sharedvm.getCourtInfo(this.requireActivity().application)
         sharedvm.courtInfo.observe(this){
             courtInfoList.clear();
+
             for (res in it){
                 courtInfoList.add(res)
             }
@@ -94,11 +94,17 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ranking1 = 1
+//        ranking1 = 1
         binding = FragmentCourtBinding.bind(view)
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL,false)
+//        updateAdapter()
+
+//        binding.calBtn.setOnClickListener {
+//            gobackCal("Back to previous page")
+//        }
+
     }
 
 
@@ -106,7 +112,6 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
         adapter.apply {
             courtInfoList.clear()
             courtInfoList.addAll(this@CourtFragment.courtInfoList)
-            println("2 $courtInfoList")
             notifyDataSetChanged() // 通知adapter发生变化，调用bind方法
         }
     }

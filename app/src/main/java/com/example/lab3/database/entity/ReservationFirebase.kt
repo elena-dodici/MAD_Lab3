@@ -11,4 +11,5 @@ data class ReservationFirebase(
     val status : Int ,// 0 normal , 1 canceled
     val review : String,
     val rating : Int,
+    val invitedUsers : List<String>
 )

@@ -132,7 +132,8 @@ class AddReservationRepository {
                     "rating" to reservation.rating,
                     "review" to reservation.review,
                     "sport" to reservation.sport,
-                    "status" to reservation.status
+                    "status" to reservation.status,
+                    "invitedUsers" to reservation.invitedUsers
                 )
 
                 transaction.set(

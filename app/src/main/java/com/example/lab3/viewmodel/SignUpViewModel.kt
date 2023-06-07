@@ -30,7 +30,6 @@ class SignUpViewModel : ViewModel() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    println("success")
                     val user = auth.currentUser
                     uid= auth.currentUser!!.uid
                     if (user != null) {
@@ -44,7 +43,6 @@ class SignUpViewModel : ViewModel() {
                                         "tel" to tel)
                                     db1.collection("users").document("u${uid}").set(u)
                                         .addOnSuccessListener {
-                                            println("addsuccess")
                                             _operationResult.value = true
                                         }
                                         .addOnFailureListener { exception ->
@@ -66,23 +64,7 @@ class SignUpViewModel : ViewModel() {
                 }
             }
 
-
     }
-//    fun newUser(application: Application, name:String,surname:String,tel:String,email: String){
-//        val u = hashMapOf(
-//            "name" to name,
-//            "photo" to "",
-//            "surname" to surname,
-//            "tel" to tel)
-//        db1.collection("users").document("u${uid}").set(u)
-//            .addOnSuccessListener {
-//                println("addsuccess")
-//            }
-//            .addOnFailureListener { exception ->
-//                println("add failed: ${exception.message}")
-//            }
-//
-//    }
 
 
 }

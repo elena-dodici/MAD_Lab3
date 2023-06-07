@@ -38,8 +38,8 @@ class CourtViewModel : ViewModel( ) {
                     )
                     courtName + document.data
                 }
+
                 dataList.forEach{res-> // 遍历每一个reservation
-//                    println(res)
                     tempList.add(CourtInfo(res["name"].toString(), res["avg_rating"].toString().toFloat(),res["address"].toString(),res["sport"].toString()))
                 }
 //                _reservations.value = dataList
@@ -51,8 +51,6 @@ class CourtViewModel : ViewModel( ) {
                 _courtInfo.value = null
             }
 
-
-      // println(_courtInfo.value)
 
     }
 
@@ -106,8 +104,6 @@ class CourtViewModel : ViewModel( ) {
                                 reviewList.forEach { r->
 
                                     val mapItem = r as Map<String, Any?>
-//                                   println("this is rating ${mapItem["rating"]}")
-//                                    println("this is review ${mapItem["review"]}")
                                     revList.add(courtsReviews(mapItem["rating"].toString().toInt(),mapItem["review"].toString()))
                                 }
                                 _courtReviews.value = revList
@@ -123,24 +119,5 @@ class CourtViewModel : ViewModel( ) {
             }
         }
 
-
-
-//        fun deleteCourtRev() {
-//            println(selectedCourtInfo.value)
-//            db1.collection("court").document()
-//                .delete()
-//                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully deleted!") }
-//                .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
-//            //AppDatabase.getDatabase(application).courtReviewDao().deleteCourtReview( _selectedCourtRev.value!!)
-//        }
-
-//    fun addOrUpdateCourtRev(newRate:Int, newReview:String, application: Application,user: Int){
-//
-//        var newCR = CourtReview(user,_courtId.value!!,newRate,newReview)
-//        println(newCR)
-//        newCR.crId =  _selectedCourtRev.value!!.crId
-//        println( newCR.crId)
-//       AppDatabase.getDatabase(application).courtReviewDao().addCourtReview(newCR)
-//    }
     }
 }
