@@ -7,13 +7,11 @@
     android:layout_marginTop="20dp"
     android:layout_marginVertical="8dp"
     >
-    <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="@color/sep_line" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginStart="20dp"
         >
 
 
@@ -23,8 +21,9 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:text="user1"
-            android:layout_weight="3"
-            android:textAlignment="center"
+            android:layout_weight="2"
+            android:textAlignment="textStart"
+
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
         <TextView
             android:id="@+id/item_text_status"
@@ -33,7 +32,17 @@
             android:textColor="@color/black"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:text="invite"
-            android:layout_weight="3"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            />
+        <TextView
+            android:id="@+id/item_text_rej"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:text="reject"
+            android:layout_weight="1"
             android:textAlignment="center"
             />
 

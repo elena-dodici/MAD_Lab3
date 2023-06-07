@@ -23,11 +23,9 @@ class ContactAdapter(val onClick: (Contact)-> Unit): RecyclerView.Adapter<Contac
             }
         }
         fun bind(contact: Contact){
-            println("bind")
             binding.itemTextName.text = contact.name
-            binding.itemTextStatus.text = contact.status.toString()
-//            binding.title.text = "${event.courtName}  ${event.sportName} "
-//            binding.content.text =  "${event.startTime}  ${event.date}"
+            binding.itemTextStatus.text = "" // 不显示status
+            binding.itemTextRej.text = ""
         }
 
     }
@@ -52,7 +50,7 @@ class ContactFragment:BaseFragment(R.layout.fragment_contact),HasBackButton {
 
     override val titleRes: Int = R.string.contact
     companion object {
-        fun newInstance() = Calendar()
+        fun newInstance() = ContactFragment()
     }
     private lateinit var binding:FragmentContactBinding
     private val contacts = mutableListOf<Contact>()

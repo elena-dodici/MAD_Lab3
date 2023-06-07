@@ -74,7 +74,14 @@
 
         <action
             android:id="@+id/action_detailFragment_to_timePickerFragment"
-            app:destination="@id/timePickerFragment" />
+            app:destination="@id/timePickerFragment"/>
+        <action
+            android:id="@+id/action_detailFragment_to_invitationFragment"
+            app:destination="@id/invitationFragment"
+            app:popUpTo="@+id/invitationFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/timePickerFragment"
@@ -163,7 +170,10 @@
             app:exitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_profileFragment_to_contactFragment"
-            app:destination="@id/contactFragment" />
+            app:destination="@id/contactFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            />
     </fragment>
     <fragment
         android:id="@+id/ProfileDetailFragment"
@@ -243,7 +253,23 @@
             android:id="@+id/action_contactFragment_to_profileFragment"
             app:popUpTo="@+id/profileFragment"
             app:popUpToInclusive="true"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/profileFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/invitationFragment"
+        android:name="com.example.lab3.invitationFragment"
+        android:label="invitationFragment" >
+        <action
+            android:id="@+id/action_invitationFragment_to_detailFragment"
+            app:destination="@id/detailFragment"
+            app:popUpTo="@+id/detailFragment"
+            app:popUpToInclusive="true"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            />
     </fragment>
 
 </navigation>
