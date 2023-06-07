@@ -14,18 +14,50 @@ import com.example.lab3.databinding.ItemLayoutContactBinding
 import com.example.lab3.viewmodel.ContactViewModel
 
 data class Contact(val uid :String, val name:String, val status:Int)
-class ContactAdapter(val onClick: (Contact)-> Unit): RecyclerView.Adapter<ContactAdapter.ContactViewHolder>(){
+class ContactAdapter(val onClickStatus:(Contact, String)->Unit, val onClickRej:(Contact)->Unit): RecyclerView.Adapter<ContactAdapter.ContactViewHolder>(){
     inner class ContactViewHolder(private val binding: ItemLayoutContactBinding): RecyclerView.ViewHolder(binding.root){
         init {
-            itemView.setOnClickListener { // 点击具体某个reservation时调用
-                onClick(contacts[bindingAdapterPosition])
-//                println(bindingAdapterPosition)
+            binding.itemTextStatus.setOnClickListener {
+                onClickStatus(contacts[bindingAdapterPosition],binding.itemTextStatus.text as String)
+//                if (binding.itemTextStatus.text == "0"){
+//                    binding.itemTextStatus.text = "1"
+//                }
+            }
+            binding.itemTextRej.setOnClickListener {
+                if (binding.itemTextRej.text != ""){
+//                    println("点击Reject")
+                    onClickRej(contacts[bindingAdapterPosition])
+                }
             }
         }
         fun bind(contact: Contact){
             binding.itemTextName.text = contact.name
             binding.itemTextStatus.text = "" // 不显示status
             binding.itemTextRej.text = ""
+            when(contact.status.toString().toInt()){
+                contactStatus.NORMAL.value->{     // 正常
+                    binding.itemTextStatus.text = ""
+                }
+                contactStatus.INVITE.value->{     // 邀请
+                    binding.itemTextStatus.text = "Waiting"
+                }
+                contactStatus.INVITED.value->{    // 被邀请
+                    binding.itemTextStatus.text = "ACC"
+                    binding.itemTextRej.text = "REJ"
+                }
+                contactStatus.ACCEPTED.value->{  // 被同意
+                    binding.itemTextStatus.text = "V"
+                }
+                contactStatus.REJECTED.value->{  // 被拒绝
+                    binding.itemTextStatus.text = "Rejected"
+                }
+                contactStatus.ACCEPT.value->{    // 同意邀请
+                    binding.itemTextStatus.text = "V"
+                }
+                contactStatus.REJECT.value->{    // 拒绝邀请
+                    binding.itemTextStatus.text = "Reject"
+                }
+            }
         }
 
     }
@@ -54,9 +86,35 @@ class ContactFragment:BaseFragment(R.layout.fragment_contact),HasBackButton {
     }
     private lateinit var binding:FragmentContactBinding
     private val contacts = mutableListOf<Contact>()
-    val adapter = ContactAdapter{
 
-    }
+    val adapter = ContactAdapter(
+        onClickStatus = {contact, status->
+//            println(contact.uid)
+            when(status){
+                "Invite"->{
+                    println("邀请${contact.name}")
+                    sharedvm.setInvite(vmMain.UID, contact.uid)
+                    updateAdapter()
+                }
+//                "Waiting"->{
+//                    println("等待${contact.name}")
+//                }
+                "ACC"->{
+                    println("接受${contact.name}")
+                    sharedvm.acc(vmMain.UID, contact.uid)
+                    updateAdapter()
+
+                    // 给接受的用户添加reservation
+                }
+            }
+        },
+        onClickRej = {
+            println("拒绝${it.name}")
+            sharedvm.setRej(vmMain.UID,it.uid)
+            updateAdapter()
+
+        }
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

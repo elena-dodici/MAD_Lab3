@@ -62,13 +62,13 @@ class InvitationAdapter(val onClickStatus:(Contact, String)->Unit, val onClickRe
                     binding.itemTextStatus.text = "V"
                 }
                 contactStatus.REJECTED.value->{  // 被拒绝
-                    binding.itemTextStatus.text = "Invite"
+                    binding.itemTextStatus.text = "Rejected"
                 }
                 contactStatus.ACCEPT.value->{    // 同意邀请
                     binding.itemTextStatus.text = "V"
                 }
                 contactStatus.REJECT.value->{    // 拒绝邀请
-                    binding.itemTextStatus.text = "Invite"
+                    binding.itemTextStatus.text = "Reject"
                 }
             }
         }
@@ -101,11 +101,29 @@ class invitationFragment:BaseFragment(R.layout.fragment_invitation),HasBackButto
     private val contacts = mutableListOf<Contact>()
     val adapter = InvitationAdapter(
         onClickStatus = {contact, status->
-            println("status")
-            println(contact.uid)
+//            println(contact.uid)
+            when(status){
+                "Invite"->{
+                    println("邀请${contact.name}")
+                    sharedvm.setInvite(vmMain.UID, contact.uid)
+                    updateAdapter()
+
+                }
+//                "Waiting"->{
+//                    println("等待${contact.name}")
+//                }
+                "ACC"->{
+                    println("接受${contact.name}")
+                    sharedvm.acc(vmMain.UID, contact.uid)
+                    updateAdapter()
+
+                }
+            }
         },
         onClickRej = {
-            println("rej")
+            println("拒绝${it.name}")
+            sharedvm.setRej(vmMain.UID,it.uid)
+            updateAdapter()
 
         }
     )

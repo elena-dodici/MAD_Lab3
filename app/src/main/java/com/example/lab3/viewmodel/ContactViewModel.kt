@@ -47,4 +47,59 @@ class ContactViewModel: ViewModel() {
 //        _reservations.value = db.reservationDao().getReservationByUserId(userid)
 //        getCourts(application)
     }
+    fun setInvite(uuid:String, friendUID:String){
+        val updateU = hashMapOf<String, Any>(
+            "status" to "1"
+        )
+        val updateFriend = hashMapOf<String, Any>(
+            "status" to "-1"
+        )
+        db1.collection("users").document("u$uuid").collection("contact").document("$friendUID")
+            .update(updateU).addOnSuccessListener {        }
+            .addOnFailureListener { exception ->
+                println("Error getting documents: ${exception.message}")
+            }
+        db1.collection("users").document("u$friendUID").collection("contact").document("$uuid")
+            .update(updateFriend).addOnSuccessListener {        }
+            .addOnFailureListener { exception ->
+                println("Error getting documents: ${exception.message}")
+            }
+    }
+    fun setRej(uuid:String, friendUID:String){
+        val updateU = hashMapOf<String, Any>(
+            "status" to "3"
+        )
+        val updateFriend = hashMapOf<String, Any>(
+            "status" to "-3"
+        )
+        db1.collection("users").document("u$uuid").collection("contact").document("$friendUID")
+            .update(updateU).addOnSuccessListener {        }
+            .addOnFailureListener { exception ->
+                println("Error getting documents: ${exception.message}")
+            }
+        db1.collection("users").document("u$friendUID").collection("contact").document("$uuid")
+            .update(updateFriend).addOnSuccessListener {        }
+            .addOnFailureListener { exception ->
+                println("Error getting documents: ${exception.message}")
+            }
+    }
+    fun acc(uuid:String, friendUID:String){
+        val updateU = hashMapOf<String, Any>(
+            "status" to "2"
+        )
+        val updateFriend = hashMapOf<String, Any>(
+            "status" to "-2"
+        )
+        db1.collection("users").document("u$uuid").collection("contact").document("$friendUID")
+            .update(updateU).addOnSuccessListener {        }
+            .addOnFailureListener { exception ->
+                println("Error getting documents: ${exception.message}")
+            }
+        db1.collection("users").document("u$friendUID").collection("contact").document("$uuid")
+            .update(updateFriend).addOnSuccessListener {        }
+            .addOnFailureListener { exception ->
+                println("Error getting documents: ${exception.message}")
+            }
+    }
+
 }
