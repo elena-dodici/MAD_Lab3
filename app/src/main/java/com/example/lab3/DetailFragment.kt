@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.lab3.databinding.FragmentDetailBinding
 import java.time.*
+import java.time.format.DateTimeFormatter
 
 
 /**
@@ -33,6 +34,21 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasBackButton  {
 //        val fragmentBinding = FragmentDetailBinding.inflate(inflater, container, false)
 //        binding = fragmentBinding
         binding = FragmentDetailBinding.bind(view, savedInstanceState)
+
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val currentDateString : String = LocalDate.now().format(formatter)
+        val selectedDateString : String = sharedvm.selDate.value!!.format(formatter)
+        val cDld : LocalDate = LocalDate.parse(currentDateString,formatter)
+        val sDld : LocalDate = LocalDate.parse(selectedDateString,formatter)
+        println("CDLD : ${cDld}")
+        println("SDLD : ${sDld}")
+
+        if (sDld.isBefore(cDld)){
+           binding.calBtn.visibility = View.GONE
+            binding.saveBtn.visibility = View.GONE
+            binding.btnTimePicker.visibility = View.GONE
+            binding.calBtn.visibility = View.GONE
+        }
 
         binding.delBtn.setOnClickListener {
 

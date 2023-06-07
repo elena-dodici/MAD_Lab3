@@ -3,6 +3,7 @@ package com.example.lab3
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
@@ -51,9 +52,30 @@ class MainActivity : AppCompatActivity() {
         bottonNavigationView.uncheckAllItems()
         setupWithNavController(bottonNavigationView, navController)
         setSupportActionBar(binding.activityToolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        binding.activityToolbar.setOnMenuItemClickListener {menuItem ->
+            when(menuItem.itemId){
+                R.id.Logout->{
+                    Toast.makeText(this, "logout clicked",Toast.LENGTH_SHORT).show()
+                    true
+                }
+                R.id.message->{
+                    Toast.makeText(this, "messgae clicked",Toast.LENGTH_SHORT).show()
+                true
+                }
+
+                R.id.profile->{
+                    Toast.makeText(this, "profile clicked",Toast.LENGTH_SHORT).show()
+                    true
+
+            }
+                else->{
+                false}
+            }
 
 
+        }
 
         vm.showNav.observe(this){
                 show ->
@@ -65,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         db = AppDatabase.getDatabase(application)
-
+        //addres()
         //vm.updateCourtTimesDates()
 
 //       initDatabase(db) // add some initial data
@@ -92,6 +114,22 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+fun addres(){
+
+    db1.collection("users").document("uQOjAAjJV1pPkP8uAh1NHgprAEFI3").collection("reservation").document("res5").set(
+        reservation("court3", courtTime(Timestamp(Date(2023 - 1900, 5, 1, 9,0, 0)), Timestamp(Date(2023 - 1900, 5, 1, 10, 0))),
+            "no specific review",-1,"",0, "swimming"),
+    )
+    db1.collection("court").document("court3").collection("courtTime").document("2023-06-01")
+        .update("9",false)
+
+    val newreview = hashMapOf(
+        "user" to "u3",
+        "review" to "the facility stands as a testament to its commitment to providing an exceptional environment for athletes and fitness enthusiasts.",
+        "rating" to "1"
+    )
+    db1.collection("court").document("court3").set(newreview)
+}
 
     data class reservation(val name:String,val ct: courtTime,val description: String, val rating:Int, val review:String, val status:Int, val sport: String)
     data class courtTime(

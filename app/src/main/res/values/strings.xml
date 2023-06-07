@@ -20,7 +20,7 @@
     <string name="phone">+39 173458888</string>
     <string name="job">Full stack Developer</string>
 
-
+<string name = "review_hint">Oops! It seems you haven\'t left your review yet. Please share your experience !</string>
     <string name="new_user">New User</string>
 
     <string name="text_email">Email</string>

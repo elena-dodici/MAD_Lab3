@@ -33,22 +33,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
-        <Button
-            android:id="@+id/Logout"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTint="@color/button_color"
-            android:gravity="left"
-            android:text="Log out"
-            android:textColor="@color/button_color"
-            android:textSize="13dp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/View"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
 
-            />
 
 
         <LinearLayout
@@ -183,7 +168,7 @@
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_gravity="start"
-                            android:layout_marginStart="30dp"
+                            android:layout_marginStart="70dp"
                             android:src="@drawable/baseline_sports_gymnastics_24" />
 
 
@@ -229,6 +214,20 @@
                         android:drawableEnd="@drawable/baseline_keyboard_double_arrow_right_24"
                         android:textColor="@color/button_color"
                         android:drawableTint="@color/button_color"
+                        />
+
+                    <Button
+                        android:id="@+id/Logout"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableTint="@color/button_color"
+                        android:layout_gravity="center"
+                        android:text="Log out"
+                        android:textColor="@color/button_color"
+                        android:textSize="13dp"
+                        android:textStyle="bold"
+
                         />
 
                 </LinearLayout>

@@ -99,7 +99,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_weight="1"
+                android:layout_weight="0.8"
                 android:gravity="fill"
                 android:text="Free Slot"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
