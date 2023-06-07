@@ -29,7 +29,7 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasBackButton  {
 
 //        val fragmentBinding = FragmentDetailBinding.inflate(inflater, container, false)
 //        binding = fragmentBinding
-        binding = FragmentDetailBinding.bind(view, savedInstanceState)
+        binding = FragmentDetailBinding.bind(view)
 
         binding.delBtn.setOnClickListener {
 

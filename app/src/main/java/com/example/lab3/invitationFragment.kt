@@ -20,7 +20,7 @@ enum class contactStatus(val value:Int){
     ACCEPT(-2), // 同意邀请
     REJECT(-3)  // 拒绝邀请
 }
-class InvitationAdapter(val onClickStatus:(Contact, String)->Unit, val onClickRej:(Contact)->Unit): RecyclerView.Adapter<InvitationAdapter.MyViewHolder>(){
+class InvitationAdapter(val onClickStatus:(Contact, String)->Unit): RecyclerView.Adapter<InvitationAdapter.MyViewHolder>(){
     inner class MyViewHolder(private val binding: ItemLayoutContactBinding): RecyclerView.ViewHolder(binding.root){
         init {
 //            itemView.setOnClickListener { // 点击具体某个reservation时调用
@@ -29,19 +29,21 @@ class InvitationAdapter(val onClickStatus:(Contact, String)->Unit, val onClickRe
 //            }
             binding.itemTextStatus.setOnClickListener {
                 onClickStatus(contacts[bindingAdapterPosition],binding.itemTextStatus.text as String)
-//                if (binding.itemTextStatus.text == "0"){
-//                    binding.itemTextStatus.text = "1"
-//                }
-            }
-            binding.itemTextRej.setOnClickListener {
-                if (binding.itemTextRej.text != ""){
-//                    println("点击Reject")
-                    onClickRej(contacts[bindingAdapterPosition])
+                if (binding.itemTextStatus.text == "Invite"){
+                    binding.itemTextStatus.text = "Waiting"
+                    binding.itemTextRej.text = ""
                 }
+
             }
+//            binding.itemTextRej.setOnClickListener {
+//                if (binding.itemTextRej.text != ""){
+////                    println("点击Reject")
+//                    onClickRej(contacts[bindingAdapterPosition])
+//                }
+//            }
         }
         fun bind(contact: Contact){
-//            println("bind")
+            println("bind")
             binding.itemTextName.text = contact.name
             binding.itemTextStatus.text = ""
             binding.itemTextRej.text = ""
@@ -106,26 +108,25 @@ class invitationFragment:BaseFragment(R.layout.fragment_invitation),HasBackButto
                 "Invite"->{
                     println("邀请${contact.name}")
                     sharedvm.setInvite(vmMain.UID, contact.uid)
-                    updateAdapter()
+//                    updateAdapter()
 
                 }
 //                "Waiting"->{
 //                    println("等待${contact.name}")
 //                }
-                "ACC"->{
-                    println("接受${contact.name}")
-                    sharedvm.acc(vmMain.UID, contact.uid)
-                    updateAdapter()
-
-                }
+//                "ACC"->{
+//                    println("接受${contact.name}")
+//                    sharedvm.acc(vmMain.UID, contact.uid)
+//                    updateAdapter()
+//                }
             }
         },
-        onClickRej = {
-            println("拒绝${it.name}")
-            sharedvm.setRej(vmMain.UID,it.uid)
-            updateAdapter()
+//        onClickRej = {
+//            println("拒绝${it.name}")
+//            sharedvm.setRej(vmMain.UID,it.uid)
+//            updateAdapter()
 
-        }
+//        }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

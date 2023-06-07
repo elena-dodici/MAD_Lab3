@@ -47,6 +47,34 @@ class ContactViewModel: ViewModel() {
 //        _reservations.value = db.reservationDao().getReservationByUserId(userid)
 //        getCourts(application)
     }
+    fun getAllContactForRes(uuid:String){
+        db1.collection("users").document("u$uuid").collection("contact").get()
+
+            .addOnSuccessListener { result ->
+                val dataList = result.map { document ->
+                    val mapId = mapOf(
+                        "uid" to document.id,
+                    )
+                    mapId + document.data
+                }
+                val myContact = mutableListOf<Contact>()
+                dataList.forEach{res-> // 遍历每一个contact
+                    myContact.add(
+                        Contact(res["uid"].toString() ,res["name"].toString(), res["status"].toString().toInt())
+                    )
+                }
+                _contacts.value = myContact
+//                _reservations.value = dataList
+                Log.d(TAG, "_contact in getAllContact is : ${_contacts.value}")
+            }
+            .addOnFailureListener { exception ->
+                // 处理错误
+                println("Error getting documents: ${exception.message}")
+                _contacts.value = listOf()
+            }
+//        _reservations.value = db.reservationDao().getReservationByUserId(userid)
+//        getCourts(application)
+    }
     fun setInvite(uuid:String, friendUID:String){
         val updateU = hashMapOf<String, Any>(
             "status" to "1"
@@ -59,7 +87,7 @@ class ContactViewModel: ViewModel() {
             .addOnFailureListener { exception ->
                 println("Error getting documents: ${exception.message}")
             }
-        db1.collection("users").document("u$friendUID").collection("contact").document("$uuid")
+        db1.collection("users").document("$friendUID").collection("contact").document("u$uuid")
             .update(updateFriend).addOnSuccessListener {        }
             .addOnFailureListener { exception ->
                 println("Error getting documents: ${exception.message}")
@@ -77,7 +105,7 @@ class ContactViewModel: ViewModel() {
             .addOnFailureListener { exception ->
                 println("Error getting documents: ${exception.message}")
             }
-        db1.collection("users").document("u$friendUID").collection("contact").document("$uuid")
+        db1.collection("users").document("$friendUID").collection("contact").document("u$uuid")
             .update(updateFriend).addOnSuccessListener {        }
             .addOnFailureListener { exception ->
                 println("Error getting documents: ${exception.message}")
@@ -95,7 +123,7 @@ class ContactViewModel: ViewModel() {
             .addOnFailureListener { exception ->
                 println("Error getting documents: ${exception.message}")
             }
-        db1.collection("users").document("u$friendUID").collection("contact").document("$uuid")
+        db1.collection("users").document("$friendUID").collection("contact").document("u$uuid")
             .update(updateFriend).addOnSuccessListener {        }
             .addOnFailureListener { exception ->
                 println("Error getting documents: ${exception.message}")

@@ -19,14 +19,17 @@ class ContactAdapter(val onClickStatus:(Contact, String)->Unit, val onClickRej:(
         init {
             binding.itemTextStatus.setOnClickListener {
                 onClickStatus(contacts[bindingAdapterPosition],binding.itemTextStatus.text as String)
-//                if (binding.itemTextStatus.text == "0"){
-//                    binding.itemTextStatus.text = "1"
-//                }
+                if (binding.itemTextStatus.text == "ACC"){
+                    binding.itemTextStatus.text = "accept"
+                    binding.itemTextRej.text = ""
+                }
             }
             binding.itemTextRej.setOnClickListener {
-                if (binding.itemTextRej.text != ""){
+                if (binding.itemTextRej.text == "REJ"){
 //                    println("点击Reject")
                     onClickRej(contacts[bindingAdapterPosition])
+                    binding.itemTextStatus.text = "Reject"
+                    binding.itemTextRej.text = ""
                 }
             }
         }
@@ -91,18 +94,18 @@ class ContactFragment:BaseFragment(R.layout.fragment_contact),HasBackButton {
         onClickStatus = {contact, status->
 //            println(contact.uid)
             when(status){
-                "Invite"->{
-                    println("邀请${contact.name}")
-                    sharedvm.setInvite(vmMain.UID, contact.uid)
-                    updateAdapter()
-                }
+//                "Invite"->{
+//                    println("邀请${contact.name}")
+//                    sharedvm.setInvite(vmMain.UID, contact.uid)
+//                    updateAdapter()
+//                }
 //                "Waiting"->{
 //                    println("等待${contact.name}")
 //                }
                 "ACC"->{
                     println("接受${contact.name}")
                     sharedvm.acc(vmMain.UID, contact.uid)
-                    updateAdapter()
+//                    updateAdapter()
 
                     // 给接受的用户添加reservation
                 }
@@ -111,7 +114,7 @@ class ContactFragment:BaseFragment(R.layout.fragment_contact),HasBackButton {
         onClickRej = {
             println("拒绝${it.name}")
             sharedvm.setRej(vmMain.UID,it.uid)
-            updateAdapter()
+//            updateAdapter()
 
         }
     )
