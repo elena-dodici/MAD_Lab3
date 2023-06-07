@@ -298,7 +298,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
                     if (progress <= 100) {
                         progressBar.progress = progress
                         progress += 10 // Increase the progress value as desired
-                        handler.postDelayed(this, 1000) // Set the time interval for each increment
+                        handler.postDelayed(this, 500) // Set the time interval for each increment
                     }
                 }
             }

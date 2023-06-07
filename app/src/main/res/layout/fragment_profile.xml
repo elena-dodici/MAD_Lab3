@@ -35,7 +35,6 @@
         >
 
 
-
         <LinearLayout
             android:id="@+id/View"
             android:layout_width="match_parent"
@@ -43,8 +42,6 @@
             android:layout_marginHorizontal="8dp"
             android:layout_weight="2"
             android:orientation="vertical">
-
-
 
             <ScrollView
                 android:layout_width="match_parent"
