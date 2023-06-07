@@ -117,11 +117,12 @@
             android:id="@+id/sportChoice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/customborder"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendarView"
             app:layout_constraintBottom_toTopOf="@+id/textFreeSlot"
+            android:background="@drawable/customborder"
             >
 
 
@@ -131,11 +132,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:text=" Sport  Type"
+                android:gravity="right|center"
+                android:text=" Sport "
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+
 
                 />
 
@@ -145,9 +145,7 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
-                android:scrollbarSize="80dp"
-
-                android:textAlignment="center" />
+                />
 
 
         </LinearLayout>

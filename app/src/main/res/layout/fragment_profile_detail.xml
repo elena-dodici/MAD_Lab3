@@ -130,7 +130,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/btn"
                 app:layout_constraintTop_toBottomOf="@+id/layoutA">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_achievement"
@@ -147,6 +147,59 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/achievement"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_sports"
+                    android:text="Cancel"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/btD"
+                    app:layout_constraintStart_toEndOf="@+id/btS"
+                    android:layout_marginHorizontal="5dp"
+                    />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_sports"
+                    android:text="Save"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/btC"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginHorizontal="5dp"
+                    />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_sports"
+                    android:text="Delete"
+                    android:backgroundTint="@color/md_theme_light_error"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/btC"
+                    android:layout_marginHorizontal="5dp"
+
+                    />
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -154,42 +207,6 @@
     </ScrollView>
 
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/custom_sports"
-        android:text="Cancel"
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btD"
 
-        app:layout_constraintStart_toEndOf="@+id/btS" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/custom_sports"
-        android:text="Save"
-        android:layout_marginBottom="20dp"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btC"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btD"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/custom_sports"
-        android:text="Delete"
-        android:backgroundTint="@color/md_theme_light_error"
-        android:layout_marginBottom="20dp"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btC" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

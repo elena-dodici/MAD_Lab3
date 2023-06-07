@@ -34,7 +34,7 @@
         android:layout_height="match_parent"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -201,18 +201,18 @@
 
 <!--                />-->
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/calBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="BACK"
-                android:textAppearance="?attr/textAppearanceButton"
-                android:textColor="@android:color/white"
-                android:background="@drawable/custom_sports"
-                android:layout_marginTop="30dp"
+<!--            <androidx.appcompat.widget.AppCompatButton-->
+<!--                android:id="@+id/calBtn"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_horizontal"-->
+<!--                android:text="BACK"-->
+<!--                android:textAppearance="?attr/textAppearanceButton"-->
+<!--                android:textColor="@android:color/white"-->
+<!--                android:background="@drawable/custom_sports"-->
+<!--                android:layout_marginTop="30dp"-->
 
-                />
+<!--                />-->
 
 
 

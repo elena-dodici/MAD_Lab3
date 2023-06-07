@@ -110,6 +110,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
         var img = view.findViewById<ImageView>(R.id.imageViewE)
         println("this _"+profilePicturePath)
         if(!profilePicturePath.isNullOrEmpty()){
+            img.setImageURI(Uri.parse(profilePicturePath))
             Glide.with(this)
                 .load(profilePicturePath)
                 .override(img.width, img.height)
@@ -281,8 +282,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
                 vm.updateUser(this.requireActivity().application,u,vmMain.UID)
             }
 
-            var bundle = bundleOf("Path" to image_uri.toString())
-            println("this is :" +image_uri.toString())
+            var bundle = bundleOf("Path" to "user${vmMain.UID}/images/user${vmMain.UID}.jpg")
             vmMain.setShowNav(true)
 
             SportDetail.forEach{
