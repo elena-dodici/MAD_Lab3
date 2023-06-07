@@ -243,7 +243,8 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
                 vm.updateUser(this.requireActivity().application,u,vmMain.UID)
             }
 
-            var bundle = bundleOf("Path" to "user${vmMain.UID}/images/user${vmMain.UID}.jpg")
+            //var bundle = bundleOf("Path" to "user${vmMain.UID}/images/user${vmMain.UID}.jpg")
+            var bundle = bundleOf("Path" to image_uri.toString())
             vmMain.setShowNav(true)
 
             SportDetail.forEach{
