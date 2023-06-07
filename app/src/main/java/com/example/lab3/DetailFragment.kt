@@ -1,6 +1,7 @@
 package com.example.lab3
 
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -36,10 +37,21 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasBackButton  {
 
         binding.delBtn.setOnClickListener {
 
-            Dialog()
+            Dialog("DELETE")
 
         }
+        //val resTimeInitialValue =
+        //    LocalDateTime.of(sharedvm.selDate.value!!.year, sharedvm.selDate.value!!.monthValue, sharedvm.selDate.value!!.dayOfMonth, sharedvm.selectedRes.value!!.startTime.hours, sharedvm.selectedRes.value!!.startTime.minutes)
+        //val resTimeLiveData = sharedvm.selDate
 
+        /*resTimeLiveData.observe(viewLifecycleOwner) {
+            println("DAY : ${resTimeLiveData.value!!.dayOfMonth} - MONTH : ${resTimeLiveData.value!!.month} " +
+                    "- YEAR : ${resTimeLiveData.value!!.year} ")
+        }
+
+        hour.observe(viewLifecycleOwner){
+            println("HOUR : ${hour.value!!.hours} - MINUTES : ${hour.value!!.minutes}")
+        }*/
 
 
         binding.saveBtn.setOnClickListener {
@@ -50,9 +62,8 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasBackButton  {
             if (LocalDateTime.now().isAfter(resTime)  ){
                 Toast.makeText(context, "You cannot change your reservation before today", Toast.LENGTH_LONG).show()
             }else{
-                sharedvm.addOrUpdateRes(mainvm.UID)
-                sharedvm.test(mainvm.UID)
-                gobackCal("Update successfully")
+                println("resTime variable >>>>>>>>>>>>> ${resTime}")
+                Dialog("SAVE")
 //                findNavController().navigate(R.id.action_detailFragment_to_calendar)
 //                mainvm.setShowNav(true)
 //                Toast.makeText(context, "Update successfully", Toast.LENGTH_LONG).show()
@@ -276,25 +287,69 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasBackButton  {
         mainvm.setShowNav(true)
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
-    private fun Dialog(){
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("Alert")
-        builder.setMessage("Your reservation will be cancelled!")
-        builder.setPositiveButton("yes") { dialog, which ->
+    private fun Dialog(buttonType : String) {
+        var failed = false
+        lateinit var message : String
+        if (buttonType == "DELETE") {
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("Delete reservation")
+            builder.setMessage("Your reservation will be cancelled! Confirm?")
+            builder.setPositiveButton("Confirm") { dialog, which ->
 
-            sharedvm.deleteRes(mainvm.UID, sharedvm.selectedRes.value!!.resId)
+                sharedvm.deleteRes(mainvm.UID, sharedvm.selectedRes.value!!.resId)
 
-            gobackCal("Delete successfully")
+                gobackCal("Delete successfully")
+            }
+            builder.setNegativeButton("Cancel", null)
+            val dialog = builder.create()
+            dialog.setOnShowListener {
+                val posBt = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                val negBt = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                posBt.setTextColor(resources.getColor(R.color.button_color))
+                negBt.setTextColor(resources.getColor(R.color.md_theme_light_error))
+            }
+            dialog.show()
+        } else {
+            val alertDialog: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.apply {
+                    setPositiveButton("Confirm",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            // User clicked OK button
+
+                            try {
+                                // Use call to db here
+                                sharedvm.addOrUpdateRes(mainvm.UID)
+                                sharedvm.test(mainvm.UID)
+                            } catch (e: Exception) {
+                                failed = true;
+                                message = "Operation failed , retry later!"
+                            }
+                            if (failed == false) {
+                                message = "Data updated with success"
+                            }
+                            // Navigate to the source fragment here
+                            gobackCal(message)
+                        })
+                    setNegativeButton("Cancel",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            // User cancelled the dialog
+                        })
+                    setTitle("Modify reservation")
+                }
+                // Create the AlertDialog
+                builder.create()
+            }
+            alertDialog?.setMessage("Are you sure you want to modify this reservation?")
+            alertDialog?.setOnShowListener {
+                val positiveBtn = alertDialog?.getButton(AlertDialog.BUTTON_POSITIVE)
+                val negativeBtn = alertDialog?.getButton(AlertDialog.BUTTON_NEGATIVE)
+                positiveBtn?.setTextColor(resources.getColor(R.color.button_color))
+                negativeBtn?.setTextColor(resources.getColor(R.color.md_theme_light_error))
+            }
+            alertDialog?.show()
+
         }
-        builder.setNegativeButton("no", null)
-        val dialog = builder.create()
-        dialog.setOnShowListener {
-            val posBt = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            val negBt = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-            posBt.setTextColor(resources.getColor(R.color.md_theme_light_error))
-            negBt.setTextColor(resources.getColor(R.color.button_color))
-        }
-        dialog.show()
     }
 }
 
