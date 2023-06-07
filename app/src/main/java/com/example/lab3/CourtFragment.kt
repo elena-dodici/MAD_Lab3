@@ -27,11 +27,12 @@ class ScoreAdapter(val onTap:(CourtInfo)->Unit):RecyclerView.Adapter<ScoreAdapte
             }
         }
         fun bind(courtInfo:CourtInfo){
-            val currentPosition = bindingAdapterPosition + 1 // 获取当前项的位置
-            binding.itemTextRank.text = currentPosition.toString()
+            binding.itemTextRank.text =ranking1.toString()
+            ranking1+=1
             binding.itemTextCourt.text = courtInfo.courtname
             courtInfo.avg_rating = ((courtInfo.avg_rating *100.0).roundToInt() / 100.0).toFloat()
             binding.itemTextScore.text =  courtInfo.avg_rating.toString()
+
             binding.itemTextSport.text = courtInfo.sport
 
 
@@ -78,10 +79,10 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ranking1 = 1
-
         sharedvm.getCourtInfo(this.requireActivity().application)
         sharedvm.courtInfo.observe(this){
             courtInfoList.clear();
+
             for (res in it){
                 courtInfoList.add(res)
             }
@@ -99,6 +100,12 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL,false)
+//        updateAdapter()
+
+//        binding.calBtn.setOnClickListener {
+//            gobackCal("Back to previous page")
+//        }
+
     }
 
 
@@ -106,7 +113,7 @@ class CourtFragment : BaseFragment(R.layout.fragment_court), HasToolbar {
         adapter.apply {
             courtInfoList.clear()
             courtInfoList.addAll(this@CourtFragment.courtInfoList)
-            println("2 $courtInfoList")
+//            println("2 $courtInfoList")
             notifyDataSetChanged() // 通知adapter发生变化，调用bind方法
         }
     }

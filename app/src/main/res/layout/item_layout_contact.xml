@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginVertical="8dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        >
+
+
+        <TextView
+            android:id="@+id/item_text_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="user1"
+            android:layout_weight="2"
+            android:textAlignment="textStart"
+
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+        <TextView
+            android:id="@+id/item_text_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:text="invite"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            />
+        <TextView
+            android:id="@+id/item_text_rej"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:text="reject"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            />
+
+<!--        <com.google.android.material.imageview.ShapeableImageView-->
+<!--            android:id="@+id/title_image"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:scaleY="0.6"-->
+<!--            android:scaleX="0.6"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:adjustViewBounds="true"-->
+<!--            android:src="@drawable/baseline_keyboard_double_arrow_right_24"-->
+<!--            />-->
+    </LinearLayout>
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/sep_line" />
+</LinearLayout>

@@ -41,4 +41,6 @@
     <string name="main_page">Main Page</string>
     <string name="history_title">My History</string>
     <string name="signup">Sign Up</string>
+    <string name="contact">Friends</string>
+
 </resources>
