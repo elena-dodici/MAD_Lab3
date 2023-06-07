@@ -13,7 +13,7 @@ import com.example.lab3.databinding.ItemLayoutBinding
 import com.example.lab3.databinding.ItemLayoutContactBinding
 import com.example.lab3.viewmodel.ContactViewModel
 
-data class Contact(val name:String, val status:Int)
+data class Contact(val uid :String, val name:String, val status:Int)
 class ContactAdapter(val onClick: (Contact)-> Unit): RecyclerView.Adapter<ContactAdapter.ContactViewHolder>(){
     inner class ContactViewHolder(private val binding: ItemLayoutContactBinding): RecyclerView.ViewHolder(binding.root){
         init {
@@ -68,7 +68,7 @@ class ContactFragment:BaseFragment(R.layout.fragment_contact),HasBackButton {
 //                println(res)
                 contacts.add(res)
             }
-            println(">> $contacts")
+//            println(">> $contacts")
             updateAdapter()
         }
     }

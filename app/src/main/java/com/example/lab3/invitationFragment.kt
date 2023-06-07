@@ -20,7 +20,7 @@ enum class contactStatus(val value:Int){
     ACCEPT(-2), // 同意邀请
     REJECT(-3)  // 拒绝邀请
 }
-class InvitationAdapter(val onClickStatus:(String)->Unit, val onClickRej:()->Unit): RecyclerView.Adapter<InvitationAdapter.MyViewHolder>(){
+class InvitationAdapter(val onClickStatus:(Contact, String)->Unit, val onClickRej:(Contact)->Unit): RecyclerView.Adapter<InvitationAdapter.MyViewHolder>(){
     inner class MyViewHolder(private val binding: ItemLayoutContactBinding): RecyclerView.ViewHolder(binding.root){
         init {
 //            itemView.setOnClickListener { // 点击具体某个reservation时调用
@@ -28,7 +28,7 @@ class InvitationAdapter(val onClickStatus:(String)->Unit, val onClickRej:()->Uni
 ////                println(bindingAdapterPosition)
 //            }
             binding.itemTextStatus.setOnClickListener {
-                onClickStatus(binding.itemTextStatus.text as String)
+                onClickStatus(contacts[bindingAdapterPosition],binding.itemTextStatus.text as String)
 //                if (binding.itemTextStatus.text == "0"){
 //                    binding.itemTextStatus.text = "1"
 //                }
@@ -36,7 +36,7 @@ class InvitationAdapter(val onClickStatus:(String)->Unit, val onClickRej:()->Uni
             binding.itemTextRej.setOnClickListener {
                 if (binding.itemTextRej.text != ""){
 //                    println("点击Reject")
-                    onClickRej()
+                    onClickRej(contacts[bindingAdapterPosition])
                 }
             }
         }
@@ -100,9 +100,9 @@ class invitationFragment:BaseFragment(R.layout.fragment_invitation),HasBackButto
     private lateinit var binding: FragmentInvitationBinding
     private val contacts = mutableListOf<Contact>()
     val adapter = InvitationAdapter(
-        onClickStatus = {
+        onClickStatus = {contact, status->
             println("status")
-
+            println(contact.uid)
         },
         onClickRej = {
             println("rej")

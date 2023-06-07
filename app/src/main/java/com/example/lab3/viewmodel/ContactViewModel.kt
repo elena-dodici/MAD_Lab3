@@ -25,15 +25,14 @@ class ContactViewModel: ViewModel() {
             .addOnSuccessListener { result ->
                 val dataList = result.map { document ->
                     val mapId = mapOf(
-                        "resId" to document.id,
+                        "uid" to document.id,
                     )
                     mapId + document.data
                 }
                 val myContact = mutableListOf<Contact>()
                 dataList.forEach{res-> // 遍历每一个contact
-                    println(res)
                     myContact.add(
-                        Contact(res["name"].toString(), res["status"].toString().toInt())
+                        Contact(res["uid"].toString() ,res["name"].toString(), res["status"].toString().toInt())
                     )
                 }
                 _contacts.value = myContact
