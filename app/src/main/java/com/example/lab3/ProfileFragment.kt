@@ -96,9 +96,6 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         binding = FragmentProfileBinding.bind(view)
         // 找到 RecyclerView 实例
         val recyclerViewSports = view.findViewById<RecyclerView>(R.id.recyclerViewS)
-//        val sharedPreferences = requireContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
-//        val savedPath = sharedPreferences.getString("path", null)
-
         val users = listOf("user1", "user2", "user3")
 //        val spinnerUser = view.findViewById<Spinner>(R.id.userSpinner)
 //        spinnerUser.setSelection(vmMain.user-1)
@@ -158,46 +155,24 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         }
 
         //读取头像URI加载到imageview
-        vm.photoUri.observe(viewLifecycleOwner) {
-            path=it
-            Glide.with(this)
-                .load(it)
-                .into(photoView)
-        }
+        Glide.get(this.requireContext()).clearMemory()
         val p  = arguments?.getString("Path")
-        if (!p.isNullOrEmpty()) {
-            vm.readPhoto(this.requireActivity().application, p)
+        println("no1 path is " +p)
+        if (!p.isNullOrEmpty()&&p!="null") {
+            println("path is "+ p)
+            path=p
+            Glide.with(this)
+                .load(p)
+                .into(photoView)
+
+        }else {
             vm.photoUri.observe(viewLifecycleOwner) {
+                path = it
                 Glide.with(this)
                     .load(it)
                     .into(photoView)
             }
         }
-//        println(vmMain.user)
-//        spinnerUser.setSelection(vmMain.user-1)
-//        spinnerUser.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-//                updateUser(parent.getItemAtPosition(position).toString())
-//                vm.User.observe(viewLifecycleOwner){
-//                    _name=it.name
-//                    _surname=it.surname
-//                    full_name="${it.name}"+"  "+"${it.surname}"
-//                    tele = it.tel
-//                    fullName.setText(full_name)
-//                    tel.setText(tele)
-//                    vmMain.user = (position + 1)
-//                    println("this is new user position !!! ${position}")
-//                }
-//                adapter = SportsAdapter(sportList ?: emptyList())
-//                recyclerViewSports.adapter = adapter
-//                adapter.setOnItemClickListener {
-//                    var bundle = bundleOf("sportName" to it)
-//                    vmMain.setShowNav(false)
-//                    findNavController().navigate(R.id.action_profileFragment_to_sportsDetail,bundle)
-//                }
-//            }
-//            override fun onNothingSelected(parent: AdapterView<*>?) {}
-//        }
         //需把action_profileFragment_to_historyFragment的destination改成正确的跳转目的地
         historyButton.setOnClickListener{
             vmMain.setShowNav(false)
@@ -221,23 +196,6 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
         }
     }
 
-//    private fun updateUser(User: String) {
-//        when(User){
-//            ("user1")->{
-//                vmMain.user = 1
-//            }
-//            ("user2")->{
-//                vmMain.user = 2
-//            }
-//            ("user3")->{
-//                vmMain.user = 3
-//            }
-//
-//        }
-//        vm.getUserById(this.requireActivity().application, vmMain.user)
-//        vm.getUserSportsById(this.requireActivity().application, vmMain.user)
-//
-//    }
 
     private fun loadImageFromStorage(path: String?) {
         try {

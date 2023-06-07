@@ -215,29 +215,6 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
 
         }
 
-
-
-        //5个添加运动按键
-//        bskbt.setOnClickListener {
-//            addSportBtn(bskbt,"basketball")
-//
-//        }
-//        runbt.setOnClickListener {
-//
-//            addSportBtn( runbt,"running")
-//        }
-//        tennisbt.setOnClickListener {
-//
-//            addSportBtn(tennisbt,"tennis")
-//        }
-//        swbt.setOnClickListener {
-//
-//            addSportBtn(swbt,"swimming")
-//        }
-//        pingbt.setOnClickListener {
-//
-//            addSportBtn(pingbt,"pingpong")
-//        }
         //cancelButton
         cancelButton.setOnClickListener {
             vmMain.setShowNav(true)
@@ -252,7 +229,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
             if(imageBitmap != null) {
 
                 vm.uploadPhoto(this.requireActivity().application, image_uri!!,vmMain.UID)
-                println("Saving new path for the new picture... ")
+//                println("Saving new path for the new picture... ")
 
             }
 
@@ -329,7 +306,19 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
              }
          })
      }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == IMAGE_CAPTURE_CODE && resultCode == Activity.RESULT_OK) {
 
+            frame?.setImageURI(image_uri)
+            hasPhotoChanged = true
+        }
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+            image_uri = data.data
+            frame?.setImageURI(image_uri)
+            hasPhotoChanged = true
+        }
+    }
     fun addSportBtn(bt:Button,sportType:String){
         if(SportDetail[sportType]==null){
             val color = ContextCompat.getColor(requireContext(), R.color.grey)
