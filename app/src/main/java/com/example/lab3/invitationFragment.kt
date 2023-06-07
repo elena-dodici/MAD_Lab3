@@ -23,10 +23,6 @@ enum class contactStatus(val value:Int){
 class InvitationAdapter(val onClickStatus:(Contact, String)->Unit): RecyclerView.Adapter<InvitationAdapter.MyViewHolder>(){
     inner class MyViewHolder(private val binding: ItemLayoutContactBinding): RecyclerView.ViewHolder(binding.root){
         init {
-//            itemView.setOnClickListener { // 点击具体某个reservation时调用
-//                onClick(contacts[bindingAdapterPosition])
-////                println(bindingAdapterPosition)
-//            }
             binding.itemTextStatus.setOnClickListener {
                 onClickStatus(contacts[bindingAdapterPosition],binding.itemTextStatus.text as String)
                 if (binding.itemTextStatus.text == "Invite"){
@@ -35,15 +31,8 @@ class InvitationAdapter(val onClickStatus:(Contact, String)->Unit): RecyclerView
                 }
 
             }
-//            binding.itemTextRej.setOnClickListener {
-//                if (binding.itemTextRej.text != ""){
-////                    println("点击Reject")
-//                    onClickRej(contacts[bindingAdapterPosition])
-//                }
-//            }
         }
         fun bind(contact: Contact){
-            println("bind")
             binding.itemTextName.text = contact.name
             binding.itemTextStatus.text = ""
             binding.itemTextRej.text = ""
@@ -103,36 +92,19 @@ class invitationFragment:BaseFragment(R.layout.fragment_invitation),HasBackButto
     private val contacts = mutableListOf<Contact>()
     val adapter = InvitationAdapter(
         onClickStatus = {contact, status->
-//            println(contact.uid)
             when(status){
                 "Invite"->{
-                    println("邀请${contact.name}")
                     sharedvm.setInvite(vmMain.UID, contact.uid)
 //                    updateAdapter()
 
                 }
-//                "Waiting"->{
-//                    println("等待${contact.name}")
-//                }
-//                "ACC"->{
-//                    println("接受${contact.name}")
-//                    sharedvm.acc(vmMain.UID, contact.uid)
-//                    updateAdapter()
-//                }
             }
         },
-//        onClickRej = {
-//            println("拒绝${it.name}")
-//            sharedvm.setRej(vmMain.UID,it.uid)
-//            updateAdapter()
-
-//        }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedvm.getAllContact(vmMain.UID)
-//        println(vmMain.UID)
         sharedvm.contacts.observe(this){
             contacts.clear()
             for(res in it){

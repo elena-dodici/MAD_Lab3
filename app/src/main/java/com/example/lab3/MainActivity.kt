@@ -79,7 +79,6 @@ class MainActivity : AppCompatActivity() {
 
         vm.showNav.observe(this){
                 show ->
-//            println(vm.showNav.value)
             bottonNavigationView.visibility = if (vm.showNav.value == true) {
                 View.VISIBLE
             } else {
@@ -87,7 +86,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        db = AppDatabase.getDatabase(application)
+//        db = AppDatabase.getDatabase(application)
         //addres()
         //vm.updateCourtTimesDates()
 

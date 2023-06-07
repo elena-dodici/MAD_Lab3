@@ -44,8 +44,8 @@ class LoginFragment : BaseFragment(R.layout.fragment_login),HasToolbar {
 
         val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
         sButton.setOnClickListener{
-            println("i got email in login ${emailText.text}")
-            println("i got password in login ${passwordText.text}")
+//            println("i got email in login ${emailText.text}")
+//            println("i got password in login ${passwordText.text}")
             when{
                 emailText.text.isNullOrEmpty() -> {
                     val alertDialog = AlertDialog.Builder(context)

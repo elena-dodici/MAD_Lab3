@@ -38,9 +38,6 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasBackButton  {
         val selectedDateString : String = sharedvm.selDate.value!!.format(formatter)
         val cDld : LocalDate = LocalDate.parse(currentDateString,formatter)
         val sDld : LocalDate = LocalDate.parse(selectedDateString,formatter)
-        println("CDLD : ${cDld}")
-        println("SDLD : ${sDld}")
-
         if (sDld.isBefore(cDld)){
            binding.calBtn.visibility = View.GONE
             binding.saveBtn.visibility = View.GONE
@@ -92,13 +89,10 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasBackButton  {
             newSelDate ->
             binding.showDate.text = newSelDate.toString()
             sharedvm.getFreeSlotByCourtName(sharedvm.selCourtName.value!!)
-            println("seldate changed!!!!${ sharedvm.freeStartTimes.value}!!!")
-
         }
 
         val avaTSpinner = binding.avaTimeSpinner1
         sharedvm.freeStartTimes.observe(viewLifecycleOwner) { newST ->
-            println("should be emoty !!!!!!!!!!${sharedvm.selDate.value}")
             var showList = mutableListOf<String>()
             for (i in newST){
                 var time =LocalTime.of(i.hours, i.minutes, i.seconds)
@@ -150,10 +144,6 @@ class DetailFragment : BaseFragment(R.layout.fragment_detail), HasBackButton  {
 
         val courtNameSpinner = binding.courtNameSpinner
         var courtNameList = sharedvm.courtNamesSport.keys.toList().sorted()
-        //sharedvm.selCourtName.observe(viewLifecycleOwner) { newSt->
-//        println("test${courtNameList}")
-
-
             val arrayAdapterCourtName =
                 ArrayAdapter(
                     requireContext(),

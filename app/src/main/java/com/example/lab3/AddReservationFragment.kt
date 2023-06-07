@@ -151,27 +151,19 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
         }
 
         val ctLiveData = viewModel.timeSlots
-        /*if(arguments?.getString("numberOfFreeCt")?.toInt() == 0){
-            println("EXECUTING ANIMATION DELETION")
-            arrowImageView.visibility = View.GONE
-            arrowVisible = false
-        }*/
         ctLiveData.observe(viewLifecycleOwner){
             recyclerView.apply {
                 recyclerView.adapter = MyAdapter1(ctLiveData.value?.keys?.toList()?.sorted()!!)
             }
             if(!inFragmentAlready) {
                 if (arguments?.getString("numberOfFreeCt")?.toInt() == 0) {
-                    println("STOPPING ANIMATION ")
                     arrowImageView.visibility = View.GONE
                     arrowVisible = false
                 }
                 if (ctLiveData.value?.size == 0) {
-                    println("STOPPING ANIMATION ")
                     arrowImageView.visibility = View.GONE
                     arrowVisible = false
                 } else {
-                    println("STARTING ANIMATION ")
                     arrowImageView.visibility = View.VISIBLE
                     arrowVisible = true
                     arrowImageView.startAnimation(animationSet)
@@ -199,8 +191,6 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
                         // User clicked OK button
                         val splittedDate =
                             dateString?.split("-")
-                        //println("DATE FROM CALENDAR : ${dateString}")
-                       // println("SPLITTED DATE = ${splittedDate!![0]}  ")
                         val startTime = Timestamp(splittedDate!![0].toInt() -1900,
                             splittedDate!![1].toInt()-1,
                             splittedDate!![2].toInt(),
@@ -209,9 +199,6 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
                             splittedDate!![1].toInt()-1,
                             splittedDate!![2].toInt(),
                             selectedSlot.toInt()+1,0,0,0)
-                        //println("START TIME = ${startTime}")
-                        //println("END TIME = ${endTime}")
-                        println("TIME SLOT VALUE = ${selectedSlot}")
 
                         val courtName = viewModel.getCourtNameBySport(application, sport)
                         val resDescription = description.editText?.text.toString()
@@ -228,7 +215,6 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
                         }
                         catch (e : Exception){
                             failed = true;
-                            println("Exception : ${e}")
                             Toast.makeText(this.context,"Operation failed , retry later!",Toast.LENGTH_SHORT).show()
                         }
                         if(failed == false) {
@@ -254,7 +240,6 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
 
             doneButton.setOnClickListener {
                 if(selectedSlot == ""){
-                    //println("SELECT A SLOT FIRST !")
                     mainVm.currentToast = Toast.makeText(this.context,"SELECT A SLOT FIRST !",Toast.LENGTH_SHORT)
                     mainVm.currentToast.show()
                 } else {
@@ -266,21 +251,7 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
                         negBt?.setTextColor(resources.getColor(R.color.md_theme_light_error))
                     }
                     alertDialog?.show()
-                    /*val splittedSelectedSlot =
-                        selectedSlot.split(":") // GET THE (ex) "10" in "10:00:00" - the only thing needed for later are the two first digits
-                    val timeParameters: List<Int> =
-                        listOf(splittedSelectedSlot[0].toString().toInt(), 0, 0)*/
                 }
-                /*
-                println("NEW RESERVATION : $newReservation")
-                println("DESCRIPTION : ${description.editText?.text.toString()}")
-                println("COURT ID : ${courtId} - COURTTIMEID : ${courtTimeId}")
-                println("SELECTED SLOT : " + selectedSlot)
-                println("SELECTED DATE : " + dateString)
-                println("DATELD : " + dateLD.toString())
-                println("SELECTED SPORT : " + sport)
-                println("TIME START : " + startTime)
-    */
             }
 
     }
@@ -299,7 +270,6 @@ class MyAdapter1(val l: List<Int>) : RecyclerView.Adapter<MyAdapter1.MyViewHolde
                 tv.setOnClickListener {
                     setSingleSelection(adapterPosition)
                     selectedSlot = l[adapterPosition].toString()
-                    //println(l[adapterPosition].startTime.toString())
                 }
             }
         }

@@ -101,14 +101,11 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentProfileEditBinding.bind(view)
         super.onViewCreated(view, savedInstanceState)
-        val sharedPreferences = context?.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
-        val editor = sharedPreferences?.edit()
         profilePicturePath = arguments?.getString("path")
         _name = arguments?.getString("name")
         _surname = arguments?.getString("surname")
         tele = arguments?.getString("phone")
         var img = view.findViewById<ImageView>(R.id.imageViewE)
-        println("this _"+profilePicturePath)
         if(!profilePicturePath.isNullOrEmpty()){
             img.setImageURI(Uri.parse(profilePicturePath))
             Glide.with(this)
@@ -118,10 +115,6 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
         }
 
 
-//        if(profilePicturePath != "NAN" && profilePicturePath != null && hasPhotoChanged == false ) {
-//            println("LOADING PROFILE PICTURE FROM : $profilePicturePath")
-//            loadImageFromStorage(profilePicturePath,img)
-//        }
         val cancelButton = view.findViewById<Button>(R.id.btC)
         val saveButton = view.findViewById<Button>(R.id.btS)
 //        val bskbt =view.findViewById<Button>(R.id.btbasketball)
@@ -255,21 +248,12 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
             vmMain.setShowNav(true)
             if(imageBitmap == null && image_uri != null){
                 vm.uploadPhoto(this.requireActivity().application, image_uri!!,vmMain.UID)
-                //val bitmap = uriToBitmap(image_uri!!)
-                val bitmap= frame?.drawable?.toBitmap()
-                imageBitmap = bitmap;
             }
             if(imageBitmap != null) {
-                // imageBitmap will be null the first time we try to edit the profile and will remain
-                // null if we don't select a profile picture
+
                 vm.uploadPhoto(this.requireActivity().application, image_uri!!,vmMain.UID)
                 println("Saving new path for the new picture... ")
-                //profilePicturePath = saveToInternalStorage(imageBitmap!!)
-                profilePicturePath = saveToInternalStorage(frame?.drawable?.toBitmap()!!)
-            }
-            if (editor != null) {
-                editor.putString("path", profilePicturePath)
-                editor.apply()
+
             }
 
             val u = ProfileViewModel.UserProfile(
@@ -294,7 +278,6 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
 
             DELETESportDetail.forEach{
                 if (it.value!=null){
-                    //println("test deleteSportDet: ${it.value}")
                     vm.deleteUserSport(this.requireActivity().application,it.value!!)
                 }
             }
@@ -367,7 +350,6 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
                 }
             }
 
-//            println("${sportType} 空")
         }
     }
 
@@ -384,68 +366,68 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
     }
     //takes URI of the image and returns bitmap
-    private fun uriToBitmap(selectedFileUri: Uri): Bitmap? {
-        try {
-            val parcelFileDescriptor = (activity as MainActivity?)!!.contentResolver.openFileDescriptor(selectedFileUri, "r")
-            val fileDescriptor: FileDescriptor = parcelFileDescriptor!!.fileDescriptor
-            val image = BitmapFactory.decodeFileDescriptor(fileDescriptor)
-            parcelFileDescriptor.close()
-            return image
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        return null
-    }
-    //last check and substitute the image + Save bitmap to save image into local memory
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_CAPTURE_CODE && resultCode == Activity.RESULT_OK) {
-            val bitmap = uriToBitmap(image_uri!!)
-            imageBitmap = bitmap;
-            frame?.setImageBitmap(bitmap)
-            hasPhotoChanged = true
-        }
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
-            image_uri = data.data
-            val bitmap = uriToBitmap(image_uri!!)
-            imageBitmap = bitmap;
-            frame?.setImageBitmap(bitmap)
-            hasPhotoChanged = true
-        }
-    }
-    private fun saveToInternalStorage(bitmapImage: Bitmap): String? {
-        val cw = ContextWrapper(this.context)
-        // path to /data/data/yourapp/app_data/photoDir
-        val directory: File = cw.getDir("photoDir", Context.MODE_PRIVATE)
-        // Create imageDir
-        val mypath = File(directory, "profilePicture.jpg")
-        var fos: FileOutputStream? = null
-        try {
-            fos = FileOutputStream(mypath)
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            try {
-                fos?.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-        return directory.getAbsolutePath()
-    }
-
-    private fun loadImageFromStorage(path: String?,img:ImageView) {
-        try {
-            val f = File(path, "profilePicture.jpg")
-            val b = BitmapFactory.decodeStream(FileInputStream(f))
-            img.setImageBitmap(b)
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        }
-    }
+//    private fun uriToBitmap(selectedFileUri: Uri): Bitmap? {
+//        try {
+//            val parcelFileDescriptor = (activity as MainActivity?)!!.contentResolver.openFileDescriptor(selectedFileUri, "r")
+//            val fileDescriptor: FileDescriptor = parcelFileDescriptor!!.fileDescriptor
+//            val image = BitmapFactory.decodeFileDescriptor(fileDescriptor)
+//            parcelFileDescriptor.close()
+//            return image
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//        }
+//        return null
+//    }
+//    //last check and substitute the image + Save bitmap to save image into local memory
+//
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == IMAGE_CAPTURE_CODE && resultCode == Activity.RESULT_OK) {
+//            val bitmap = uriToBitmap(image_uri!!)
+//            imageBitmap = bitmap;
+//            frame?.setImageBitmap(bitmap)
+//            hasPhotoChanged = true
+//        }
+//        if (requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+//            image_uri = data.data
+//            val bitmap = uriToBitmap(image_uri!!)
+//            imageBitmap = bitmap;
+//            frame?.setImageBitmap(bitmap)
+//            hasPhotoChanged = true
+//        }
+//    }
+//    private fun saveToInternalStorage(bitmapImage: Bitmap): String? {
+//        val cw = ContextWrapper(this.context)
+//        // path to /data/data/yourapp/app_data/photoDir
+//        val directory: File = cw.getDir("photoDir", Context.MODE_PRIVATE)
+//        // Create imageDir
+//        val mypath = File(directory, "profilePicture.jpg")
+//        var fos: FileOutputStream? = null
+//        try {
+//            fos = FileOutputStream(mypath)
+//            // Use the compress method on the BitMap object to write image to the OutputStream
+//            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos)
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        } finally {
+//            try {
+//                fos?.close()
+//            } catch (e: IOException) {
+//                e.printStackTrace()
+//            }
+//        }
+//        return directory.getAbsolutePath()
+//    }
+//
+//    private fun loadImageFromStorage(path: String?,img:ImageView) {
+//        try {
+//            val f = File(path, "profilePicture.jpg")
+//            val b = BitmapFactory.decodeStream(FileInputStream(f))
+//            img.setImageBitmap(b)
+//        } catch (e: FileNotFoundException) {
+//            e.printStackTrace()
+//        }
+//    }
 }
 
 //确认提示弹窗
