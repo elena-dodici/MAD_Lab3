@@ -29,7 +29,7 @@ class HistoryViewModel : ViewModel() {
     private var _selRev = MutableLiveData<Review>()
     val selRev: LiveData<Review> = _selRev
 
-    private var _originRating = 0
+    private var _originRating = -1
 
     fun getHistoryResbyUser(userid: String) { // 只拿今天之前的！
         db1.collection("users").document("u${userid}").collection("reservation").get()
@@ -78,7 +78,7 @@ class HistoryViewModel : ViewModel() {
 
                 }
                 _reservations.value = myres
-                Log.d(TAG, "history reservaton ${_reservations.value!!} ")
+                Log.d(TAG, "history review ${_reservations.value!!} ")
             }
             .addOnFailureListener { exception ->
                 // 处理错误
@@ -90,6 +90,7 @@ class HistoryViewModel : ViewModel() {
     fun setHisReview(resId: String) {
         for (r in _reservations.value!!) {
             if (r.resId == resId) {
+                Log.d(TAG, "set id getting documents: ${r.resId}")
                 _selRev.value = Review(r.resId, r.rating, r.review, r.name)
                 _originRating = _selRev.value!!.rating
 
@@ -100,18 +101,17 @@ class HistoryViewModel : ViewModel() {
     fun addRev(rating: Int, userId: String) {
         val docRef = db1.collection("users").document("u${userId}").collection("reservation")
             .document("${selRev.value!!.resId}")
-        docRef.update("rating", rating, "review", _selRev.value!!.review).addOnSuccessListener {
+
+        val courtRef = db1.collection("court").document("${_selRev.value!!.name}")
+
+
+        docRef.update("rating", rating, "review", _selRev.value!!.review)
+            .addOnSuccessListener {
             Log.d(TAG, "review ${_selRev.value!!.review} with $rating star update ok")
-
-        }.addOnFailureListener { exception ->
-            // 处理错误
-            Log.d(TAG, "Error getting documents: ${exception.message}")
-
-        }
+            }.addOnFailureListener { }
 
         var newAvgrating: Float
-        db1.collection("court").document("${_selRev.value!!.name}")
-            .get()
+        courtRef.get()
             .addOnSuccessListener { docs ->
 
                 var reviewList = docs.data?.get("review") as? List<*>
@@ -126,15 +126,17 @@ class HistoryViewModel : ViewModel() {
 
                 }
                 //new review
-                newAvgrating = if (_selRev.value!!.rating < 0) {
+                newAvgrating = if (_originRating<0) {
+                    //new res
+
                     (sumRating + rating).toFloat() / (numOfRev + 1)
+
                 } else {
                     (sumRating - _selRev.value!!.rating + rating).toFloat() / numOfRev
                 }
 
                 //update new avg_rating
-                var docRef = db1.collection("court").document("${_selRev.value!!.name}")
-                docRef.update("avg_rating", newAvgrating)
+                courtRef.update("avg_rating", newAvgrating)
                     .addOnSuccessListener {
                         Log.d(
                             TAG,
@@ -144,18 +146,23 @@ class HistoryViewModel : ViewModel() {
                     .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
 
 
-                docRef.get().addOnSuccessListener { result ->
+                //add new reivew in list
+                var added =false
+                val newList = mutableListOf<r>()
+                courtRef.get().addOnSuccessListener { result ->
                     if (result != null) {
                         var reviewList = result.data?.get("review") as? MutableList<*>
-                        val newList = mutableListOf<r>()
+
                         if (reviewList != null) {
                             if (reviewList.size > 0) {
                                 for (i in reviewList) {
                                     val mapItem = (i as MutableMap<String, Any?>).toMutableMap()
                                     if (mapItem["user"] == "u$userId") {
+                                        added = true
                                         mapItem["rating"] = rating
                                         mapItem["review"] = _selRev.value!!.review
                                     }
+
                                     newList.add(
                                         r(
                                             mapItem["rating"].toString().toInt(),
@@ -164,14 +171,31 @@ class HistoryViewModel : ViewModel() {
                                         )
                                     )
 
+
                                 }
-                                //update review list
-                                docRef.update("review", newList)
+
+                                if (!added) newList.add( r(
+                                    _selRev.value!!.rating,
+                                    _selRev.value!!.review,
+                                    "u${userId}"
+                                ))
+                                Log.d(
+                                    TAG,
+                                    "new review list  is  ${newList} !"
+                                )
+
+
+                                //update review list after combine a list together
+                                courtRef.update("review", newList)
                                     .addOnSuccessListener {
                                         Log.d(
                                             TAG,
-                                            "review list successfully updated!"
+                                            "review list ${newList}successfully updated!"
                                         )
+
+
+
+
                                     }
                                     .addOnFailureListener { e ->
                                         Log.w(
@@ -188,6 +212,8 @@ class HistoryViewModel : ViewModel() {
                     }
 
                 }
+
+
 
 
             }
