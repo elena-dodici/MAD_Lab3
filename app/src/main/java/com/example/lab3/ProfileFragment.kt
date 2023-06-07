@@ -156,22 +156,26 @@ class ProfileFragment : BaseFragment(R.layout.fragment_profile),HasToolbar {
             {  vm.readPhoto(this.requireActivity().application, it.photo!!) }
         }
 
+
         //读取头像URI加载到imageview
-        vm.photoUri.observe(viewLifecycleOwner) {
-            path=it
-            Glide.with(this)
-                .load(it)
-                .into(photoView)
-        }
         val p  = arguments?.getString("Path")
         if (!p.isNullOrEmpty()) {
-            vm.readPhoto(this.requireActivity().application, p)
+                path=p
+                Glide.get(this.requireContext()).clearMemory()
+                Glide.with(this)
+                    .load(p)
+                    .into(photoView)
+
+        }
             vm.photoUri.observe(viewLifecycleOwner) {
+                path = it
+                Glide.get(this.requireContext()).clearMemory()
                 Glide.with(this)
                     .load(it)
                     .into(photoView)
             }
-        }
+
+
 //        println(vmMain.user)
 //        spinnerUser.setSelection(vmMain.user-1)
 //        spinnerUser.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

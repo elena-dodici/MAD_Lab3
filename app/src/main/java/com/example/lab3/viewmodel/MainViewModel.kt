@@ -42,11 +42,11 @@ class MainViewModel: ViewModel() {
                 var updatedLastDayString: String = lDofLastDay.toString()
 
                 while(updatedLastDayString != formattedCurrentDatePlus30){
-                println("adding days....")
+//                println("adding days....")
                     updatedLastDayLD = updatedLastDayLD.plusDays(1)
                     updatedLastDayString = updatedLastDayLD.toString()
                     for(i in listOf<Int>(1,2,3,4,5)){
-                        println(i)
+//                        println(i)
                         repo.addDayInDatabase(updatedLastDayString,"court${i}")
                     }
             }
