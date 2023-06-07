@@ -26,7 +26,6 @@ class ContactAdapter(val onClickStatus:(Contact, String)->Unit, val onClickRej:(
             }
             binding.itemTextRej.setOnClickListener {
                 if (binding.itemTextRej.text == "REJ"){
-//                    println("点击Reject")
                     onClickRej(contacts[bindingAdapterPosition])
                     binding.itemTextStatus.text = "Reject"
                     binding.itemTextRej.text = ""
@@ -92,44 +91,27 @@ class ContactFragment:BaseFragment(R.layout.fragment_contact),HasBackButton {
 
     val adapter = ContactAdapter(
         onClickStatus = {contact, status->
-//            println(contact.uid)
             when(status){
-//                "Invite"->{
-//                    println("邀请${contact.name}")
-//                    sharedvm.setInvite(vmMain.UID, contact.uid)
-//                    updateAdapter()
-//                }
-//                "Waiting"->{
-//                    println("等待${contact.name}")
-//                }
                 "ACC"->{
-                    println("接受${contact.name}")
                     sharedvm.acc(vmMain.UID, contact.uid)
-//                    updateAdapter()
 
                     // 给接受的用户添加reservation
                 }
             }
         },
         onClickRej = {
-            println("拒绝${it.name}")
             sharedvm.setRej(vmMain.UID,it.uid)
-//            updateAdapter()
-
         }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedvm.getAllContact(vmMain.UID)
-//        println(vmMain.UID)
         sharedvm.contacts.observe(this){
             contacts.clear()
             for(res in it){
-//                println(res)
                 contacts.add(res)
             }
-//            println(">> $contacts")
             updateAdapter()
         }
     }
@@ -146,7 +128,6 @@ class ContactFragment:BaseFragment(R.layout.fragment_contact),HasBackButton {
         adapter.apply {
             contacts.clear()
             contacts.addAll(this@ContactFragment.contacts)
-            println("2 $contacts")
             notifyDataSetChanged() // 通知adapter发生变化，调用bind方法
         }
     }

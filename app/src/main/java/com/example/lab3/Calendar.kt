@@ -54,7 +54,6 @@ class MyAdapter(val onClick: (Event)-> Unit): RecyclerView.Adapter<MyAdapter.MyV
         init {
             itemView.setOnClickListener { // 点击具体某个reservation时调用
                 onClick(events[bindingAdapterPosition])
-//                println(bindingAdapterPosition)
             }
         }
         fun bind(event: Event){
@@ -138,7 +137,6 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                         availableDateList.add(date)
                     }
                 }
-//            println("所有可用日期：$availableDateList")
             }
 
             sharedvm.reservations.observe(viewLifecycleOwner) {
@@ -164,7 +162,6 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
                 // 初始化下面的recyclerview
                 updateAdapterForDate(selectedDate)
 
-                println(events)
             }
         }
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -286,7 +283,6 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
         }
     }
     private fun updateAdapterForDate(date: LocalDate?) { // 填充会被展示在recyclerview的events数组
-//        println("init ${events}")
         eventsAdapter.apply {
             events.clear()
             events.addAll(this@Calendar.events[date].orEmpty())
@@ -381,9 +377,6 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
                 textView.background = null
                 dotView.isVisible = events[date].orEmpty().isNotEmpty()
-//                if (dotView.isVisible){
-//                    println(">> $date")
-//                }
 
             }
             if (availableDateList.isNotEmpty() && !availableDateList.contains(date) ){ // 范围外的日期即使是MonthDate设为深灰色
@@ -411,7 +404,6 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
 
                 val oldDate = selectedDate
                 selectedDate = date
-    //                        println(day.date) // day.date就是点击的日期
     //        Refresh both calendar views..
                 monthCalendarView.notifyDateChanged(date)
                 weekCalendarView.notifyDateChanged(date)
@@ -456,7 +448,6 @@ class Calendar : BaseFragment(R.layout.fragment_calendar_view), HasToolbar {
     }
     private fun clearBackground(){
         if (count ==0){
-            println("clear")
             selectedDate?.let {//切换mode的时候也会调用，但这时候不应该清除
                 // clear selection if we scroll to a new month/week
                 selectedDate = null

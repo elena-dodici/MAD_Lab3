@@ -236,14 +236,12 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
         }
 
         binding.weekModeCheckBox.isChecked = true
-        println(binding.weekModeCheckBox.isChecked)
         monthCalendarView.isInvisible = binding.weekModeCheckBox.isChecked
         weekCalendarView.isInvisible = !binding.weekModeCheckBox.isChecked
         binding.weekModeCheckBox.setOnCheckedChangeListener(weekModeToggled)
-        // 默认week mode
+        // default week mode
         val oldHeight = 924
         val newHeight = 154
-//        println("$oldHeight $newHeight")
         // Animate calendar height changes.
         val animator = ValueAnimator.ofInt(oldHeight, newHeight)
         animator.addUpdateListener { anim ->
@@ -286,9 +284,6 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
             val selectedDateString : String = selectedDate!!.format(formatter)
             val cDld : LocalDate = LocalDate.parse(currentDateString,formatter)
             val sDld : LocalDate = LocalDate.parse(selectedDateString,formatter)
-            println("CDLD : ${cDld}")
-            println("SDLD : ${sDld}")
-
             if(sDld.isBefore(cDld)){
                 mainVm.currentToast = Toast.makeText(this.context,"The date you chose is not valid!",Toast.LENGTH_SHORT)
                 mainVm.currentToast.show()
@@ -496,7 +491,6 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 Toast.makeText(context, "Out of Range", Toast.LENGTH_LONG).show()
             }
             else if(allReserved[date] == false){
-//                println("这一天都被预定了！")
                 Toast.makeText(context, "All reserved", Toast.LENGTH_LONG).show()
             }else{
                 if (!binding.weekModeCheckBox.isChecked) {
@@ -505,7 +499,6 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 
                 val oldDate = selectedDate
                 selectedDate = date
-//                        println(day.date) // day.date就是点击的日期
 //        Refresh both calendar views..
                 monthCalendarView.notifyDateChanged(date)
                 weekCalendarView.notifyDateChanged(date)
@@ -528,7 +521,6 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
 
     private fun updateMonthTitle() { // 更新月份
         val isMonthMode = !binding.weekModeCheckBox.isChecked
-        println(isMonthMode)
         if (isMonthMode) {
             val month = monthCalendarView.findFirstVisibleMonth()?.yearMonth ?: return
             binding.yearText.text = month.year.toString()
@@ -627,12 +619,6 @@ class SearchFragment : BaseFragment(R.layout.fragment_search),HasToolbar {
                 this.freeCourts[date] = fc
                 numberOfFreeSlots = fc.size
                 updateAdapterForDate(date)
-//                println("courtName ${freeCourts[date]!![0].name}")
-//                val CN = view?.findViewById<TextView>(R.id.showCN)
-//                if (freeCourts.isNotEmpty() && freeCourts.size<1){
-//                    CN?.text=freeCourts[date]!![0].name
-//                }
-
 
             }
         }

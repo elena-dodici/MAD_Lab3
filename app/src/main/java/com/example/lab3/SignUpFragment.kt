@@ -17,17 +17,6 @@ import com.example.lab3.databinding.FragmentSignUpBinding
 import com.example.lab3.viewmodel.SignUpViewModel
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-
 class SignUpFragment : BaseFragment(R.layout.fragment_sign_up),HasBackButton {
     private lateinit var binding: FragmentSignUpBinding
 
@@ -35,10 +24,6 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up),HasBackButton {
 
     private val vm : SignUpViewModel by activityViewModels()
     private val vmMain : MainViewModel by activityViewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -128,11 +113,7 @@ class SignUpFragment : BaseFragment(R.layout.fragment_sign_up),HasBackButton {
                 }
             }
 
-
         }
-//        sButton.setOnClickListener{
-//            findNavController().navigate(R.id.to_loginFragment)
-//        }
     }
 
 

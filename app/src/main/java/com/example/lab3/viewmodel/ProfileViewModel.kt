@@ -56,7 +56,6 @@ public data class UserProfile(
         val uploadTask = fileRef.putFile(photo)
         uploadTask.addOnSuccessListener { taskSnapshot ->
             // 图片文件上传成功
-            println("upload success")
         }.addOnFailureListener { exception ->
             // 处理上传失败的情况
         }.addOnProgressListener { taskSnapshot ->
@@ -74,7 +73,6 @@ public data class UserProfile(
         imageRef.downloadUrl.addOnSuccessListener { uri ->
 
             _Uri.value = uri.toString()
-            println(_Uri.value)
         }.addOnFailureListener { exception ->
             // 处理下载失败的情况
             println("Error downloading image: ${exception.message}")

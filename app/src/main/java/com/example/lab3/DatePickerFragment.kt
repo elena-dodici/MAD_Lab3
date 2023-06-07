@@ -14,13 +14,8 @@ import java.time.LocalDate
 import java.util.*
 
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DatePickerFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class DatePickerFragment() : DialogFragment(), DatePickerDialog.OnDateSetListener {
-    // TODO: Rename and change types of parameters
 
     private val sharedvm : CalendarViewModel by activityViewModels()
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

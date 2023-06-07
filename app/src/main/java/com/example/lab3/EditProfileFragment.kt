@@ -108,7 +108,6 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
         _surname = arguments?.getString("surname")
         tele = arguments?.getString("phone")
         var img = view.findViewById<ImageView>(R.id.imageViewE)
-        println("this _"+profilePicturePath)
         if(!profilePicturePath.isNullOrEmpty()){
             img.setImageURI(Uri.parse(profilePicturePath))
             Glide.with(this)
@@ -118,10 +117,6 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
         }
 
 
-//        if(profilePicturePath != "NAN" && profilePicturePath != null && hasPhotoChanged == false ) {
-//            println("LOADING PROFILE PICTURE FROM : $profilePicturePath")
-//            loadImageFromStorage(profilePicturePath,img)
-//        }
         val cancelButton = view.findViewById<Button>(R.id.btC)
         val saveButton = view.findViewById<Button>(R.id.btS)
 //        val bskbt =view.findViewById<Button>(R.id.btbasketball)
@@ -294,7 +289,6 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
 
             DELETESportDetail.forEach{
                 if (it.value!=null){
-                    //println("test deleteSportDet: ${it.value}")
                     vm.deleteUserSport(this.requireActivity().application,it.value!!)
                 }
             }
@@ -367,7 +361,6 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
                 }
             }
 
-//            println("${sportType} 空")
         }
     }
 
