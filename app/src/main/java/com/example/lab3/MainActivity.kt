@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         //vm.updateCourtTimesDates()
 
 //       initDatabase(db) // add some initial data
-        initFirebase()
+       // initFirebase()
 
 
 
