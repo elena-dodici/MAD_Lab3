@@ -282,6 +282,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
             }
 
             var bundle = bundleOf("Path" to image_uri.toString())
+            println("this is :" +image_uri.toString())
             vmMain.setShowNav(true)
 
             SportDetail.forEach{
