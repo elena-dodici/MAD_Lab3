@@ -124,19 +124,13 @@
             app:layout_constraintBottom_toTopOf="@+id/textFreeSlot"
             android:background="@drawable/customborder"
             >
-<!--            <TextView-->
-<!--                android:id="@+id/showCN"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:gravity="right|center"-->
-<!--                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"-->
-<!--                android:text="default"/>-->
+
 
             <TextView
                 android:id="@+id/cyclerTitle"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:gravity="right|center"
                 android:text=" Sport "
@@ -148,9 +142,9 @@
             <Spinner
                 android:id="@+id/sportSpinner"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
-
                 />
 
 
