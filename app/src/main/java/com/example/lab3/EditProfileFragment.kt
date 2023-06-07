@@ -2,9 +2,11 @@ package com.example.lab3
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -12,6 +14,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,6 +28,8 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.PopupMenu
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker.checkSelfPermission
@@ -113,7 +118,6 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
                 .override(img.width, img.height)
                 .into(img)
         }
-
 
         val cancelButton = view.findViewById<Button>(R.id.btC)
         val saveButton = view.findViewById<Button>(R.id.btS)
@@ -217,6 +221,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
 
 
 
+
         //5个添加运动按键
 //        bskbt.setOnClickListener {
 //            addSportBtn(bskbt,"basketball")
@@ -262,11 +267,51 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
                 editTel.text.toString(),
                 "user${vmMain.UID}/images/user${vmMain.UID}.jpg"
             )
+            val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.progress_bar, null)
+            val progressBar = dialogView.findViewById<ProgressBar>(R.id.progressBar)
+
+            val alertDialog: AlertDialog? = activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.apply {
+                    setPositiveButton(" ",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            // User clicked OK button
+
+                        })
+                    setNegativeButton(" ",
+                        DialogInterface.OnClickListener { dialog, id ->
+                            // User cancelled the dialog
+                        })
+                    setTitle("Updating data...")
+                    setCancelable(false)
+                    setView(dialogView)
+                }
+                // Create the AlertDialog
+                builder.create()
+            }
+            val handler = Handler()
+
+            val progressRunnable = object : Runnable {
+                private var progress = 0
+
+                override fun run() {
+                    if (progress <= 100) {
+                        progressBar.progress = progress
+                        progress += 10 // Increase the progress value as desired
+                        handler.postDelayed(this, 1000) // Set the time interval for each increment
+                    }
+                }
+            }
+            handler.post(progressRunnable)
+            alertDialog?.show()
+
+            val navController = findNavController()
+            var bundle = bundleOf("Path" to "user${vmMain.UID}/images/user${vmMain.UID}.jpg")
             if (u != null) {
-                vm.updateUser(this.requireActivity().application,u,vmMain.UID)
+                vm.updateUser(this.requireActivity().application,u,vmMain.UID,alertDialog!!,navController, bundle)
             }
 
-            var bundle = bundleOf("Path" to "user${vmMain.UID}/images/user${vmMain.UID}.jpg")
+
             vmMain.setShowNav(true)
 
             SportDetail.forEach{
@@ -283,7 +328,7 @@ class EditProfileFragment: BaseFragment(R.layout.fragment_profile_edit), HasBack
             }
 
 
-            findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment,bundle)
+
         }
 
 

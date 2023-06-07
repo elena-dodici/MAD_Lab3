@@ -1,17 +1,26 @@
 package com.example.lab3
 
+import android.app.AlertDialog
 import android.app.Application
 import android.net.Uri
+import android.os.Bundle
+import android.os.Handler
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 import com.example.lab3.database.AppDatabase
 import com.example.lab3.database.entity.CourtInfo
 import com.example.lab3.database.entity.SportDetail
 import com.example.lab3.database.entity.User
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -25,7 +34,7 @@ class ProfileViewModel : ViewModel() {
     val User:LiveData<UserProfile> = _User
     private var _userSports = MutableLiveData<List<SportDetail>>().also { it.value = listOf() }
     val userSports:LiveData<List<SportDetail>> = _userSports
-
+    private lateinit var l : ListenerRegistration
 //    fun getUserById(application: Application, id:Int){
 //        db = AppDatabase.getDatabase(application)
 //        _User.value = db.userDao().getUserById(id)
@@ -80,13 +89,26 @@ public data class UserProfile(
 
     }
 
-    fun updateUser(application: Application, user: UserProfile,id: String){
+
+    fun updateUser(application: Application, user: UserProfile,id: String, alertDialog: AlertDialog,navController: NavController,bundle : Bundle){
+
+        l = db1.collection("users").document("u${id}").addSnapshotListener {
+                value, error ->
+            if(error != null) null
+            else {
+                navController.navigate(R.id.action_editProfileFragment_to_profileFragment,bundle)
+                alertDialog?.dismiss()
+            }
+        }
+
         val data = hashMapOf(
             "name" to user.name,
             "surname" to user.surname,
             "tel" to user.tel,
             "photo" to user.photo
         )
+        val firebaseReference = FirebaseFirestore.getInstance().collection("users").document("u${id}")
+
         val newD=db1.collection("users").document("u${id}")
         newD.update(data as Map<String, Any>)
             .addOnSuccessListener {        }
