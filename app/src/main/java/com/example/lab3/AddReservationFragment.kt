@@ -244,6 +244,12 @@ class AddReservationFragment : BaseFragment(R.layout.fragment_add_reservation),H
                     mainVm.currentToast.show()
                 } else {
                     alertDialog?.setMessage("${sport} court on day '${dateString}' in slot $selectedSlot:00 - ${selectedSlot.toInt()+1}:00")
+                    alertDialog?.setOnShowListener {
+                        val posBt = alertDialog?.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+                        val negBt = alertDialog?.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
+                        posBt?.setTextColor(resources.getColor( R.color.button_color))
+                        negBt?.setTextColor(resources.getColor(R.color.md_theme_light_error))
+                    }
                     alertDialog?.show()
                 }
             }

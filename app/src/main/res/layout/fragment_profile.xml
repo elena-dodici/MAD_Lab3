@@ -35,7 +35,6 @@
         >
 
 
-
         <LinearLayout
             android:id="@+id/View"
             android:layout_width="match_parent"
@@ -43,8 +42,6 @@
             android:layout_marginHorizontal="8dp"
             android:layout_weight="2"
             android:orientation="vertical">
-
-
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -65,13 +62,14 @@
                         android:layout_marginTop="20dp"
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
+
                         >
                         <com.google.android.material.imageview.ShapeableImageView
                             android:id="@+id/TOP"
                             android:layout_width="200dp"
                             android:layout_height="200dp"
                             android:adjustViewBounds="true"
-
+                            android:background="@drawable/customborder"
                             android:contentDescription="@string/user_profile"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:gravity="center_horizontal"
-
+                        android:background="@drawable/customborder"
                         >
                         <ImageView
                             android:id="@+id/person_icon"
@@ -133,7 +131,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:gravity="center_horizontal">
+                        android:gravity="center_horizontal"
+                        android:background="@drawable/customborder">
 
                         <ImageView
                             android:layout_width="40dp"
@@ -157,7 +156,12 @@
                         app:dividerInsetEnd="100dp"
                         android:layout_height="wrap_content"
                         android:background="@color/sep_line"/>
-
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/customborder"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -172,7 +176,12 @@
                             android:layout_marginStart="70dp"
                             android:src="@drawable/baseline_sports_gymnastics_24" />
 
-
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" My sports "
+                            android:textAppearance="@style/TextAppearance.MdcTypographyStyles.Headline5"
+                            android:textSize="24sp"></TextView>
 
 
                     </LinearLayout>
@@ -190,7 +199,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/mySport" />
-
+                </LinearLayout>
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btE"
                         android:layout_width="250dp"

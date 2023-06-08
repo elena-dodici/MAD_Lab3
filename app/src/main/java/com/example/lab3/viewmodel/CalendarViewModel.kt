@@ -397,7 +397,6 @@ class CalendarViewModel : ViewModel() {
             )
         )
 
-
         val newRes = hashMapOf(
 
             "ct" to mapOf(

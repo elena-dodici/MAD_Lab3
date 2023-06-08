@@ -292,7 +292,7 @@
 
                         <TextView
 
-                            android:layout_width="0dp"
+                            android:layout_width="46dp"
                             android:layout_height="40dp"
                             android:layout_weight="1"
                             android:text="CourtName:"
@@ -312,17 +312,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/sep_line"/>
+
                     <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="193dp"
+                        android:layout_marginTop="30dp">
+
                         <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Description:"
-                        android:textColor="@color/black"
-                        android:textSize="20sp" />
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Description:"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/textField"
@@ -335,10 +337,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
 
-                                android:text="@={vm.selectedRes.description}"
                                 android:inputType="textMultiLine"
-                                tools:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                                />
+                                android:text="@={vm.selectedRes.description}"
+                                tools:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
