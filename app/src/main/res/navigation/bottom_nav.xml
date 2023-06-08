@@ -126,7 +126,7 @@
             app:destination="@id/mainFragment2"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right" />
-    </fragment>>
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.lab3.LoginFragment"
