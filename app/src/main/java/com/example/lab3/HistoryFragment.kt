@@ -99,14 +99,16 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),HasBackButton{
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
 
-
-        val viewStub = view.findViewById<ViewStub>(R.id.emptyStateLayout)
-        if (sharedvm.reservations.value.isNullOrEmpty()) {
-            viewStub.visibility = View.VISIBLE
-            // Perform any necessary operations on the inflated view
-        } else {
-            viewStub.visibility = View.GONE
+        sharedvm.reservations.observe(viewLifecycleOwner){
+            val viewStub = view.findViewById<ViewStub>(R.id.emptyStateLayout)
+            if (sharedvm.reservations.value.isNullOrEmpty()) {
+                viewStub.visibility = View.VISIBLE
+                // Perform any necessary operations on the inflated view
+            } else {
+                viewStub.visibility = View.GONE
+            }
         }
+
 
     }
 
