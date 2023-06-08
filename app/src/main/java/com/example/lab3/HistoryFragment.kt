@@ -1,9 +1,12 @@
 package com.example.lab3
 
+import android.app.ProgressDialog.show
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewStub
+import android.widget.LinearLayout
 import androidx.appcompat.widget.Toolbar
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
@@ -96,7 +99,20 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history),HasBackButton{
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
 
+
+        val viewStub = view.findViewById<ViewStub>(R.id.emptyStateLayout)
+        if (sharedvm.reservations.value.isNullOrEmpty()) {
+            viewStub.visibility = View.VISIBLE
+            // Perform any necessary operations on the inflated view
+        } else {
+            viewStub.visibility = View.GONE
+        }
+
     }
+
+
+
+
     private fun updateAdapter() {
         adapter.apply {
             events.clear()

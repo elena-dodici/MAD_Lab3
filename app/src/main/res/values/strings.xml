@@ -15,6 +15,7 @@
     <string name="ownRev">Review</string>
     <string name="res_date">Date</string>
     <string name="_default">Default</string>
+    <string name="empty_state">You don\'t have any finished reservation yet.</string>
 
     <string name="email">s300570@studenti.polito.it</string>
     <string name="phone">+39 173458888</string>
